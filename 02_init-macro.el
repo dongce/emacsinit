@@ -797,18 +797,46 @@ When called repeatedly, this command cycles the {“ ”, “_”, “-”} char
       (set-mark p1)
       (setq deactivate-mark nil) ) ) )
 
-(defun append-path (p)
-  (let (( path (file-truename p)))
-    (if (not  (member path exec-path))
-        (progn 
-          (setq exec-path (append  exec-path (list path) ))
-          (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path)))))))
-(defun prepend-path (p)
-  (let (( path (file-truename p)))
-    (if (not  (member path exec-path))
-        (progn 
-          (setq exec-path (append   (list path) exec-path))
-          (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path)))))))
+
+(w32-unix-eval
+
+ (
+  (defun append-path (p)
+    (let (( path (file-truename p)))
+      (if (not  (member path exec-path))
+          (progn 
+            (setq exec-path (append  exec-path (list path) ))
+            (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path)))))))
+
+
+  (defun prepend-path (p)
+    (let (( path (file-truename p)))
+      (if (not  (member path exec-path))
+          (progn 
+            (setq exec-path (append   (list path) exec-path))
+            (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path)))))))
+  )
+
+ (
+  (defun append-path (p)
+    (let (( path (file-truename p)))
+      (if (not  (member path exec-path))
+          (progn 
+            (setq exec-path (append  exec-path (list path) ))
+            (setenv "PATH" (s-join ":" exec-path))))))
+
+
+  (defun prepend-path (p)
+    (let (( path (file-truename p)))
+      (if (not  (member path exec-path))
+          (progn 
+            (setq exec-path (append   (list path) exec-path))
+            (setenv "PATH" (s-join ";"  exec-path))))))
+
+
+  )
+
+ )
 
 (defun insert-line (x)
   (insert (concat x "\n")))

@@ -497,4 +497,5 @@ USAGE:  (org-get-entries-fn '(6 1 2015) '(6 30 2015))"
   (elfeed-org)
   ) 
 
+(use-package os-fs-tree :commands org-fs-tree-dump )
 
