@@ -5,7 +5,10 @@
 ;;http://emacswiki.org/emacs/LoadPath
 
 
-(append-path (fullpath "../../mumailindexer/bin/"))
+(cond ((eq window-system 'w32)
+       (let ((default-directory (fullpath "../../mumailindexer/share/emacs/site-lisp")))
+         (normal-top-level-add-subdirs-to-load-path))
+       (append-path (fullpath "../../mumailindexer/bin/"))))
 
 (require 'mu4e)
 
