@@ -356,8 +356,15 @@ should be a list of keys that will be bound globally to
 
 (global-set-key [C-M-down] 'set-mark-command)
 
-(global-set-key "\M-]"  'forward-page )
-(global-set-key "\M-["  'backward-page )
+(w32-unix-eval
+ ;; 윈도우 시스템의 경우
+ ;; emacs 에서 FIND 가능
+ (
+  (global-set-key "\M-]"  'forward-page )
+  (global-set-key "\M-["  'backward-page )
+
+  )
+ ())
 (global-set-key [C-M-return] 'goto-line) 
 (global-set-key [C-return] 'dabbrev-expand )
 (define-key ctl-x-map "\C-z" 'keyboard-escape-quit)
