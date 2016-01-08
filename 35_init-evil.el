@@ -755,6 +755,8 @@
 ;;     (evil-define-key 'emacs magit-mode-map "k" 'magit-goto-previous-section)
 ;;     (evil-define-key 'emacs magit-mode-map "K" 'magit-discard-item))) 
 
+(require 'evil-magit)
+
 (require 'evil-visualstar)
 (global-evil-visualstar-mode t)
 
@@ -795,3 +797,7 @@
   "hH" 'helm-org-headlines
   ;; "hh" 'helm-org-in-buffer-headings
   )
+
+
+
+

@@ -305,7 +305,7 @@ should be a list of keys that will be bound globally to
 (global-set-key (kbd "H-n") 'forward-paragraph) 
 (global-set-key (kbd "H-p") 'backward-paragraph) 
 (global-set-key [f12] 'ibuffer)
-(global-set-key (kbd "C-z") 'ibuffer)
+;; (global-set-key (kbd "C-z") 'ibuffer)
 ;deprecated;;(global-set-key ( kbd "H-m") 'smex)
 ;;(define-key function-key-map (vector ?\H-m) (vector 'return))
 ;;(global-set-key (kbd "H-m") 'newline) ; was kill-sentence
@@ -395,6 +395,8 @@ should be a list of keys that will be bound globally to
 (define-key minibuffer-local-must-match-map "\C-z" 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map "\C-z" 'minibuffer-keyboard-quit)
 (define-key query-replace-map "\C-z" 'quit)
+
+
 
 
 
