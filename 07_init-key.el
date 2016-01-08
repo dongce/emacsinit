@@ -524,6 +524,5 @@ Version 2015-04-09"
   (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows))
 
 
-
 (require 'helm-descbinds)
 (helm-descbinds-mode)

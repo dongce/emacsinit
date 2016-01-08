@@ -703,7 +703,9 @@ See also: `copy-to-register-1', `insert-register'."
 ;;deprecated;;(define-key visual-line-mode-map "\C-e" 'end-of-visual-line+)
 
 
-(require 'hide-region)
+(use-package hide-region+
+  :commands hide-region-hide hide-region-unhide
+  )
 
 (if (not (version<= "24.3" emacs-version ));;deprecatedat 24.3
     (progn                                 ;;deprecatedat 24.3

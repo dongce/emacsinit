@@ -9,7 +9,7 @@
   ;;  (color-theme-emacs-21)
   (require 'find-dired )
   (require 'w32-find-dired )
-
+  (require 'w32-winprint )
 
 
   ;; 프린팅 관련 변수
@@ -66,13 +66,8 @@
 
 (setq ls-lisp-verbosity '(uid))
 
-(with-package* 
-  (dired+
-   dired-sort-menu+
-   dired-sort-map
-   dired-tar)
 
-  (defun mrc-dired-do-command (command)
+(defun mrc-dired-do-command (command)
     "Run COMMAND on marked files. Any files not already open will be opened.
 After this command has been run, any buffers it's modified will remain
 open and unsaved."
@@ -83,7 +78,7 @@ open and unsaved."
               (call-interactively command))
             (dired-get-marked-files))))
 
-  (toggle-diredp-find-file-reuse-dir 1))
+(toggle-diredp-find-file-reuse-dir 1)
 ;; writable-dired
 ;;【Ctrl+x Ctrl+q】 (emacs 23.1)	wdired-change-to-wdired-mode	Start rename by editing
 ;;【Ctrl+c Ctrl+c】	wdired-finish-edit	Commit changes
@@ -96,6 +91,6 @@ open and unsaved."
 ;;  (setq ange-ftp-ftp-program-name (fullpath "../../EmacsW32/gnuwin32/bin/ftp.exe")) ;ftp passive mode 
 ;;  )
 
-
-(eval-after-load "hl-line-mode"
-  (add-hook 'dired-mode-hook (lambda () (interactive) (hl-line-mode))))
+(use-package hl-line+
+  :config
+(add-hook 'dired-mode-hook (lambda () (interactive) (hl-line-mode t))))

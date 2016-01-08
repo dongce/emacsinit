@@ -274,8 +274,8 @@ it if necessary."
 (require 'w32-browser)
 
 ;; redefine M-!
-(require 'execute)
-(define-key dired-mode-map "\M-;" 'execute-program)
+;;(require 'execute)
+;;(define-key dired-mode-map "\M-;" 'execute-program)
 
 (defun assocemacs ( ext) 
   (interactive "M»Æ¿Â¿⁄ :")

@@ -1,8 +1,6 @@
 ;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t; lexical-binding : t -*-
 
-(require 'string)
-(require 'string-strip)
-(require 'edom)
+;;(require 'edom)
 
 (defun find-prototype-region ()
   (interactive)
@@ -29,8 +27,8 @@
   (let* ((min (point-at-bol))
          (max (- (re-search-forward ")") 1 ))
          (str (buffer-substring min max))
-         (name (car (string-split "(" str )))
-         (args (cadr (string-split "(" str )))
+         (name (car (s-split "(" str )))
+         (args (cadr (s-split "(" str )))
          (rtn "")
          (fname "")
          (keywords '("struct" "enum" "class" "File" "Author:" "E-mail:" "$Rev:" "Limitation" "마지막" "Description:" "Limitation:" "Caution:" "Usage:" "Copyright" "All"))
@@ -42,12 +40,12 @@
     (if (not (equal nil (string-replace-match "\n+" name " ")))
         (setf name (string-replace-match "\n+" name " ")))
 
-    (setf name (string-split " " name))
-    (setf args (string-split "," args))
+    (setf name (s-split " " name))
+    (setf args (s-split "," args))
 
     (case (length name )
-      ((1) (setf fname (string-strip (car name ))) (setf rtn "void"))
-      ((2 3) (setf fname (string-strip (cadr name ))) (setf rtn (string-strip (car name )))))
+      ((1) (setf fname (s-trim (car name ))) (setf rtn "void"))
+      ((2 3) (setf fname (s-trim (cadr name ))) (setf rtn (s-trim (car name )))))
     
     (if (and
          (> 3 (length name))
@@ -67,14 +65,14 @@
 
           (if (equal 0 (length args)) 
               (insert "//||| 입력값        : [IN] 없음\n")
-            (insert (format "//||| 입력값        : [IN] %s\n"  (string-strip (car args) ))))
+            (insert (format "//||| 입력값        : [IN] %s\n"  (s-trim (car args) ))))
 
           (mapcar 
            (lambda (arg)
-             (insert (format "//|||        [IN] %s\n" (string-strip arg))))
+             (insert (format "//|||        [IN] %s\n" (s-trim arg))))
            (cdr args))
 
-          (insert "//||| 리턴값        : " (string-strip rtn))(newline)
+          (insert "//||| 리턴값        : " (s-trim rtn))(newline)
           (insert "//||| 비고          : ")(newline)
           (insert "//|||***************************************************************************")(newline)))
     (re-search-forward ")")))
@@ -91,10 +89,10 @@
       (let* ((min (point-at-bol))
              (max (- (re-search-forward "{") 1 ))
              (str (buffer-substring min max))
-             (name (car (string-split ":" str )))
+             (name (car (s-split ":" str )))
              (tstamp (format-time-string  "%Y년 %m월 %d일 %V주 %a요일 %p %I시 %M분 %S초"))
              ;;(tstamp (current-time-stamp))
-             (cname (cadr (string-split " " name))))
+             (cname (cadr (s-split " " name))))
 
         (goto-char min)
 
@@ -193,8 +191,8 @@
   (evil-forward-word-begin 2)
 
   (let* ((str (buffer-substring (point) (- (re-search-forward ")") 1 )))
-         (name (string-strip  (car (string-split "(" str ))))
-         (args (mapcar (lambda (x) (string-strip x)) (string-split "," (cadr (string-split "(" str ))))))
+         (name (s-trim  (car (s-split "(" str ))))
+         (args (mapcar (lambda (x) (s-trim x)) (s-split "," (cadr (s-split "(" str ))))))
     (save-excursion
       (save-restriction
         (narrow-to-region (point-at-bol ) (point-at-eol))

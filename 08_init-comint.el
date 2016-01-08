@@ -48,13 +48,67 @@ is run).
   (while (not (ignore-errors ( slime-connect "localhost" *slime-port*)))
     (sleep-for 0.2 )))
 
-(require 'dedicated)
+;;(require 'dedicated) 
 ;; (require 'quack)
 
-(require 'comint-popup)  
-(setq comint-popup-idle-threshold -1)
+;;(require 'comint-popup)  
+;;(setq comint-popup-idle-threshold -1)
 ;; (add-hook 'comint-mode-hook (lambda () (dedicated-mode )))
 ;;(add-hook 'comint-output-filter-functions 'comint-popup-buffer)
-(load "plink")
+
+(require 'telnet)
+
+(defun start-telnet (host)
+  "Open a network login connection to host named HOST (a string).
+   Communication with HOST is recorded in a buffer `*termx*'.
+   Normally input is edited in Emacs and sent a line at a time."
+  (interactive "sOpen telnet connection to host: ")
+  (let* ((comint-delimiter-argument-list '(?\  ?\t))
+         (name "termx")
+         (buffer (get-buffer "*termx*"))
+         process)
+    (setq telnet-new-line (char-to-string 13))
+
+    (if (and buffer (get-buffer-process buffer))
+        (pop-to-buffer buffer)
+      (pop-to-buffer (make-comint name "c:\\usr\\local\\guile\\bin\\plink.exe" nil "-telnet" host))
+      (setq process (get-buffer-process (current-buffer)))
+      (set-process-filter process 'telnet-initial-filter)
+      (accept-process-output process)
+      (telnet-mode)
+      (setq comint-input-sender 'telnet-simple-send)
+      (setq telnet-count telnet-initial-count))))
+
+(defun start-rs232 (host)
+  "Open a network login connection to host named HOST (a string).
+   Communication with HOST is recorded in a buffer `*termx*'.
+   Normally input is edited in Emacs and sent a line at a time."
+  (interactive "sOpen telnet connection to host: ")
+  (let* ((comint-delimiter-argument-list '(?\  ?\t))
+         (buffer (get-buffer "*rs232-term*"))
+         process)
+    (setq telnet-new-line (char-to-string 13))
+
+    (if (and buffer (get-buffer-process buffer))
+        (pop-to-buffer buffer)
+      (pop-to-buffer (make-comint "rs232-term" "c:\\usr\\local\\guile\\bin\\plink.exe" nil "-load" host))
+      (setq process (get-buffer-process (current-buffer)))
+      ;;(set-process-filter process 'telnet-initial-filter)
+      (telnet-mode)
+      (setq comint-input-sender 'telnet-simple-send)
+      ;;(setq telnet-count telnet-initial-count)
+      )))
+
+
+
+(defun num-list (start end  )
+  (interactive)
+  (let ((result '()))
+    (while 
+     (not (= start end ))
+     (setq result (cons start result))
+     (setq start (+ start 1 )))
+    (reverse result)))
+
 
 (setf comint-input-sender-no-newline t )

@@ -1,4 +1,4 @@
-;; -*-mode: emacs-lisp; coding: cp949; buffer-read-only: t;-*-
+;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
 
 ;;(require 'color-theme)
 ;;(color-theme-initialize )
@@ -8,7 +8,7 @@
 ;;(color-theme-blue)
 ;;(color-theme-jonadabian)
 ;;(color-theme-jacobian)
-;; outlinemode ¸¦ ´ëÃ¼ÇÕ´Ï´Ù. 
+;; outlinemode ë¥¼ ëŒ€ì²´í•©ë‹ˆë‹¤. 
 ;;(color-theme-vim-colors)
 ;;(color-theme-emacs-nw)
 ;;(color-theme-gtk-ide)
@@ -23,7 +23,7 @@
 ;;(require 'color-theme)
 
 ;;(load-theme 'zenburn)
-;;; µÑÀ» ´õÇÑ °ÍÀÌ ´õ ÁÁÀº °á°ú¸¦ °¡Á®¿Â´Ù. 
+;;; ë‘˜ì„ ë”í•œ ê²ƒì´ ë” ì¢‹ì€ ê²°ê³¼ë¥¼ ê°€ì ¸ì˜¨ë‹¤. 
 ;;thisisgood;;(color-theme-sanityinc-solarized-dark)
 ;;thisisgood;;(load-theme 'misterioso)
 
@@ -197,3 +197,40 @@ Assumes that the frame is only split into two."
 (with-package* (fringe-current-line)
   (global-fringe-current-line-mode t)
 )
+
+
+;; http://ergoemacs.org/emacs/emacs_pretty_lambda.html
+;;(setq prettify-symbols-alist
+;;      '(
+;;        ("lambda" . 955) ; Î»
+;;        ("->" . 8594)    ; â†’
+;;        ("=>" . 8658)    ; â‡’
+;;        ("map" . 8614)    ; â†¦
+;;        ))
+
+
+;;(defun my-add-pretty-lambda ()
+;;  "make some word or string show as pretty Unicode symbols"
+;;  (setq prettify-symbols-alist
+;;        '(
+;;          ("lambda" . 955) ; Î»
+;;          ("->" . 8594)    ; â†’
+;;          ("=>" . 8658)    ; â‡’
+;;          ("map" . 8614)   ; â†¦
+;;          )))
+;;
+;;(add-hook 'clojure-mode-hook 'my-add-pretty-lambda)
+;;(add-hook 'haskell-mode-hook 'my-add-pretty-lambda)
+;;(add-hook 'shen-mode-hook 'my-add-pretty-lambda)
+;;(add-hook 'tex-mode-hook 'my-add-pretty-lambda)
+
+
+(add-hook 'python-mode-hook #'(lambda () (setq prettify-symbols-alist '("map" . 8614)) (pretty-symbols-mode) ))
+(add-hook 'emacs-lisp-mode-hook 'pretty-symbols-mode)
+(add-hook 'scheme-mode-hook 'pretty-symbols-mode)
+
+;;(add-hook 'c++-mode-hook        'pretty-symbols-mode)
+
+;;; http://www.reddit.com/r/emacs/comments/1huhsg/i_need_help_with_adding_keywords_for_syntax/
+;; font lock ì„¤ì • 
+(global-font-lock-mode 1)                     ; for all buffers

@@ -2263,7 +2263,7 @@ Requires ImageMagick shell tool.
    (dired-get-marked-files)))
 
 
-(defcustom pyclip (fullpath "../misc/pyclip.py") "python clip")
+(defcustom pyclip (fullpath "../misc/pyclip3.py") "python clip")
 
 
 (defun clip-file ()
@@ -2279,7 +2279,7 @@ Requires ImageMagick shell tool.
         (apply
          #'async-start-process  ;;impossible;;-reuse-buffer 
          "clip-file" 
-         "python"
+         "python.exe"
          (lambda (p) (message "파일복사 완료"))
          pyclip
          files)
@@ -2299,7 +2299,7 @@ Requires ImageMagick shell tool.
         (apply
          #'async-start-process ;;impossible;;-reuse-buffer 
          "clip-image" 
-         "python"
+         "python.exe"
          (lambda (p) (message "이미지 복사 완료"))
          pyclip
          "--image"
@@ -2307,7 +2307,8 @@ Requires ImageMagick shell tool.
     )
   ))
 
-(with-package* (dired)
+(use-package dired
+  :config
   (define-key dired-mode-map ":c" 'clip-file)
   (define-key dired-mode-map ":i" 'clip-image))
 
@@ -2424,7 +2425,7 @@ when called with `universal-argument', don't create backup."
     )) 
 
 
-(with-package (multi))
+;;(with-package (multi))
 
 ;; (defun one-space (b e &optional)
 ;;   "Delete lines which appear to be RFC-822 cruft, mail or news.

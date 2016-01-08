@@ -1,29 +1,9 @@
 ;; -*-mode: emacs-lisp; coding: cp949; buffer-read-only: t;-*-
 ;; ace jump mode 를 사용할 수 있다. 
-(require 'ace-jump-mode)
-(global-set-key (kbd "s-j")  'ace-jump-mode)
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
-(global-set-key (kbd "s-;")  (lambda () (interactive) (push-mark (point) t)))
-(global-set-key (kbd "s-'")  (lambda () (interactive) (pop-global-mark)))
 
 
 ;; FUNCTION DEFINITION
 
-;;VERY LITTILE USED;;(global-set-key [f10] '(aif (w32-shell-execute "open" (buffer-file-name) nil )))
-(global-set-key [f10]  #'hl-symbol-and-jump)
-(global-set-key [f11]  #'hl-symbol-cleanup)
-
-(require 'quick-jump)
-;;(quick-jump-default-keybinding)
-
-(global-set-key (kbd "C-,") 'quick-jump-go-back)
-(global-set-key (kbd "C-.") 'quick-jump-push-marker)
-;;(global-set-key (kbd "C-<") 'quick-jump-go-forward)
-;;(global-set-key (kbd "C->") 'quick-jump-clear-all-marker)
-
-
-;;TOY;;(autoload 'ewb "ewb")
-;;TOY;;(autoload 'vc-jump "vc-jump" "버젼제어 버퍼로 점프" t)
 
 
 (require 'webjump)
@@ -69,21 +49,6 @@
    ("swankjs"         . "http://localhost:8009/swank-js/test.html")
    ("MDMS"            . "http://10.239.12.87:3000/login/login")
    )))
-
-(defun hl-symbol-and-jump ()
-  (interactive)
-  (let ((symbol (highlight-symbol-get-symbol)))
-    (unless symbol (error "No symbol at point"))
-    (unless hi-lock-mode (hi-lock-mode 1))
-    (if (member symbol highlight-symbol-list)
-        (highlight-symbol-next)
-      (highlight-symbol-at-point)
-      (highlight-symbol-next))))
-
-(defun hl-symbol-cleanup ()
-  (interactive)
-  (mapc 'hi-lock-unface-buffer highlight-symbol-list)
-  (setq highlight-symbol-list ()))
 
 
 
@@ -192,84 +157,5 @@ Non-interactively:
     (when failure (error "Failed to create bookmark for `%s':\n%s\n" url failure))
     bmk))
 
-;;deprecated;;(fset 'bmkp-bmenu-list-1-origin #'bmkp-bmenu-list-1)       ;원본버젼 
-;;deprecated;;
-;;deprecated;;
-;;deprecated;;(defun bmkp-bmenu-list-1 (filteredp reset-marked-p interactivep)
-;;deprecated;;  "Helper for `bookmark-bmenu-list'.
-;;deprecated;;See `bookmark-bmenu-list' for the description of FILTEREDP.
-;;deprecated;;Non-nil RESET-MARKED-P resets `bmkp-bmenu-marked-bookmarks'.
-;;deprecated;;Non-nil INTERACTIVEP means `bookmark-bmenu-list' was called
-;;deprecated;; interactively, so pop to the bookmark list and communicate the sort
-;;deprecated;; order."
-;;deprecated;;  (when reset-marked-p (setq bmkp-bmenu-marked-bookmarks  ()))
-;;deprecated;;  (unless filteredp (setq bmkp-latest-bookmark-alist  bookmark-alist))
-;;deprecated;;  (if interactivep
-;;deprecated;;      (let ((one-win-p  (one-window-p)))
-;;deprecated;;        (pop-to-buffer (get-buffer-create "*Bookmark List*"))
-;;deprecated;;        (when one-win-p (delete-other-windows)))
-;;deprecated;;    (set-buffer (get-buffer-create "*Bookmark List*")))
-;;deprecated;;  (let* ((inhibit-read-only       t)
-;;deprecated;;         (title                   (if (and filteredp bmkp-bmenu-title (not (equal "" bmkp-bmenu-title)))
-;;deprecated;;                                      bmkp-bmenu-title
-;;deprecated;;                                    "All Bookmarks"))
-;;deprecated;;         (show-image-file-icon-p  (and (fboundp 'display-images-p) (display-images-p)
-;;deprecated;;                                       bmkp-bmenu-image-bookmark-icon-file
-;;deprecated;;                                       (file-readable-p bmkp-bmenu-image-bookmark-icon-file))))
-;;deprecated;;    (erase-buffer)
-;;deprecated;;    (when (fboundp 'remove-images) (remove-images (point-min) (point-max)))
-;;deprecated;;    (insert (format "%s\n%s\n" title (make-string (length title) ?-)))
-;;deprecated;;    (add-text-properties (point-min) (point) (bmkp-face-prop 'bmkp-heading))
-;;deprecated;;    (goto-char (point-min))
-;;deprecated;;    (insert (format "Bookmark file:\n%s\n\n" bmkp-current-bookmark-file))
-;;deprecated;;    (forward-line bmkp-bmenu-header-lines)
-;;deprecated;;    (let ((max-width  0)
-;;deprecated;;          name markedp tags annotation temporaryp start)
-;;deprecated;;      (setq bmkp-sorted-alist  (bmkp-sort-omit bookmark-alist
-;;deprecated;;                                               (and (not (eq bmkp-bmenu-filter-function
-;;deprecated;;                                                             'bmkp-omitted-alist-only))
-;;deprecated;;                                                    bmkp-bmenu-omitted-bookmarks)))
-;;deprecated;;      (dolist (bmk  bmkp-sorted-alist)
-;;deprecated;;        (setq max-width  (max max-width 
-;;deprecated;;                              (+ 10 (length (bookmark-name-from-full-record bmk)))))) ;한글전시관련오류발생 
-;;deprecated;;      (setq max-width  (+ max-width bmkp-bmenu-marks-width))
-;;deprecated;;      (dolist (bmk  bmkp-sorted-alist)
-;;deprecated;;        (setq name        (bookmark-name-from-full-record bmk)
-;;deprecated;;              markedp     (bmkp-marked-bookmark-p bmk)
-;;deprecated;;              tags        (bmkp-get-tags bmk)
-;;deprecated;;              annotation  (bookmark-get-annotation bmk)
-;;deprecated;;              start       (+ bmkp-bmenu-marks-width (point)))
-;;deprecated;;        (if (not markedp)
-;;deprecated;;            (insert " ")
-;;deprecated;;          (insert ">") (put-text-property (1- (point)) (point) 'face 'bmkp->-mark))
-;;deprecated;;        (if (null tags)
-;;deprecated;;            (insert " ")
-;;deprecated;;          (insert "t") (put-text-property (1- (point)) (point) 'face 'bmkp-t-mark))
-;;deprecated;;        (cond ((bmkp-temporary-bookmark-p bmk)
-;;deprecated;;               (insert "X") (put-text-property (1- (point)) (point) 'face 'bmkp-X-mark))
-;;deprecated;;              ((and annotation (not (string-equal annotation "")))
-;;deprecated;;               (insert "a") (put-text-property (1- (point)) (point) 'face 'bmkp-a-mark))
-;;deprecated;;              (t (insert " ")))
-;;deprecated;;        (insert " ")
-;;deprecated;;        (when (and (featurep 'bookmark+-lit) (bmkp-get-lighting bmk)) ; Highlight highlight overrides.
-;;deprecated;;          (put-text-property (1- (point)) (point) 'face 'bmkp-light-mark))
-;;deprecated;;        (when (and (bmkp-image-bookmark-p bmk)  show-image-file-icon-p)
-;;deprecated;;          (let ((image  (create-image bmkp-bmenu-image-bookmark-icon-file nil nil :ascent 95)))
-;;deprecated;;            (put-image image (point))))
-;;deprecated;;        (insert name)
-;;deprecated;;        (move-to-column max-width t)
-;;deprecated;;        (bmkp-bmenu-propertize-item bmk start (point))
-;;deprecated;;        (insert "\n")))
-;;deprecated;;    (goto-char (point-min)) (forward-line bmkp-bmenu-header-lines)
-;;deprecated;;    (bookmark-bmenu-mode)
-;;deprecated;;    (when bookmark-bmenu-toggle-filenames (bookmark-bmenu-toggle-filenames t))
-;;deprecated;;    (when (and (fboundp 'fit-frame-if-one-window)
-;;deprecated;;               (eq (selected-window) (get-buffer-window (get-buffer-create "*Bookmark List*") 0)))
-;;deprecated;;      (fit-frame-if-one-window)))
-;;deprecated;;  (when (and interactivep bmkp-sort-comparer)
-;;deprecated;;    (bmkp-msg-about-sort-order (bmkp-current-sort-order))))
 
 (require 'point-stack)
-(require 'evil-visual-mark-mode)
-
-(evil-visual-mark-mode t)

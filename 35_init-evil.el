@@ -1,7 +1,11 @@
 ;; -*- coding: utf-8; -*-
 ; http://d.hatena.ne.jp/tarao/20130304/evil_config
 
-(require 'package-helper)
+
+(require 'evil-visual-mark-mode)
+(evil-visual-mark-mode t)
+
+
 ;;(require 'evil-nerd-commenter)
 ;; (require 'evil-escape)
 ;; (evil-escape-mode)
