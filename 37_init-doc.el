@@ -66,21 +66,22 @@
 
 
 
-(with-package* (irfc)
+(use-package irfc
+  :init
   (setq irfc-directory (fullpath "../rfcdoc")) 
   (setq irfc-assoc-mode t)
-
+  :config
   (defun rfcsearch () 
     (interactive)
     (browse-url "http://www.ietf.org/rfc.html"))
 
   (defun rfcindex ()
     (interactive)
-      (let ((url-request-method "GET")
-            ;; (arg-stuff (concat "?query=" (url-hexify-string str) "&filter=" (url-hexify-string type)))
-            )
-        (url-retrieve  "http://www.ietf.org/download/rfc-index.txt" (lambda (status) (switch-to-buffer (current-buffer))))))
-)
+    (let ((url-request-method "GET")
+          ;; (arg-stuff (concat "?query=" (url-hexify-string str) "&filter=" (url-hexify-string type)))
+          )
+      (url-retrieve  "http://www.ietf.org/download/rfc-index.txt" (lambda (status) (switch-to-buffer (current-buffer))))))
+  )
 
 
 ;; know-your-http-well package 

@@ -1,5 +1,3 @@
 ;; -*- coding: utf-8; -*-
 
-(with-package* (html-fold)
-
-)
+(use-package html-fold)

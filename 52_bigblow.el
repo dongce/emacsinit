@@ -8,42 +8,42 @@
 (require 'ox-html)
 
 ;;; POLY-MODE is works but not good
-(with-package
-  (poly-mode)
-
-  (defun pm--bigblow-tail-matcher (ahead)
-    (when (< ahead 0)
-      (error "backwards tail match not implemented"))
-    (let ((end (buffer-end 1)))
-      (cons (max 1 (- end 1)) end)))
-
-  (defcustom pm-host/bigblow
-    (pm-bchunkmode "bigblow-message" :mode 'message-mode)
-    "message host chunkmode"
-    :group 'hostmodes
-    :type 'object
-    )
-
-  (defcustom pm-inner/bigblow
-    (pm-hbtchunkmode "bigblow-org"
-                     :mode 'poly-org-mode
-                     :head-reg mail-header-separator
-                     :tail-reg 'pm--bigblow-tail-matcher)
-    "bigblow typical chunk"
-    :group 'innermodes
-    :type 'object
-    )
-
-  (defcustom pm-poly/bigblow
-    (pm-polymode-one "bigblow"
-                     :hostmode 'pm-host/bigblow
-                     :innermode 'pm-inner/bigblow)
-    "Noweb typical polymode."
-    :group 'polymodes
-    :type 'object)
-
-  (define-polymode poly-bigblow-mode pm-poly/bigblow)
-  )
+;;deprecated;;(with-package
+;;deprecated;;  (poly-mode)
+;;deprecated;;
+;;deprecated;;  (defun pm--bigblow-tail-matcher (ahead)
+;;deprecated;;    (when (< ahead 0)
+;;deprecated;;      (error "backwards tail match not implemented"))
+;;deprecated;;    (let ((end (buffer-end 1)))
+;;deprecated;;      (cons (max 1 (- end 1)) end)))
+;;deprecated;;
+;;deprecated;;  (defcustom pm-host/bigblow
+;;deprecated;;    (pm-bchunkmode "bigblow-message" :mode 'message-mode)
+;;deprecated;;    "message host chunkmode"
+;;deprecated;;    :group 'hostmodes
+;;deprecated;;    :type 'object
+;;deprecated;;    )
+;;deprecated;;
+;;deprecated;;  (defcustom pm-inner/bigblow
+;;deprecated;;    (pm-hbtchunkmode "bigblow-org"
+;;deprecated;;                     :mode 'poly-org-mode
+;;deprecated;;                     :head-reg mail-header-separator
+;;deprecated;;                     :tail-reg 'pm--bigblow-tail-matcher)
+;;deprecated;;    "bigblow typical chunk"
+;;deprecated;;    :group 'innermodes
+;;deprecated;;    :type 'object
+;;deprecated;;    )
+;;deprecated;;
+;;deprecated;;  (defcustom pm-poly/bigblow
+;;deprecated;;    (pm-polymode-one "bigblow"
+;;deprecated;;                     :hostmode 'pm-host/bigblow
+;;deprecated;;                     :innermode 'pm-inner/bigblow)
+;;deprecated;;    "Noweb typical polymode."
+;;deprecated;;    :group 'polymodes
+;;deprecated;;    :type 'object)
+;;deprecated;;
+;;deprecated;;  (define-polymode poly-bigblow-mode pm-poly/bigblow)
+;;deprecated;;  )
 
 
 (defun hinfojs ()
@@ -189,15 +189,15 @@ Version 2015-04-29"
     "<script type=\"text/javascript\" src=\"http://code.jquery.com/jquery-latest.min.js\"></script>"
     "<script type=\"text/javascript\">"
     ;; /usr/local/emacs/site-lisp/orghtmltheme/styles/bigblow/js/hideshow.min.js
-    ,(intern (fullpath "../orghtmltheme/styles/bigblow/js/hideshow.js"))
+    ,(intern (fullpath "../thirdparty/orghtmltheme/styles/bigblow/js/hideshow.js"))
     "$(document).ready(function() {hsInit();});"
     "</script>"
     
     "<style type=\"text/css\">"
     ;; /usr/local/emacs/site-lisp/orghtmltheme/styles/bigblow/css/bigblow.min.css
     ;; /usr/local/emacs/site-lisp/orghtmltheme/styles/bigblow/css/hideshow.min.css
-    ,(intern (fullpath "../orghtmltheme/styles/bigblow/css/bigblow.css"))
-    ,(intern (fullpath "../orghtmltheme/styles/bigblow/css/hideshow.css"))
+    ,(intern (fullpath "../thirdparty/orghtmltheme/styles/bigblow/css/bigblow.css"))
+    ,(intern (fullpath "../thirdparty/orghtmltheme/styles/bigblow/css/hideshow.css"))
 
     ;http://dinoegg.co.kr/_font-family/
     ;; "body, h1, h2, h3, h4, h5 , h6{ font-family: \'Consolas\', \'Malgun Gothic\';}"

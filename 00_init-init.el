@@ -37,11 +37,23 @@ buffer-file-name)”. This is part of this function."
   (file-truename (concat (file-name-directory (or load-file-name buffer-file-name)) file-path))
 )
 
-
-(require 'package-helper)
+(require 'use-package)
+(use-package package-helper)
 (defalias 'fullpath 'fullpath-relative-to-call-location)
 
-(load "site-start")
+;;(load "site-start")
+;; ****** Added by emacsw32-setup-base at Mon Nov 09 14:52:29 2009
+;; Add EmacsW32/lisp to load-path if found.
+(let ((lisp-dir (expand-file-name (concat emacsw32-home "/EmacsW32/lisp/"))))
+  (unless (file-accessible-directory-p lisp-dir)
+    (lwarn "Can't find %s" lisp-dir)
+    (sit-for 10))
+  (when (file-accessible-directory-p lisp-dir)
+    (message "Adding %s to load-path" lisp-dir)
+    (add-to-list 'load-path lisp-dir))
+  (require 'emacsw32 nil t)
+  (unless (featurep 'emacsw32)
+    (lwarn '(emacsw32) :error "Could not find emacsw32.el")))
 
 ;;스타트업 메시지를 사용하지 않기로 한다. 
 (setq inhibit-startup-message t) 
@@ -67,24 +79,24 @@ buffer-file-name)”. This is part of this function."
 
 
 
-(require 'string)
-(require 'htmlize)
-(require 'gtags )
+;;(require 'string)
+;;(require 'htmlize)
+;;(require 'gtags )
 (require 'bc-mode)
-(require 'browse-kill-ring)
-(require 'nsi-mode )
-(require 'iedit)
-(require 'csv-mode)
+;;(require 'browse-kill-ring)
+;(require 'nsi-mode )
+;(require 'iedit)
+;(require 'csv-mode)
 
 ;; BAT 파일 모드 
-(require 'dos)
-(require 'ntcmd)
+;(require 'dos)
+;(require 'ntcmd)
 ;;https://github.com/juergenhoetzel/tramp-adb
 ;;adb 에 접근가능 
 (require 'tramp-adb)
 ;;(require 'rfringe)
-(require 'whole-line-or-region)
-(require 'ack-emacs)
+;(require 'whole-line-or-region)
+;(require 'ack-emacs)
 ;;(require 'full-ack)
 ;;(require 'deft)
 ;;NOTWORK;;(require 'grep-edit)
@@ -103,8 +115,8 @@ buffer-file-name)”. This is part of this function."
 ;;https://github.com/syohex/emacs-quickrun
 (require 'quickrun)
 ;; copy/undo 등의 작업을 highlight 한다. 
-(require 'volatile-highlights)
-(volatile-highlights-mode t)
+;;(require 'volatile-highlights)
+;;(volatile-highlights-mode t)
 
 ;; ruby 개발환경 
 ;;deprecateby-elpa;;(require 'ruby-mode)
@@ -118,10 +130,10 @@ buffer-file-name)”. This is part of this function."
 ;;(require 'rainbow-delimiters)
 ;;(global-rainbow-delimiters-mode 1 )
 
-(require 'dove-ext)
+;(require 'dove-ext)
 ;; javascript
 ;; jsshell 명령 이용
-(require 'jsshell-bundle)
+;(require 'jsshell-bundle)
 (require 'second-sel)
 (global-set-key [(control meta ?y)]     'secondary-dwim)
 
@@ -136,15 +148,9 @@ buffer-file-name)”. This is part of this function."
 (require 'hide-lines)
 (global-set-key "\C-ch" 'hide-lines)
 
-;;
-;; Tex 사용환경 구성
-;;
-;;deprecateby-elpa;;(load "auctex.el" nil t t)
-(load "preview-latex.el" nil t t)
-(require 'tex-mik)
 
-(with-package* (time-stamp)
-  (require 'time-stamp)
+(use-package time-stamp
+  :init
   (setf time-stamp-start "마지막 변경 시각:[ 	]+[\"<]+")
   (setf time-stamp-format "%:y년 %02m월 %02d일 %:a %02H시 %02M분 %02S초")
 ;;(add-hook 'before-save-hook 'time-stamp) ;;TIME STAMP 의 경우 merge 하기 어렵다. 
@@ -176,7 +182,8 @@ buffer-file-name)”. This is part of this function."
 
 ;;deprecatedby-ido;;(iswitchb-mode)       
 
-(with-package* (nxml-mode)
+(use-package nxml-mode
+  :config
   (define-key nxml-mode-map  [C-right] 'forward-word )
   (define-key nxml-mode-map  [C-left] 'backward-word ))
 
@@ -272,17 +279,6 @@ buffer-file-name)”. This is part of this function."
 ;; ELPA  이멕스 패키지 시스템 
 ;; FUNCTION DEFINITION 
 
-
-
-;;(require 'diffstat)
-;;(add-hook 'diff-mode-hook (lambda () (local-set-key "\C-c\C-l" 'diffstat)))
-
-(global-set-key "\C-cr" 'read-only-mode)
-
-
-
-
-
 ;; SDD 작성동안 temporary 
 ;;(add-hook 
 ;; 'c-mode-common-hook 
@@ -291,14 +287,14 @@ buffer-file-name)”. This is part of this function."
 ;;    (hl-line-mode 1 )))
 
 (require 'wiki-nav)
-(require 'smex)
+(use-package smex
+:config  
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
-
+)
 ;; www.emacswiki.org/emacs/PredictiveMode
 ;;(autoload 'predictive-mode "predictive" "predictive" t)
 ;;(set-default 'predictive-auto-add-to-dict t)
@@ -314,168 +310,10 @@ buffer-file-name)”. This is part of this function."
 
 
 
-;; 트위터 클라이언트 
-;;확인필요;;(require 'twittering-mode)
-;;확인필요;;(setq twittering-curl-program "c:\\usr\\local\\editor\\emacsW32\\site-lisp\\twittering-mode-2.0.0\\win-curl\\curl.exe")
 
-(defun maxwin ()
-  (interactive)
-  (w32-send-sys-command #xf030))
-
-;; 간단하게 mode 를 만들 수 있는 방법입니다. 
-;;CHECK MODE MAKING;;(require 'smart-operator)
-;;CHECK MODE MAKING;;
-;;CHECK MODE MAKING;;(defun smart-operator-self-insert-command (arg)
-;;CHECK MODE MAKING;;  "Insert the entered operator plus surrounding spaces."
-;;CHECK MODE MAKING;;  (interactive "p")
-;;CHECK MODE MAKING;;  (smart-insert-operator (string last-command-char)))
-;;CHECK MODE MAKING;;
-;;CHECK MODE MAKING;;(defvar smart-operator-mode-map
-;;CHECK MODE MAKING;;  (let ((keymap (make-sparse-keymap)))
-;;CHECK MODE MAKING;;    (define-key keymap "=" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap "+" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap "-" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap "/" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap "%" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap "&" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap "*" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap "!" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap "|" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap "<" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap ">" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap "," 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap "." 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    (define-key keymap ":" 'smart-operator-self-insert-command)
-;;CHECK MODE MAKING;;    keymap)
-;;CHECK MODE MAKING;;  "Keymap used my `smart-operator-mode'.")
-;;CHECK MODE MAKING;;
-;;CHECK MODE MAKING;;(define-minor-mode smart-operator-mode
-;;CHECK MODE MAKING;;  "Insert operators packed with whitespaces smartly."
-;;CHECK MODE MAKING;;  nil " _=_" smart-operator-mode-map)
-
-;;CODING;;http://www.delorie.com/gnu/docs/emacs/emacs_222.html
-;;CODING::C-x RET f coding RET
-;;CODING::    Use coding system coding for the visited file in the current buffer.
-;;CODING::
-;;CODING::C-x RET c coding RET
-;;CODING::    Specify coding system coding for the immediately following command.
-;;CODING::
-;;CODING::C-x RET k coding RET
-;;CODING::    Use coding system coding for keyboard input.
-;;CODING::
-;;CODING::C-x RET t coding RET
-;;CODING::    Use coding system coding for terminal output.
-;;CODING::
-;;CODING::C-x RET p input-coding RET output-coding RET
-;;CODING::    Use coding systems input-coding and output-coding for subprocess input and output in the current buffer.
-;;CODING::
-;;CODING::C-x RET x coding RET
-;;CODING::    Use coding system coding for transferring selections to and from other programs through the window system.
-;;CODING::
-;;CODING::C-x RET X coding RET
-;;CODING::    Use coding system coding for transferring one selection--the next one--to or from the window system. 
-
-;;;; 80 컬렴 이상일 경우 표시하는 모드
-;;(global-whitespace-mode)
-
-;;;; 기본적으로 readonly 속성을 지정할 수 있다. 
-;;(setq-default buffer-read-only t )
-
-;; color 확인 
-;; (list-colors-display)
-
-;;w32shell;;(when (and (eq system-type 'windows-nt)
-;;w32shell;;           (string= (substring emacs-version 0 3) "22."))
-;;w32shell;;  (setq pr-gs-command "c:\\gs\\gs8.51\\bin\\gswin32c.exe")
-;;w32shell;;  (setq pr-gv-command "C:\\Program Files\\Ghostgum\\gsview\\gsview32.exe")
-;;w32shell;;  (setq w32-print-menu-show-print nil)
-;;w32shell;;  (setq w32-print-menu-show-ps-print nil)
-;;w32shell;;  (setq htmlize-view-print-visible t)
-;;w32shell;;  (setq emacsw32-style-frame-title t)
-;;w32shell;;  (setq emacsw32-mode nil) ; Keep Emacs bindings
-;;w32shell;;  (setq w32shell-cygwin-bin "C:\\cygwin\\bin")
-;;w32shell;;  (setq w32shell-msys-bin "C:/msys/1.0/bin")
-;;w32shell;;  (require 'emacsw32)
-;;w32shell;;  (require 'w32-integ)
-;;w32shell;;  (require 'w32shell)
-;;w32shell;;  (w32shell-add-emacs)
-;;w32shell;;  (w32shell-set-shell "msys")
-;;w32shell;;  (require 'cmd-mode)
-;;w32shell;;  (require 'w32-print))
-;;(require 'popwin)
-
-
-
-
-
-
-
-;; calendar 읽기 전용이며 google calendar 와 연동 가능하다 .
-;;(require 'calfw)
-;;(require 'calfw-org)
-
-
-;;LAST2DIRECTORY;;(defun add-mode-line-dirtrack ()
-;;LAST2DIRECTORY;;  "When editing a file, show the last 2 directories of the current path in the mode line."
-;;LAST2DIRECTORY;;  (add-to-list 'mode-line-buffer-identification 
-;;LAST2DIRECTORY;;               '(:eval (substring default-directory 
-;;LAST2DIRECTORY;;                                  (+ 1 (string-match "/[^/]+/[^/]+/$" default-directory)) nil))))
-
-
-;; 경로명 처리 
-;;(load "pathname-dos.el")
-;;(load "pathname-unix.el")
-;;(load "pathname.el")
-
-;;paren-navigation;;C-M-n     Move forward over a parenthetical group 
-;;paren-navigation;;C-M-p     Move backward over a parenthetical group 
-;;paren-navigation;;C-M-f     Move forward over a balanced expression
-;;paren-navigation;;C-M-b     Move backward over a balanced expression
-;;paren-navigation;;C-M-k     Kill balanced expression forward
-;;paren-navigation;;C-M-SPC   put the mark at the end of the sexp.
-
-(autoload 'transpose-paragraph-as-table "transpar"
-  "텍스트테이블 편집 명령" t)
-
-;; 다음과 같이 문단을 이용하는 것이 도움이 될 수 있다. 
-;;(defun transpose-paragraph-as-table ()
-;;  "Transpose and align current paragraph."
-;;  (interactive)
-;;  (transpose-region-as-table (paragraph-beginning-position) (paragraph-end-position)))
-
-(defun add-mode-line-dirtrack ()
-  (add-to-list 'mode-line-buffer-identification 
-               '(:propertize (" " default-directory " ") face dired-directory)))
-
-(add-hook 'shell-mode-hook 'add-mode-line-dirtrack)
-(add-hook 'find-file-hook 'add-mode-line-dirtrack)
-
-(autoload 'wc-mode "wc-mode"
-  "단어수 계산" t)
-
-
-
-
-(autoload 'emacs-init-check "emacs-init-check"
-  "~/.emacs 파일의 정상 여부를 확인 " t)
-
-;;veryslow;;(require 'unicode-fonts)
-;;veryslow;;(unicode-fonts-setup)
-
-;; 북마크 를 사용한다. 
-;;(bookmark-bmenu-list)
-;;(switch-to-buffer "*Bookmark List*")
-
-
-
-;;(toggle-full-screen)
-
-
-
-
-
-
-
+(use-package transpar
+  :commands transpose-paragraph-as-table 
+ )
 
 ;; Local Variables:
 ;; eval: (orgstruct-mode t)

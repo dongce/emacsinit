@@ -1,7 +1,7 @@
 ;; -*-mode: emacs-lisp; coding: cp949; buffer-read-only: t;-*-
 
 ;; 정규표현을 highlight 한다. 
-(require 'highlight-sexp)
+;; (require 'highlight-sexp)
 ;;deprecated;;(add-hook 'lisp-mode-hook   'highlight-sexp-mode)
 ;;deprecated;;(add-hook 'scheme-mode-hook 'highlight-sexp-mode)
 ;;deprecated;;(add-hook 'emacs-lisp-mode-hook 'highlight-sexp-mode)
@@ -10,21 +10,24 @@
 ;; http://mumble.net/~campbell/emacs/
 ;; https://github.com/joelittlejohn/paredit-cheatsheet
 
-(autoload 'paredit-mode "paredit"
-  "Minor mode for pseudo-structurally editing Lisp code." t)
+(use-package paredit
+ ;;  "Minor mode for pseudo-structurally editing Lisp code."
+:commands paredit-mode 
+  )
 
-(autoload 'evil-paredit-mode "evil-paredit"
-  "Minor mode for pseudo-structurally editing Lisp code." t)
+(use-package evil-paredit
+  ;;"Minor mode for pseudo-structurally editing Lisp code."
+:commands evil-paredit-mode 
+  )
 
 
 
 
-(autoload 'rtog/activate "repl-toggle" "\
-Switch to the repl asscociated with the major mode of the
-current buffer. If in a repl already switch back to the buffer we
-came from.
-
-\(fn)" t nil)
+(use-package repl-toggle
+;; "Switch to the repl asscociated with the major mode of the
+;; current buffer. If in a repl already switch back to the buffer we
+;; came from.\(fn)"
+  :commands rtog/activate )
 
 
 ;; (with-package (smartparen )
@@ -40,7 +43,8 @@ came from.
 ;;   (add-hook 'scheme-mode-hook           (lambda () (turn-on-eldoc-mode) (smartparens-mode +1) )))
 
 ;;;_ paredit key 
-(with-package (paredit )
+(use-package paredit
+  :config
   (progn (setq paredit-commands
                `(
                  "Basic Insertion Commands"
@@ -120,8 +124,10 @@ came from.
 
 
 
-(autoload 'markdown-mode "markdown-mode.el"
-  "Major mode for editing Markdown files" t)
+(use-package markdown-mode 
+  ;;"Major mode for editing Markdown files"
+  :commands markdown-mode
+  )
 
 (require 'ada-mode)
 (ada-add-extensions "_s.a" "_b.a")
