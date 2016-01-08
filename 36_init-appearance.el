@@ -44,7 +44,8 @@
 
 (tool-bar-mode 0 )
 (menu-bar-mode 0 )
-(scroll-bar-mode -1 )
+(if (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode -1 ))
 
 (defun transparent(alpha-level no-focus-alpha-level)
   "Let's you make the window transparent"

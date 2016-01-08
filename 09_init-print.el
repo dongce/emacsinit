@@ -11,6 +11,7 @@
   ;; WIN32 설정 
   (setq ps-lpr-command "t:/usr/local/postscript/gsview/gsview/gsprint.exe")
   (setq preview-gs-command "t:/usr/local/postscript/gs910/bin/gswin32c.exe")
+  (require 'w32-winprint)
   )
  (
   ;; 다음을 이용하용 ENSCRIPT 사용 가능
@@ -352,4 +353,3 @@ basicstyle=\\footnotesize\\ttfamily,
     (async-start-process "pytex" "pytexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)  
 ))
 
-(require 'w32-winprint)

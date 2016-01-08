@@ -44,16 +44,6 @@ buffer-file-name)”. This is part of this function."
 ;;(load "site-start")
 ;; ****** Added by emacsw32-setup-base at Mon Nov 09 14:52:29 2009
 ;; Add EmacsW32/lisp to load-path if found.
-(let ((lisp-dir (expand-file-name (concat emacsw32-home "/EmacsW32/lisp/"))))
-  (unless (file-accessible-directory-p lisp-dir)
-    (lwarn "Can't find %s" lisp-dir)
-    (sit-for 10))
-  (when (file-accessible-directory-p lisp-dir)
-    (message "Adding %s to load-path" lisp-dir)
-    (add-to-list 'load-path lisp-dir))
-  (require 'emacsw32 nil t)
-  (unless (featurep 'emacsw32)
-    (lwarn '(emacsw32) :error "Could not find emacsw32.el")))
 
 ;;스타트업 메시지를 사용하지 않기로 한다. 
 (setq inhibit-startup-message t) 
@@ -104,8 +94,6 @@ buffer-file-name)”. This is part of this function."
 (require 'markerpen)
 ;;(require 'highlight)
 (require 'highline)
-(require 'sml-modeline)
-(sml-modeline-mode)
 ;;(require 'nyan-mode)
 ;;(nyan-mode)
 ;;deprecatedbyelpa;;(require 'ascii)

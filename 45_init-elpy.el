@@ -214,9 +214,10 @@
 
 
 
-(with-package* (elpy) 
+(use-package elpy
+  :config
   (elpy-enable)
-  (elpy-use-ipython "ipython.exe")
+  (elpy-use-ipython "ipython")
   ;; (setq python-shell-interpreter "python.exe"
   ;;       python-shell-interpreter-args "-u c:/usr/local/python27/Scripts/ipython-script.py --colors=NoColor")
   (setq   
@@ -227,7 +228,7 @@
    python-shell-prompt-regexp "In \\[[0-9]+\\]: "
    elpy-default-minor-modes '(flycheck-mode yas-minor-mode auto-complete-mode)
   elpy-rpc-backend "rope"
-  elpy-rpc-python-command "python.exe")
+  elpy-rpc-python-command "python")
 
 )
 

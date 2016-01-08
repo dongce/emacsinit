@@ -10,6 +10,16 @@
   (require 'find-dired )
   (require 'w32-find-dired )
   (require 'w32-winprint )
+  (let ((lisp-dir (expand-file-name (concat emacsw32-home "/EmacsW32/lisp/"))))
+    (unless (file-accessible-directory-p lisp-dir)
+      (lwarn "Can't find %s" lisp-dir)
+      (sit-for 10))
+    (when (file-accessible-directory-p lisp-dir)
+      (message "Adding %s to load-path" lisp-dir)
+      (add-to-list 'load-path lisp-dir))
+    (require 'emacsw32 nil t)
+    (unless (featurep 'emacsw32)
+      (lwarn '(emacsw32) :error "Could not find emacsw32.el")))
 
 
   ;; 프린팅 관련 변수
@@ -57,6 +67,15 @@
           (kill-new pathname)
         (kill-new (replace-regexp-in-string "/" "\\" pathname nil t))
         )))
+
+  (require 'sml-modeline)
+  (sml-modeline-mode)
+
+  (require 'init-external)
+
+  (let ((default-directory (fullpath "../../mumailindexer/share/emacs/site-lisp")))
+    (normal-top-level-add-subdirs-to-load-path))
+  
   )
  ()
 )

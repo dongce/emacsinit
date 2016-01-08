@@ -4,8 +4,6 @@
 
 ;;http://emacswiki.org/emacs/LoadPath
 
-(let ((default-directory (fullpath "../../mumailindexer/share/emacs/site-lisp")))
-  (normal-top-level-add-subdirs-to-load-path))
 
 (append-path (fullpath "../../mumailindexer/bin/"))
 
