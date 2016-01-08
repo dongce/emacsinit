@@ -63,41 +63,45 @@
 ;;; http://stackoverflow.com/questions/11721224/shift-arrow-selection-in-emacs
 ;; '^[' are mapped to '\e'
 
-(if (eq system-uses-terminfo t)
-    (defun putty-patch ()
-      (interactive)
-      (xterm-mouse-mode t)
-      (define-key input-decode-map "\M-[{"  [C-{])
-        (define-key input-decode-map "\M-[}"  [C-}])
-      (global-set-key  (kbd "<C-{>" ) 'paredit-backward-barf-sexp)
-      (global-set-key  (kbd "<C-}>" ) 'paredit-forward-barf-sexp)
+(cond
+ ((eq system-uses-terminfo t)
+  
+  (defun putty-patch ()
+    (interactive)
+    (xterm-mouse-mode t)
+    (define-key input-decode-map "\M-[{"  [C-{])
+    (define-key input-decode-map "\M-[}"  [C-}])
+    (global-set-key  (kbd "<C-{>" ) 'paredit-backward-barf-sexp)
+    (global-set-key  (kbd "<C-}>" ) 'paredit-forward-barf-sexp)
 
-      ;; (define-key input-decode-map "\eOA"    [S-up])
-      ;; (define-key input-decode-map "\eOB"    [S-down])
-      ;; (define-key input-decode-map "\eOC"    [S-right])
-      ;; (define-key input-decode-map "\eOD"    [S-left])
+    ;; (define-key input-decode-map "\eOA"    [S-up])
+    ;; (define-key input-decode-map "\eOB"    [S-down])
+    ;; (define-key input-decode-map "\eOC"    [S-right])
+    ;; (define-key input-decode-map "\eOD"    [S-left])
 
-      (define-key input-decode-map "\eOA"    [C-up])
-      (define-key input-decode-map "\eOB"    [C-down])
-      (define-key input-decode-map "\eOC"    [C-right])
-      (define-key input-decode-map "\eOD"    [C-left])
+    (define-key input-decode-map "\eOA"    [C-up])
+    (define-key input-decode-map "\eOB"    [C-down])
+    (define-key input-decode-map "\eOC"    [C-right])
+    (define-key input-decode-map "\eOD"    [C-left])
 
-      (define-key input-decode-map "\e\eOA"  [M-S-up])
-      (define-key input-decode-map "\e\eOB"  [M-S-down])
-      (define-key input-decode-map "\e\eOC"  [M-S-right])
-      (define-key input-decode-map "\e\eOD"  [M-S-left])
+    (define-key input-decode-map "\e\eOA"  [M-S-up])
+    (define-key input-decode-map "\e\eOB"  [M-S-down])
+    (define-key input-decode-map "\e\eOC"  [M-S-right])
+    (define-key input-decode-map "\e\eOD"  [M-S-left])
 
-      ;; (define-key input-decode-map "\eOA"    [C-S-up])
-      ;; (define-key input-decode-map "\eOB"    [C-S-down])
-      ;; (define-key input-decode-map "\eOC"    [C-S-right])
-      ;; (define-key input-decode-map "\eOD"    [C-S-left])
+    ;; (define-key input-decode-map "\eOA"    [C-S-up])
+    ;; (define-key input-decode-map "\eOB"    [C-S-down])
+    ;; (define-key input-decode-map "\eOC"    [C-S-right])
+    ;; (define-key input-decode-map "\eOD"    [C-S-left])
 
-      (define-key input-decode-map "\e\e[A"  [M-up])
-      (define-key input-decode-map "\e\e[B"  [M-down])
-      (define-key input-decode-map "\e\e[C"  [M-right])
-      (define-key input-decode-map "\e\e[D"  [M-left]))
+    (define-key input-decode-map "\e\e[A"  [M-up])
+    (define-key input-decode-map "\e\e[B"  [M-down])
+    (define-key input-decode-map "\e\e[C"  [M-right])
+    (define-key input-decode-map "\e\e[D"  [M-left]))
 
   (require 'xterm-color)
 
   (xterm-mouse-mode)
   (put 'downcase-region 'disabled nil))
+ nil
+ )
