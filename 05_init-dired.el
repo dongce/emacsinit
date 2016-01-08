@@ -290,8 +290,6 @@ it if necessary."
     ;;(shell-command "ftype EmacsFile=emacsclientw.exe -na runemacs.exe \"\%1\"" )
     (shell-command (format "assoc %s=EmacsFile" ext)))
 
-  (let ((default-directory (fullpath "../../mumailindexer/share/emacs/site-lisp")))
-    (normal-top-level-add-subdirs-to-load-path))
   
   )
  ()
