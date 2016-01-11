@@ -290,7 +290,7 @@ should be a list of keys that will be bound globally to
 (global-set-key (kbd "H-g") 'keyboard-escape-quit)
 (global-set-key (kbd "H-y") 'yank)
 (global-set-key (kbd "H-z") 'keyboard-quit)
-;;(global-set-key "\C-z" 'set-mark-command)
+(global-set-key "\C-z" 'set-mark-command)
 (global-set-key ( kbd "C-H-w") 'kill-ring-save)
 (global-set-key ( kbd "H-e") 'move-end-of-line)
 (global-set-key ( kbd "H-x") 'smex)
