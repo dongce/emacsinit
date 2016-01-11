@@ -1,219 +1,240 @@
 ;; -*- coding: utf-8; -*-
-; http://d.hatena.ne.jp/tarao/20130304/evil_config
-
-
-(require 'evil-visual-mark-mode)
-(evil-visual-mark-mode t)
-
-
-;;(require 'evil-nerd-commenter)
-;; (require 'evil-escape)
-;; (evil-escape-mode)
-
-;; (require 'evil-lisp-state)
-;; (with-package* (better-registers)
-;;   (define-key evil-normal-state-map "\C-r" better-registers-map))
-
+;; http://d.hatena.ne.jp/tarao/20130304/evil_config
+(require 'evil-nerd-commenter)
 (with-package*  
-  (
-   better-registers
-	 evil-leader
-    ;;evil-lisp-state
-   evil-nerd-commenter
-    evil-commentary
-    evil projectile owdriver
-				)
-
- ;;  (evil-commentary-mode)
- ;; (owdriver-define-command scroll-up               t)
- ;; (owdriver-define-command scroll-down             t)
- ;; (owdriver-define-command move-beginning-of-line  t)
- ;; (owdriver-define-command move-end-of-line        t)
- ;; (owdriver-define-command beginning-of-buffer     t)
- ;; (owdriver-define-command end-of-buffer           t)
- ;; (owdriver-define-command isearch-forward         t (isearch-forward))
- ;; (owdriver-define-command isearch-backward        t (isearch-backward))
- ;; (owdriver-define-command set-mark-command        t)
+  (evil-leader evil-org evil-nerd-commenter evil projectile owdriver geiser-mode flycheck)
   
+  (owdriver-define-command scroll-up               t)
+  (owdriver-define-command scroll-down             t)
+  (owdriver-define-command move-beginning-of-line  t)
+  (owdriver-define-command move-end-of-line        t)
+  (owdriver-define-command beginning-of-buffer     t)
+  (owdriver-define-command end-of-buffer           t)
+  (owdriver-define-command isearch-forward         t (isearch-forward))
+  (owdriver-define-command isearch-backward        t (isearch-backward))
+  (owdriver-define-command set-mark-command        t)
+
+
+
   (global-evil-leader-mode) 
 
-;;; EMACS 와 같은 visual line 및 eol 입니다. 
-;;; '(evil-want-visual-char-semi-exclusive t)
-;;; '(evil-move-cursor-back nil)
-
-  ;; https://github.com/syl20bnr/dotemacs/blob/master/my-keybindings.el
 
 
-  (evil-leader/set-key-for-mode 'org-mode
-    "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
+  (evil-leader/set-key 
+    "<tab>" #'back-to-indentation
+    "f" 'find-file
+    "b" 'switch-to-buffer
+    ;; "i" 'ibuffer
+    ;; "j" 'tmpscratch
+    "<home>" 'ibuffer
+    "<end>" 'tmpscratch
+    "," 'smex
+    "s" search-map ;;'save-buffer
+    "st" 'sr-speedbar-toggle
+    "sl" 'loccur
+    "sn" 'smartscan-symbol-go-forward
+    "sp" 'smartscan-symbol-go-backward
+    "j" 'save-buffer
+    "u" #'wgrep
+    ";" 'evilnc-comment-or-uncomment-lines
+    "l" 'evilnc-comment-or-uncomment-to-the-line
+    "c" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
+    "O" 'win-switch-next-window
+    ;; "O" (lambda (multi) (interactive "P") (if multi  (call-interactively 'multi-occur-in-this-mode) (call-interactively 'occur))  (other-window 1)) 
+    "`o" #'owdriver-next-window
+    "`J" #'owdriver-do-scroll-up
+    "`K" #'owdriver-do-scroll-down
+    "`s" #'owdriver-do-isearch-forward
+    "`r" #'owdriver-do-isearch-backward
+    "`<" #'owdriver-do-beginning-of-buffer
+    "`>" #'owdriver-do-end-of-buffer
+    "]" 'exit-recursive-edit
+    "v" 'evil-scroll-down
+    "V" 'evil-scroll-up
+    "R" ctl-x-r-map ;;'ido-choose-from-recentf
+    ;;ctrl-r problem on terminal "r" better-registers-r-map ;;better-registers-map
+    ;; "gg" 'keyboard-quit
+    ;; "g," 'grep-o-matic-visited-files
+    ;; "g." 'grep-o-matic-repository
+    ;; "g/" 'grep-o-matic-current-directory
+    "G" 'keyboard-quit
+    "e" 'eval-last-sexp
+    "t" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+    "T" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+    "w" 'read-only-mode
+    "W" 'save-some-buffers
+    "a" 'winexe
+    "+" #'evil-numbers/inc-at-pt
+    "-" #'evil-numbers/dec-at-pt
+    "M" #'pop-to-mark-command ;;'evil-scroll-down
+    "m" #'er/expand-region ;;#'extend-selection
+    "S-m" #'mark-line ;;#'extend-selection
+    ;; "m" #'backward-sexp
+    ;; "." #'forward-sexp
+    "<" #'loccur
+    "0" #'delete-window
+    "1" #'delete-other-windows
+    "2" #'split-window-below
+    "3" #'split-window-right
+    "(" #'kmacro-start-macro
+    ")" #'kmacro-end-macro
+    ;;"x" ctl-x-map ;;projectile-mode-map
+    "x"  #'kmacro-end-and-call-macro
+    "d" 'dired
+    "D" #'toggle-current-window-dedication
+    "k" 'kill-buffer
+    ;; projectile -----------------------------------------------------------------
+    "p"  (cdar (cddr  (cadr  projectile-mode-map)))
+    "pE"  'project-explorer-open
+    "pC"  'project-explorer-close
+    ;;deprecated;; "pb" 'projectile-switch-to-buffer
+    ;;deprecated;; "pC" 'projectile-invalidate-cache
+    ;;deprecated;; "pd" 'projectile-dired
+    ;;deprecated;; "pf" 'helm-projectile
+    ;;deprecated;; "pF" 'projectile-find-file
+    ;;deprecated;; "pk" 'projectile-kill-buffers
+    ;;deprecated;; "pg" 'projectile-grep
+    ;;deprecated;; "po" 'projectile-multi-occur
+    ;;deprecated;; "pr" 'projectile-replace 
+    ;; "<SPC>" (lambda () (interactive) (evil-change-state 'insert) (set-mark (point)))
+    "<SPC>" #'smex
+    
+    ;; "h" #'smex ;; "h" help-map
+    ;; "h" help-map
+    "hz" 'zeal-at-point
+
+    "hh"      'helm-mini
+    "ha"      'helm-apropos
+    "hB"      'helm-buffers-list
+    "hb"      'helm-descbindings
+    "hy"      'helm-show-kill-ring
+    "hx"      'helm-M-x
+    "hco"     'helm-occur
+    "hcs"     'helm-swoop
+    "hcy"     'helm-yas-complete
+    "hcY"     'helm-yas-create-snippet-on-region
+    "hcb"     'my/helm-do-grep-book-notes
+    "hj"      'winner-undo
+    "hk"      'winner-redo
+    "hf"      'prelude-copy-file-name-to-clipboard
+    "hc<SPC>" 'helm-all-mark-rings
+    "or" 'org-capture
+    "oa" 'org-agenda
+    "os" 'org-store-link
+    "oi" 'org-insert-link-global
+    "oo" 'org-open-at-point-global
+    "oR" 'org-refile
+    "oc" 'org-cliplink
+    "od" 'org-deadline
+    "ot" 'org-set-tags
+    "oS" 'org-attach-screenshot
+    "om" 'orgmail
+    "ob" 'org-iswitchb
+
+    "oS" 'tmpscratch
+    "oI" 'ibuffer
+    
     )
   
-  (evil-leader/set-key 
-  "<tab>" #'back-to-indentation
-  "f" 'find-file
-  "b" 'switch-to-buffer
-  ;; "i" 'ibuffer
-  ;; "j" 'tmpscratch
-  "<home>" 'ibuffer
-  "<end>" 'tmpscratch
-  "," 'smex
-  "s" search-map ;;'save-buffer
-  "st" 'sr-speedbar-toggle
-  "sl" 'loccur
-  "sn" 'smartscan-symbol-go-forward
-  "sp" 'smartscan-symbol-go-backward
-  "j" 'save-buffer
-  "u" #'wgrep
-  ";" 'evilnc-comment-or-uncomment-lines
-  "l" 'evilnc-comment-or-uncomment-to-the-line
-  "c" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
-  "O" 'win-switch-next-window
-  ;; "O" (lambda (multi) (interactive "P") (if multi  (call-interactively 'multi-occur-in-this-mode) (call-interactively 'occur))  (other-window 1)) 
-  "`o" #'owdriver-next-window
-  "`J" #'owdriver-do-scroll-up
-  "`K" #'owdriver-do-scroll-down
-  "`s" #'owdriver-do-isearch-forward
-  "`r" #'owdriver-do-isearch-backward
-  "`<" #'owdriver-do-beginning-of-buffer
-  "`>" #'owdriver-do-end-of-buffer
-  "]" 'exit-recursive-edit
-  "v" 'evil-scroll-down
-  "V" 'evil-scroll-up
-  "R" ctl-x-r-map ;;'ido-choose-from-recentf
-  "r" better-registers-r-map ;;better-registers-map
-  ;; "gg" 'keyboard-quit
-  ;; "g," 'grep-o-matic-visited-files
-  ;; "g." 'grep-o-matic-repository
-  ;; "g/" 'grep-o-matic-current-directory
-  "G" 'keyboard-quit
-  "e" 'eval-last-sexp
-  "t" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
-  "T" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
-  "w" 'read-only-mode
-  "W" 'save-some-buffers
-  "a" 'winexe
-  "+" #'evil-numbers/inc-at-pt
-  "-" #'evil-numbers/dec-at-pt
-  "M" #'pop-to-mark-command ;;'evil-scroll-down
-  "m" #'er/expand-region ;;#'extend-selection
-  "S-m" #'mark-line ;;#'extend-selection
-  ;; "m" #'backward-sexp
-  ;; "." #'forward-sexp
-  "<" #'loccur
-  "0" #'delete-window
-  "1" #'delete-other-windows
-  "2" #'split-window-below
-  "3" #'split-window-right
-  "(" #'kmacro-start-macro
-  ")" #'kmacro-end-macro
-  ;;"x" ctl-x-map ;;projectile-mode-map
-  "x"  #'kmacro-end-and-call-macro
-  "d" 'dired
-  "D" #'toggle-current-window-dedication
-  "k" 'kill-buffer
-  ;; projectile -----------------------------------------------------------------
-  "p"  (cdar (cddr  (cadr  projectile-mode-map)))
-  "pE"  'project-explorer-open
-  "pC"  'project-explorer-close
-  ;;deprecated;; "pb" 'projectile-switch-to-buffer
-  ;;deprecated;; "pC" 'projectile-invalidate-cache
-  ;;deprecated;; "pd" 'projectile-dired
-  ;;deprecated;; "pf" 'helm-projectile
-  ;;deprecated;; "pF" 'projectile-find-file
-  ;;deprecated;; "pk" 'projectile-kill-buffers
-  ;;deprecated;; "pg" 'projectile-grep
-  ;;deprecated;; "po" 'projectile-multi-occur
-  ;;deprecated;; "pr" 'projectile-replace 
-  ;; "<SPC>" (lambda () (interactive) (evil-change-state 'insert) (set-mark (point)))
-  "<SPC>" #'smex
-  
-  ;; "h" #'smex ;; "h" help-map
-  ;; "h" help-map
-  "hz" 'zeal-at-point
+    
 
-  "hh"      'helm-mini
-  "ha"      'helm-apropos
-  "hB"      'helm-buffers-list
-  "hb"      'helm-descbindings
-  "hy"      'helm-show-kill-ring
-  "hx"      'helm-M-x
-  "hco"     'helm-occur
-  "hcs"     'helm-swoop
-  "hcy"     'helm-yas-complete
-  "hcY"     'helm-yas-create-snippet-on-region
-  "hcb"     'my/helm-do-grep-book-notes
-  "hj"      'winner-undo
-  "hk"      'winner-redo
-  "hf"      'prelude-copy-file-name-to-clipboard
-  "hc<SPC>" 'helm-all-mark-rings
-  "or" 'org-capture
-  "oa" 'org-agenda
-  "os" 'org-store-link
-  "oi" 'org-insert-link-global
-  "oo" 'org-open-at-point-global
-  "oR" 'org-refile
-  "oc" 'org-cliplink
-  "od" 'org-deadline
-  "ot" 'org-set-tags
-  "oS" 'org-attach-screenshot
-  "om" 'orgmail
-  "ob" 'org-iswitchb
 
-  "oS" 'tmpscratch
-  "oI" 'ibuffer
-  
-  )
+  (if (eq system-uses-terminfo t)
 
-  
-;;; evil leader 와 충돌이 발생할 경우 evil-leader 다음에 로딩할 수 있도독 한다. 
-  ;; (require 'quack)
+      (use-package powerline-evil
+        :config
+        (defpowerline powerline-lcl current-input-method-title)
 
-  (require 'evil-mode-line)
-  (require  'evil-surround)
+        (setq-default 
+         mode-line-format
+         '("%e"
+           (:eval
+            (let* ((active (powerline-selected-window-active))
+                   (mode-line (if active 'mode-line 'mode-line-inactive))
+                   (face1 (if active 'powerline-active1 'powerline-inactive1))
+                   (face2 (if active 'powerline-active2 'powerline-inactive2))
+                   (separator-left (intern (format "powerline-%s-%s"
+                                                   powerline-default-separator
+                                                   (car powerline-default-separator-dir))))
+                   (separator-right (intern (format "powerline-%s-%s"
+                                                    powerline-default-separator
+                                                    (cdr powerline-default-separator-dir))))
+                   (lhs (list 
+                         (powerline-lcl mode-line)
+                         ;; (powerline-raw "≡ " mode-line) 
+                         (powerline-raw "『" mode-line) 
+                         (powerline-raw  (window-numbering-get-number-string))
+                         (powerline-raw "』" mode-line) 
+
+                         (let ((evil-face (powerline-evil-face)))
+                           (if evil-mode
+                               (powerline-raw (powerline-evil-tag) evil-face)))
+                         (when (buffer-modified-p) (powerline-raw "[+]" mode-line))
+                         (when buffer-read-only (powerline-raw "[RO]" mode-line))
+                         (powerline-buffer-id `(mode-line-buffer-id ,mode-line) 'l)
+                         (powerline-raw "[" mode-line 'l)
+                         (powerline-major-mode mode-line)
+                         (powerline-process mode-line)
+                         (powerline-raw "]" mode-line)
+                         (powerline-raw "[%z]" mode-line)
+                         ;; (powerline-raw (concat "[" (mode-line-eol-desc) "]") mode-line)
+                         (when (boundp 'erc-modified-channels-object)
+                           (powerline-raw erc-modified-channels-object face1 'l))
+                         ;; (powerline-raw "[" mode-line 'l)
+                         ;; (powerline-minor-modes mode-line)
+                         ;; (powerline-raw "%n" mode-line)
+                         ;; (powerline-raw "]" mode-line)
+                         (when (and vc-mode buffer-file-name)
+                           (let ((backend (vc-backend buffer-file-name)))
+                             (when backend
+                               (concat (powerline-raw "[" mode-line 'l)
+                                       (powerline-raw (format "%s / %s" backend (vc-working-revision buffer-file-name backend)))
+                                       (powerline-raw "]" mode-line)))))))
+                   (rhs (list (powerline-raw '(10 "%i"))
+                              (powerline-raw global-mode-string mode-line 'r)
+                              (powerline-raw "%l," mode-line 'l)
+                              (powerline-raw (format-mode-line '(10 "%c")))
+                              (powerline-raw (replace-regexp-in-string  "%" "%%" (format-mode-line '(-3 "%p"))) mode-line 'r)
+                              (when (and (boundp 'which-func-mode) which-func-mode) (powerline-raw which-func-format nil 'l))
+                              )))
+              (concat (powerline-render lhs)
+                      (powerline-fill mode-line (powerline-width rhs))
+                      (powerline-render rhs)))))))
+    (use-package evil-mode-line))
+
+
+  (require 'evil-surround)
   (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
-  (global-evil-surround-mode 1 )
-  
+  (global-evil-surround-mode 1)
   ;;deprecated;;(evilnc-default-hotkeys)
 
-
-(require 'dired)
+  (use-package 'dired
+    :config
+    
 ;;; Dired
-(define-key dired-mode-map (kbd "SPC") nil)
-(define-key dired-mode-map (kbd "/") nil)
-(define-key dired-mode-map (kbd "n") nil)
-(define-key dired-mode-map (kbd "N") nil)
-(progn
-  ;; use the standard Dired bindings as a base
-  (evil-make-overriding-map dired-mode-map 'normal t)
-  (evil-add-hjkl-bindings dired-mode-map 'normal
-    "J" 'dired-goto-file     ; "j"
-    "K" 'dired-do-kill-lines ; "k"
-    "r" 'dired-do-redisplay  ; "l"
-    "g" 'revert-buffer
-    (kbd  "RET") 'diredp-find-file-reuse-dir-buffer
-    ";" (lookup-key dired-mode-map ":"))) ; ":d", ":v", ":s", ":e"
-(evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
-(evil-define-key 'normal dired-mode-map "g" 'revert-buffer)
-(evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
+    (define-key dired-mode-map (kbd "SPC") nil)
+    (define-key dired-mode-map (kbd "/") nil)
+    (define-key dired-mode-map (kbd "n") nil)
+    (define-key dired-mode-map (kbd "N") nil)
+    
+    ;; use the standard Dired bindings as a base
+    (evil-make-overriding-map dired-mode-map 'normal t)
+    (evil-add-hjkl-bindings dired-mode-map 'normal
+      "J" 'dired-goto-file     ; "j"
+      "K" 'dired-do-kill-lines ; "k"
+      "r" 'dired-do-redisplay  ; "l"
+      "g" 'revert-buffer
+      (kbd  "RET") 'diredp-find-file-reuse-dir-buffer
+      ";" (lookup-key dired-mode-map ":")) ; ":d", ":v", ":s", ":e"
+    (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
+    (evil-define-key 'normal dired-mode-map "g" 'revert-buffer)
+    (evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
+    (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first))
 
-(with-package* (dired)
-  (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first)
-  )
-
-;; (with-package* (better-registers)
-;;   (define-key evil-normal-state-map "\C-r" better-registers-map))
-
-;; (define-key quack-scheme-mode-keymap (kbd  "<SPC>") nil)
-
-
-	
   (evil-mode 1)
 
   ;;deprecated;;(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
   (evil-set-toggle-key "<pause>")
-
-
-
   (define-key evil-normal-state-map "U" 'undo-tree-redo)
   (define-key evil-normal-state-map [escape] 'keyboard-quit)
   (define-key evil-visual-state-map [escape] 'keyboard-quit)
@@ -232,6 +253,12 @@
   (define-key evil-normal-state-map (kbd "C-c +") #'evil-numbers/inc-at-pt)
   (define-key evil-normal-state-map (kbd "C-c -") #'evil-numbers/dec-at-pt)
   (define-key evil-normal-state-map "zx" 'smex)
+
+
+  (define-key evil-normal-state-map "\C-a" 'evil-beginning-of-line)
+  (define-key evil-insert-state-map "\C-a" 'beginning-of-line)
+  (define-key evil-visual-state-map "\C-a" 'evil-beginning-of-line)
+
 
   (define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
   (define-key evil-insert-state-map "\C-e" 'end-of-line)
@@ -266,102 +293,96 @@
   (define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
   (define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
   (define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
-  (define-key evil-normal-state-map (kbd "<tab>") 'evil-undefine)
   (define-key evil-motion-state-map "\C-]" 'find-tag-dwim)
 
-  (define-key evil-motion-state-map "[[" 'backward-sexp)
-  (define-key evil-motion-state-map "]]" 'forward-sexp)
+
+
+
+  (define-key evil-normal-state-map "zf" 'vimish-fold-toggle) 
+  ;; (define-key evil-visual-state-map "zf" 'vimish-fold) 
+  (define-key evil-normal-state-map "zd" 'vimish-fold-delete) 
+  (define-key evil-normal-state-map "zs" 'vimish-fold-next-fold) 
+  (define-key evil-normal-state-map "zw" 'vimish-fold-previous-fold)
+
+  (define-key evil-normal-state-map "zF" 'hs-toggle-hiding)
+
+
+  ;; (define-key evil-motion-state-map "[[" 'backward-sexp)
+  ;; (define-key evil-motion-state-map "]]" 'forward-sexp)
 
   (define-key evil-normal-state-map (kbd "C-c :" ) 'ac-complete-with-helm)
   (define-key evil-insert-state-map (kbd "C-c :" ) 'ac-complete-with-helm)
 
+  (define-key evil-motion-state-map [down-mouse-1] 'mouse-drag-region)
+
   (defun evil-undefine ()
     (interactive)
     (let (evil-mode-map-alist)
-      (call-interactively (key-binding (this-command-keys))))))
+      (call-interactively (key-binding (this-command-keys)))))
 ;;; http://leavinsprogramming.blogspot.kr/2012/05/evil-emacs-mode-for-vivim-users.html
 
 
-
-
-(define-key evil-normal-state-map "zf" 'vimish-fold-toggle) 
-(define-key evil-visual-state-map "zf" 'vimish-fold) 
-(define-key evil-normal-state-map "zd" 'vimish-fold-delete) 
-(define-key evil-normal-state-map "zs" 'vimish-fold-next-fold) 
-(define-key evil-normal-state-map "zw" 'vimish-fold-previous-fold)
-
-(define-key evil-normal-state-map "zF" 'hs-toggle-hiding)
-
-
-
-(with-package* 
- (org)
 ;;;* _ EVIL ORG setting 
 ;;;** 참고 - https://github.com/cofi/dotfiles/blob/master/emacs.d/config/cofi-evil.el#L149 
- (require 'org)
- (evil-define-key 'normal org-mode-map
-   (kbd "RET") 'org-open-at-point
-   "za" 'org-cycle
-   "zA" 'org-shifttab
-   "zm" 'hide-body
-   "zr" 'show-all
-   "zo" 'show-subtree
-   "zO" 'show-all
-   "zc" 'hide-subtree
-   "zC" 'hide-all
-   [f2] 'org-cliplink
-   (kbd "<kp-multiply>") 'org-insert-star
-   (kbd "M-j") 'org-shiftleft
-   (kbd "M-k") 'org-shiftright
-   (kbd "M-H") 'org-metaleft
-   (kbd "M-J") 'org-metadown
-   (kbd "M-K") 'org-metaup
-   (kbd "M-L") 'org-metaright)
+  (use-package org
+    :config
+    (evil-define-key 'normal org-mode-map
+      (kbd "RET") 'org-open-at-point
+      "za" 'org-cycle
+      "zA" 'org-shifttab
+      "zm" 'hide-body
+      "zr" 'show-all
+      "zo" 'show-subtree
+      "zO" 'show-all
+      "zc" 'hide-subtree
+      "zC" 'hide-all
+      (kbd "<kp-multiply>") 'org-insert-star
+      (kbd "M-j") 'org-shiftleft
+      (kbd "M-k") 'org-shiftright
+      (kbd "M-H") 'org-metaleft
+      (kbd "M-J") 'org-metadown
+      (kbd "M-K") 'org-metaup
+      (kbd "M-L") 'org-metaright)
 
- (evil-define-key 'normal orgstruct-mode-map
-   (kbd "RET") 'org-open-at-point
-   "za" 'org-cycle
-   "zA" 'org-shifttab
-   "zm" 'hide-body
-   "zr" 'show-all
-   "zo" 'show-subtree
-   "zO" 'show-all
-   "zc" 'hide-subtree
-   "zC" 'hide-all
-   (kbd "M-j") 'org-shiftleft
-   (kbd "M-k") 'org-shiftright
-   (kbd "M-H") 'org-metaleft
-   (kbd "M-J") 'org-metadown
-   (kbd "M-K") 'org-metaup
-   (kbd "M-L") 'org-metaright)
+    (evil-define-key 'normal orgstruct-mode-map
+      (kbd "RET") 'org-open-at-point
+      "za" 'org-cycle
+      "zA" 'org-shifttab
+      "zm" 'hide-body
+      "zr" 'show-all
+      "zo" 'show-subtree
+      "zO" 'show-all
+      "zc" 'hide-subtree
+      "zC" 'hide-all
+      (kbd "M-j") 'org-shiftleft
+      (kbd "M-k") 'org-shiftright
+      (kbd "M-H") 'org-metaleft
+      (kbd "M-J") 'org-metadown
+      (kbd "M-K") 'org-metaup
+      (kbd "M-L") 'org-metaright)
 
- (evil-define-key 'insert org-mode-map
-   [f2] 'org-cliplink
-   (kbd "M-j") 'org-shiftleft
-   (kbd "M-k") 'org-shiftright
-   (kbd "M-H") 'org-metaleft
-   (kbd "M-J") 'org-metadown
-   (kbd "M-K") 'org-metaup
-   (kbd "M-L") 'org-metaright)
+    (evil-define-key 'insert org-mode-map
+      (kbd "M-j") 'org-shiftleft
+      (kbd "M-k") 'org-shiftright
+      (kbd "M-H") 'org-metaleft
+      (kbd "M-J") 'org-metadown
+      (kbd "M-K") 'org-metaup
+      (kbd "M-L") 'org-metaright)
 
- (evil-define-key 'insert orgstruct-mode-map
-   (kbd "M-j") 'org-shiftleft
-   (kbd "M-k") 'org-shiftright
-   (kbd "M-H") 'org-metaleft
-   (kbd "M-J") 'org-metadown
-   (kbd "M-K") 'org-metaup
-   (kbd "M-L") 'org-metaright)
+    (evil-define-key 'insert orgstruct-mode-map
+      (kbd "M-j") 'org-shiftleft
+      (kbd "M-k") 'org-shiftright
+      (kbd "M-H") 'org-metaleft
+      (kbd "M-J") 'org-metadown
+      (kbd "M-K") 'org-metaup
+      (kbd "M-L") 'org-metaright)
 
-
-
-
-
- '(progn
-    (evil-make-overriding-map ibuffer-mode-map 'normal t)
-    (evil-define-key 'normal ibuffer-mode-map
-      "j" 'evil-next-line
-      "k" 'evil-previous-line
-      "RET" 'ibuffer-visit-buffer)))
+    '(progn
+       (evil-make-overriding-map ibuffer-mode-map 'normal t)
+       (evil-define-key 'normal ibuffer-mode-map
+         "j" 'evil-next-line
+         "k" 'evil-previous-line
+         "RET" 'ibuffer-visit-buffer))))
 
 
 
@@ -469,8 +490,7 @@
 
 
 ;;; Auto-complete
-(use-package
-  auto-complete
+(use-package auto-complete
   :config
   (evil-add-command-properties 'ac-complete :repeat 'evil-ac-repeat)
   (evil-add-command-properties 'ac-expand :repeat 'evil-ac-repeat)
@@ -668,7 +688,7 @@
 ;; does not work correctly when inside a string, check paredit.
 ;; check when there are spaces before parens
 ;; When the cursor is on an open paren, go up one level on an open paren
-(use-package paredit ;; (smartparens)
+(use-package paredit ;  (smartparens)
   :config
   (evil-define-motion evil-exit-sexp (count)
     :type inclusive
@@ -723,20 +743,20 @@
   (plist-put evilmi-plugins 'web-mode '((evilmi-html-get-tag evilmi-html-jump))))
 
 
-(require 'evil-args)
+(use-package evil-args
+  :config
+  ;; bind evil-args text objects
+  (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+  (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
 
-;; bind evil-args text objects
-(define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
-(define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+  ;; bind evil-forward/backward-args
+  (define-key evil-normal-state-map "L" 'evil-forward-arg)
+  (define-key evil-normal-state-map "H" 'evil-backward-arg)
+  (define-key evil-motion-state-map "L" 'evil-forward-arg)
+  (define-key evil-motion-state-map "H" 'evil-backward-arg)
 
-;; bind evil-forward/backward-args
-(define-key evil-normal-state-map "L" 'evil-forward-arg)
-(define-key evil-normal-state-map "H" 'evil-backward-arg)
-(define-key evil-motion-state-map "L" 'evil-forward-arg)
-(define-key evil-motion-state-map "H" 'evil-backward-arg)
-
-;; bind evil-jump-out-args
-(define-key evil-normal-state-map "K" 'evil-jump-out-args)
+  ;; bind evil-jump-out-args
+  (define-key evil-normal-state-map "K" 'evil-jump-out-args))
 
 
 
@@ -756,7 +776,7 @@
 ;;     (evil-define-key 'emacs magit-mode-map "k" 'magit-goto-previous-section)
 ;;     (evil-define-key 'emacs magit-mode-map "K" 'magit-discard-item))) 
 
-(use-package evil-magit)
+(require 'evil-magit)
 
 (use-package evil-visualstar
   :config
@@ -797,6 +817,7 @@
 (evil-leader/set-key-for-mode 'org-mode
   "ha" 'helm-org-agenda-files-headings
   "hH" 'helm-org-headlines
+  "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
   ;; "hh" 'helm-org-in-buffer-headings
   )
 
