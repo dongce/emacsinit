@@ -1,14 +1,11 @@
 ;; -*-mode: emacs-lisp; coding: cp949; buffer-read-only: t;-*-
 
-(eval-after-load "project-buffer-mode"
-  '(progn
-     (require 'project-buffer-mode+)
-     (project-buffer-mode-p-setup)))
-
-(eval-after-load "project-buffer-mode"
-  '(progn
-    (require 'project-buffer-occur)
-    (define-key project-buffer-mode-map [(?O)] 'project-buffer-occur)))
+(use-package project-buffer-mode
+  :config
+  (require 'project-buffer-mode+)
+  (project-buffer-mode-p-setup)
+  (require 'project-buffer-occur)
+  (define-key project-buffer-mode-map [(?O)] 'project-buffer-occur))
 
 ;;(autoload 'find-sln "sln-mode" "" t)
 

@@ -36,10 +36,10 @@ regardless how it is called, use “(or load-file-name
 buffer-file-name)”. This is part of this function."
   (file-truename (concat (file-name-directory (or load-file-name buffer-file-name)) file-path))
 )
+(defalias 'fullpath 'fullpath-relative-to-call-location)
 
 (require 'use-package)
 (use-package package-helper)
-(defalias 'fullpath 'fullpath-relative-to-call-location)
 
 ;;(load "site-start")
 ;; ****** Added by emacsw32-setup-base at Mon Nov 09 14:52:29 2009
@@ -49,80 +49,18 @@ buffer-file-name)”. This is part of this function."
 (setq inhibit-startup-message t) 
 (put 'set-goal-column 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
-;;(setq-default c-default-style "stroustrup" )
-
-(setq-default c-default-style "gnu" )
-
-
-;;'(grep-command "ack.pl --smart-case ")
-
-;;한글지원안됨;;(require 'pabbrev)
-;;한글지원안됨;;(custom-set-faces
-;;한글지원안됨;; ;; custom-set-faces was added by Custom.
-;;한글지원안됨;; ;; If you edit it by hand, you could mess it up, so be careful.
-;;한글지원안됨;; ;; Your init file should contain only one such instance.
-;;한글지원안됨;; ;; If there is more than one, they won't work right.
-;;한글지원안됨;; '(pabbrev-suggestions-face ((t (:foreground "green")))))
-
-;;;;* initial init 
+(put 'upcase-region 'disabled nil)
 
 
 
-
-;;(require 'string)
-;;(require 'htmlize)
-;;(require 'gtags )
 (require 'bc-mode)
-;;(require 'browse-kill-ring)
-;(require 'nsi-mode )
-;(require 'iedit)
-;(require 'csv-mode)
-
-;; BAT 파일 모드 
-;(require 'dos)
-;(require 'ntcmd)
-;;https://github.com/juergenhoetzel/tramp-adb
-;;adb 에 접근가능 
 (require 'tramp-adb)
-;;(require 'rfringe)
-;(require 'whole-line-or-region)
-;(require 'ack-emacs)
-;;(require 'full-ack)
-;;(require 'deft)
-;;NOTWORK;;(require 'grep-edit)
 (require 'grep-ed)
 (require 'markerpen)
-;;(require 'highlight)
-(require 'highline)
-;;(require 'nyan-mode)
-;;(nyan-mode)
-;;deprecatedbyelpa;;(require 'ascii)
-;;deprecatedby init-edit;; (require 'misc-cmds)
-(require 'saveplace)
-(setq-default save-place t)
-;;https://github.com/syohex/emacs-quickrun
-(require 'quickrun)
-;; copy/undo 등의 작업을 highlight 한다. 
-;;(require 'volatile-highlights)
-;;(volatile-highlights-mode t)
+(use-package saveplace
+  :config
+  (setq-default save-place t))
 
-;; ruby 개발환경 
-;;deprecateby-elpa;;(require 'ruby-mode)
-;;deprecateby-elpa;;(require 'rubydb)
-;;deprecateby-elpa;;(require 'inf-ruby)
-;;deprecateby-elpa;;(require 'ruby-electric)
-
-;;(require 'highlight-indentation)
-
-;; diff mode 를 매우 느리게 합니다. 
-;;(require 'rainbow-delimiters)
-;;(global-rainbow-delimiters-mode 1 )
-
-;(require 'dove-ext)
-;; javascript
-;; jsshell 명령 이용
-;(require 'jsshell-bundle)
-(require 'second-sel)
 (global-set-key [(control meta ?y)]     'secondary-dwim)
 
 (require 'url)
@@ -147,69 +85,16 @@ buffer-file-name)”. This is part of this function."
 
 
 
-(put 'upcase-region 'disabled nil)
 ;;;
 ;;;
 ;;; ※ 라이브러리 로딩
 ;;;
 ;;;
-(load-library "replace")
-
-
-
-
-
-
-
-;;(load "c:/usr/local/editor/emacsW32/EmacsW32/nxhtml/autostart.el")
-
-
-;; 다음은 추가적으로 보태어진 것으로 유용하게 사용할 수 있는 쇼트 컷이다. 
-;;(global-set-key (kbd "C-,")  (aif (svn-status "g:/svndir/WinDLP/dlp-src"  '-)))
-;;(global-set-key (kbd "C-.")  (aif (read-only-mode)))
-
-;;deprecatedby-ido;;(iswitchb-mode)       
 
 (use-package nxml-mode
   :config
   (define-key nxml-mode-map  [C-right] 'forward-word )
   (define-key nxml-mode-map  [C-left] 'backward-word ))
-
-
-;;;Force emacs to open files in unix mode
-;;;April 8, 2007 · Posted in Computer 
-;;;
-;;;I believe that emacs by default will use the line endings for current system when opening and saving text files.  This may cause a problem when you want to force the file to be saved with different line endings. I found this series of commands to force the file to be opened in unix mode:
-;;;
-;;;
-;;;C-x RET c unix RET C-x C-f
-
-;;(require 'icicles)
-
-
-;;;(defun dired-modified ()
-;;;  (interactive)
-;;;  (dired-sort-menu-set-switches "t" ))
-
-;;deprecated;;(require 'color-moccur)
-
-;;(setq 
-;; vs2005-header-path
-;; '("d:/usr/microsoft/vs2005/SDK/v2.0/Include"
-;;   "d:/usr/microsoft/vs2005/VC/include"
-;;   "d:/usr/microsoft/vs2005/VC/atlmfc/include"
-;;   "d:/usr/microsoft/vs2005/VC/PlatformSDK/Include"))
-
-
-
-
-
-;;;(defun grep-symbol ()
-;;;  ;; TODO prefix argument 를 주어서 디렉토리 설정할 수 있도록 
-;;;  (interactive)
-;;;  (grep (format "ack --smart-case \"%s\" " (thing-at-point 'sexp))))
-
-;;NOTWORK;;(require 'repeat-insert)
 
 
 ;;;AUTOHOTKEY;;; autohotkey
@@ -247,54 +132,20 @@ buffer-file-name)”. This is part of this function."
 
 (require 'uniquify)
 
-;; 다음과 같이 해서 주기적으로 숫자를 증가할 수 있다. 
-;;;;; (global-set-key (kbd "<f5>") 'init-macro-counter-default)
-;;;;; (global-set-key (kbd "<f6>") 'kmacro-insert-counter)
-
-
-
-
-
 
 ;;DEPRECATED;;(require 'bbdb)
 ;;DEPRECATED;;(bbdb-initialize)
 
-(load-library "highlight-symbol")
-
-
-
-
-;; ELPA  이멕스 패키지 시스템 
-;; FUNCTION DEFINITION 
-
-;; SDD 작성동안 temporary 
-;;(add-hook 
-;; 'c-mode-common-hook 
-;; '(lambda () 
-;;    ;; define comment style to "//"
-;;    (hl-line-mode 1 )))
 
 (require 'wiki-nav)
 (use-package smex
-:config  
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+  :config  
+  (smex-initialize)
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  ;; This is your old M-x.
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 )
-;; www.emacswiki.org/emacs/PredictiveMode
-;;(autoload 'predictive-mode "predictive" "predictive" t)
-;;(set-default 'predictive-auto-add-to-dict t)
-;;(setq 
-;;      predictive-auto-learn t
-;;      predictive-add-to-dict-ask nil
-;;      predictive-use-auto-learn-cache nil
-;;      predictive-which-dict t
-;;      ;;predictive-main-dict 'rpg-dictionary
-;;      )
-
-
 
 
 

@@ -7,13 +7,13 @@
   ;;(set-default-coding-systems 'cp949)
   (setq-default file-name-coding-system 'cp949)
   (setq-default default-buffer-file-coding-system 'cp949 ))
- ((prefer-coding-system 'euc-kr)
+ ((prefer-coding-system 'utf-8)
   ;; 한글 인코딩을 설정한다. 
   ;;(setq-default default-buffer-file-coding-system 'utf-8 )
   ;;(prefer-coding-system 'cp949)
   ;;(set-default-coding-systems 'cp949)
-  (setq-default file-name-coding-system 'euc-kr)
-  (setq-default default-buffer-file-coding-system 'euc-kr )))
+  (setq-default file-name-coding-system 'utf-8)
+  (setq-default default-buffer-file-coding-system 'utf-8 )))
 
 
 

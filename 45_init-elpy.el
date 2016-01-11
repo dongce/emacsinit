@@ -212,7 +212,12 @@
    ))
 
 
-
+;;deprecated;;(require 'python-mode)
+;;deprecated;;(require 'ipython)
+;;deprecated;;(py-set-ipython-completion-command-string "ipython.exe")
+;;deprecated;;(set-default
+;;deprecated;; 'py-python-command-args
+;;deprecated;; '("-u" "c:/usr/local/python27/Scripts/ipython-script.py"  "--colors=NoColor"))
 
 (use-package elpy
   :config

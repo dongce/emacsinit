@@ -469,36 +469,37 @@
 
 
 ;;; Auto-complete
-(with-package* 
- (auto-complete)
- (evil-add-command-properties 'ac-complete :repeat 'evil-ac-repeat)
- (evil-add-command-properties 'ac-expand :repeat 'evil-ac-repeat)
- (evil-add-command-properties 'ac-next :repeat 'ignore)
- (evil-add-command-properties 'ac-previous :repeat 'ignore)
+(use-package
+  auto-complete
+  :config
+  (evil-add-command-properties 'ac-complete :repeat 'evil-ac-repeat)
+  (evil-add-command-properties 'ac-expand :repeat 'evil-ac-repeat)
+  (evil-add-command-properties 'ac-next :repeat 'ignore)
+  (evil-add-command-properties 'ac-previous :repeat 'ignore)
 
- (defvar evil-ac-prefix-len nil
-   "The length of the prefix of the current item to be completed.")
+  (defvar evil-ac-prefix-len nil
+    "The length of the prefix of the current item to be completed.")
 
- (defun evil-ac-repeat (flag)
-   "Record the changes for auto-completion."
-   (cond
-    ((eq flag 'pre)
-     (setq evil-ac-prefix-len (length ac-prefix))
-     (evil-repeat-start-record-changes))
-    ((eq flag 'post)
-     ;; Add change to remove the prefix
-     (evil-repeat-record-change (- evil-ac-prefix-len)
-                                ""
-                                evil-ac-prefix-len)
-     ;; Add change to insert the full completed text
-     (evil-repeat-record-change
-      (- evil-ac-prefix-len)
-      (buffer-substring-no-properties (- evil-repeat-pos
-                                         evil-ac-prefix-len)
-                                      (point))
-      0)
-     ;; Finish repeation
-     (evil-repeat-finish-record-changes)))))
+  (defun evil-ac-repeat (flag)
+    "Record the changes for auto-completion."
+    (cond
+     ((eq flag 'pre)
+      (setq evil-ac-prefix-len (length ac-prefix))
+      (evil-repeat-start-record-changes))
+     ((eq flag 'post)
+      ;; Add change to remove the prefix
+      (evil-repeat-record-change (- evil-ac-prefix-len)
+                                 ""
+                                 evil-ac-prefix-len)
+      ;; Add change to insert the full completed text
+      (evil-repeat-record-change
+       (- evil-ac-prefix-len)
+       (buffer-substring-no-properties (- evil-repeat-pos
+                                          evil-ac-prefix-len)
+                                       (point))
+       0)
+      ;; Finish repeation
+      (evil-repeat-finish-record-changes)))))
 
 (progn
   (add-hook 'wdired-mode-hook #'evil-change-to-initial-state)
@@ -572,22 +573,22 @@
 ;;deprecated;;    ))
 
 
-(with-package* 
- (wgrep)
- (evil-declare-key 'motion occur-mode-map (kbd "<return>")   'occur-goto-occurrence-recenter)
- (evil-declare-key 'motion occur-mode-map (kbd "<S-return>") 'occur-display-occurrence-recenter)
- (evil-declare-key 'motion occur-mode-map "e" 'occur-edit-mode)
- (evil-declare-key 'motion occur-edit-mode-map "e" 'occur-cease-edit)
- (evil-declare-key 'motion grep-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
- (evil-declare-key 'motion grep-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter)
- (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
- (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter)
- (evil-declare-key 'motion grep-mode-map "e" 'wgrep-change-to-wgrep-mode)
- (evil-declare-key 'motion grep-mode-map "w" 'wgrep-save-all-buffers)
- ;;notuse;;(evil-declare-key 'motion ack-and-a-half-mode-map ",e" 'wgrep-change-to-wgrep-mode)
- ;;notuse;;(evil-declare-key 'motion ack-and-a-half-mode-map ",w" 'wgrep-save-all-buffers)
- (evil-declare-key 'motion wgrep-mode-map "e" 'wgrep-finish-edit)
- (evil-declare-key 'motion wgrep-mode-map "x" 'wgrep-abort-changes))
+(use-package wgrep
+  :config
+  (evil-declare-key 'motion occur-mode-map (kbd "<return>")   'occur-goto-occurrence-recenter)
+  (evil-declare-key 'motion occur-mode-map (kbd "<S-return>") 'occur-display-occurrence-recenter)
+  (evil-declare-key 'motion occur-mode-map "e" 'occur-edit-mode)
+  (evil-declare-key 'motion occur-edit-mode-map "e" 'occur-cease-edit)
+  (evil-declare-key 'motion grep-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
+  (evil-declare-key 'motion grep-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter)
+  (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
+  (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter)
+  (evil-declare-key 'motion grep-mode-map "e" 'wgrep-change-to-wgrep-mode)
+  (evil-declare-key 'motion grep-mode-map "w" 'wgrep-save-all-buffers)
+  ;;notuse;;(evil-declare-key 'motion ack-and-a-half-mode-map ",e" 'wgrep-change-to-wgrep-mode)
+  ;;notuse;;(evil-declare-key 'motion ack-and-a-half-mode-map ",w" 'wgrep-save-all-buffers)
+  (evil-declare-key 'motion wgrep-mode-map "e" 'wgrep-finish-edit)
+  (evil-declare-key 'motion wgrep-mode-map "x" 'wgrep-abort-changes))
 
 ;;; https://github.com/laynor/emacs-conf/blob/master/site-lisp/evil-sexp/evil-sexp.el
 
@@ -667,11 +668,10 @@
 ;; does not work correctly when inside a string, check paredit.
 ;; check when there are spaces before parens
 ;; When the cursor is on an open paren, go up one level on an open paren
-(with-package* 
- ;; (smartparens)
-  (paredit)
- (evil-define-motion evil-exit-sexp (count)
-   :type inclusive
+(use-package paredit ;; (smartparens)
+  :config
+  (evil-define-motion evil-exit-sexp (count)
+    :type inclusive
     (dotimes (i (or count 1))
       (let (op-pos cl-pos)
         (condition-case nil
@@ -690,36 +690,37 @@
                                                cl-pos))))))
           (error (error "Already at top-level."))))) )
 
- ;; (provide 'evil-sexp)
+  ;; (provide 'evil-sexp)
 
 
- (define-key evil-motion-state-map (kbd "H-j") 'evil-enter-sexp)
- (define-key evil-motion-state-map (kbd "H-k") 'evil-exit-sexp)
- (define-key evil-motion-state-map (kbd "H-h") 'evil-backward-sexp)
- (define-key evil-motion-state-map (kbd "H-l") 'evil-forward-sexp)
- (define-key evil-motion-state-map (kbd "<C-H-up>")     'buf-move-up)
- (define-key evil-motion-state-map (kbd "<C-H-down>")   'buf-move-down)
- (define-key evil-motion-state-map (kbd "<C-H-left>")   'buf-move-left)
- (define-key evil-motion-state-map (kbd "<C-H-right>")  'buf-move-right)
- (define-key evil-motion-state-map "zl" 'evil-forward-sexp)
- (define-key evil-motion-state-map "zh" 'evil-backward-sexp)
- (define-key evil-motion-state-map "zj" 'evil-enter-sexp)
- (define-key evil-motion-state-map "zk" 'evil-exit-sexp))
+  (define-key evil-motion-state-map (kbd "H-j") 'evil-enter-sexp)
+  (define-key evil-motion-state-map (kbd "H-k") 'evil-exit-sexp)
+  (define-key evil-motion-state-map (kbd "H-h") 'evil-backward-sexp)
+  (define-key evil-motion-state-map (kbd "H-l") 'evil-forward-sexp)
+  (define-key evil-motion-state-map (kbd "<C-H-up>")     'buf-move-up)
+  (define-key evil-motion-state-map (kbd "<C-H-down>")   'buf-move-down)
+  (define-key evil-motion-state-map (kbd "<C-H-left>")   'buf-move-left)
+  (define-key evil-motion-state-map (kbd "<C-H-right>")  'buf-move-right)
+  (define-key evil-motion-state-map "zl" 'evil-forward-sexp)
+  (define-key evil-motion-state-map "zh" 'evil-backward-sexp)
+  (define-key evil-motion-state-map "zj" 'evil-enter-sexp)
+  (define-key evil-motion-state-map "zk" 'evil-exit-sexp))
 
 
 ;;; http://blog.binchen.org/?p=782
 (eval-after-load "evil" '(setq expand-region-contract-fast-key "z"))
 ;;; guide-key 
 
-(require 'guide-key)
-(guide-key-mode)
+(use-package guide-key
+  :config
+  (guide-key-mode))
 
 ;; https://github.com/redguardtoo/evil-matchit/blob/master/README.org
-(with-package* 
- (evil-matchit )
- (global-evil-matchit-mode 1 )
- (plist-put evilmi-plugins 'xah-html-mode '((evilmi-html-get-tag evilmi-html-jump)))
- (plist-put evilmi-plugins 'web-mode '((evilmi-html-get-tag evilmi-html-jump))))
+(use-package evil-matchit
+  :config
+  (global-evil-matchit-mode 1 )
+  (plist-put evilmi-plugins 'xah-html-mode '((evilmi-html-get-tag evilmi-html-jump)))
+  (plist-put evilmi-plugins 'web-mode '((evilmi-html-get-tag evilmi-html-jump))))
 
 
 (require 'evil-args)
@@ -755,19 +756,20 @@
 ;;     (evil-define-key 'emacs magit-mode-map "k" 'magit-goto-previous-section)
 ;;     (evil-define-key 'emacs magit-mode-map "K" 'magit-discard-item))) 
 
-(require 'evil-magit)
+(use-package evil-magit)
 
-(require 'evil-visualstar)
-(global-evil-visualstar-mode t)
+(use-package evil-visualstar
+  :config
+  (global-evil-visualstar-mode t))
 
 
 
 ;; @see https://bitbucket.org/lyro/evil/issue/511/let-certain-minor-modes-key-bindings
-(eval-after-load 'git-timemachine
-  '(progn
-     (evil-make-overriding-map git-timemachine-mode-map 'normal)
-     ;; force update evil keymaps after git-timemachine-mode loaded
-     (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps)))
+(use-package git-timemachine
+  :config
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  ;; force update evil keymaps after git-timemachine-mode loaded
+  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
 (defun org-show-current-heading-tidily ()
   (interactive)  ;Inteactive

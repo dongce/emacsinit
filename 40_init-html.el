@@ -47,8 +47,9 @@
 (add-hook 'xah-html-mode-hook #'imp-toggle-htmlize)
 
 
-(eval-after-load "rng-loc"
-  '(add-to-list 'rng-schema-locating-files (fullpath "../html5-el/schemas.xml")))
+(use-package rng-loc
+  :config
+  (add-to-list 'rng-schema-locating-files (fullpath "../html5-el/schemas.xml")))
 
 (require 'whattf-dt)
 

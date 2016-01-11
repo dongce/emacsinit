@@ -116,11 +116,12 @@
 ;; Make sure to include the latex class in you header:
 ;; #+LaTeX_CLASS: djcb-org-article
 ;; -----------------------------------------------------------------------------
-(eval-after-load 'org-latex
-  '(progn
-     (add-to-list 'org-latex-classes
-          '("minted-org-article"
-            "\\documentclass[11pt,a4paper]{article}
+(use-package org-latex
+  :config
+  (add-to-list
+   'org-latex-classes
+   '("minted-org-article"
+     "\\documentclass[11pt,a4paper]{article}
              \\usepackage{minted}
              \\usemintedstyle{emacs}
              \\newminted{common-lisp}{fontsize=10}
@@ -140,11 +141,11 @@
                      \\title{}
                            [NO-DEFAULT-PACKAGES]
                            [NO-PACKAGES]"
-            ("\\section{%s}" . "\\section*{%s}")
-            ("\\subsection{%s}" . "\\subsection*{%s}")
-            ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-            ("\\paragraph{%s}" . "\\paragraph*{%s}")
-            ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))))
+     ("\\section{%s}" . "\\section*{%s}")
+     ("\\subsection{%s}" . "\\subsection*{%s}")
+     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
                      ;; \\setsansfont{Charis SIL}
 

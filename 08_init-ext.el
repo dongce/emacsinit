@@ -1,4 +1,15 @@
-;; -*-mode: emacs-lisp; coding: cp949; buffer-read-only: t;-*-
+;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
+
+(use-package calc-ext)
+(use-package sqlite
+  :config
+  (setq  sqlite-program "c:/usr/local/sqlite/sqlite3.exe"))
+
+
+;;; http://www.mikusa.com/python-mysql-docs/index.html
+;;; pymacs ë“±ì„ ì´ìš©í•˜ì—¬ emacs -> sql ì´ ê°€ëŠ¥í•˜ë‹¤. 
+
+
 
 (require 'cmuscheme )
 (defun socket-scheme ()
@@ -17,18 +28,18 @@ is run).
   (interactive )
   (if (not (comint-check-proc "*scheme*"))
       (progn (set-buffer (make-comint "scheme" (cons "localhost" 7979 )))
-	(inferior-scheme-mode)))
+             (inferior-scheme-mode)))
   (setq scheme-buffer "*scheme*")
   (pop-to-buffer "*scheme*"))
 
 
-;;ÇÑ±ÛÀ» »ç¿ëÇÏ´Âµ¥ ¾î·Á¿òÀÌ ÀüÇô ¾øÀ½À» ¾Ë ¼ö ÀÖ´Ù. 
+;;í•œê¸€ì„ ì‚¬ìš©í•˜ëŠ”ë° ì–´ë ¤ì›€ì´ ì „í˜€ ì—†ìŒì„ ì•Œ ìˆ˜ ìˆë‹¤. 
 
 ;; package auto load next line 
 ;;(require 'slime)
 ;;(slime-setup)
 
-;;; SMILE ¼³Á¤
+;;; SMILE ì„¤ì •
 ;;(setq inferior-lisp-program "clisp")
 (setq slime-multiprocessing t )
 (setq inferior-lisp-program "c:\\usr\\local\\lisp\\allegro\\mlisp.exe")
@@ -105,9 +116,9 @@ is run).
   (interactive)
   (let ((result '()))
     (while 
-     (not (= start end ))
-     (setq result (cons start result))
-     (setq start (+ start 1 )))
+        (not (= start end ))
+      (setq result (cons start result))
+      (setq start (+ start 1 )))
     (reverse result)))
 
 

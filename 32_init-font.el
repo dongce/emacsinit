@@ -128,6 +128,12 @@ See `cycle-font'."
 
 
 (setq font-lock-maximum-size nil)
+
+
+(use-package unicode-fonts
+  :config
+  (unicode-fonts-setup))
+
 ;;(setq font-lock-support-mode 'fast-lock-mode ; lazy-lock-mode jit-lock-mode
 ;;      fast-lock-cache-directories '("~/.emacs-flc"))
 

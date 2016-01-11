@@ -11,22 +11,22 @@
 ;; https://github.com/joelittlejohn/paredit-cheatsheet
 
 (use-package paredit
- ;;  "Minor mode for pseudo-structurally editing Lisp code."
-:commands paredit-mode 
+  ;;  "Minor mode for pseudo-structurally editing Lisp code."
+  :commands paredit-mode 
   )
 
 (use-package evil-paredit
   ;;"Minor mode for pseudo-structurally editing Lisp code."
-:commands evil-paredit-mode 
+  :commands evil-paredit-mode 
   )
 
 
 
 
 (use-package repl-toggle
-;; "Switch to the repl asscociated with the major mode of the
-;; current buffer. If in a repl already switch back to the buffer we
-;; came from.\(fn)"
+  ;; "Switch to the repl asscociated with the major mode of the
+  ;; current buffer. If in a repl already switch back to the buffer we
+  ;; came from.\(fn)"
   :commands rtog/activate )
 
 
@@ -36,7 +36,7 @@
 
 ;;   (add-hook 'emacs-lisp-mode-hook       
 ;;             (lambda () (turn-on-eldoc-mode) (smartparens-mode +1)  (rtog/activate) )) ;;(litable-mode t)
-  
+
 ;;   (add-hook 'lisp-mode-hook             (lambda () (turn-on-eldoc-mode) (smartparens-mode +1) ))
 
 ;;   (add-hook 'lisp-interaction-mode-hook (lambda () (turn-on-eldoc-mode) (smartparens-mode +1) ))
@@ -105,7 +105,7 @@
   ;; (replace-auto-mode-alist 'emacs-lisp-mode 'xah-elisp-mode )
   (replace-auto-mode-alist 'css-mode        'xah-css-mode )
   (replace-auto-mode-alist 'html-mode       'xah-html-mode )
-)
+  )
 
 (add-to-list 'auto-mode-alist '("\\.topic\\'"  . scheme-mode  ))  
 (add-to-list 'auto-mode-alist '("\\.vcproj\\'" . xah-html-mode))
@@ -224,7 +224,7 @@
    (let ((bn (buffer-file-name)))
      (mapcar
       (lambda ( x ) (if (not (eql nil (string-match (car x ) bn )))
-	    (eval (eval (cdr x )))))
+                        (eval (eval (cdr x )))))
       find-file-path-match-hook ))))
 
 

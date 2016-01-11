@@ -1,4 +1,5 @@
-(setq minibuffer-prompt-properties (quote (read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
+(setq minibuffer-prompt-properties
+      (quote (read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
 
 ;; http://ergoemacs.org/emacs/elisp_next_prev_user_buffer.html
 
@@ -95,3 +96,22 @@ Version 2015-10-11"
   (let (ξdir)
     (setq ξdir (ido-read-directory-name "Directory: " default-directory default-directory "MUSTMATCH"))
     (xah-find-replace-text (char-to-string 65279) "" ξdir "\\.html\\'" t t t t)))
+
+
+
+;;(setenv "ERGOEMACS_KEYBOARD_LAYOUT" "us") ; US
+
+(add-to-list 'load-path (fullpath  "../../ergoemacs/packages/"))
+(add-to-list 'load-path (fullpath  "../../ergoemacs/ergoemacs/ergoemacs-keybindings"))
+
+;;(load-file 
+;; (concat (file-name-directory (or load-file-name buffer-file-name)) "../../../ergoemacs/site-lisp/site-start.el"))
+
+;;(require 'xah_file_util)
+
+
+(require 'ergoemacs-functions)
+(global-set-key (kbd "<M-left>")  'ergoemacs-backward-open-bracket) ; Alt+←
+(global-set-key (kbd "<M-right>") 'ergoemacs-forward-close-bracket) ; Alt+→
+(global-set-key (kbd "<M-up>")    'scroll-up-command) ; 
+(global-set-key (kbd "<M-down>")  'scroll-down-command) ; 

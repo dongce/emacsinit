@@ -528,10 +528,11 @@ Version 2015-04-09"
 (define-key ctl-x-r-map "p" 'copy-rectangle-to-clipboard )
 
 
-(with-package*
-  (zygospore)
+(use-package zygospore
+  :config
   (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows))
 
 
-(require 'helm-descbinds)
-(helm-descbinds-mode)
+(use-package helm-descbinds
+  :config
+  (helm-descbinds-mode))
