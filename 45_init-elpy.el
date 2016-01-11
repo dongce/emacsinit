@@ -154,11 +154,15 @@
 ;;deprecated;;(pymacs-load "pyutil" "pyutil-")
 ;;deprecated;;)
 
-(with-package imenu-tree )
+(use-package imenu-tree )
 
 ;;; _OUTLINE 
-(require 'outline-magic)
-(define-key outline-minor-mode-map [S-tab]    'outline-cycle)
+(use-package outline-magic
+  :config
+  (w32-unix-eval
+   ((define-key outline-minor-mode-map [S-tab] 'outline-cycle))
+   ((define-key outline-minor-mode-map [(backtab)]'outline-cycle))))
+
 ;; (with-package* (outshine)
 ;;   (add-hook  'outline-minor-mode-hook 'outshine-hook-function))
 ;; 문서형 프로그래밍에 유리 

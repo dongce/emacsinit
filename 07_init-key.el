@@ -476,7 +476,9 @@ Version 2015-04-09"
 (global-set-key "\C-c)"  (aif (insert-char ?\) 1 )))
 (global-set-key "\C-c\\" (aif (insert-char ?\| 1 )))
 (global-set-key "\C-c-"  (aif (insert-char ?\- 1 )))
-(global-set-key "\C-\\"  (aif (insert-char ?\| 1 )))
+
+(if (not (eq system-uses-terminfo t))
+    (global-set-key "\C-\\"  (aif (insert-char ?\| 1 ))))
 ;;deprecated-smartparen;;(global-set-key (kbd "C-{")  (aif (insert-char ?\{ 1 )))
 ;;deprecated-smartparen;;(global-set-key (kbd "C-}")  (aif (insert-char ?\} 1 )))
 ;;deprecated-smartparen;;(global-set-key (kbd "C-(")  (aif (insert-char ?\( 1 )))
@@ -619,6 +621,4 @@ Version 2015-04-09"
                 ;;use-comint;;((eq gud-minor-mode 'gdbmi)
                 ;;use-comint;; (gud-call (gdb-gud-context-command "-exec-interrupt")))
                 (t
-                 (comint-interrupt-subjob))))))
-
-)
+                 (comint-interrupt-subjob)))))))
