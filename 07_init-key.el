@@ -536,3 +536,89 @@ Version 2015-04-09"
 (use-package helm-descbinds
   :config
   (helm-descbinds-mode))
+
+
+
+
+(use-package proced
+  :config
+ (defun proced-gdb ()
+   (interactive)
+   (let ((pid (proced-pid-at-point)))
+     ;; (gdb  (format "gdb -i=mi /proc/%d/exe %d" pid pid))))
+     (gdb  (format "/usr/bin/gdb -i=mi /proc/%d/exe %d" pid pid))))
+ (define-key proced-mode-map ";" #'proced-gdb))
+
+
+
+(use-package gdb-mi
+  :config
+  (defun gud-key ()
+    (interactive)
+    (global-set-key [f5] 'gud-cont)
+    (global-set-key [f15] 'gud-stop-subjob)
+    (global-set-key [f9] 'gud-break)
+    (global-set-key [f19] 'gud-remove)
+    (global-set-key [f10] 'gud-next)
+    (global-set-key [C-f10] 'gud-finish)
+    (global-set-key [f20] 'gud-until)
+    (global-set-key [f11] 'gud-step)
+    (global-set-key [f12] 'gdb-restore-windows)
+    )
+
+
+  (define-key gud-minor-mode-map [left-margin mouse-1]
+    'gdb-mouse-toggle-breakpoint-margin)
+  (define-key gud-minor-mode-map [left-fringe mouse-1]
+    'gdb-mouse-toggle-breakpoint-fringe)
+
+
+  (defvar gud-overlay
+    (let* ((ov (make-overlay (point-min) (point-min))))
+      (overlay-put ov 'face 'dvc-highlight );;secondary-selection 
+      ov)
+    "Overlay variable for GUD highlighting.")
+
+  (defadvice gud-display-line (after my-gud-highlight act)
+    "Highlight current line."
+    (let* ((ov gud-overlay)
+           (bf (gud-find-file true-file)))
+      (save-excursion
+        (set-buffer bf)
+        (move-overlay ov (line-beginning-position) (line-end-position)
+                      (current-buffer)))))
+
+  (defun gud-kill-buffer ()
+    (if (eq major-mode 'gud-mode)
+        (delete-overlay gud-overlay)))
+
+  (add-hook 'kill-buffer-hook 'gud-kill-buffer)
+  
+
+  ;; (defadvice pop-to-buffer (before cancel-other-window first)
+  ;;   (ad-set-arg 1 nil))
+
+  ;; (ad-activate 'pop-to-buffer)
+
+
+  (defun gdb-inferior-filter (proc string)
+    ;;(unless (string-equal string "")
+    ;;  (gdb-display-buffer (gdb-get-buffer-create 'gdb-inferior-io)))
+    (with-current-buffer (gdb-get-buffer-create 'gdb-inferior-io)
+      (comint-output-filter proc string)))
+
+
+  (if (not gdb-non-stop-setting)
+      (defun gud-stop-subjob ()
+        (interactive)
+        (with-current-buffer gud-comint-buffer
+          (cond ((string-equal gud-target-name "emacs")
+                 (comint-stop-subjob))
+                ((eq gud-minor-mode 'jdb)
+                 (gud-call "suspend"))
+                ;;use-comint;;((eq gud-minor-mode 'gdbmi)
+                ;;use-comint;; (gud-call (gdb-gud-context-command "-exec-interrupt")))
+                (t
+                 (comint-interrupt-subjob))))))
+
+)

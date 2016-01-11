@@ -357,3 +357,68 @@
 ;;           header-line-format which-func-header-line-format)))
 
 
+
+
+
+
+
+(with-package*
+ (eval-in-repl
+
+  eval-in-repl-ielm
+  ;; eval-in-repl-slime
+  eval-in-repl-scheme
+  eval-in-repl-python
+  )
+
+ (defun eval-dwim ()
+   (interactive)
+   (case major-mode
+     ( (emacs-lisp-mode lisp-interaction-mode Info-mode-map)  (eir-eval-in-ielm) )
+     ( (slime-mode)  (eir-eval-in-slime)  )
+     ( (scheme-mode) (eir-eval-in-scheme)  )
+     ( (python-mode) (eir-eval-in-python)  ))))
+
+
+(use-package geiser
+  :config
+  (defun geiser-autodoc--autodoc (path &optional signs)
+    (ignore-errors 
+      (let ((signs (or signs (geiser-autodoc--get-signatures (mapcar 'car path))))
+            (p (car path))
+            (s))
+        (while (and p (not s))
+          (unless (setq s (cdr (assoc (car p) signs)))
+            (setq p (car path))
+            (setq path (cdr path))))
+        (when s (geiser-autodoc--str p s))))
+    ;; (mode-line-color-update)
+    )
+  )
+
+
+(use-package emamux
+  :config
+  (defun emamux:read-dwim (prompt )
+    (let ((cmd (read-shell-command prompt 
+                                   (if (region-active-p)
+                                       (s-trim (buffer-substring-no-properties (region-beginning) (region-end)))
+                                     (substring-no-properties (car kill-ring))
+                                     ))))
+      (setq emamux:last-command cmd)
+      cmd))
+
+  (defun emamux:send-dwim ()
+    "Send command to target-session of tmux"
+    (interactive)
+    (emamux:check-tmux-running)
+    (condition-case nil
+        (progn
+          (if (or current-prefix-arg (not (emamux:set-parameters-p)))
+              (emamux:set-parameters))
+          (let* ((target (emamux:target-session))
+                 (prompt (format "Command [Send to (%s)]: " target))
+                 (input  (emamux:read-dwim prompt )))
+            (emamux:reset-prompt target)
+            (emamux:send-keys input)))
+      (quit (emamux:unset-parameters)))))

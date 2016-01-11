@@ -224,7 +224,6 @@
     (evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
     (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first))
 
-  (evil-mode 1)
 
   ;;deprecated;;(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
   (evil-set-toggle-key "<pause>")
@@ -610,14 +609,23 @@
 
 (use-package wgrep
   :config
-  (evil-declare-key 'motion occur-mode-map (kbd "<return>")   'occur-goto-occurrence-recenter)
-  (evil-declare-key 'motion occur-mode-map (kbd "<S-return>") 'occur-display-occurrence-recenter)
+
+  (w32-unix-eval
+   ((evil-declare-key 'motion occur-mode-map (kbd "<return>")   'occur-goto-occurrence-recenter)
+    (evil-declare-key 'motion grep-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
+    (evil-declare-key 'motion occur-mode-map (kbd "<S-return>") 'occur-display-occurrence-recenter)
+    (evil-declare-key 'motion grep-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter)
+    (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
+    (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter))
+   ((evil-declare-key 'motion occur-mode-map (kbd "RET")   'occur-goto-occurrence-recenter)
+    (evil-declare-key 'motion grep-mode-map (kbd "RET") 'grep-goto-occurrence-recenter)
+    (evil-declare-key 'motion occur-mode-map (kbd "<S-RET>") 'occur-display-occurrence-recenter)
+    (evil-declare-key 'motion grep-mode-map (kbd "<S-RET>") 'grep-display-occurrence-recenter)
+    (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "RET") 'grep-goto-occurrence-recenter)
+    (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<S-RET>") 'grep-display-occurrence-recenter)))
+
   (evil-declare-key 'motion occur-mode-map "e" 'occur-edit-mode)
   (evil-declare-key 'motion occur-edit-mode-map "e" 'occur-cease-edit)
-  (evil-declare-key 'motion grep-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
-  (evil-declare-key 'motion grep-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter)
-  (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
-  (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter)
   (evil-declare-key 'motion grep-mode-map "e" 'wgrep-change-to-wgrep-mode)
   (evil-declare-key 'motion grep-mode-map "w" 'wgrep-save-all-buffers)
   ;;notuse;;(evil-declare-key 'motion ack-and-a-half-mode-map ",e" 'wgrep-change-to-wgrep-mode)
@@ -791,7 +799,6 @@
 ;;     (evil-define-key 'emacs magit-mode-map "k" 'magit-goto-previous-section)
 ;;     (evil-define-key 'emacs magit-mode-map "K" 'magit-discard-item))) 
 
-(require 'evil-magit)
 
 (use-package evil-visualstar
   :config
@@ -837,5 +844,8 @@
   )
 
 
+(use-package evil-magit
+  :config
+  (evil-mode 1))
 
 

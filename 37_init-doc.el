@@ -51,7 +51,16 @@
     c:/usr/local/swipl/xpce/man
     c:/usr/local/swipl/xpce/prolog/lib/man
     ,(intern ( fullpath "../../global/share/man/"))
-    )))
+    ,(intern ( fullpath "../../man-pages/"))
+/usr/local/misctools/default/share/man
+/usr/local/emacs/default/share/man
+/usr/local/guile/default/share/man
+/usr/local/git/default/share/man
+/usr/local/git/mandoc
+/usr/local/python27/default/share/man
+/usr/local/subversion/default/share/man
+/usr/local/tcpreplay/default/share/man
+  )))
 
 
 (setq 
@@ -62,7 +71,15 @@
   (fullpath "../../mumailindexer/share/info")
   (fullpath "../../global/share/info")
   (format "%s/%s" (getenv "GUILE_HOME") "/share/info" )
-  ))
+  "/usr/local/misctools/default/share/info"
+"/usr/local/emacs/default/share/info"
+"/usr/local/guile/default/share/info"
+"/usr/local/git/default/share/info"
+"/usr/local/python27/default/share/info"
+"/usr/local/subversion/default/share/info"
+"/usr/local/tcpreplay/default/share/info"
+))
+
 
 
 
