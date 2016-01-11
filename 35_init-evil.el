@@ -208,7 +208,7 @@
   (global-evil-surround-mode 1)
   ;;deprecated;;(evilnc-default-hotkeys)
 
-  (use-package 'dired
+  (use-package dired
     :config
     
 ;;; Dired
