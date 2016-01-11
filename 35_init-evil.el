@@ -1,18 +1,18 @@
 ;; -*- coding: utf-8; -*-
 ;; http://d.hatena.ne.jp/tarao/20130304/evil_config
-(require 'evil-nerd-commenter)
+
 (with-package*  
-  (evil-leader evil-org evil-nerd-commenter evil projectile owdriver geiser-mode flycheck)
+  (evil-leader evil-org evil-nerd-commenter evil projectile  geiser-mode flycheck)
   
-  (owdriver-define-command scroll-up               t)
-  (owdriver-define-command scroll-down             t)
-  (owdriver-define-command move-beginning-of-line  t)
-  (owdriver-define-command move-end-of-line        t)
-  (owdriver-define-command beginning-of-buffer     t)
-  (owdriver-define-command end-of-buffer           t)
-  (owdriver-define-command isearch-forward         t (isearch-forward))
-  (owdriver-define-command isearch-backward        t (isearch-backward))
-  (owdriver-define-command set-mark-command        t)
+  ;; (owdriver-define-command scroll-up               t)
+  ;; (owdriver-define-command scroll-down             t)
+  ;; (owdriver-define-command move-beginning-of-line  t)
+  ;; (owdriver-define-command move-end-of-line        t)
+  ;; (owdriver-define-command beginning-of-buffer     t)
+  ;; (owdriver-define-command end-of-buffer           t)
+  ;; (owdriver-define-command isearch-forward         t (isearch-forward))
+  ;; (owdriver-define-command isearch-backward        t (isearch-backward))
+  ;; (owdriver-define-command set-mark-command        t)
 
 
 
@@ -41,13 +41,6 @@
     "c" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
     "O" 'win-switch-next-window
     ;; "O" (lambda (multi) (interactive "P") (if multi  (call-interactively 'multi-occur-in-this-mode) (call-interactively 'occur))  (other-window 1)) 
-    "`o" #'owdriver-next-window
-    "`J" #'owdriver-do-scroll-up
-    "`K" #'owdriver-do-scroll-down
-    "`s" #'owdriver-do-isearch-forward
-    "`r" #'owdriver-do-isearch-backward
-    "`<" #'owdriver-do-beginning-of-buffer
-    "`>" #'owdriver-do-end-of-buffer
     "]" 'exit-recursive-edit
     "v" 'evil-scroll-down
     "V" 'evil-scroll-up
@@ -384,6 +377,28 @@
          "k" 'evil-previous-line
          "RET" 'ibuffer-visit-buffer))))
 
+(if (not  (eq window-system 'w32))
+    (use-package owdriver
+      :config
+      (owdriver-define-command scroll-up               t)
+      (owdriver-define-command scroll-down             t)
+      (owdriver-define-command move-beginning-of-line  t)
+      (owdriver-define-command move-end-of-line        t)
+      (owdriver-define-command beginning-of-buffer     t)
+      (owdriver-define-command end-of-buffer           t)
+      (owdriver-define-command isearch-forward         t (isearch-forward))
+      (owdriver-define-command isearch-backward        t (isearch-backward))
+      (owdriver-define-command set-mark-command        t)
+
+      (evil-leader/set-key 
+
+        "`o" #'owdriver-next-window
+        "`J" #'owdriver-do-scroll-up
+        "`K" #'owdriver-do-scroll-down
+        "`s" #'owdriver-do-isearch-forward
+        "`r" #'owdriver-do-isearch-backward
+        "`<" #'owdriver-do-beginning-of-buffer
+        "`>" #'owdriver-do-end-of-buffer)))
 
 
 ;;;* vim keys -  http://www.tuxfiles.org/linuxhelp/vimcheat.html  
