@@ -120,6 +120,7 @@
 (add-to-list 'auto-mode-alist '("\\.text*"     . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md*"       . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.dlog\\'"   . scheme-mode  ))
+(add-to-list 'auto-mode-alist '("\\.mak\\'"    . makefile-mode  ))
 ;; ("vxWorks*" . hexl-mode)                     )
 
 
