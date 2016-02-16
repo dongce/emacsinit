@@ -78,42 +78,50 @@ See `cycle-font'."
 ;;   (dynamic-fonts-setup))
 
 
+(defvar fontsize 15)
+
+
+
 (let ((defaultfont (find-if 
                     (lambda (x) (font-utils-exists-p x)) 
                     '(
-                      "Bitstream Vera Sans Mono-11"
-                      "DejaVu Sans Mono-11"
-                      "Consolas-11"
-                      "Inconsolata-11"
-                      "Source Code Pro-10"
-                      "Menlo-10"
+                      "Bitstream Vera Sans Mono"
+                      "DejaVu Sans Mono"
+                      "Consolas"
+                      "Inconsolata"
+                      "Source Code Pro"
+                      "Menlo"
                       ))))
   (if (stringp  defaultfont)
-      
-      ;; (set-fontset-font "fontset-default" 'latin (font-spec :name defaultfont :size 15) )
-      (set-face-font 'default defaultfont)
-    ;; (set-face-attribute 'default nil :family defaultfont)
-
-    ))
+      (set-fontset-font "fontset-default" 'latin (font-spec :name defaultfont :size fontsize) )))
 
 
-(let ((defaultfont (find-if 
+(let ((symbolfont (find-if 
                     (lambda (x) (font-utils-exists-p x)) 
                     '( "StixGeneral"))))
-  (if (stringp  defaultfont) 
-      (progn 
-        (set-fontset-font "fontset-default" 'symbol (font-spec :name defaultfont :size 15) )
-        (set-fontset-font "fontset-default" 'mathematical (font-spec :name defaultfont :size 15) )
-        (set-fontset-font "fontset-default" '(9089 . 9090) (font-spec :name defaultfont :size 15) nil 'prepend))))
+  (if (stringp  symbolfont) 
+      (dolist (x '(symbol greek mathematical (9089 . 9090)))
+       (set-fontset-font "fontset-default" x (font-spec :name symbolfont :size fontsize))))) 
 
-(let ((defaultfont (find-if 
+
+(let ((hangulfont (find-if 
                     (lambda (x) (font-utils-exists-p x)) 
                     '( "맑은 고딕" "돋움체" "나눔고딕코딩"))))
-  (if (stringp  defaultfont) 
+  (if (stringp  hangulfont) 
       (progn 
-        (set-fontset-font "fontset-default" 'hangul (cons defaultfont  "unicode-bmp") )
-        (set-fontset-font "fontset-default" '(8251 . 8252) (cons defaultfont  "unicode-bmp") )
-        (set-fontset-font "fontset-default" '(61548 . 61549) (cons defaultfont  "unicode-bmp") ))))
+        (set-fontset-font "fontset-default" 'hangul (cons hangulfont  "unicode-bmp") )
+        (set-fontset-font "fontset-default" '(8251 . 8252) (cons hangulfont  "unicode-bmp") )
+        (set-fontset-font "fontset-default" '(61548 . 61549) (cons hangulfont  "unicode-bmp") ))))
+
+(let ((fallbackfont (find-if 
+                    (lambda (x) (font-utils-exists-p x)) 
+                    '( "Symbola" "StixGeneral"))))
+  (if (stringp  fallbackfont) 
+      (set-fontset-font "fontset-default" nil (font-spec :name fallbackfont :size fontsize))))
+
+
+;; https://www.emacswiki.org/emacs/FontSets
+(set-face-font 'default "fontset-default")
 
 
 
@@ -126,13 +134,9 @@ See `cycle-font'."
    (t . t)
    ))
 
-
-(setq font-lock-maximum-size nil)
-
-
-(use-package unicode-fonts
-  :config
-  (unicode-fonts-setup))
+;; (use-package unicode-fonts
+;;   :config
+;;   (unicode-fonts-setup))
 
 ;;(setq font-lock-support-mode 'fast-lock-mode ; lazy-lock-mode jit-lock-mode
 ;;      fast-lock-cache-directories '("~/.emacs-flc"))
@@ -152,3 +156,30 @@ See `cycle-font'."
 
 
 
+;; https://en.wikipedia.org/wiki/Unicode_block
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Modifying-Fontsets.html
+
+
+;;; 22.15 Modifying Fontsets
+;;; 
+;;; Fontsets do not always have to be created from scratch. If only minor changes are required it may be easier to modify an existing fontset. Modifying ‘fontset-default’ will also affect other fontsets that use it as a fallback, so can be an effective way of fixing problems with the fonts that Emacs chooses for a particular script.
+;;; 
+;;; Fontsets can be modified using the function set-fontset-font, specifying a character, a charset, a script, or a range of characters to modify the font for, and a font specification for the font to be used. Some examples are:
+;;; 
+;;; ;; Use Liberation Mono for latin-3 charset.
+;;; (set-fontset-font "fontset-default" 'iso-8859-3
+;;;                   "Liberation Mono")
+;;; 
+;;; ;; Prefer a big5 font for han characters
+;;; (set-fontset-font "fontset-default"
+;;;                   'han (font-spec :registry "big5")
+;;;                   nil 'prepend)
+;;; 
+;;; ;; Use DejaVu Sans Mono as a fallback in fontset-startup
+;;; ;; before resorting to fontset-default.
+;;; (set-fontset-font "fontset-startup" nil "DejaVu Sans Mono"
+;;;                   nil 'append)
+;;; 
+;;; ;; Use MyPrivateFont for the Unicode private use area.
+;;; (set-fontset-font "fontset-default"  '(#xe000 . #xf8ff)
+;;;                   "MyPrivateFont")

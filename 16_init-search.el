@@ -300,12 +300,12 @@ See also `multi-occur'."
         (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
         (isearch-forward regexp-p no-recursive-edit)))))
 
-(use-package company
-  :config
-  (add-hook 'after-init-hook (lambda () (global-company-mode '(not gud-mode))))
-  (delete 'company-semantic company-backends)
-  (define-key c-mode-map    (kbd "<backtab>"  ) 'company-complete)
-  (define-key c++-mode-map  (kbd "<backtab>"  ) 'company-complete))
+;; (use-package company
+;;   :config
+;;   (add-hook 'after-init-hook (lambda () (global-company-mode '(not gud-mode))))
+;;   (delete 'company-semantic company-backends)
+;;   (define-key c-mode-map    (kbd "<backtab>"  ) 'company-complete)
+;;   (define-key c++-mode-map  (kbd "<backtab>"  ) 'company-complete))
 
 
 (helm-flx-mode +1)

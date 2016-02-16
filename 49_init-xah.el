@@ -110,12 +110,17 @@ Version 2015-10-11"
 ;;(require 'xah_file_util)
 
 
-(require 'ergoemacs-functions)
-(global-set-key (kbd "<M-left>")  'ergoemacs-backward-open-bracket) ; Alt+←
-(global-set-key (kbd "<M-right>") 'ergoemacs-forward-close-bracket) ; Alt+→
-(global-set-key (kbd "<M-up>")    'scroll-up-command) ; 
-(global-set-key (kbd "<M-down>")  'scroll-down-command) ; 
+(use-package ergoemacs-functions
+  :config
+  (global-set-key (kbd "<M-left>")  'ergoemacs-backward-open-bracket) ; Alt+←
+  (global-set-key (kbd "<M-right>") 'ergoemacs-forward-close-bracket) ; Alt+→
+  (global-set-key (kbd "<M-up>")    'scroll-up-command) ; 
+  (global-set-key (kbd "<M-down>")  'scroll-down-command)) ; 
 
+(use-package xah-math-input
+  :config
+  (define-key xah-math-input-keymap "\C-\\"  'xah-math-input-change-to-symbol)
+  (define-key xah-math-input-keymap (kbd "S-SPC") 'toggle-korean-input-method))
 
 (defun xah-search-current-word ()
   "Call `isearch' on current word or text selection.

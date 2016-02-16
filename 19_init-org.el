@@ -17,11 +17,6 @@
 (setq org-export-with-sub-superscripts nil )
 ;; capture 를 사용한다. 
 
-(if (not (version<= "24.3" emacs-version ));;deprecatedat 24.3
-    (org-remember-insinuate))              ;;deprecatedat 24.3
-
-
-
 (setq org-log-done t)
 
 (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
@@ -499,3 +494,22 @@ USAGE:  (org-get-entries-fn '(6 1 2015) '(6 30 2015))"
 
 (use-package os-fs-tree :commands org-fs-tree-dump )
 
+
+(defun my/save-all-agenda-buffers ()
+  "Function used to save all agenda buffers that are
+currently open, based on `org-agenda-files'."
+  (interactive)
+  (save-current-buffer
+    (dolist (buffer (buffer-list t))
+      (set-buffer buffer)
+      (when (member (buffer-file-name)
+                    (mapcar 'expand-file-name (org-agenda-files t)))
+        (save-buffer)))))
+
+;; save all the agenda files after each capture
+(add-hook 'org-capture-after-finalize-hook 'my/save-all-agenda-buffers)
+
+
+;; http://nadeausoftware.com/articles/2007/11/latency_friendly_customized_bullets_using_unicode_characters
+;; (eval-after-load 'org-bullets '(setq org-bullets-bullet-list '("✺" "✹" "✸" "✷" "✶" "✭" "✦" "■" "▲" "●" )))
+;; "✺" "✹" "✸" "✷" "✶" "✭" "✦" "■" "▲" "●"
