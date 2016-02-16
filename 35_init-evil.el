@@ -111,6 +111,7 @@
     "hk"      'winner-redo
     "hf"      'prelude-copy-file-name-to-clipboard
     "hc<SPC>" 'helm-all-mark-rings
+
     "or" 'org-capture
     "oa" 'org-agenda
     "os" 'org-store-link
@@ -119,13 +120,17 @@
     "oR" 'org-refile
     "oc" 'org-cliplink
     "od" 'org-deadline
+    "oh" 'org-schedule
     "ot" 'org-set-tags
-    "oS" 'org-attach-screenshot
+    "oT" 'org-time-stamp
+    "ov" 'org-attach-screenshot
     "om" 'orgmail
     "ob" 'org-iswitchb
+    "ox" 'winexe
 
     "oS" 'tmpscratch
     "oI" 'ibuffer
+    "ow" 'org-archive-subtree-default
     
     )
   

@@ -201,13 +201,13 @@ Assumes that the frame is only split into two."
 
 
 ;; http://ergoemacs.org/emacs/emacs_pretty_lambda.html
-;;(setq prettify-symbols-alist
-;;      '(
-;;        ("lambda" . 955) ; λ
-;;        ("->" . 8594)    ; →
-;;        ("=>" . 8658)    ; ⇒
-;;        ("map" . 8614)    ; ↦
-;;        ))
+(setq prettify-symbols-alist
+      '(
+        ("lambda" . 955) ; λ
+        ("->" . 8594)    ; →
+        ("=>" . 8658)    ; ⇒
+        ("map" . 8614)    ; ↦
+        ))
 
 
 ;;(defun my-add-pretty-lambda ()
@@ -226,9 +226,9 @@ Assumes that the frame is only split into two."
 ;;(add-hook 'tex-mode-hook 'my-add-pretty-lambda)
 
 
-(add-hook 'python-mode-hook #'(lambda () (setq prettify-symbols-alist '("map" . 8614)) (pretty-symbols-mode) ))
-(add-hook 'emacs-lisp-mode-hook 'pretty-symbols-mode)
-(add-hook 'scheme-mode-hook 'pretty-symbols-mode)
+(add-hook 'python-mode-hook 'prettify-symbols-mode )
+(add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
+(add-hook 'scheme-mode-hook 'prettify-symbols-mode)
 
 ;;(add-hook 'c++-mode-hook        'pretty-symbols-mode)
 

@@ -28,13 +28,16 @@
   (define-key dired-mode-map "\\" 'w32-dired-copy-file-name)
   (define-key dired-mode-map "["  'w32shell-cmd-here)
   ;; 윈도우에서 유용하게 사용할 수 있는 방법
-  (defun w32-dired-open-explorer ()
-    "Open a file in dired mode by explorer.exe as you double click it."
-    (interactive)
-    (let ((file-name (replace-regexp-in-string "/" "\\" (dired-get-file-for-visit) nil t)))
+  (defun w32open (fname)
+    (let ((file-name (replace-regexp-in-string "/" "\\"  fname nil t)))
       ;;(message (replace-regexp-in-string "/" "\\" file-name nil t) )
       (if (file-exists-p file-name)
           (w32-shell-execute nil  file-name nil 1))))
+  (defun w32-dired-open-explorer ()
+    "Open a file in dired mode by explorer.exe as you double click it."
+    (interactive)
+    (w32open (dired-get-file-for-visit) )
+    )
 
   (defun w32-dired-print ()
     "Open a file in dired mode by explorer.exe as you double click it."
@@ -118,7 +121,7 @@
           (tscproxy ,(fullpath  "../../conemul/conemu64.exe")
                     "-reuse -dir \"t:\\misc\\pytcpproxy\" -cmd c:\\usr\\local\\python35\\python.exe tscproxy.py")
           (msys2conemul ,(fullpath  "../../conemul/conemu64.exe")
-                        "-reuse -dir \"%home%\" -cmd e:\\msys264\\usr\\bin\\bash --login -i")
+                        "-reuse -dir \"%home%\" -cmd set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\sh --login -i")
           (conemul ,(fullpath  "../../conemul/conemu64.exe"))
           (filezilla  "t:/usr/local/FileZilla-3.7.1.1/filezilla.exe") 
           (processhacker ,(fullpath  "../../processhacker/x64/ProcessHacker.exe"))

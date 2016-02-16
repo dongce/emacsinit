@@ -1929,7 +1929,7 @@ Delimiters are paired characters:
      (remove-if-not 
       (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
                       '(
-                        V3SP.exe 
+                        V3UI.exe 
                         V3Svc.exe 
                         V3PScan.exe 
                         V3Medic.exe 

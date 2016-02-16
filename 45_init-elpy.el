@@ -134,25 +134,25 @@
  ;; (pymacs-load "ropemacs" "rope-") (rope-show-doc) 
 
 
-;;deprecated;;(with-package* (pymacs)
-;;deprecated;; (setq pymacs-python-command "python.bat")
-;;deprecated;; (add-to-list 'pymacs-load-path (fullpath  "../pymacs/"))
-;;deprecated;; (setenv  "PYTHONPATH" (fullpath  "../pymacs/"))
-;;deprecated;; ;; pyclip use external
-;;deprecated;; ;; (pymacs-load "pyclip" "pyclip-")
-;;deprecated;; ;; (defun pyclip-clip-file () 
-;;deprecated;; ;;   (interactive)
-;;deprecated;; ;;   (if (eq system-type 'windows-nt)
-;;deprecated;; ;;       (let* ((files (dired-get-marked-files))
-;;deprecated;; ;;              (files (if (null files)
-;;deprecated;; ;;                         (list (dired-current-directory) )
-;;deprecated;; ;;                       files)))
-;;deprecated;; ;;         (pyclip-mime files))))
-;;deprecated;;;;(pymacs-load "pastemacs" "paste-")
-;;deprecated;;;;(pymacs-load "emacsuuid" "uuid-")
-;;deprecated;;;;(pymacs-load "pyutil" "pyutil-")
-;;deprecated;;(pymacs-load "pyutil" "pyutil-")
-;;deprecated;;)
+(use-package pymacs
+  ;; :commands pyutil-mozlz4-decompress fbmk
+  :config
+  (setq pymacs-python-command "emacspython.bat")
+  (add-to-list 'pymacs-load-path (fullpath  "../thirdparty/pymacs/"))
+  (setenv  "PYTHONPATH" (fullpath  "../thirdparty/pymacs/"))
+  ;; pyclip use external
+  ;; (pymacs-load "pyclip" "pyclip-")
+  ;; (defun pyclip-clip-file () 
+  ;;   (interactive)
+  ;;   (if (eq system-type 'windows-nt)
+  ;;       (let* ((files (dired-get-marked-files))
+  ;;              (files (if (null files)
+  ;;                         (list (dired-current-directory) )
+  ;;                       files)))
+  ;;         (pyclip-mime files))))
+  ;;(pymacs-load "pastemacs" "paste-")
+  ;;(pymacs-load "emacsuuid" "uuid-")
+  (pymacs-load "pyutil" "pyutil-"))
 
 (use-package imenu-tree )
 
