@@ -1,6 +1,8 @@
 ;; -*- coding: utf-8; -*-
 ;; http://d.hatena.ne.jp/tarao/20130304/evil_config
 
+
+
 (with-package*  
   (evil-leader evil-org evil-nerd-commenter evil projectile  geiser-mode flycheck)
   
@@ -19,7 +21,18 @@
   (global-evil-leader-mode) 
 
 
+  (defun evil-replace-word-selection()
+    (interactive)
+    (if (use-region-p)
+        (let (
+              (selection (buffer-substring-no-properties (region-beginning) (region-end))))
+          (if (= (length selection) 0)
+              (message "empty string")
+            (evil-ex (concat "'<,'>s/" selection "/"))
+            ))
+      (evil-ex (concat "%s/" (thing-at-point 'word) "/"))))
 
+  
   (evil-leader/set-key 
     "<tab>" #'back-to-indentation
     "f" 'find-file
@@ -29,6 +42,7 @@
     "<home>" 'ibuffer
     "<end>" 'tmpscratch
     "," 'smex
+    "/" 'evil-replace-word-selection
     "s" search-map ;;'save-buffer
     "st" 'sr-speedbar-toggle
     "sl" 'loccur
@@ -134,7 +148,7 @@
     
     )
   
-    
+  
 
 
   (if (eq system-uses-terminfo t)
@@ -852,5 +866,6 @@
 (use-package evil-magit
   :config
   (evil-mode 1))
+
 
 

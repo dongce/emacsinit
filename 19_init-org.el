@@ -513,3 +513,11 @@ currently open, based on `org-agenda-files'."
 ;; http://nadeausoftware.com/articles/2007/11/latency_friendly_customized_bullets_using_unicode_characters
 ;; (eval-after-load 'org-bullets '(setq org-bullets-bullet-list '("✺" "✹" "✸" "✷" "✶" "✭" "✦" "■" "▲" "●" )))
 ;; "✺" "✹" "✸" "✷" "✶" "✭" "✦" "■" "▲" "●"
+
+
+;; (use-package org-bullets
+;;   :config
+;;   (setq org-bullets-bullet-list '( "✸" "✷" "✶" "★"  "☆" "⚝" "✦" "■" "▲" "●" ))
+;; ;; "✺" "✹"
+;;   )
+
