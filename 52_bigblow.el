@@ -584,20 +584,6 @@ Version 2015-06-12"
     (write-file "" t)
     ))
 
-
-
-(lambda (x)
-
-  `(,(car x) ,(cadr x ) agenda ""
-   ((org-agenda-entry-types '(:deadline))
-    ;; a slower way to do the same thing
-    ;; (org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
-    (org-agenda-span ,(caddr x))
-    (org-deadline-warning-days 5)
-    ;; (org-agenda-time-grid nil)
-    )))
-
-
 (setq org-agenda-custom-commands
       `(
 
