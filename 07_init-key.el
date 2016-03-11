@@ -343,8 +343,8 @@ should be a list of keys that will be bound globally to
 (global-set-key [f6] 'ff-find-other-file )
 (global-set-key [f7] 'isearch-forward-regexp ) 
 (global-set-key [f8] 'isearch-backward-regexp )
-(define-key esc-map [f7] 'isearch-forward )
-(define-key esc-map [f8] 'isearch-backward ) 
+(global-set-key [S-f7] 'isearch-forward )
+(global-set-key [S-f8] 'isearch-backward ) 
 (define-key isearch-mode-map [f7] 'isearch-repeat-forward ) 
 (define-key isearch-mode-map [f8] 'isearch-repeat-backward )
 (global-set-key [f5] 'repeat )
@@ -353,6 +353,19 @@ should be a list of keys that will be bound globally to
 (global-set-key (kbd "<M-return>") 'imenu )
 
 
+
+
+(defun endless/isearch-symbol-with-prefix (p)
+  "Like isearch, unless prefix argument is provided.
+With a prefix argument P, isearch for the symbol at point."
+  (interactive "P")
+  (let ((current-prefix-arg nil))
+    (call-interactively
+     (if p #'isearch-forward
+       #'isearch-forward-symbol-at-point))))
+
+(global-set-key [remap isearch-forward]
+                #'endless/isearch-symbol-with-prefix)
 
 (global-set-key [C-M-down] 'set-mark-command)
 

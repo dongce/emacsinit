@@ -122,7 +122,7 @@
                     "-reuse -dir \"t:\\misc\\pytcpproxy\" -cmd c:\\usr\\local\\python35\\python.exe tscproxy.py")
           (msys2conemul ,(fullpath  "../../conemul/conemu64.exe")
                         "-reuse -dir \"%home%\" -cmd set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\sh --login -i")
-          (conemul ,(fullpath  "../../conemul/conemu64.exe"))
+          (conemul ,(fullpath  "../../conemul/conemu64.exe") "-reuse")
           (filezilla  "t:/usr/local/FileZilla-3.7.1.1/filezilla.exe") 
           (processhacker ,(fullpath  "../../processhacker/x64/ProcessHacker.exe"))
           (processexplorer ,(fullpath  "../../processhacker/procexp.exe"))

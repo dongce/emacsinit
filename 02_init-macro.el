@@ -2307,7 +2307,7 @@ Requires ImageMagick shell tool.
         (apply
          #'async-start-process  ;;impossible;;-reuse-buffer 
          "clip-file" 
-         "python.exe"
+         "c:/usr/local/python35/python.exe"
          (lambda (p) (message "파일복사 완료"))
          pyclip
          files)

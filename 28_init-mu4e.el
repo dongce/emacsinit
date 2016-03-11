@@ -48,7 +48,7 @@
 
 
   (defun mu4e-filename (msg)
-    (decode-coding-string (string-as-unibyte (mu4e-message-field msg :path)) 'cp949))
+    (decode-coding-string (string-as-unibyte (mu4e-message-field msg :path)) 'utf-8))
 
   (defun copy-mu4e-header ()
     (interactive)
@@ -393,9 +393,27 @@ If NO-CONFIRMATION is non-nil, don't ask user for confirmation."
   )
 
 
+(use-package helm-mu
+  :config 
+  (defvar mucontacts-source
+    (helm-build-in-buffer-source "mu를 이용하여 메일주소를 검색합니다."
+      :data #'helm-mu-contacts-init
+      :filtered-candidate-transformer #'helm-mu-contacts-transformer
+      :fuzzy-match nil
+      :action '(("메일주소를 가져옵니다. " .
+                 (lambda (_candidate)
+                   (insert
+                    (s-join "," (mapcar #'first (mapcar #'split-string (helm-marked-candidates)))))))
+                )))
 
+  (defun mucontacts ()
+    "Search for contacts."
+    (interactive)
+    (helm :sources 'mucontacts-source
+          :buffer "*helm mu contacts*")))
 
-
+;;; mu db 위치
+;;; %HOME%/.mu
   
 ;;; index 순서 
 ;;mu index -m f:/single-repo
