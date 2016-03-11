@@ -48,7 +48,7 @@
 
 
   (defun mu4e-filename (msg)
-    (decode-coding-string (string-as-unibyte (mu4e-message-field msg :path)) 'cp949))
+    (decode-coding-string (string-as-unibyte (mu4e-message-field msg :path)) 'utf-8))
 
   (defun copy-mu4e-header ()
     (interactive)

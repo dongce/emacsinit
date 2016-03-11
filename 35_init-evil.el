@@ -41,6 +41,10 @@
     ;; "j" 'tmpscratch
     "<home>" 'ibuffer
     "<end>" 'tmpscratch
+
+    "<prior>" 'beginning-of-defun
+    "<next>" 'end-of-defun
+    
     "," 'smex
     "/" 'evil-replace-word-selection
     "s" search-map ;;'save-buffer

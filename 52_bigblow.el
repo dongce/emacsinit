@@ -73,7 +73,7 @@
         (next-line)
         (org~mu4e-mime-switch-headers-or-body)
         (narrow-to-region (point) (point))
-        (insert-line "#+TITLE: 무제")
+        ;; (insert-line "#+TITLE: 무제")
         (insert-line "#+OPTIONS: toc:nil num:nil p:t ^:{} <:t \\n:t H:6")
         (insert-line "#+STARTUP: showeverything")
         (insert-line "#+HTML_HEAD_EXTRA: <script type=\"text/javascript\"> var HS_SHOW_ALL_OPEN_DONE_TREES = false; </script> ")
@@ -88,19 +88,20 @@
 (defun orgmail ()
   "DOCSTRING"
   (interactive )
-  (let* ((content
-         (if (region-active-p)
-             (buffer-substring-no-properties (region-beginning) (region-end))
-           (buffer-substring-no-properties (point-min) (point-max)))
-         )
-         (proptitle (car (plist-get (org-export-get-environment ) ':title)))
-         (title
-          (if (stringp proptitle)
-              (substring-no-properties proptitle)
-            nil
-            ))
-         (subregion (region-active-p))
-         )
+  (save-excursion
+    (save-restriction
+      (if (region-active-p)
+          (narrow-to-region (region-beginning) (region-end))
+        (progn
+          (org-back-to-heading)
+          (narrow-to-region (point ) (org-end-of-subtree ))))
+      (goto-char (point-min))
+      (let* ((content (buffer-substring-no-properties (point-min) (point-max)))
+             (proptitle (car (plist-get (org-export-get-environment ) ':title)))
+             (title
+              (if (stringp proptitle)
+                  (substring-no-properties proptitle)
+                (if (derived-mode-p 'org-mode) (nth 4 (org-heading-components)) "무제"))))
     (mu4e-compose-new)
     (save-excursion
       (save-restriction
@@ -115,15 +116,15 @@
         (message-goto-body)
         (org~mu4e-mime-switch-headers-or-body)
         (narrow-to-region (point) (point))
-        (if (and  title subregion)
-            (insert-line (format  "#+TITLE: %s" title))
-          (if (not title ) ( insert-line "#+TITLE: 무제"  ))
-          )
+        ;; (if (and  title subregion)
+        ;;     (insert-line (format  "#+TITLE: %s" title))
+        ;;   (if (not title ) ( insert-line "#+TITLE: 무제"  ))
+        ;;   )
         (insert-line "#+OPTIONS: toc:nil num:nil p:t ^:{} <:t \\n:t H:6")
         (insert-line "#+STARTUP: showeverything")
         (insert-line "#+HTML_HEAD_EXTRA: <script type=\"text/javascript\"> var HS_SHOW_ALL_OPEN_DONE_TREES = false; </script> ")
         (insert-line content)
-        ))))
+        ))))))
 
 
 (require 'xah-replace-pairs)
