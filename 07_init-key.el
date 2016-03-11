@@ -547,8 +547,8 @@ Version 2015-04-09"
  (defun proced-gdb ()
    (interactive)
    (let ((pid (proced-pid-at-point)))
-     ;; (gdb  (format "gdb -i=mi /proc/%d/exe %d" pid pid))))
-     (gdb  (format "/usr/bin/gdb -i=mi /proc/%d/exe %d" pid pid))))
+     (gdb  (format "gdb -i=mi /proc/%d/exe %d" pid pid))))
+     ;; (gdb  (format "/usr/bin/gdb -i=mi /proc/%d/exe %d" pid pid))))
  (define-key proced-mode-map ";" #'proced-gdb))
 
 
