@@ -96,6 +96,8 @@
     "k" 'kill-buffer
     ;; projectile -----------------------------------------------------------------
     "p"  (cdar (cddr  (cadr  projectile-mode-map)))
+    "pw"  'purpose-load-window-layout
+    "pW"  'purpose-save-window-layout
     "pE"  'project-explorer-open
     "pC"  'project-explorer-close
     ;;deprecated;; "pb" 'projectile-switch-to-buffer

@@ -179,8 +179,9 @@
           (pinta "c:/Program Files/Pinta/Pinta.exe")
           (putty "t:/usr/local/editor/emacsW32/iputty/putty.exe")
           (eclipsejee "t:/usr/local/eclipsejee/eclipse.exe")
+          (vs2005 "C:/usr/microsoft/vs2005/IDE/Common7/IDE/devenv.exe")
+          
           (filesplit   "t:/usr/local/filesplitter/Free-File-Splitter-v5.0.1189.exe")))
-
   (defun winexe ()
     (interactive)
     (let* ((winexe-cmdlist (cons `(gitbash  "t:/usr/local/msysgit/msys.bat" ,default-directory) static-winexe-cmdlist))

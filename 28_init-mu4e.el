@@ -412,6 +412,11 @@ If NO-CONFIRMATION is non-nil, don't ask user for confirmation."
     (helm :sources 'mucontacts-source
           :buffer "*helm mu contacts*")))
 
+(use-package evil-mu4e
+  :config
+  (evil-mu4e-init))
+
+
 ;;; mu db 위치
 ;;; %HOME%/.mu
   

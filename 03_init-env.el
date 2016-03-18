@@ -11,7 +11,7 @@
   (append-path (fullpath "../../cmdutils/"))
   (append-path (fullpath "../../xz/bin_i486"))
 
-  (append-path (concat  (getenv "GUILE_HOME") "/bin"))
+  (append-path (concat  (getenv "GUILE_HOME") "/default/bin"))
 
   (append-path  "t:/usr/texlive2013/bin/win32")
   ;; (append-path  (fullpath "../../../../python27/scripts"))

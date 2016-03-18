@@ -37,9 +37,7 @@
          )
     (goto-char min)
 
-    (if (not (equal nil (string-replace-match "\n+" name " ")))
-        (setf name (string-replace-match "\n+" name " ")))
-
+    (setf name (s-replace "\n+" " " name ))
     (setf name (s-split " " name))
     (setf args (s-split "," args))
 
