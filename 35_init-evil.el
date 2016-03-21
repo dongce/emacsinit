@@ -53,6 +53,7 @@
     "sn" 'smartscan-symbol-go-forward
     "sp" 'smartscan-symbol-go-backward
     "j" 'save-buffer
+    "J" 'save-some-buffers
     "u" #'wgrep
     ";" 'evilnc-comment-or-uncomment-lines
     "l" 'evilnc-comment-or-uncomment-to-the-line
