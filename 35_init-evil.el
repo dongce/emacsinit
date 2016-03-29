@@ -876,3 +876,71 @@
 
 
 
+;; [[file:t:/gitdir/dot-emacs/etc/hyone-key-combo.el::(defun%20evil-key-combo-define%20(state%20keymap%20key%20commands)][combo for evil]]
+
+
+
+(use-package key-combo
+  :config
+;;   (global-key-combo-mode t)
+;;   (key-combo-define evil-insert-state-map (kbd "=") '(" = " " == " "=" " === "))
+;;   (key-combo-define evil-insert-state-map (kbd "+") '(" + " "+" " += " "++"))
+;;   (key-combo-define evil-insert-state-map (kbd "-") '("-" " - " " -= " "--"))
+;;   (key-combo-define evil-insert-state-map (kbd "*") '(" * " "*" " *= "))
+;;   (key-combo-define evil-normal-state-map (kbd "/") 'key-combo-execute-orignal)
+;;   (key-combo-define evil-insert-state-map (kbd "/") '("/" " / " " /= " "/* `!!' */" "//"))
+;;   (key-combo-define evil-insert-state-map (kbd "%") '("%" " % " " %= "))
+;;   (key-combo-define evil-insert-state-map (kbd "!") '("!" " != "))
+;;   (key-combo-define evil-insert-state-map (kbd "&") '(" && " "&"))
+;;   (key-combo-define evil-insert-state-map (kbd "|") '(" || " "|"))
+;;   (key-combo-define evil-insert-state-map (kbd "?") '(" ? " "?"))
+;;   (key-combo-define evil-insert-state-map (kbd ",") '(", " "," ",\n"))
+;;   (key-combo-define evil-insert-state-map (kbd "{") '("{\n`!!'\n}" "{" "{`!!'}" "{}"))
+;;   (key-combo-define evil-insert-state-map (kbd "(") '("(`!!')" "(" "()"))
+;;   (key-combo-define evil-insert-state-map (kbd "[") '("[`!!']" "[" "[]"))
+;;   (key-combo-define evil-insert-state-map (kbd "<")  '(" < " " <= " " < " " << " "<<" "<`!!'>"))
+;;   (key-combo-define evil-insert-state-map (kbd ">")  '(" > " " >= " " > " " >> " ">>"))
+;;   (key-combo-define evil-insert-state-map (kbd "\"") '("\"`!!'\""  "\""  "\"\"\"`!!'\"\"\""))
+;;   (key-combo-define evil-insert-state-map (kbd ";") '(";\n" ";"))
+;;   (add-hook 'web-mode-hook (lambda()
+;;     (key-combo-define evil-insert-state-map (kbd "<")  '("<" "<`!!'>"))
+;;     (key-combo-define evil-insert-state-map (kbd "/")  '("/" "</`!!'>"))
+;;     (key-combo-define evil-insert-state-map (kbd ">")  '(">"))
+;;     (key-combo-define evil-insert-state-map (kbd "=")  '("="))
+;;     (key-combo-define evil-insert-state-map (kbd "*")  '("*"))
+;;     (key-combo-define evil-insert-state-map (kbd "!")  '("!" "<!-- `!!' -->"))
+  ;;   ))
+
+  (add-hook
+   'c++-mode-hook
+   '(lambda ()
+      (key-combo-mode t)
+      (key-combo-define evil-insert-state-map (kbd "-")  '("-" "_"))))
+  )
+
+;; (use-package key-combo
+;;   :config 
+;;   (defun evil-key-combo-define (state keymap key commands)
+;;     "key-combo-define with using evil-define-key"
+;;     ;;copy from key-chord-define
+;;     (let ((base-key (list (car (listify-key-sequence key)))))
+;;       (cond
+;;        ;;for sequence '(" = " " == ")
+;;        ((and (not (key-combo-elementp commands))
+;;              (key-combo-elementp (car-safe commands)))
+;;         (let ((seq-keys base-key));;list
+;;           (mapc '(lambda (command)
+;;                    (evil-key-combo-define state keymap (vconcat seq-keys) command)
+;;                    (setq seq-keys
+;;                          (append seq-keys base-key)))
+;;                 commands)))
+;;        (t
+;;         (unless (key-combo-elementp commands)
+;;           (error "%s is not command" commands))
+;;         (evil-define-key state keymap
+;;           (vector 'key-combo (intern (key-description key)))
+;;           (key-combo-get-command commands))
+;;         ))))
+
+  
+;;   (evil-key-combo-define 'insert c++-mode-map (kbd "-") '("-" "_")))
