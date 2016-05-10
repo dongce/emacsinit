@@ -46,6 +46,7 @@
     "<next>" 'end-of-defun
     
     "," 'smex
+    "." 'embrace-commander
     "/" 'evil-replace-word-selection
     "s" search-map ;;'save-buffer
     "st" 'sr-speedbar-toggle
@@ -71,8 +72,12 @@
     ;; "g/" 'grep-o-matic-current-directory
     "G" 'keyboard-quit
     "e" 'eval-last-sexp
-    "t" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
-    "T" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+    ;; "t" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+    ;; "T" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+    "r" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+    "R" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+
+
     "w" 'read-only-mode
     "W" 'save-some-buffers
     "a" 'winexe
@@ -780,9 +785,6 @@
 (eval-after-load "evil" '(setq expand-region-contract-fast-key "z"))
 ;;; guide-key 
 
-(use-package guide-key
-  :config
-  (guide-key-mode))
 
 ;; https://github.com/redguardtoo/evil-matchit/blob/master/README.org
 (use-package evil-matchit
@@ -867,6 +869,26 @@
   "hH" 'helm-org-headlines
   "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
   ;; "hh" 'helm-org-in-buffer-headings
+
+"gn"    'outline-next-visible-heading
+"gp"    'outline-previous-visible-heading
+"gf"    'org-forward-heading-same-level
+"gb"    'org-backward-heading-same-level
+"gu"    'outline-up-heading
+"gj"    'org-goto
+
+"nj"    'outline-next-visible-heading
+"nk"    'outline-previous-visible-heading
+"nl"    'org-forward-heading-same-level
+"nh"    'org-backward-heading-same-level
+"u"    'outline-up-heading
+"q"    'org-todo
+"<down>"    'outline-next-visible-heading
+"<up>"    'outline-previous-visible-heading
+"<right>"    'org-forward-heading-same-level
+"<left>"    'org-backward-heading-same-level
+
+
   )
 
 
@@ -874,6 +896,9 @@
   :config
   (evil-mode 1))
 
+(use-package evil-mu4e
+  :config
+  (evil-mu4e-init))
 
 
 ;; [[file:t:/gitdir/dot-emacs/etc/hyone-key-combo.el::(defun%20evil-key-combo-define%20(state%20keymap%20key%20commands)][combo for evil]]
@@ -944,3 +969,34 @@
 
   
 ;;   (evil-key-combo-define 'insert c++-mode-map (kbd "-") '("-" "_")))
+
+
+
+;; (use-package guide-key
+;;   :config
+;;   (guide-key-mode)
+;;   (defun guide-key-hook-function-for-org-mode ()
+;;     (guide-key/add-local-guide-key-sequence "C-c")
+;;     (guide-key/add-local-guide-key-sequence "C-c C-x")
+;;     (guide-key/add-local-highlight-command-regexp "org-"))
+;;   (add-hook 'org-mode-hook 'guide-key-hook-function-for-org-mode))
+
+(use-package which-key
+  :config
+  (which-key-mode)
+  ( which-key-setup-side-window-right)
+  (setq which-key-popup-type 'side-window)
+  (setq which-key-side-window-max-width 0.5)
+  )
+
+(use-package evil-extra-operator
+  :config
+  (global-evil-extra-operator-mode 1)
+  )
+
+
+(use-package evil-embrace
+  :config
+  (add-hook 'org-mode-hook 'embrace-org-mode-hook)
+  (evil-embrace-enable-evil-surround-integration)
+  )

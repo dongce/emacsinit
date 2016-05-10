@@ -195,7 +195,7 @@
 
    ;; (add-hook 'which-func-functions #'python-info-current-defun-short nil t)
 
-   (guide-key/add-local-guide-key-sequence "C-c")
+   ;; (guide-key/add-local-guide-key-sequence "C-c")
    
 
    ;;(hide-body)

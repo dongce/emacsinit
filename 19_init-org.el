@@ -21,15 +21,6 @@
 
 (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
 
-
-(defun guide-key-hook-function-for-org-mode ()
-  (guide-key/add-local-guide-key-sequence "C-c")
-  (guide-key/add-local-guide-key-sequence "C-c C-x")
-  (guide-key/add-local-highlight-command-regexp "org-"))
-
-(add-hook 'org-mode-hook 'guide-key-hook-function-for-org-mode)
-
-
 (fset 'org-insert-heading-origin 'org-insert-heading)
 (defun org-insert-heading (&optional force-heading invisible-ok)
   "Insert a new heading or item with same depth at point.
@@ -181,17 +172,6 @@ This is important for non-interactive uses of the command."
 ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
 (setq org-src-fontify-natively t)
 
-(setq org-todo-keywords
-      '((sequence "TODO" "WAITING" "STARTED" "|" "DONE" "DELEGATED")))
-
-(setq org-todo-keyword-faces
-      (quote (
-              ("TODO" :foreground "DarkGoldenRod3" :weight bold)
-              ("WAITING" :foreground "chocolate" :weight bold)
-              ("STARTED" :foreground "olive drab" :weight bold)
-              ("DELEGATED" :foreground "PaleVioletRed3" :weight bold)
-              ("DONE" :foreground "gray" :weight bold)
-              )))
 
 (setq org-log-done 'time)
 

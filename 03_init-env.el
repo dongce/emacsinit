@@ -6,6 +6,7 @@
   (setenv "GUILE_HOME"      "t:/usr/local/guile"      t )
   (setenv "PYTHONUNBUFFERED"      "x" t )
   (setenv "WORKON_HOME"      "t:/usr/local/pyvenv" t )
+  (setenv "GRAPHVIZ_DOT"      "t:/usr/local/graphviz/bin/dot.exe" t )
 
 
   (append-path (fullpath "../../cmdutils/"))
@@ -35,6 +36,8 @@
   (prepend-path  (fullpath "../../../../msysgit/libexec/git-core/"))
   (prepend-path  (fullpath "../../../../msysgit/cmd/"))
   (append-path  (fullpath "../../putty"))
+
+  (append-path  "t:/usr/local/graphviz/bin")
   (append-path  "c:/usr/local/gnupg")
   (append-path "c:/usr/local/7zip")
   (append-path  "c:/usr/local/gpg4win")

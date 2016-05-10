@@ -121,7 +121,7 @@
           (tscproxy ,(fullpath  "../../conemul/conemu64.exe")
                     "-reuse -dir \"t:\\misc\\pytcpproxy\" -cmd c:\\usr\\local\\python35\\python.exe tscproxy.py")
           (msys2conemul ,(fullpath  "../../conemul/conemu64.exe")
-                        "-reuse -dir \"%home%\" -cmd set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\sh --login -i")
+                        "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\sh --login -i")
           (conemul ,(fullpath  "../../conemul/conemu64.exe") "-reuse")
           (filezilla  "t:/usr/local/FileZilla-3.7.1.1/filezilla.exe") 
           (processhacker ,(fullpath  "../../processhacker/x64/ProcessHacker.exe"))
@@ -332,3 +332,8 @@ open and unsaved."
 (use-package hl-line+
   :config
   (add-hook 'dired-mode-hook (lambda () (interactive) (hl-line-mode t))))
+
+
+;; (use-package dired-quick-sort
+;;   :config
+;;   (dired-quick-sort-setup))
