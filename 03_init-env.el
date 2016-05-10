@@ -6,12 +6,13 @@
   (setenv "GUILE_HOME"      "t:/usr/local/guile"      t )
   (setenv "PYTHONUNBUFFERED"      "x" t )
   (setenv "WORKON_HOME"      "t:/usr/local/pyvenv" t )
+  (setenv "GRAPHVIZ_DOT"      "t:/usr/local/graphviz/bin/dot.exe" t )
 
 
   (append-path (fullpath "../../cmdutils/"))
   (append-path (fullpath "../../xz/bin_i486"))
 
-  (append-path (concat  (getenv "GUILE_HOME") "/bin"))
+  (append-path (concat  (getenv "GUILE_HOME") "/default/bin"))
 
   (append-path  "t:/usr/texlive2013/bin/win32")
   ;; (append-path  (fullpath "../../../../python27/scripts"))
@@ -35,6 +36,8 @@
   (prepend-path  (fullpath "../../../../msysgit/libexec/git-core/"))
   (prepend-path  (fullpath "../../../../msysgit/cmd/"))
   (append-path  (fullpath "../../putty"))
+
+  (append-path  "t:/usr/local/graphviz/bin")
   (append-path  "c:/usr/local/gnupg")
   (append-path "c:/usr/local/7zip")
   (append-path  "c:/usr/local/gpg4win")

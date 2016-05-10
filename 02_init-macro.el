@@ -3069,3 +3069,10 @@ buffer being killed."
 
 ;; (loop for num from 0 
 ;; for name = (format "blah-%03i" num) while (get-buffer name) finally return name))) 
+
+
+(defun copy-file-name ()
+  "Returns the extention of the buffer file"
+  (interactive)
+  (kill-new (buffer-file-name)))
+
