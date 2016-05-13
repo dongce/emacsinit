@@ -70,6 +70,8 @@
     ;; "g," 'grep-o-matic-visited-files
     ;; "g." 'grep-o-matic-repository
     ;; "g/" 'grep-o-matic-current-directory
+
+    "gl" 'goto-line
     "G" 'keyboard-quit
     "e" 'eval-last-sexp
     ;; "t" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file

@@ -361,8 +361,8 @@ With a prefix argument P, isearch for the symbol at point."
   (interactive "P")
   (let ((current-prefix-arg nil))
     (call-interactively
-     (if p #'isearch-forward
-       #'isearch-forward-symbol-at-point))))
+     (if p #'isearch-forward-symbol-at-point
+       #'isearch-forward))))
 
 (global-set-key [remap isearch-forward]
                 #'endless/isearch-symbol-with-prefix)
@@ -560,8 +560,8 @@ Version 2015-04-09"
  (defun proced-gdb ()
    (interactive)
    (let ((pid (proced-pid-at-point)))
-     (gdb  (format "gdb -i=mi /proc/%d/exe %d" pid pid))))
-     ;; (gdb  (format "/usr/bin/gdb -i=mi /proc/%d/exe %d" pid pid))))
+     ;; (gdb  (format "gdb -i=mi /proc/%d/exe %d" pid pid))))
+     (gdb  (format "/usr/bin/gdb -i=mi /proc/%d/exe %d" pid pid))))
  (define-key proced-mode-map ";" #'proced-gdb))
 
 
@@ -578,7 +578,8 @@ Version 2015-04-09"
     (global-set-key [C-f10] 'gud-finish)
     (global-set-key [f20] 'gud-until)
     (global-set-key [f11] 'gud-step)
-    (global-set-key [f12] 'gdb-restore-windows)
+    (global-set-key [f14] 'gdb-restore-windows)
+    (global-set-key [f12] 'emamux:send-dwim)
     )
 
 
