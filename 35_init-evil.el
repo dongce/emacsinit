@@ -76,8 +76,8 @@
     ;; "g," 'grep-o-matic-visited-files
     ;; "g." 'grep-o-matic-repository
     ;; "g/" 'grep-o-matic-current-directory
-    "gl" 'goto-line
     "G" 'keyboard-quit
+    ;; "gl" 'goto-line
     "e" 'eval-last-sexp
     ;; "t" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
     ;; "T" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
@@ -252,13 +252,14 @@
     (evil-add-hjkl-bindings dired-mode-map 'normal
       "J" 'dired-goto-file     ; "j"
       "K" 'dired-do-kill-lines ; "k"
-      "r" 'dired-do-redisplay  ; "l"
-      "g" 'revert-buffer
+      ;; "r" 'dired-do-redisplay  ; "l"
+      "r" 'revert-buffer
+      ;; "g" 'revert-buffer
       (kbd  "RET") 'diredp-find-file-reuse-dir-buffer
       ";" (lookup-key dired-mode-map ":")) ; ":d", ":v", ":s", ":e"
     (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
-    (evil-define-key 'normal dired-mode-map "g" 'revert-buffer)
-    (evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
+    ;;evil-extra-operator;;(evil-define-key 'normal dired-mode-map "g" 'revert-buffer)
+    ;;evil-extra-operator;;(evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
     (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first))
 
 
@@ -325,6 +326,8 @@
   (define-key evil-motion-state-map "\C-]" 'find-tag-dwim)
 
 
+  (define-key evil-visual-state-map "gl" 'goto-line)
+  (define-key evil-normal-state-map "gl" 'goto-line)
 
 
   (define-key evil-normal-state-map "zf" 'vimish-fold-toggle) 
