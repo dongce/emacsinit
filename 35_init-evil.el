@@ -33,10 +33,19 @@
       (evil-ex (concat "%s/" (thing-at-point 'word) "/"))))
 
   
-  (evil-leader/set-key 
+  (evil-leader/set-key
+    ;;left;; "j"   
+    ;;left;; "J"
     "<tab>" #'back-to-indentation
     "f" 'find-file
-    "b" 'switch-to-buffer
+    "bi" 'ido-switch-to-buffer
+    "bb" 'ivy-switch-buffer-other-window
+    "bB" 'ivy-switch-buffer
+    "bp" 'evil-prev-buffer
+    "bn" 'evil-next-buffer
+    "bs" 'save-buffer
+    "bS" 'save-some-buffers
+    "bm" 'smartwin-switch-buffer
     ;; "i" 'ibuffer
     ;; "j" 'tmpscratch
     "<home>" 'ibuffer
@@ -53,8 +62,6 @@
     "sl" 'loccur
     "sn" 'smartscan-symbol-go-forward
     "sp" 'smartscan-symbol-go-backward
-    "j" 'save-buffer
-    "J" 'save-some-buffers
     "u" #'wgrep
     ";" 'evilnc-comment-or-uncomment-lines
     "l" 'evilnc-comment-or-uncomment-to-the-line
@@ -64,22 +71,36 @@
     "]" 'exit-recursive-edit
     "v" 'evil-scroll-down
     "V" 'evil-scroll-up
-    "R" ctl-x-r-map ;;'ido-choose-from-recentf
     ;;ctrl-r problem on terminal "r" better-registers-r-map ;;better-registers-map
     ;; "gg" 'keyboard-quit
     ;; "g," 'grep-o-matic-visited-files
     ;; "g." 'grep-o-matic-repository
     ;; "g/" 'grep-o-matic-current-directory
+    "gl" 'goto-line
     "G" 'keyboard-quit
     "e" 'eval-last-sexp
     ;; "t" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
     ;; "T" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+    "n" 'purpose-load-window-layout
     "r" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+    ;; "R" ctl-x-r-map ;;'ido-choose-from-recentf
     "R" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
 
 
-    "w" 'read-only-mode
-    "W" 'save-some-buffers
+    "W" 'read-only-mode
+    "ww" 'read-only-mode
+    "wk" 'win-switch-up
+    "wj" 'win-switch-down
+    "wh" 'win-switch-left
+    "wl" 'win-switch-right
+    "w1" 'delete-other-windows
+    "w2" 'split-window-below
+    "w3" 'split-window-right
+    "w0" 'delete-window
+    "wo" 'win-switch-dispatch
+    "wd" 'delete-blank-lines
+    "ws" 'resize-window
+
     "a" 'winexe
     "+" #'evil-numbers/inc-at-pt
     "-" #'evil-numbers/dec-at-pt
@@ -138,25 +159,10 @@
     "hf"      'prelude-copy-file-name-to-clipboard
     "hc<SPC>" 'helm-all-mark-rings
 
-    "or" 'org-capture
-    "oa" 'org-agenda
-    "os" 'org-store-link
-    "oi" 'org-insert-link-global
-    "oo" 'org-open-at-point-global
-    "oR" 'org-refile
-    "oc" 'org-cliplink
-    "od" 'org-deadline
-    "oh" 'org-schedule
-    "ot" 'org-set-tags
-    "oT" 'org-time-stamp
-    "ov" 'org-attach-screenshot
     "om" 'orgmail
-    "ob" 'org-iswitchb
-    "ox" 'winexe
-
     "oS" 'tmpscratch
     "oI" 'ibuffer
-    "ow" 'org-archive-subtree-default
+    "ox" 'winexe
     
     )
   
@@ -347,65 +353,7 @@
 
 ;;;* _ EVIL ORG setting 
 ;;;** 참고 - https://github.com/cofi/dotfiles/blob/master/emacs.d/config/cofi-evil.el#L149 
-  (use-package org
-    :config
-    (evil-define-key 'normal org-mode-map
-      (kbd "RET") 'org-open-at-point
-      "za" 'org-cycle
-      "zA" 'org-shifttab
-      "zm" 'hide-body
-      "zr" 'show-all
-      "zo" 'show-subtree
-      "zO" 'show-all
-      "zc" 'hide-subtree
-      "zC" 'hide-all
-      (kbd "<kp-multiply>") 'org-insert-star
-      (kbd "M-j") 'org-shiftleft
-      (kbd "M-k") 'org-shiftright
-      (kbd "M-H") 'org-metaleft
-      (kbd "M-J") 'org-metadown
-      (kbd "M-K") 'org-metaup
-      (kbd "M-L") 'org-metaright)
-
-    (evil-define-key 'normal orgstruct-mode-map
-      (kbd "RET") 'org-open-at-point
-      "za" 'org-cycle
-      "zA" 'org-shifttab
-      "zm" 'hide-body
-      "zr" 'show-all
-      "zo" 'show-subtree
-      "zO" 'show-all
-      "zc" 'hide-subtree
-      "zC" 'hide-all
-      (kbd "M-j") 'org-shiftleft
-      (kbd "M-k") 'org-shiftright
-      (kbd "M-H") 'org-metaleft
-      (kbd "M-J") 'org-metadown
-      (kbd "M-K") 'org-metaup
-      (kbd "M-L") 'org-metaright)
-
-    (evil-define-key 'insert org-mode-map
-      (kbd "M-j") 'org-shiftleft
-      (kbd "M-k") 'org-shiftright
-      (kbd "M-H") 'org-metaleft
-      (kbd "M-J") 'org-metadown
-      (kbd "M-K") 'org-metaup
-      (kbd "M-L") 'org-metaright)
-
-    (evil-define-key 'insert orgstruct-mode-map
-      (kbd "M-j") 'org-shiftleft
-      (kbd "M-k") 'org-shiftright
-      (kbd "M-H") 'org-metaleft
-      (kbd "M-J") 'org-metadown
-      (kbd "M-K") 'org-metaup
-      (kbd "M-L") 'org-metaright)
-
-    '(progn
-       (evil-make-overriding-map ibuffer-mode-map 'normal t)
-       (evil-define-key 'normal ibuffer-mode-map
-         "j" 'evil-next-line
-         "k" 'evil-previous-line
-         "RET" 'ibuffer-visit-buffer))))
+  )
 
 (if (not  (eq window-system 'w32))
     (use-package owdriver
@@ -870,25 +818,30 @@
   "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
   ;; "hh" 'helm-org-in-buffer-headings
 
-"gn"    'outline-next-visible-heading
-"gp"    'outline-previous-visible-heading
-"gf"    'org-forward-heading-same-level
-"gb"    'org-backward-heading-same-level
-"gu"    'outline-up-heading
-"gj"    'org-goto
-
-"nj"    'outline-next-visible-heading
-"nk"    'outline-previous-visible-heading
-"nl"    'org-forward-heading-same-level
-"nh"    'org-backward-heading-same-level
-"u"    'outline-up-heading
-"q"    'org-todo
-"<down>"    'outline-next-visible-heading
-"<up>"    'outline-previous-visible-heading
-"<right>"    'org-forward-heading-same-level
-"<left>"    'org-backward-heading-same-level
+  "u"    'outline-up-heading
+  "q"    'org-todo
+  "<down>"    'outline-next-visible-heading
+  "<up>"    'outline-previous-visible-heading
+  "<right>"    'org-forward-heading-same-level
+  "<left>"    'org-backward-heading-same-level
 
 
+  "or" 'org-capture
+  "oa" 'org-agenda
+  "os" 'org-store-link
+  "oi" 'org-insert-link-global
+  "oo" 'org-open-at-point-global
+  "oR" 'org-refile
+  "oc" 'org-cliplink
+  "od" 'org-deadline
+  "oh" 'org-schedule
+  "ot" 'org-set-tags
+  "oT" 'org-time-stamp
+  "ov" 'org-attach-screenshot
+  "ob" 'org-iswitchb
+  "ow" 'org-archive-subtree-default
+  "op" 'org-link-copy-image
+  "of" 'org-link-copy-file
   )
 
 
@@ -898,6 +851,12 @@
 
 (use-package evil-mu4e
   :config
+  (mapcar 
+   (lambda (x)
+     (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-view-mode-map ,(car x) ,(cadr x ))))
+   '(("S" mu4e-view-save-attachment)
+     ("o" mu4e-view-open-attachment)
+     ("O" mu4e-view-open-attachment-emacs)))
   (evil-mu4e-init))
 
 
@@ -907,33 +866,33 @@
 
 (use-package key-combo
   :config
-;;   (global-key-combo-mode t)
-;;   (key-combo-define evil-insert-state-map (kbd "=") '(" = " " == " "=" " === "))
-;;   (key-combo-define evil-insert-state-map (kbd "+") '(" + " "+" " += " "++"))
-;;   (key-combo-define evil-insert-state-map (kbd "-") '("-" " - " " -= " "--"))
-;;   (key-combo-define evil-insert-state-map (kbd "*") '(" * " "*" " *= "))
-;;   (key-combo-define evil-normal-state-map (kbd "/") 'key-combo-execute-orignal)
-;;   (key-combo-define evil-insert-state-map (kbd "/") '("/" " / " " /= " "/* `!!' */" "//"))
-;;   (key-combo-define evil-insert-state-map (kbd "%") '("%" " % " " %= "))
-;;   (key-combo-define evil-insert-state-map (kbd "!") '("!" " != "))
-;;   (key-combo-define evil-insert-state-map (kbd "&") '(" && " "&"))
-;;   (key-combo-define evil-insert-state-map (kbd "|") '(" || " "|"))
-;;   (key-combo-define evil-insert-state-map (kbd "?") '(" ? " "?"))
-;;   (key-combo-define evil-insert-state-map (kbd ",") '(", " "," ",\n"))
-;;   (key-combo-define evil-insert-state-map (kbd "{") '("{\n`!!'\n}" "{" "{`!!'}" "{}"))
-;;   (key-combo-define evil-insert-state-map (kbd "(") '("(`!!')" "(" "()"))
-;;   (key-combo-define evil-insert-state-map (kbd "[") '("[`!!']" "[" "[]"))
-;;   (key-combo-define evil-insert-state-map (kbd "<")  '(" < " " <= " " < " " << " "<<" "<`!!'>"))
-;;   (key-combo-define evil-insert-state-map (kbd ">")  '(" > " " >= " " > " " >> " ">>"))
-;;   (key-combo-define evil-insert-state-map (kbd "\"") '("\"`!!'\""  "\""  "\"\"\"`!!'\"\"\""))
-;;   (key-combo-define evil-insert-state-map (kbd ";") '(";\n" ";"))
-;;   (add-hook 'web-mode-hook (lambda()
-;;     (key-combo-define evil-insert-state-map (kbd "<")  '("<" "<`!!'>"))
-;;     (key-combo-define evil-insert-state-map (kbd "/")  '("/" "</`!!'>"))
-;;     (key-combo-define evil-insert-state-map (kbd ">")  '(">"))
-;;     (key-combo-define evil-insert-state-map (kbd "=")  '("="))
-;;     (key-combo-define evil-insert-state-map (kbd "*")  '("*"))
-;;     (key-combo-define evil-insert-state-map (kbd "!")  '("!" "<!-- `!!' -->"))
+  ;;   (global-key-combo-mode t)
+  ;;   (key-combo-define evil-insert-state-map (kbd "=") '(" = " " == " "=" " === "))
+  ;;   (key-combo-define evil-insert-state-map (kbd "+") '(" + " "+" " += " "++"))
+  ;;   (key-combo-define evil-insert-state-map (kbd "-") '("-" " - " " -= " "--"))
+  ;;   (key-combo-define evil-insert-state-map (kbd "*") '(" * " "*" " *= "))
+  ;;   (key-combo-define evil-normal-state-map (kbd "/") 'key-combo-execute-orignal)
+  ;;   (key-combo-define evil-insert-state-map (kbd "/") '("/" " / " " /= " "/* `!!' */" "//"))
+  ;;   (key-combo-define evil-insert-state-map (kbd "%") '("%" " % " " %= "))
+  ;;   (key-combo-define evil-insert-state-map (kbd "!") '("!" " != "))
+  ;;   (key-combo-define evil-insert-state-map (kbd "&") '(" && " "&"))
+  ;;   (key-combo-define evil-insert-state-map (kbd "|") '(" || " "|"))
+  ;;   (key-combo-define evil-insert-state-map (kbd "?") '(" ? " "?"))
+  ;;   (key-combo-define evil-insert-state-map (kbd ",") '(", " "," ",\n"))
+  ;;   (key-combo-define evil-insert-state-map (kbd "{") '("{\n`!!'\n}" "{" "{`!!'}" "{}"))
+  ;;   (key-combo-define evil-insert-state-map (kbd "(") '("(`!!')" "(" "()"))
+  ;;   (key-combo-define evil-insert-state-map (kbd "[") '("[`!!']" "[" "[]"))
+  ;;   (key-combo-define evil-insert-state-map (kbd "<")  '(" < " " <= " " < " " << " "<<" "<`!!'>"))
+  ;;   (key-combo-define evil-insert-state-map (kbd ">")  '(" > " " >= " " > " " >> " ">>"))
+  ;;   (key-combo-define evil-insert-state-map (kbd "\"") '("\"`!!'\""  "\""  "\"\"\"`!!'\"\"\""))
+  ;;   (key-combo-define evil-insert-state-map (kbd ";") '(";\n" ";"))
+  ;;   (add-hook 'web-mode-hook (lambda()
+  ;;     (key-combo-define evil-insert-state-map (kbd "<")  '("<" "<`!!'>"))
+  ;;     (key-combo-define evil-insert-state-map (kbd "/")  '("/" "</`!!'>"))
+  ;;     (key-combo-define evil-insert-state-map (kbd ">")  '(">"))
+  ;;     (key-combo-define evil-insert-state-map (kbd "=")  '("="))
+  ;;     (key-combo-define evil-insert-state-map (kbd "*")  '("*"))
+  ;;     (key-combo-define evil-insert-state-map (kbd "!")  '("!" "<!-- `!!' -->"))
   ;;   ))
 
   (add-hook
@@ -967,7 +926,7 @@
 ;;           (key-combo-get-command commands))
 ;;         ))))
 
-  
+
 ;;   (evil-key-combo-define 'insert c++-mode-map (kbd "-") '("-" "_")))
 
 
@@ -1000,3 +959,78 @@
   (add-hook 'org-mode-hook 'embrace-org-mode-hook)
   (evil-embrace-enable-evil-surround-integration)
   )
+
+
+(use-package org
+  :config
+  (evil-define-key 'normal org-mode-map
+    (kbd "RET") 'org-open-at-point
+    "za" 'org-cycle
+    "zA" 'org-shifttab
+    "zm" 'hide-body
+    "zr" 'show-all
+    "zo" 'show-subtree
+    "zO" 'show-all
+    "zc" 'hide-subtree
+    "zC" 'hide-all
+
+
+    "gn"    'outline-next-visible-heading
+    "gp"    'outline-previous-visible-heading
+    "gf"    'org-forward-heading-same-level
+    "gb"    'org-backward-heading-same-level
+    "gu"    'outline-up-heading
+    "gt"    'org-goto
+    
+    "gj"    'outline-next-visible-heading
+    "gk"    'outline-previous-visible-heading
+    "gl"    'org-forward-heading-same-level
+    "gh"    'org-backward-heading-same-level
+    
+    (kbd "<kp-multiply>") 'org-insert-star
+    (kbd "M-j") 'org-shiftleft
+    (kbd "M-k") 'org-shiftright
+    (kbd "M-H") 'org-metaleft
+    (kbd "M-J") 'org-metadown
+    (kbd "M-K") 'org-metaup
+    (kbd "M-L") 'org-metaright)
+
+  (evil-define-key 'normal orgstruct-mode-map
+    (kbd "RET") 'org-open-at-point
+    "za" 'org-cycle
+    "zA" 'org-shifttab
+    "zm" 'hide-body
+    "zr" 'show-all
+    "zo" 'show-subtree
+    "zO" 'show-all
+    "zc" 'hide-subtree
+    "zC" 'hide-all
+    (kbd "M-j") 'org-shiftleft
+    (kbd "M-k") 'org-shiftright
+    (kbd "M-H") 'org-metaleft
+    (kbd "M-J") 'org-metadown
+    (kbd "M-K") 'org-metaup
+    (kbd "M-L") 'org-metaright)
+
+  (evil-define-key 'insert org-mode-map
+    (kbd "M-j") 'org-shiftleft
+    (kbd "M-k") 'org-shiftright
+    (kbd "M-H") 'org-metaleft
+    (kbd "M-J") 'org-metadown
+    (kbd "M-K") 'org-metaup
+    (kbd "M-L") 'org-metaright)
+
+  (evil-define-key 'insert orgstruct-mode-map
+    (kbd "M-j") 'org-shiftleft
+    (kbd "M-k") 'org-shiftright
+    (kbd "M-H") 'org-metaleft
+    (kbd "M-J") 'org-metadown
+    (kbd "M-K") 'org-metaup
+    (kbd "M-L") 'org-metaright)
+
+  '(progn
+     (evil-make-overriding-map ibuffer-mode-map 'normal t)
+     (evil-define-key 'normal ibuffer-mode-map
+       "j" 'evil-next-line
+       "k" 'evil-previous-line
+       "RET" 'ibuffer-visit-buffer)))

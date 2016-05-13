@@ -17,8 +17,8 @@
 ;;;;(require 'color-theme-zenburn)
 ;;;;(require 'color-theme)
 ;;(color-theme-zenburn)
-(load-theme 'hc-zenburn)
-;; (load-theme 'zenburn)
+;; (load-theme 'hc-zenburn)
+(load-theme 'zenburn)
 
 ;;(require 'color-theme)
 

@@ -492,6 +492,18 @@ currently open, based on `org-agenda-files'."
 
 (use-package cal-korea-x)
 
+
+
+(defun  org-link-copy-image ()
+  (interactive)
+  (copy-image-file (org-element-property :path (org-element-context) )))
+
+(defun  org-link-copy-file ()
+  (interactive)
+  (copy-files (org-element-property :path (org-element-context) )))
+
+
+
 ;; http://nadeausoftware.com/articles/2007/11/latency_friendly_customized_bullets_using_unicode_characters
 ;; (eval-after-load 'org-bullets '(setq org-bullets-bullet-list '("✺" "✹" "✸" "✷" "✶" "✭" "✦" "■" "▲" "●" )))
 ;; "✺" "✹" "✸" "✷" "✶" "✭" "✦" "■" "▲" "●"

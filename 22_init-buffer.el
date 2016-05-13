@@ -14,65 +14,65 @@
 (require 'ibuf-ext)
 (add-to-list 'ibuffer-never-show-predicates "^\\*Pymacs\\*")
 
-;; (setq 
-;;  ibuffer-saved-filter-groups
-;;  '(("default"
-;;     ("북마크"   (or
-;;                  (mode   . bookmark-edit-annotation-mode)
-;;                  (name   . "^\\*Bookmark Annotation.*")
-;;                  (name   . "^\\*Bookmark List\\*$")
-;;                  (name   . "^\\*bm-bookmarks\\*$")))
-;;     ("디렉토리" (mode   . dired-mode))
-;;     ("파이썬" (or
-;;                (mode     . python-mode)
-;;                (name . "^\\*Python\\*$")))
-;;     ("랩소디" (or
-;;                (name . "\\.sbs$")
-;;                (name . "\\.rpw$")))
-;;     ("형상관리" (or
-;;              (mode . dvc-diff)
-;;              (name . "^\\*dvc")
-;;              (name . "^\\*svn")
-;;              (name . "^\\*git")
-;;              (name . "^\\*magit")
-;;              (name . "^\\*bzr")))
-;;     ("C/C++" (or
-;;               (mode     . c++-mode)
-;;               (mode     . c-mode)
-;;               (mode     . idl-mode)
-;;               (mode     . cc-mode)))
-;;     ("프로젝트" (mode   . project-buffer-mode))
-;;     ("ORG"   (or
-;;               (name . "^\\*Calendar\\*$")
-;;               (name . "^\\*Remember\\*$")
-;;               (mode . org-mode)))
-;;     ("텍스트" (or
-;;               (mode   . text-mode)))
-;;     ("배치파일" (or
-;;                  (mode   . dos-mode)))
-;;     ("이멕스" (or
-;;               (mode   . emacs-lisp-mode)
-;;               (name . "^\\*scratch\\*$")
-;;               (name . "^\\*Messages\\*$")))
-;;     ("scheme" (or 
-;;                (mode   . scheme-mode)
-;;                (name   . "^\\*scheme\\*$")))
-;;     ("SQL" (or 
-;;                (mode   . sql-mode)
-;;                (name   . "^\\*SQL\\*$")))
-;;     ("이메일"  (or
-;;                 (mode . mu4e-main-mode )
-;;                 (mode . mu4e-view-mode )
-;;                 (mode . mu4e-headers-mode)))
-;;     ("컴파일" (or
-;;               (mode   . grep-mode)
-;;               (mode   . occur-mode)
-;;               (mode   . compilation-mode)))
-;;     )))
+(setq 
+ ibuffer-saved-filter-groups
+ '(("default"
+    ("북마크"   (or
+                 (mode   . bookmark-edit-annotation-mode)
+                 (name   . "^\\*Bookmark Annotation.*")
+                 (name   . "^\\*Bookmark List\\*$")
+                 (name   . "^\\*bm-bookmarks\\*$")))
+    ("디렉토리" (mode   . dired-mode))
+    ("파이썬" (or
+               (mode     . python-mode)
+               (name . "^\\*Python\\*$")))
+    ("랩소디" (or
+               (name . "\\.sbs$")
+               (name . "\\.rpw$")))
+    ("형상관리" (or
+             (mode . dvc-diff)
+             (name . "^\\*dvc")
+             (name . "^\\*svn")
+             (name . "^\\*git")
+             (name . "^\\*magit")
+             (name . "^\\*bzr")))
+    ("C/C++" (or
+              (mode     . c++-mode)
+              (mode     . c-mode)
+              (mode     . idl-mode)
+              (mode     . cc-mode)))
+    ("프로젝트" (mode   . project-buffer-mode))
+    ("ORG"   (or
+              (name . "^\\*Calendar\\*$")
+              (name . "^\\*Remember\\*$")
+              (mode . org-mode)))
+    ("텍스트" (or
+              (mode   . text-mode)))
+    ("배치파일" (or
+                 (mode   . dos-mode)))
+    ("이멕스" (or
+              (mode   . emacs-lisp-mode)
+              (name . "^\\*scratch\\*$")
+              (name . "^\\*Messages\\*$")))
+    ("scheme" (or 
+               (mode   . scheme-mode)
+               (name   . "^\\*scheme\\*$")))
+    ("SQL" (or 
+               (mode   . sql-mode)
+               (name   . "^\\*SQL\\*$")))
+    ("이메일"  (or
+                (mode . mu4e-main-mode )
+                (mode . mu4e-view-mode )
+                (mode . mu4e-headers-mode)))
+    ("컴파일" (or
+              (mode   . grep-mode)
+              (mode   . occur-mode)
+              (mode   . compilation-mode)))
+    )))
 
 (add-hook 'ibuffer-hook
     (lambda ()
-      (ibuffer-projectile-set-filter-groups)
+      ;; (ibuffer-projectile-set-filter-groups)
       (unless (eq ibuffer-sorting-mode 'alphabetic)
         (ibuffer-do-sort-by-alphabetic))))
 
@@ -221,3 +221,10 @@ Emacs buffers are those whose name starts with *."
 
 ;;; most-positive-fixnum
 ;; (require 'vlf)
+
+
+;; (use-package smartwin :config (smartwin-mode 1))
+
+
+(use-package resize-window)
+

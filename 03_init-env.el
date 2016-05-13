@@ -20,8 +20,8 @@
   (append-path  "c:/usr/local/python35/scripts")
   (append-path  "c:/usr/local/python35/")
 
-  (append-path  (fullpath "../../../..//mingwdevkit/bin"))
-  (append-path  (fullpath "../../../..//mingwdevkit/mingw/bin"))
+  (append-path  "e:/msys264/usr/bin")
+  (append-path  "e:/msys264/mingw64/bin")
   (append-path  (fullpath "../../EmacsW32/bin"))
   (append-path  (fullpath "../../EmacsW32/codesearch"))
   (append-path  (fullpath "../../EmacsW32/gnuwin32/bin"))
