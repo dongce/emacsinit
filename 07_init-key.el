@@ -116,51 +116,52 @@
 
 
 
-(require 'win-switch)
-(defun win-switch-setup-keys-hjkl (&rest dispatch-keys)
-  "Restore default key commands and bind global dispatch keys.
+(use-package win-switch
+  :config 
+  (defun win-switch-setup-keys-hjkl (&rest dispatch-keys)
+    "Restore default key commands and bind global dispatch keys.
 Under this setup, keys i, j, k, and l will switch windows,
 respectively, up, left, down, and right, with other functionality
 bound to nearby keys. The arguments DISPATCH-KEYS, if non-nil,
 should be a list of keys that will be bound globally to
 `win-switch-dispatch'."
-  (interactive)
-  (win-switch-set-keys '("h") 'left)
-  (win-switch-set-keys '("k") 'up)
-  (win-switch-set-keys '("j") 'down)
-  (win-switch-set-keys '("l") 'right)
-  (win-switch-set-keys '("o") 'next-window)
-  (win-switch-set-keys '("p") 'previous-window)
-  (win-switch-set-keys '("J") 'shrink-vertically)
-  (win-switch-set-keys '("K") 'enlarge-vertically)
-  (win-switch-set-keys '("H") 'shrink-horizontally)
-  (win-switch-set-keys '("L") 'enlarge-horizontally)
-  (win-switch-set-keys '(" ") 'other-frame)
-  (win-switch-set-keys '("u" [return]) 'exit)
-  (win-switch-set-keys '(";") 'split-horizontally)
-  (win-switch-set-keys '("i") 'split-vertically) ; visual not letter mnemonic
-  (win-switch-set-keys '("0") 'delete-window)
-  (win-switch-set-keys '("\M-\C-g") 'emergency-exit)
-  (dolist (key dispatch-keys)
-    (global-set-key key 'win-switch-dispatch)))
+    (interactive)
+    (win-switch-set-keys '("h") 'left)
+    (win-switch-set-keys '("k") 'up)
+    (win-switch-set-keys '("j") 'down)
+    (win-switch-set-keys '("l") 'right)
+    (win-switch-set-keys '("o") 'next-window)
+    (win-switch-set-keys '("p") 'previous-window)
+    (win-switch-set-keys '("J") 'shrink-vertically)
+    (win-switch-set-keys '("K") 'enlarge-vertically)
+    (win-switch-set-keys '("H") 'shrink-horizontally)
+    (win-switch-set-keys '("L") 'enlarge-horizontally)
+    (win-switch-set-keys '(" ") 'other-frame)
+    (win-switch-set-keys '("u" [return]) 'exit)
+    (win-switch-set-keys '(";") 'split-horizontally)
+    (win-switch-set-keys '("i") 'split-vertically) ; visual not letter mnemonic
+    (win-switch-set-keys '("0") 'delete-window)
+    (win-switch-set-keys '("\M-\C-g") 'emergency-exit)
+    (dolist (key dispatch-keys)
+      (global-set-key key 'win-switch-dispatch)))
 
 ;;;###autoload
-(defun win-switch-setup-keys-hjkl-minimal (&rest dispatch-keys)
-  "Restore default key commands and bind global dispatch keys.
+  (defun win-switch-setup-keys-hjkl-minimal (&rest dispatch-keys)
+    "Restore default key commands and bind global dispatch keys.
 Split and delete keys are excluded from the map for simplicity.
 Under this setup, keys i, j, k, and l will switch windows,
 respectively, up, left, down, and right, with other functionality
 bound to nearby keys. The arguments DISPATCH-KEYS, if non-nil,
 should be a list of keys that will be bound globally to
 `win-switch-dispatch'."
-  (interactive)
-  (apply 'win-switch-setup-keys-hjkl dispatch-keys)
-  (win-switch-remove-split-and-delete-keys))
+    (interactive)
+    (apply 'win-switch-setup-keys-hjkl dispatch-keys)
+    (win-switch-remove-split-and-delete-keys))
 
 
-;;(global-set-key "\C-xo" 'win-switch-dispatch)
+  ;;(global-set-key "\C-xo" 'win-switch-dispatch)
 
-(win-switch-setup-keys-hjkl  "\C-xo" (kbd "H-o") )
+  (win-switch-setup-keys-hjkl  "\C-xo" (kbd "H-o") ))
 
 (global-set-key (kbd "C-x x") 'delete-other-windows)
 (global-set-key (kbd "C-x c") 'delete-window)

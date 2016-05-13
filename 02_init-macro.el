@@ -2294,6 +2294,36 @@ Requires ImageMagick shell tool.
 (defcustom pyclip (fullpath "../misc/pyclip3.py") "python clip")
 
 
+
+(defun copy-image-file (file)
+  "Display Windows context menu on selected files"
+  (interactive)
+
+  (if (eq system-type 'windows-nt)
+      
+      ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
+      (async-start-process ;;impossible;;-reuse-buffer 
+       "clip-image" 
+       "python.exe"
+       (lambda (p) (message "이미지 복사 완료"))
+       pyclip
+       "--image"
+       file)))
+
+(defun copy-files (&rest files)
+  "Display Windows context menu on selected files"
+  (interactive)
+  (if (eq system-type 'windows-nt)
+      
+        (apply
+         #'async-start-process  ;;impossible;;-reuse-buffer 
+         "clip-file" 
+         "c:/usr/local/python35/python.exe"
+         (lambda (p) (message "파일복사 완료"))
+         pyclip
+         files)))
+
+
 (defun clip-file ()
   "Display Windows context menu on selected files"
   (interactive)
@@ -2304,15 +2334,7 @@ Requires ImageMagick shell tool.
                         (list (dired-current-directory) )
                       files)))
         ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
-        (apply
-         #'async-start-process  ;;impossible;;-reuse-buffer 
-         "clip-file" 
-         "c:/usr/local/python35/python.exe"
-         (lambda (p) (message "파일복사 완료"))
-         pyclip
-         files)
-    )
-  ))
+        (apply #'copy-files files))))
 
 (defun clip-image ()
   "Display Windows context menu on selected files"
@@ -2324,16 +2346,10 @@ Requires ImageMagick shell tool.
                         (list (dired-current-directory) )
                       files)))
         ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
-        (apply
-         #'async-start-process ;;impossible;;-reuse-buffer 
-         "clip-image" 
-         "python.exe"
-         (lambda (p) (message "이미지 복사 완료"))
-         pyclip
-         "--image"
-         files)
-    )
-  ))
+        (copy-image-file (car files)))))
+
+
+
 
 (use-package dired
   :config
@@ -3076,3 +3092,14 @@ buffer being killed."
   (interactive)
   (kill-new (buffer-file-name)))
 
+;; This buffer is for text that is not saved, and for Lisp evaluation.
+;; To create a file, visit it with SPC f and enter text in its buffer.
+
+(defun refine-all ()
+  (interactive)
+  (save-excursion
+    (save-restriction
+      (goto-char (point-min))
+      (while (>  (point-max) (point))
+        (diff-hunk-next)
+        (diff-refine-hunk)))))
