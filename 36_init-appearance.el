@@ -18,14 +18,14 @@
 ;;;;(require 'color-theme)
 ;;(color-theme-zenburn)
 ;; (load-theme 'hc-zenburn)
-(load-theme 'zenburn)
+;; (load-theme 'zenburn)
 
 ;;(require 'color-theme)
 
 ;;(load-theme 'zenburn)
 ;;; 둘을 더한 것이 더 좋은 결과를 가져온다. 
 ;;thisisgood;;(color-theme-sanityinc-solarized-dark)
-;;thisisgood;;(load-theme 'misterioso)
+(load-theme 'misterioso)
 
 ;; (ignore-errors
 ;;   (color-theme-sanityinc-solarized-dark)
