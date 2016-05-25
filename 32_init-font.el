@@ -78,13 +78,14 @@ See `cycle-font'."
 ;;   (dynamic-fonts-setup))
 
 
-(defvar fontsize 15)
+(defvar fontsize 17)
 
 
 
 (let ((defaultfont (find-if 
                     (lambda (x) (font-utils-exists-p x)) 
                     '(
+                      "Ubuntu Mono"
                       "Bitstream Vera Sans Mono"
                       "DejaVu Sans Mono"
                       "Consolas"
@@ -93,7 +94,7 @@ See `cycle-font'."
                       "Menlo"
                       ))))
   (if (stringp  defaultfont)
-      (set-fontset-font "fontset-default" 'latin (font-spec :name defaultfont :size fontsize) )))
+      (set-fontset-font "fontset-default" 'latin (font-spec :name defaultfont :size 17) )))
 
 
 (let ((symbolfont (find-if 

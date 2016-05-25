@@ -1550,7 +1550,7 @@ WARNING: this function extract all text of the form 「<a … href=\"…\" …>�
 
 
 (require 'xeu_elisp_util)
-(require 'xfrp_find_replace_pairs)
+(require 'xah-replace-pairs)
 
 
 (defun change-bracket-pairs (fromType toType)

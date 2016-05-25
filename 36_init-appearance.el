@@ -232,6 +232,9 @@ Assumes that the frame is only split into two."
 
 ;;(add-hook 'c++-mode-hook        'pretty-symbols-mode)
 
+(use-package modern-cpp-font-lock
+  :config
+  (modern-c++-font-lock-global-mode t))
 ;;; http://www.reddit.com/r/emacs/comments/1huhsg/i_need_help_with_adding_keywords_for_syntax/
 ;; font lock 설정 
 (global-font-lock-mode 1)                     ; for all buffers

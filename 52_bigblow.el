@@ -633,3 +633,16 @@ Version 2015-06-12"
         ("pa" "우선순위 A" tags-todo "+PRIORITY=\"A\"")
         ("pb" "우선순위 B" tags-todo "+PRIORITY=\"B\"")
         ("pc" "우선순위 C" tags-todo "+PRIORITY=\"C\"")))
+
+
+
+(use-package yankpad
+  :ensure t
+  :defer 10
+  :init
+  ;; (setq yankpad-file "u:/orgdir/yankpad.org")
+  :config
+  ;; (bind-key "<f7>" 'yankpad-map)
+
+  )
+

@@ -174,8 +174,8 @@ The saved data can be restored with `projectile-unserialize'."
 
 ;;(add-to-list 'minor-mode-alist '(case-fold-search " CFS"))
 
-(require 'xmsi-math-symbols-input)
-
+;; (require 'xmsi-math-symbols-input)
+(use-package xah-math-input)
 ;;; 관련 변수 확인 
 ;;; major-mode       -> buffer local 
 ;;; minor-mode-list  -> buffer local 
