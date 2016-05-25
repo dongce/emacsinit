@@ -81,9 +81,9 @@
     ;; "g." 'grep-o-matic-repository
     ;; "g/" 'grep-o-matic-current-directory
 
-    "g[" 'beginning-of-buffer
-    "g]" 'end-of-buffer
-    "gl" 'goto-line
+    ;; "g[" 'beginning-of-buffer
+    ;; "g]" 'end-of-buffer
+    ;; "gl" 'goto-line
     "G" 'keyboard-quit
     ;; "gl" 'goto-line
     "e" 'eval-last-sexp
@@ -309,8 +309,14 @@
   (define-key evil-motion-state-map "\C-]" 'find-tag-dwim)
 
 
-  (define-key evil-visual-state-map "gl" 'goto-line)
   (define-key evil-normal-state-map "gl" 'goto-line)
+  (define-key evil-normal-state-map "g[" 'beginning-of-buffer)
+  (define-key evil-normal-state-map "g]" 'end-of-buffer      )
+
+  (define-key evil-visual-state-map "gl" 'goto-line)
+  (define-key evil-visual-state-map "g[" 'beginning-of-buffer)
+  (define-key evil-visual-state-map "g]" 'end-of-buffer      )
+  
   (define-key evil-normal-state-map "gg" 'revert-buffer)
 
 
