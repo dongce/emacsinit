@@ -3103,3 +3103,10 @@ buffer being killed."
       (while (>  (point-max) (point))
         (diff-hunk-next)
         (diff-refine-hunk)))))
+
+
+(defun vimish-fold-dwim ()
+  (interactive)
+  (if (region-active-p)
+      (vimish-fold (region-beginning) (region-end))
+    (vimish-fold-toggle)))

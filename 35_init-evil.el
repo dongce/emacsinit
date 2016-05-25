@@ -81,6 +81,8 @@
     ;; "g." 'grep-o-matic-repository
     ;; "g/" 'grep-o-matic-current-directory
 
+    "g[" 'beginning-of-buffer
+    "g]" 'end-of-buffer
     "gl" 'goto-line
     "G" 'keyboard-quit
     ;; "gl" 'goto-line
@@ -312,7 +314,7 @@
   (define-key evil-normal-state-map "gg" 'revert-buffer)
 
 
-  (define-key evil-normal-state-map "zf" 'vimish-fold-toggle) 
+  (define-key evil-normal-state-map "zf" 'vimish-fold-dwim) 
   ;; (define-key evil-visual-state-map "zf" 'vimish-fold) 
   (define-key evil-normal-state-map "zd" 'vimish-fold-delete) 
   (define-key evil-normal-state-map "zs" 'vimish-fold-next-fold) 
