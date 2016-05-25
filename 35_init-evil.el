@@ -38,7 +38,11 @@
     ;;left;; "J"
     "<tab>" #'back-to-indentation
     "f" 'find-file
-    "bi" 'ido-switch-to-buffer
+    "yi" 'yankpad-insert
+    "ye" 'yankpad-edit
+    "ym" 'yankpad-map
+    "yc" 'yankpad-set-category
+    "bi" 'ido-switch-buffer-other-frame
     "bb" 'ivy-switch-buffer-other-window
     "bB" 'ivy-switch-buffer
     "bp" 'evil-prev-buffer
@@ -238,31 +242,6 @@
   (global-evil-surround-mode 1)
   ;;deprecated;;(evilnc-default-hotkeys)
 
-  (use-package dired
-    :config
-    
-;;; Dired
-    (define-key dired-mode-map (kbd "SPC") nil)
-    (define-key dired-mode-map (kbd "/") nil)
-    (define-key dired-mode-map (kbd "n") nil)
-    (define-key dired-mode-map (kbd "N") nil)
-    
-    ;; use the standard Dired bindings as a base
-    (evil-make-overriding-map dired-mode-map 'normal t)
-    (evil-add-hjkl-bindings dired-mode-map 'normal
-      "J" 'dired-goto-file     ; "j"
-      "K" 'dired-do-kill-lines ; "k"
-      ;; "r" 'dired-do-redisplay  ; "l"
-      "r" 'revert-buffer
-      ;; "g" 'revert-buffer
-      (kbd  "RET") 'diredp-find-file-reuse-dir-buffer
-      ";" (lookup-key dired-mode-map ":")) ; ":d", ":v", ":s", ":e"
-    (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
-    ;;evil-extra-operator;;(evil-define-key 'normal dired-mode-map "g" 'revert-buffer)
-    ;;evil-extra-operator;;(evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
-    (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first))
-
-
   ;;deprecated;;(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
   (evil-set-toggle-key "<pause>")
   (define-key evil-normal-state-map "U" 'undo-tree-redo)
@@ -328,6 +307,7 @@
 
   (define-key evil-visual-state-map "gl" 'goto-line)
   (define-key evil-normal-state-map "gl" 'goto-line)
+  (define-key evil-normal-state-map "gg" 'revert-buffer)
 
 
   (define-key evil-normal-state-map "zf" 'vimish-fold-toggle) 
@@ -963,6 +943,29 @@
   (evil-embrace-enable-evil-surround-integration)
   )
 
+
+;;  (use-package dired
+;;    :config
+;;;;; Dired
+;;    (define-key dired-mode-map (kbd "SPC") nil)
+;;    (define-key dired-mode-map (kbd "/") nil)
+;;    (define-key dired-mode-map (kbd "n") nil)
+;;    (define-key dired-mode-map (kbd "N") nil)
+;;    
+;;    ;; use the standard Dired bindings as a base
+;;    (evil-make-overriding-map dired-mode-map 'normal t)
+;;    (evil-add-hjkl-bindings dired-mode-map 'normal
+;;      "J" 'dired-goto-file     ; "j"
+;;      "K" 'dired-do-kill-lines ; "k"
+;;      ;; "r" 'dired-do-redisplay  ; "l"
+;;      "r" 'revert-buffer
+;;      ;; "g" 'revert-buffer
+;;      (kbd  "RET") 'diredp-find-file-reuse-dir-buffer
+;;      ";" (lookup-key dired-mode-map ":")) ; ":d", ":v", ":s", ":e"
+;;    (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
+;;    ;;evil-extra-operator;;(evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
+;;    ;;evil-extra-operator;;(evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
+;;    (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first))
 
 (use-package org
   :config
