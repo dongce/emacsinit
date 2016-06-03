@@ -1,8 +1,8 @@
-;; -*-mode: emacs-lisp; coding: cp949; buffer-read-only: t;-*-
+;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
 (defun link11-grep (word &optional case-senstive )
-  "ÇöÁ¦Ä¿¼­ À§Ä¡ÀÇ ´Ü¾î¸¦ °Ë»öÇÑ´Ù."
+  "í˜„ì œì»¤ì„œ ìœ„ì¹˜ì˜ ë‹¨ì–´ë¥¼ ê²€ìƒ‰í•œë‹¤."
   (interactive
-   (list (read-string "Ã£À» ´Ü¾î: " (current-word)) current-prefix-arg ))
+   (list (read-string "ì°¾ì„ ë‹¨ì–´: " (current-word)) current-prefix-arg ))
 
   (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_LINK11"))
   (grep (if case-senstive 
@@ -10,9 +10,9 @@
 	  (format "%s --smart-case   \"%s\" *" grep-command word ))))
 
 (defun isdl-grep (word &optional case-senstive )
-  "ÇöÁ¦Ä¿¼­ À§Ä¡ÀÇ ´Ü¾î¸¦ °Ë»öÇÑ´Ù."
+  "í˜„ì œì»¤ì„œ ìœ„ì¹˜ì˜ ë‹¨ì–´ë¥¼ ê²€ìƒ‰í•œë‹¤."
   (interactive
-   (list (read-string "Ã£À» ´Ü¾î: " (current-word)) current-prefix-arg ))
+   (list (read-string "ì°¾ì„ ë‹¨ì–´: " (current-word)) current-prefix-arg ))
 
   (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_ISDL"))
   (grep (if case-senstive 
@@ -20,9 +20,9 @@
 	  (format "%s  \"%s\" *" grep-command word ))))
 
 (defun dlp-grep (word &optional case-senstive )
-  "ÇöÁ¦Ä¿¼­ À§Ä¡ÀÇ ´Ü¾î¸¦ °Ë»öÇÑ´Ù."
+  "í˜„ì œì»¤ì„œ ìœ„ì¹˜ì˜ ë‹¨ì–´ë¥¼ ê²€ìƒ‰í•œë‹¤."
   (interactive
-   (list (read-string "Ã£À» ´Ü¾î: " (current-word)) current-prefix-arg ))
+   (list (read-string "ì°¾ì„ ë‹¨ì–´: " (current-word)) current-prefix-arg ))
   (if (not (eq nil (string-match "isdl" (buffer-file-name))))
       (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_ISDL"))
       (if (not (eq nil (string-match "link11" (buffer-file-name))))
@@ -34,13 +34,13 @@
 (global-set-key "\C-cu" 'dlp-grep)
 
 (autoload 'ioccur "ioccur"
-  "Á¡ÁøÀû occur" t)
+  "ì ì§„ì  occur" t)
 
 
 (defun grep-word (word &optional case-senstive )
-  "ÇöÁ¦Ä¿¼­ À§Ä¡ÀÇ ´Ü¾î¸¦ °Ë»öÇÑ´Ù."
+  "í˜„ì œì»¤ì„œ ìœ„ì¹˜ì˜ ë‹¨ì–´ë¥¼ ê²€ìƒ‰í•œë‹¤."
   (interactive
-   (list (read-string "grep Ã£À» ´Ü¾î: " (current-word)) current-prefix-arg ))
+   (list (read-string "grep ì°¾ì„ ë‹¨ì–´: " (current-word)) current-prefix-arg ))
   
   (let ((directory-name-backup default-directory))
 
@@ -53,9 +53,9 @@
 
 
 (defun woccur (word &optional nlines )
-  "ÇöÁ¦Ä¿¼­ À§Ä¡ÀÇ ´Ü¾î¸¦ OCCURÇÑ´Ù."
+  "í˜„ì œì»¤ì„œ ìœ„ì¹˜ì˜ ë‹¨ì–´ë¥¼ OCCURí•œë‹¤."
   (interactive
-   (list (read-string "occur Ã£À» ´Ü¾î: " (current-word)) 
+   (list (read-string "occur ì°¾ì„ ë‹¨ì–´: " (current-word)) 
 	 (prefix-numeric-value current-prefix-arg) ))
   (occur word nlines ))
 
@@ -85,7 +85,7 @@ See also `multi-occur'."
 
 (global-set-key "\C-co" 'occur)
 
-;; ¾²±â ÁÁÀº Å° ¹ÙÀÎµù ÀÔ´Ï´Ù. 
+;; ì“°ê¸° ì¢‹ì€ í‚¤ ë°”ì¸ë”© ì…ë‹ˆë‹¤. 
 ;;(global-set-key "\C-ci" 'isdl-grep)
 ;;(global-set-key (kbd "C-M-,") '(lambda ()  (interactive) (run-scheme "winprojcd")))
 
@@ -108,7 +108,7 @@ See also `multi-occur'."
   "Display tooltips for the current word" t)
 (autoload 'global-dictionary-tooltip-mode "dictionary"
   "Enable/disable dictionary-tooltip-mode for all buffers" t)
-;; »çÀü±â´ÉÀ» »ç¿ë
+;; ì‚¬ì „ê¸°ëŠ¥ì„ ì‚¬ìš©
 (require 'dictionary)
 
 (global-set-key "\C-ci" 'woccur)
@@ -159,7 +159,7 @@ See also `multi-occur'."
 ;;ISEARCH HOOK;;			      isearch-mode-map)))
 
 
-;;; GNU GLOBAL incremental update It¡¯s possible to use GNU GLOBAL
+;;; GNU GLOBAL incremental update Itâ€™s possible to use GNU GLOBAL
 ;;; incremental update feature in after-save-hook in order to keep
 ;;; synchronized the changes you made in source code and gtags
 ;;; database:
@@ -174,7 +174,7 @@ See also `multi-occur'."
 
 (defun gtag ()
   (interactive)
-  (let ((default-directory (read-directory-name "GTAG¸¦ »ı¼º¡¤°»½Å ÇÒ Æú´õ :")))
+  (let ((default-directory (read-directory-name "GTAGë¥¼ ìƒì„±Â·ê°±ì‹  í•  í´ë” :")))
     (if (file-exists-p "GTAGS")
         (async-shell-command  (concat gtags-global-command " -u"))
       (async-shell-command "gtags"))))
@@ -249,9 +249,9 @@ See also `multi-occur'."
 ;;deprecatedby-gtag.el gtag-mode;;
 ;;deprecatedby-gtag.el gtag-mode;;;;;GNU GLOBAL update for a single file
 ;;deprecatedby-gtag.el gtag-mode;;;;;
-;;deprecatedby-gtag.el gtag-mode;;;;;For projects with a huge amount of files, ¡°global -u¡± can take a
+;;deprecatedby-gtag.el gtag-mode;;;;;For projects with a huge amount of files, â€œglobal -uâ€ can take a
 ;;deprecatedby-gtag.el gtag-mode;;;;;very long time to complete. For changes in a single file, we can
-;;deprecatedby-gtag.el gtag-mode;;;;;update the tags with ¡°gtags --single-update¡± and do it in the
+;;deprecatedby-gtag.el gtag-mode;;;;;update the tags with â€œgtags --single-updateâ€ and do it in the
 ;;deprecatedby-gtag.el gtag-mode;;;;;background:
 ;;deprecatedby-gtag.el gtag-mode;;
 ;;deprecatedby-gtag.el gtag-mode;;
@@ -316,3 +316,20 @@ See also `multi-occur'."
   (unbind-key "M-n" smartscan-map)
   (unbind-key "M-p" smartscan-map)
   )
+
+
+
+;; Uncomment the below line to use eww (Emacs Web Wowser)
+;; (setq xah-lookup-browser-function 'eww)
+
+(req-package xah-lookup
+  :force t
+  :config 
+  (defun xah-lookup-cppreference (&optional word)
+    "Lookup definition of current word or text selection in URL."
+    (interactive)
+    (xah-lookup-word-on-internet
+     word
+     ;; Use ï¿½ as a placeholder in the query URL.
+     "http://en.cppreference.com/mwiki/index.php?search=ï¿½"
+     xah-lookup-browser-function)))

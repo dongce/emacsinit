@@ -2,9 +2,9 @@
 ;; http://d.hatena.ne.jp/tarao/20130304/evil_config
 
 
-
+ 
 (with-package*  
-  (evil-leader evil-org evil-nerd-commenter evil projectile  geiser-mode flycheck)
+  (evil-leader evil-org evil-nerd-commenter evil projectile  geiser-mode flycheck smerge-mode)
   
   ;; (owdriver-define-command scroll-up               t)
   ;; (owdriver-define-command scroll-down             t)
@@ -45,11 +45,18 @@
     "bi" 'ido-switch-buffer-other-frame
     "bb" 'ivy-switch-buffer-other-window
     "bB" 'ivy-switch-buffer
-    "bp" 'evil-prev-buffer
-    "bn" 'evil-next-buffer
+    "bk" 'evil-prev-buffer
+    "bj" 'evil-next-buffer
+    "bn" 'narrow-to-region
+    "bN" 'narrow-to-defun
+    "bw" 'widen
     "bs" 'save-buffer
     "bS" 'save-some-buffers
     "bm" 'smartwin-switch-buffer
+    "bf"      'prelude-copy-file-name-to-clipboard
+    "bh"      'mark-whole-buffer
+    "br"      'revert-buffer
+    "j" 'save-buffer
     ;; "i" 'ibuffer
     ;; "j" 'tmpscratch
     "<home>" 'ibuffer
@@ -61,11 +68,20 @@
     "," 'smex
     "." 'embrace-commander
     "/" 'evil-replace-word-selection
-    "s" search-map ;;'save-buffer
+
+    ;; search
+    "s"  search-map ;;'save-buffer
     "st" 'sr-speedbar-toggle
     "sl" 'loccur
     "sn" 'smartscan-symbol-go-forward
     "sp" 'smartscan-symbol-go-backward
+    "sc" 'xah-lookup-cppreference
+    "s." 'gtags-find-tag
+    "s," 'gtags-pop-stack
+
+    ;; smerge
+    "S" smerge-basic-map
+    
     "u" #'wgrep
     ";" 'evilnc-comment-or-uncomment-lines
     "l" 'evilnc-comment-or-uncomment-to-the-line
@@ -87,6 +103,8 @@
     "G" 'keyboard-quit
     ;; "gl" 'goto-line
     "e" 'eval-last-sexp
+    "E"  mu4e-main-mode-map
+    "Eu" 'mu4e-update-mail-and-index
     ;; "t" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
     ;; "T" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
     "n" 'purpose-load-window-layout
@@ -95,6 +113,7 @@
     "R" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
 
 
+    ;; window
     "W" 'read-only-mode
     "ww" 'read-only-mode
     "wk" 'win-switch-up
@@ -108,6 +127,8 @@
     "wo" 'win-switch-dispatch
     "wd" 'delete-blank-lines
     "ws" 'resize-window
+    "wj"      'winner-undo
+    "wk"      'winner-redo
 
     "a" 'winexe
     "+" #'evil-numbers/inc-at-pt
@@ -135,6 +156,7 @@
     "pW"  'purpose-save-window-layout
     "pE"  'project-explorer-open
     "pC"  'project-explorer-close
+    "p/"  'projectile-grep
     ;;deprecated;; "pb" 'projectile-switch-to-buffer
     ;;deprecated;; "pC" 'projectile-invalidate-cache
     ;;deprecated;; "pd" 'projectile-dired
@@ -146,32 +168,30 @@
     ;;deprecated;; "pr" 'projectile-replace 
     ;; "<SPC>" (lambda () (interactive) (evil-change-state 'insert) (set-mark (point)))
     "<SPC>" #'smex
-    
+
+    ;; helm
     ;; "h" #'smex ;; "h" help-map
     ;; "h" help-map
     "hz" 'zeal-at-point
-
     "hh"      'helm-mini
     "ha"      'helm-apropos
     "hB"      'helm-buffers-list
     "hb"      'helm-descbindings
     "hy"      'helm-show-kill-ring
     "hx"      'helm-M-x
-    "hco"     'helm-occur
-    "hcs"     'helm-swoop
-    "hcy"     'helm-yas-complete
-    "hcY"     'helm-yas-create-snippet-on-region
-    "hcb"     'my/helm-do-grep-book-notes
-    "hj"      'winner-undo
-    "hk"      'winner-redo
-    "hf"      'prelude-copy-file-name-to-clipboard
-    "hc<SPC>" 'helm-all-mark-rings
+    "ho"     'helm-occur
+    "hs"     'helm-swoop
+    "hy"     'helm-yas-complete
+    "hY"     'helm-yas-create-snippet-on-region
+    ;; "hcb"     'my/helm-do-grep-book-notes
+    "hr" 'helm-all-mark-rings
 
+    ;; org
     "om" 'orgmail
     "oS" 'tmpscratch
     "oI" 'ibuffer
     "ox" 'winexe
-    
+    "or" 'org-capture
     )
   
   
@@ -842,15 +862,6 @@
   :config
   (evil-mode 1))
 
-(use-package evil-mu4e
-  :config
-  (mapcar 
-   (lambda (x)
-     (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-view-mode-map ,(car x) ,(cadr x ))))
-   '(("S" mu4e-view-save-attachment)
-     ("o" mu4e-view-open-attachment)
-     ("O" mu4e-view-open-attachment-emacs)))
-  (evil-mu4e-init))
 
 
 ;; [[file:t:/gitdir/dot-emacs/etc/hyone-key-combo.el::(defun%20evil-key-combo-define%20(state%20keymap%20key%20commands)][combo for evil]]
@@ -1050,3 +1061,20 @@
        "j" 'evil-next-line
        "k" 'evil-previous-line
        "RET" 'ibuffer-visit-buffer)))
+
+
+
+(use-package evil-mu4e
+  :config
+  (mapcar 
+   (lambda (x)
+     (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-view-mode-map ,(car x) ,(cadr x ))))
+   '(("S" mu4e-view-save-attachment)
+     ("o" mu4e-view-open-attachment)
+     ("O" mu4e-view-open-attachment-emacs)))
+  (evil-mu4e-init)
+  (evil-define-key 'normal mu4e-headers-mode-map
+    "?" mu4e-headers-mode-map)
+  (evil-define-key 'normal mu4e-view-mode-map
+    "?" mu4e-view-mode-map))
+
