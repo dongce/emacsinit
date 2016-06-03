@@ -97,6 +97,16 @@
            )
       (find-file path)))
 
+  (defun copy-file-mu4e()
+    (interactive "r")
+    (let* ((msg (mu4e-message-at-point))
+           (filename (buffer-substring-no-properties (region-beginning) (region-end)))
+           (path    (mu4e-message-field msg :path)))
+
+      (find-file path)))
+
+
+  
 
   (defun mu4e-field-helper (msg fieldlist )
     "Retrieve FIELD from message plist MSG.

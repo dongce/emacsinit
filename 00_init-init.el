@@ -39,6 +39,7 @@ buffer-file-name)”. This is part of this function."
 (defalias 'fullpath 'fullpath-relative-to-call-location)
 
 (require 'use-package)
+(require 'req-package)
 (use-package package-helper)
 
 ;;(load "site-start")
