@@ -78,7 +78,7 @@ See `cycle-font'."
 ;;   (dynamic-fonts-setup))
 
 
-(defvar fontsize 17)
+(defvar fontsize 16)
 
 
 
