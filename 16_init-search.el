@@ -169,8 +169,8 @@ See also `multi-occur'."
 
 (require 'gtags)
 (require 'xcscope) 
-
-(setq gtags-global-command (file-truename (fullpath "../../global/bin/global.exe")))
+(if (eq window-system 'w32)
+    (setq gtags-global-command (file-truename (fullpath "../../global/bin/global.exe"))))
 
 (defun gtag ()
   (interactive)

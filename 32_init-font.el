@@ -86,12 +86,12 @@ See `cycle-font'."
                     (lambda (x) (font-utils-exists-p x)) 
                     '(
                       "Ubuntu Mono"
-                      "Bitstream Vera Sans Mono"
-                      "DejaVu Sans Mono"
-                      "Consolas"
-                      "Inconsolata"
-                      "Source Code Pro"
-                      "Menlo"
+                      ;; "Bitstream Vera Sans Mono"
+                      ;; "DejaVu Sans Mono"
+                      ;; "Consolas"
+                      ;; "Inconsolata"
+                      ;; "Source Code Pro"
+                      ;; "Menlo"
                       ))))
   (if (stringp  defaultfont)
       (set-fontset-font "fontset-default" 'latin (font-spec :name defaultfont :size 17) )))

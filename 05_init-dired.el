@@ -315,8 +315,9 @@ open and unsaved."
             (find-file filename)
             (call-interactively command))
           (dired-get-marked-files))))
-
-(toggle-diredp-find-file-reuse-dir 1)
+(use-package dired+
+  :config
+  (toggle-diredp-find-file-reuse-dir 1))
 ;; writable-dired
 ;;ーCtrl+x Ctrl+q― (emacs 23.1)	wdired-change-to-wdired-mode	Start rename by editing
 ;;ーCtrl+c Ctrl+c―	wdired-finish-edit	Commit changes

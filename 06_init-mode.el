@@ -1,6 +1,6 @@
-;; -*-mode: emacs-lisp; coding: cp949; buffer-read-only: t;-*-
+;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
 
-;; Á¤±ÔÇ¥ÇöÀ» highlight ÇÑ´Ù. 
+;; ì •ê·œí‘œí˜„ì„ highlight í•œë‹¤. 
 ;; (require 'highlight-sexp)
 ;;deprecated;;(add-hook 'lisp-mode-hook   'highlight-sexp-mode)
 ;;deprecated;;(add-hook 'scheme-mode-hook 'highlight-sexp-mode)
@@ -83,10 +83,10 @@
 
 ;;;
 ;;;
-;;; ¡Ø ÆÄÀÏ¸ğµå ¼³Á¤
+;;; â€» íŒŒì¼ëª¨ë“œ ì„¤ì •
 ;;;
 ;;;
-;; ´ÙÀ½°ú °°ÀÌ ÆÄÀÏ Çì´õ ºÎºĞÀ» ÀÌ¿ëÇÏ¿© mode ¸¦ °áÁ¤ÇÒ ¼öµµ ÀÖ´Ù. 
+;; ë‹¤ìŒê³¼ ê°™ì´ íŒŒì¼ í—¤ë” ë¶€ë¶„ì„ ì´ìš©í•˜ì—¬ mode ë¥¼ ê²°ì •í•  ìˆ˜ë„ ìˆë‹¤. 
 ;;(add-to-list 'magic-mode-alist '("<!DOCTYPE html .+DTD XHTML .+>" . nxml-mode))
 
 ;;(setq auto-mode-alist
@@ -134,20 +134,20 @@
 (ada-add-extensions "_s.a" "_b.a")
 
 (add-hook  'xah-html-mode-hook (lambda()(rainbow-mode t )))
-;;font-lock-add-keywords ÀÌ¿ë;;(defvar hexcolour-keywords
-;;font-lock-add-keywords ÀÌ¿ë;;  '(("#[abcdef[:digit:]]\\{6\\}"
-;;font-lock-add-keywords ÀÌ¿ë;;     (0 (put-text-property
-;;font-lock-add-keywords ÀÌ¿ë;;         (match-beginning 0)
-;;font-lock-add-keywords ÀÌ¿ë;;         (match-end 0)
-;;font-lock-add-keywords ÀÌ¿ë;;         'face (list :background
-;;font-lock-add-keywords ÀÌ¿ë;;                     (match-string-no-properties 0)))))))
-;;font-lock-add-keywords ÀÌ¿ë;;(defun hexcolour-add-to-font-lock ()
-;;font-lock-add-keywords ÀÌ¿ë;;  (font-lock-add-keywords nil hexcolour-keywords))
-;;font-lock-add-keywords ÀÌ¿ë;;
-;;font-lock-add-keywords ÀÌ¿ë;;(add-hook 'css-mode-hook 'hexcolour-add-to-font-lock)
-;;font-lock-add-keywords ÀÌ¿ë;;(add-hook 'php-mode-hook 'hexcolour-add-to-font-lock)
-;;font-lock-add-keywords ÀÌ¿ë;;(add-hook 'html-mode-hook 'hexcolour-add-to-font-lock)
-;;°ü·Ã º¯¼ö;; font-lock-keywords
+;;font-lock-add-keywords ì´ìš©;;(defvar hexcolour-keywords
+;;font-lock-add-keywords ì´ìš©;;  '(("#[abcdef[:digit:]]\\{6\\}"
+;;font-lock-add-keywords ì´ìš©;;     (0 (put-text-property
+;;font-lock-add-keywords ì´ìš©;;         (match-beginning 0)
+;;font-lock-add-keywords ì´ìš©;;         (match-end 0)
+;;font-lock-add-keywords ì´ìš©;;         'face (list :background
+;;font-lock-add-keywords ì´ìš©;;                     (match-string-no-properties 0)))))))
+;;font-lock-add-keywords ì´ìš©;;(defun hexcolour-add-to-font-lock ()
+;;font-lock-add-keywords ì´ìš©;;  (font-lock-add-keywords nil hexcolour-keywords))
+;;font-lock-add-keywords ì´ìš©;;
+;;font-lock-add-keywords ì´ìš©;;(add-hook 'css-mode-hook 'hexcolour-add-to-font-lock)
+;;font-lock-add-keywords ì´ìš©;;(add-hook 'php-mode-hook 'hexcolour-add-to-font-lock)
+;;font-lock-add-keywords ì´ìš©;;(add-hook 'html-mode-hook 'hexcolour-add-to-font-lock)
+;;ê´€ë ¨ ë³€ìˆ˜;; font-lock-keywords
 
 
 (add-hook 
@@ -194,26 +194,26 @@
 
 
 
-;; comint echo ¸¦ ¹æÁöÇÑ´Ù. 
-;;guile°úÃæµ¹;;(when (eq system-type 'windows-nt)
-;;guile°úÃæµ¹;;  (setq-default comint-process-echoes 'on))
-(add-hook 'shell-mode-hook #'(lambda () (setf comint-process-echoes 'on))) ;; scheme ¸ğµå¿Í Ãæµ¹ ¹æÁö 
+;; comint echo ë¥¼ ë°©ì§€í•œë‹¤. 
+;;guileê³¼ì¶©ëŒ;;(when (eq system-type 'windows-nt)
+;;guileê³¼ì¶©ëŒ;;  (setq-default comint-process-echoes 'on))
+(add-hook 'shell-mode-hook #'(lambda () (setf comint-process-echoes 'on))) ;; scheme ëª¨ë“œì™€ ì¶©ëŒ ë°©ì§€ 
 
 
 
 
 ;;;
 ;;;
-;;; ¡Ø ¿©·¯ °¡Áö ÈÅ ¼³Á¤
+;;; â€» ì—¬ëŸ¬ ê°€ì§€ í›… ì„¤ì •
 ;;;
 ;;;
 
 ;; 
-;; 2007³â 01¿ù 07ÀÏ ÀÏ¿äÀÏ ¿ÀÈÄ 05½Ã 35ºĞ 38ÃÊ
-;; ÆÄÀÏ °æ·Î¸í¿¡ Æ¯Á¤ ¹®ÀÚ¿­ÀÌ ÀÖ´Â °æ¿ì ¾î¶² ÀÛ¾÷À» ÇÒ °ÍÀÎÁö ¼³Á¤ÇÒ ¼ö ÀÖµµ·Ï ÇÏ´Â ¸í·ÉÀÌ´Ù. 
+;; 2007ë…„ 01ì›” 07ì¼ ì¼ìš”ì¼ ì˜¤í›„ 05ì‹œ 35ë¶„ 38ì´ˆ
+;; íŒŒì¼ ê²½ë¡œëª…ì— íŠ¹ì • ë¬¸ìì—´ì´ ìˆëŠ” ê²½ìš° ì–´ë–¤ ì‘ì—…ì„ í•  ê²ƒì¸ì§€ ì„¤ì •í•  ìˆ˜ ìˆë„ë¡ í•˜ëŠ” ëª…ë ¹ì´ë‹¤. 
 
 (defvar find-file-path-match-hook
-  '( ("±â°£º°Á¤¸®" . '(org-mode))
+  '( ("ê¸°ê°„ë³„ì •ë¦¬" . '(org-mode))
      ("rej" . '(read-only-mode 1 ))
      ("usr" . '(read-only-mode 1 ))
      ("tests" . '(read-only-mode 0 ))
@@ -249,10 +249,12 @@
 
 
 ;;(autoload 'dos-mode "dos" "Edit Dos scripts." t)
-(require 'dos)
-(add-to-list 'auto-mode-alist '("\\.bat$" . dos-mode))
-(add-to-list 'auto-mode-alist '("\\.cmd$" . dos-mode))
-(define-key dos-mode-map [?\C-c ?\C-e] (lambda () "Run Dos script." (interactive)(save-buffer) (w32-shell-execute nil (buffer-file-name))))
+
+(if (eq window-system 'w32)
+    (use-package  dos
+      (add-to-list 'auto-mode-alist '("\\.bat$" . dos-mode))
+      (add-to-list 'auto-mode-alist '("\\.cmd$" . dos-mode))
+      (define-key dos-mode-map [?\C-c ?\C-e] (lambda () "Run Dos script." (interactive)(save-buffer) (w32-shell-execute nil (buffer-file-name))))))
 
 
 ;; yas mode 
@@ -321,15 +323,15 @@
 
 
 
-;; ¡¤ C-c C-; : comment / uncomment line(s)
-;; ¡¤ C-c C-a : indent all buffer
-;; ¡¤ C-c C-d : delete current HTML element
-;; ¡¤ C-c C-f : toggle folding on a block
-;; ¡¤ C-c C-i : insert snippet
-;; ¡¤ C-c C-j : duplicate current HTML element
-;; ¡¤ C-c C-n : jump to opening/closing tag
-;; ¡¤ C-c C-p : jump to parent HTML element
-;; ¡¤ C-c C-s : select current HTML element
+;; Â· C-c C-; : comment / uncomment line(s)
+;; Â· C-c C-a : indent all buffer
+;; Â· C-c C-d : delete current HTML element
+;; Â· C-c C-f : toggle folding on a block
+;; Â· C-c C-i : insert snippet
+;; Â· C-c C-j : duplicate current HTML element
+;; Â· C-c C-n : jump to opening/closing tag
+;; Â· C-c C-p : jump to parent HTML element
+;; Â· C-c C-s : select current HTML element
 
 (require 'xub-mode)
 (defalias 'utf8-browser 'xub-mode)
@@ -343,8 +345,8 @@
 ;;emacsdefault;;(which-function-mode t)
 
 ;; ;;(Note: Emacs 24.2.91 seems to put the which-func configuration in
-;; ;;¡®mode-line-misc-info¡¯ instead, so you may need to replace
-;; ;;¡®mode-line-format¡¯ with ¡®mode-line-misc-info¡¯ in the above snippet.)
+;; ;;â€˜mode-line-misc-infoâ€™ instead, so you may need to replace
+;; ;;â€˜mode-line-formatâ€™ with â€˜mode-line-misc-infoâ€™ in the above snippet.)
 ;; 
 ;; 
 ;; (setq mode-line-format (delete (assoc 'which-func-mode
@@ -423,3 +425,4 @@
             (emamux:reset-prompt target)
             (emamux:send-keys input)))
       (quit (emamux:unset-parameters)))))
+

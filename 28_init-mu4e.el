@@ -10,7 +10,11 @@
   (cond ((eq window-system 'w32)
          (let ((default-directory (fullpath "../../mumailindexer/share/emacs/site-lisp")))
            (normal-top-level-add-subdirs-to-load-path))
-         (append-path (fullpath "../../mumailindexer/bin/"))))
+         (append-path (fullpath "../../mumailindexer/bin/")))
+        (t
+         (let ((default-directory  "/opt/emacs/mumail/default/share/emacs/site-lisp"))
+           (normal-top-level-add-subdirs-to-load-path))
+         (append-path  "/opt/emacs/mumail/default/bin/")))
   :config
   (setq mu4e-bookmarks
         '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)
@@ -97,6 +101,16 @@
            )
       (find-file path)))
 
+  (defun copy-file-mu4e()
+    (interactive "r")
+    (let* ((msg (mu4e-message-at-point))
+           (filename (buffer-substring-no-properties (region-beginning) (region-end)))
+           (path    (mu4e-message-field msg :path)))
+
+      (find-file path)))
+
+
+  
 
   (defun mu4e-field-helper (msg fieldlist )
     "Retrieve FIELD from message plist MSG.
