@@ -127,7 +127,7 @@ The saved data can be restored with `projectile-unserialize'."
       (dolist (root-dir roots)
         ;; paths for find-grep should relative and without trailing /
         (let ((default-directory root-dir))
-          (grep (concat grep-command "\"" search-regexp "\"")))))))
+          (grep (concat grep-command "\"" search-regexp "\" *")))))))
 
 
 ;;(add-hook 'ruby-mode-hook 'projectile-on)

@@ -332,11 +332,17 @@
   (define-key evil-normal-state-map "gl" 'goto-line)
   (define-key evil-normal-state-map "g[" 'beginning-of-buffer)
   (define-key evil-normal-state-map "g]" 'end-of-buffer      )
+  (define-key evil-normal-state-map "g{" 'beginning-of-defun)
+  (define-key evil-normal-state-map "g}" 'end-of-defun      )
 
+
+  
   (define-key evil-visual-state-map "gl" 'goto-line)
   (define-key evil-visual-state-map "g[" 'beginning-of-buffer)
   (define-key evil-visual-state-map "g]" 'end-of-buffer      )
-  
+  (define-key evil-visual-state-map "g{" 'beginning-of-defun)
+  (define-key evil-visual-state-map "g}" 'end-of-defun      )
+
   (define-key evil-normal-state-map "gg" 'revert-buffer)
 
 
