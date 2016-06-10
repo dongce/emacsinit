@@ -185,6 +185,8 @@
     "hY"     'helm-yas-create-snippet-on-region
     ;; "hcb"     'my/helm-do-grep-book-notes
     "hr" 'helm-all-mark-rings
+    "hm" 'helm-smex
+    "hM" 'helm-smex-major-mode-commands
 
     ;; org
     "om" 'orgmail
@@ -334,6 +336,7 @@
   (define-key evil-normal-state-map "g]" 'end-of-buffer      )
   (define-key evil-normal-state-map "g{" 'beginning-of-defun)
   (define-key evil-normal-state-map "g}" 'end-of-defun      )
+  (define-key evil-normal-state-map "gg" 'revert-buffer)
 
 
   
@@ -342,8 +345,7 @@
   (define-key evil-visual-state-map "g]" 'end-of-buffer      )
   (define-key evil-visual-state-map "g{" 'beginning-of-defun)
   (define-key evil-visual-state-map "g}" 'end-of-defun      )
-
-  (define-key evil-normal-state-map "gg" 'revert-buffer)
+  (define-key evil-visual-state-map "gg" 'revert-buffer)
 
 
   (define-key evil-normal-state-map "zf" 'vimish-fold-dwim) 
