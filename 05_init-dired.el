@@ -117,6 +117,8 @@
 
   (setf static-winexe-cmdlist 
         `(
+          (cap "c:/windows/system32/SnippingTool.exe")
+          (snipp "c:/windows/system32/SnippingTool.exe")
           (squid ,(fullpath  "../../conemul/conemu64.exe") "-reuse -dir \"c:\\squid\\sbin\" -cmd .\\squid.exe -D")
           (tscproxy ,(fullpath  "../../conemul/conemu64.exe")
                     "-reuse -dir \"t:\\misc\\pytcpproxy\" -cmd c:\\usr\\local\\python35\\python.exe tscproxy.py")
