@@ -11,7 +11,7 @@
   ;; 한글 인코딩을 설정한다. 
   ;;(setq-default default-buffer-file-coding-system 'utf-8 )
   ;;(prefer-coding-system 'cp949)
-  ;;(set-default-coding-systems 'cp949)
+  (set-default-coding-systems 'utf-8)
   (setq-default file-name-coding-system 'utf-8)
   (setq-default default-buffer-file-coding-system 'utf-8 )))
 
@@ -33,8 +33,8 @@
 ;; 테스트 하는 경우 universal-coding-system-argument 함수를 참고 
 ;; ENCODING 설정방법 
 ;; (modify-coding-system-alist 'process ".*" 'cp949)
-(modify-coding-system-alist 'process "git\.exe" '(utf-8 . cp949))
-(modify-coding-system-alist 'process "ls\.exe" 'utf-8 )
+;; (modify-coding-system-alist 'process "git\.exe" '(utf-8 . cp949))
+;; (modify-coding-system-alist 'process "ls\.exe" 'utf-8 )
 ;;(require 'unicad ) ;;CP949 를 우선 하는 방법을 찾을 것 
 
 
