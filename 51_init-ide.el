@@ -13,7 +13,7 @@
 
 (with-package*
   (window-purpose window-purpose-x)
-  (purpose-mode)
+  (if (eq window-system 'w32)  (purpose-mode))
   (add-to-list 'purpose-user-mode-purposes '(python-mode . py))
   (add-to-list 'purpose-user-mode-purposes '(inferior-python-mode . py-repl))
   (add-to-list 'purpose-user-mode-purposes '(prog-mode . prog))
