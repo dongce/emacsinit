@@ -25,7 +25,7 @@
  '(better-registers-use-C-r nil)
  '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
  '(bookmark-version-control t)
- '(browse-url-firefox-program "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")
+ '(browse-url-firefox-program "/opt/firefox/firefox")
  '(c-default-style "gnu")
  '(calendar-month-name-array
    ["1월 January" "2월 February" "3월 March" "4월 April" "5월 May" "6월 June" "7월 July" "8월 August" "9월 September" "10월 October" "11월 November" "12월 December"])

@@ -368,6 +368,11 @@ With a prefix argument P, isearch for the symbol at point."
 (global-set-key [remap isearch-forward]
                 #'endless/isearch-symbol-with-prefix)
 
+
+(global-set-key [remap toggle-input-method]
+                #'toggle-korean-input-method)
+
+
 (global-set-key [C-M-down] 'set-mark-command)
 
 (w32-unix-eval
