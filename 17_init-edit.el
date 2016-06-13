@@ -853,3 +853,6 @@ to the symbol at point."
          (from-string (first from-with-to))
          (to-string (second from-with-to)))
     (perform-replace from-string to-string nil nil nil)))
+
+
+(require 'crux)

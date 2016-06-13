@@ -2,7 +2,7 @@
 ;; http://d.hatena.ne.jp/tarao/20130304/evil_config
 
 
- 
+
 (with-package*  
   (evil-leader evil-org evil-nerd-commenter evil projectile  geiser-mode flycheck smerge-mode)
   
@@ -85,7 +85,33 @@
     "u" #'wgrep
     ";" 'evilnc-comment-or-uncomment-lines
     "l" 'evilnc-comment-or-uncomment-to-the-line
-    "c" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
+    "cw" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
+    "cx" #'crux-open-with
+    "cO" #'crux-smart-open-line-above
+    "co" #'crux-smart-open-line
+    "cs" #'crux-cleanup-buffer-or-region
+    "cr" #'crux-recentf-ido-find-file
+    "cv" #'crux-view-url
+    "ce" #'crux-eval-and-replace
+    "ct" #'crux-transpose-windows
+    "cD" #'crux-delete-file-and-buffer
+    "cl" #'crux-duplicate-current-line-or-region
+    "cL" #'crux-duplicate-and-comment-current-line-or-region
+    "cR" #'crux-rename-file-and-buffer
+    "cn" #'crux-visit-term-buffer
+    "c1" #'crux-kill-other-buffers
+    "ci" #'crux-indent-defun
+    "cI" #'crux-indent-rigidly-and-copy-to-clipboard
+    "c." #'crux-find-user-init-file
+    "cs" #'crux-find-shell-init-file
+    "cj" #'crux-top-join-lines
+    "ck" #'crux-kill-whole-line
+    "cK" #'crux-kill-line-backwards
+    "ca" #'crux-ispell-word-then-abbrev
+
+
+
+
     "O" 'win-switch-next-window
     ;; "O" (lambda (multi) (interactive "P") (if multi  (call-interactively 'multi-occur-in-this-mode) (call-interactively 'occur))  (other-window 1)) 
     "]" 'exit-recursive-edit
@@ -1076,10 +1102,36 @@
   :config
   (mapcar 
    (lambda (x)
+     (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-main-mode-map ,(car x) ,(cadr x ))))
+   '(
+     ("B"               mu4e-headers-search-bookmark-edit)
+     ("s"               mu4e-headers-search)))
+  (mapcar 
+   (lambda (x)
      (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-view-mode-map ,(car x) ,(cadr x ))))
    '(("S" mu4e-view-save-attachment)
      ("o" mu4e-view-open-attachment)
-     ("O" mu4e-view-open-attachment-emacs)))
+     ("O" mu4e-view-open-attachment-emacs)
+     ("B"               mu4e-headers-search-bookmark-edit)
+     ("s"               mu4e-headers-search)
+     ("x"             open-mu4e-view)
+     ("@"             copy-mu4e-view)
+     ("*"             bmkp-mu4e-view)
+     ("<kp-multiply>" bmkp-mu4e-view)
+     ("F"             find-file-mu4e)
+     ("f"             mu4e-field-view)))
+  (mapcar 
+   (lambda (x)
+     (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-headers-mode-map ,(car x) ,(cadr x ))))
+   '(
+     ("B"               mu4e-headers-search-bookmark-edit)
+     ("s"               mu4e-headers-search)
+     ("x"             open-mu4e-header)
+     ("@"             copy-mu4e-header)
+     ("*"             bmkp-mu4e-header)
+     ("<kp-multiply>" bmkp-mu4e-header)
+     ("F"             find-file-mu4e)
+     ("f"             mu4e-field-header)))
   (evil-mu4e-init)
   (evil-define-key 'normal mu4e-headers-mode-map
     "?" mu4e-headers-mode-map)
