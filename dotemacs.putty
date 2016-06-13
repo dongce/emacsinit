@@ -1,0 +1,353 @@
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(bm-buffer-persistence t)
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
+ '(company-backends
+   (quote
+    (company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-ropemacs company-cmake company-capf
+                  (company-dabbrev-code company-gtags company-etags company-keywords)
+                  company-oddmuse company-files company-dabbrev)))
+ '(company-global-modes (quote (not gud-mode)))
+ '(compilation-message-face (quote default))
+ '(current-language-environment "Korean")
+ '(custom-enabled-themes (quote (sanityinc-solarized-dark)))
+ '(custom-safe-themes
+   (quote
+    ("89586444c668bae9ec7e594bc38b3a956f31dc6cb7c851ed40411cc4ff770708" "40f6a7af0dfad67c0d4df2a1dd86175436d79fc69ea61614d668a635c2cd94ab" "bcc6775934c9adf5f3bd1f428326ce0dcd34d743a92df48c128e6438b815b44f" "877530ef4d4423b5b184daff52953d398bb3533ec5e7393c238ac732b19135dd" "a444b2e10bedc64e4c7f312a737271f9a2f2542c67caa13b04d525196562bf38" "6a9606327ecca6e772fba6ef46137d129e6d1888dcfc65d0b9b27a7a00a4af20" "e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" "57f8801351e8b7677923c9fe547f7e19f38c99b80d68c34da6fa9b94dc6d3297" "cf27e07c86cb9b944b77ed277ac873590b705370638010565b726cc2db0e199d" "35d5cec221e7a4488f7744329c61146bd5079207e57a0f18b78d9049b090df2b" "bd115791a5ac6058164193164fd1245ac9dc97207783eae036f0bfc9ad9670e0" "dd43c9f997208c61ce0f4855932cc20a57ae2f37fe2ced218dace5c8c321d1e8" "6fe6ab4abe97a4f13533e47ae59fbba7f2919583f9162b440dd06707b01f7794" "3a727bdc09a7a141e58925258b6e873c65ccf393b2240c51553098ca93957723" "025354235e98db5e7fd9c1a74622ff53ad31b7bde537d290ff68d85665213d85" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "60f04e478dedc16397353fb9f33f0d895ea3dab4f581307fbf0aa2f07e658a40" "e57e7b19da7b4cd0e5512d5e9bc20d31c9cf50112c462de15a76bce0ea3c5ef5" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "e16a771a13a202ee6e276d06098bc77f008b73bbac4d526f160faa2d76c1dd0e" "4c9ba94db23a0a3dea88ee80f41d9478c151b07cb6640b33bfc38be7c2415cc4" "d7f1c86b425e148be505c689fc157d96323682c947b29ef00cf57b4e4e46e6c7" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" default)))
+ '(default-input-method "korean-hangul3f")
+ '(dired-listing-switches "-al --group-directories-first")
+ '(elpy-default-minor-modes
+   (quote
+    (eldoc-mode flymake-mode yas-minor-mode auto-complete-mode)) t)
+ '(evil-cross-lines t)
+ '(evil-emacs-state-modes
+   (quote
+    (archive-mode bbdb-mode bookmark-bmenu-mode bookmark-edit-annotation-mode browse-kill-ring-mode bzr-annotate-mode calc-mode cfw:calendar-mode completion-list-mode Custom-mode debugger-mode delicious-search-mode desktop-menu-blist-mode desktop-menu-mode doc-view-mode dvc-bookmarks-mode dvc-diff-mode dvc-info-buffer-mode dvc-log-buffer-mode dvc-revlist-mode dvc-revlog-mode dvc-status-mode dvc-tips-mode ediff-mode ediff-meta-mode efs-mode Electric-buffer-menu-mode emms-browser-mode emms-mark-mode emms-metaplaylist-mode emms-playlist-mode etags-select-mode fj-mode gc-issues-mode gdb-breakpoints-mode gdb-disassembly-mode gdb-frames-mode gdb-locals-mode gdb-memory-mode gdb-registers-mode gdb-threads-mode gist-list-mode gnus-article-mode gnus-browse-mode gnus-group-mode gnus-server-mode gnus-summary-mode google-maps-static-mode jde-javadoc-checker-report-mode magit-commit-mode magit-key-mode magit-show-branches-mode magit-branch-manager-mode magit-wazzup-mode mh-folder-mode monky-mode notmuch-hello-mode notmuch-search-mode notmuch-show-mode occur-mode org-agenda-mode package-menu-mode proced-mode rcirc-mode rebase-mode reftex-select-bib-mode reftex-toc-mode sldb-mode slime-inspector-mode slime-thread-control-mode slime-xref-mode sr-buttons-mode sr-mode sr-tree-mode sr-virtual-mode tar-mode tetris-mode tla-annotate-mode tla-archive-list-mode tla-bconfig-mode tla-bookmarks-mode tla-branch-list-mode tla-browse-mode tla-category-list-mode tla-changelog-mode tla-follow-symlinks-mode tla-inventory-file-mode tla-inventory-mode tla-lint-mode tla-logs-mode tla-revision-list-mode tla-revlog-mode tla-tree-lint-mode tla-version-list-mode twittering-mode urlview-mode vc-annotate-mode vc-dir-mode vc-git-log-view-mode vc-svn-log-view-mode vm-mode vm-summary-mode w3m-mode wab-compilation-mode xgit-annotate-mode xgit-changelog-mode xgit-diff-mode xgit-revlog-mode xhg-annotate-mode xhg-log-mode xhg-mode xhg-mq-mode xhg-mq-sub-mode xhg-status-extra-mode svn-status-mode dvc-log-edit-mode project-buffer-mode gtags-selection-mode speedbar-mode cscope-mode rtags-mode magit-popup-mode diff-mode)))
+ '(evil-emacs-state-msg "이멕스")
+ '(evil-insert-state-msg "입력")
+ '(evil-leader/leader "SPC")
+ '(evil-motion-state-modes
+   (quote
+    (apropos-mode Buffer-menu-mode calendar-mode color-theme-mode command-history-mode compilation-mode dictionary-mode ert-results-mode help-mode Info-mode Man-mode speedbar-mode undo-tree-visualizer-mode view-mode woman-mode grep-mode occur-mode)))
+ '(evil-move-cursor-back nil)
+ '(evil-normal-state-msg "명령")
+ '(evil-replace-state-msg "교체")
+ '(evil-track-eol nil)
+ '(evil-want-C-u-scroll t)
+ '(evil-want-fine-undo t)
+ '(evil-want-visual-char-semi-exclusive t)
+ '(flycheck-c/c++-clang-executable "clangwrap")
+ '(flycheck-check-syntax-automatically (quote (save idle-change mode-enabled)))
+ '(flycheck-clang-warnings nil)
+ '(flycheck-idle-change-delay 10)
+ '(gdb-display-buffer-other-frame-action
+   (quote
+    ((display-buffer-reuse-window)
+     (reusable-frames . visible)
+     (inhibit-same-window . t))))
+ '(gdb-many-windows nil)
+ '(gdb-non-stop-setting nil)
+ '(gdb-show-main t)
+ '(geiser-active-implementations (quote (guile)))
+ '(global-company-mode t)
+ '(global-hl-line-sticky-flag t)
+ '(grep-command "grep -rni ")
+ '(guide-key/guide-key-sequence
+   (quote
+    ("C-x r" "C-x p" "C-c p" "<SPC> p" "C-c C-o" "<SPC> h" "C-x <RET>" "C-x v" "<SPC> s" "<SPC> g" "<SPC> i" "C-c !" "<SPC> y" "<SPC> c" "<SPC> p s" "<SPC> s h")))
+ '(highlight-changes-colors (quote ("#D700D7" "#AF87FF")))
+ '(highlight-tail-colors
+   (quote
+    (("#303030" . 0)
+     ("#B3EE3A" . 20)
+     ("#AFEEEE" . 30)
+     ("#8DE6F7" . 50)
+     ("#FFF68F" . 60)
+     ("#FFA54F" . 70)
+     ("#FE87F4" . 85)
+     ("#303030" . 100))))
+ '(ido-mode (quote buffer) nil (ido))
+ '(indicate-buffer-boundaries (quote left))
+ '(indicate-empty-lines t)
+ '(irony-additional-clang-options
+   (quote
+    ("-w" "-no-color-diagnostic" "-isystem" "/usr/local/toolchain/default4.8.3/include/c++/4.8.3" "-isystem" "/usr/local/toolchain/default4.8.3/include/c++/4.8.3/x86_64-unknown-linux-gnu")))
+ '(js-indent-level 2)
+ '(js2-basic-offset 2)
+ '(ls-lisp-dirs-first t)
+ '(magit-auto-revert-mode nil)
+ '(magit-diff-use-overlays nil)
+ '(magit-git-global-arguments (quote ("--no-pager")))
+ '(magit-git-standard-options (quote ("--no-pager")))
+ '(magit-save-repository-buffers t)
+ '(magit-use-overlays nil)
+ '(message-send-mail-function (quote message-smtpmail-send-it))
+ '(mode-line-color-mode nil)
+ '(org-babel-load-languages (quote ((emacs-lisp . t) (C . t) (python . t))))
+ '(org-html-head-include-default-style nil)
+ '(org-html-mathjax-options
+   (quote
+    ((path "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML")
+     (scale "100")
+     (align "left")
+     (font "TeX")
+     (linebreaks "false")
+     (autonumber "AMS")
+     (indent "0em")
+     (multlinewidth "85%")
+     (tagindent ".8em")
+     (tagside "right"))))
+ '(org-html-postamble nil)
+ '(org-structure-template-alist
+   (quote
+    (("s" "#+BEGIN_SRC ?
+
+#+END_SRC")
+     ("e" "#+BEGIN_EXAMPLE
+?
+#+END_EXAMPLE")
+     ("q" "#+BEGIN_QUOTE
+?
+#+END_QUOTE")
+     ("v" "#+BEGIN_VERSE
+?
+#+END_VERSE")
+     ("V" "#+BEGIN_VERBATIM
+?
+#+END_VERBATIM")
+     ("c" "#+BEGIN_CENTER
+?
+#+END_CENTER")
+     ("l" "#+BEGIN_LaTeX
+?
+#+END_LaTeX")
+     ("L" "#+LaTeX: ")
+     ("h" "#+BEGIN_HTML
+?
+#+END_HTML")
+     ("H" "#+HTML: ")
+     ("a" "#+BEGIN_ASCII
+?
+#+END_ASCII")
+     ("A" "#+ASCII: ")
+     ("i" "#+INDEX: ?")
+     ("I" "#+INCLUDE: %file ?")
+     ("w" "#+BEGIN_WARNING
+? 
+#+END_WARNING")
+     ("f" "#+BEGIN_INFO 
+? 
+#+END_INFO")
+     ("t" "#+BEGIN_TIP
+? 
+#+END_TIP"))))
+ '(package-archives
+   (quote
+    (("org" . "http://orgmode.org/elpa/")
+     ("ELPA" . "http://tromey.com/elpa/")
+     ("marmalade" . "http://marmalade-repo.org/packages/")
+     ("MELPA" . "http://melpa.org/packages/")
+     ("gnu" . "http://elpa.gnu.org/packages/"))))
+ '(package-selected-packages
+   (quote
+    (crux req-package magit-svn modern-cpp-font-lock xah-math-input xah-find company-math persistent-scratch browse-kill-ring magit zygospore ztree zoom-frm zenburn-theme zeal-at-point yaml-mode yafolding xterm-color xah-replace-pairs xah-get-thing xah-elisp-mode world-time-mode workgroups wisi winpoint win-switch wikidoc wiki-nav wiki whole-line-or-region wgrep web-mode w3m w32-browser w3 vlf visual-regexp-steroids virtualenvwrapper virtualenv vimish-fold vc-fossil vc-check-status uuid use-package unfill tracwiki-mode tagedit tabbar-ruler swoop switch-window swbuff sublimity state sr-speedbar spray sphinx-frontend smooth-scroll smex smartscan slime-js skewer-mode simpleclip simp shell-switcher shadchen sass-mode ruby-electric restclient repl-toggle regex-tool redo+ recursive-narrow realgud rdp rainbow-mode rainbow-delimiters quickrun quack pyvirtualenv python-pylint python-pep8 python-mode python-info python-django pymacs pycomplete projector project-explorer pretty-symbols-mode powerline-evil poporg phi-search-mc phi-rectangle pg perspective persp-mode paxedit parse-csv parenface-reversion paredit-menu paredit-everywhere palimpsest page-break-lines package-utils ox-trac ox-reveal owdriver outshine outlined-elisp-mode outline-magic orglink orgit org-pomodoro org-ehtml on-screen on-parens ob-ipython ob-http nzenburn-theme nyan-mode nxml-mode nrepl-tracing nose nodejs-repl nginx-mode narrow-indirect nanowrimo names mysql2sqlite mustang-theme multi-term multi mu4e-maildirs-extension monokai-theme modeline-posn mode-compile mo-git-blame mmm-mode misc-fns math-symbols math-symbol-lists markdown-mode mark-multiple manage-minor-mode malinka magit-push-remote magit-commit-training-wheels macrostep macro-utils macro-math loccur litable linked-buffer less-css-mode lentic launch latex-preview-pane lacarte know-your-http-well keyfreq key-combo jsshell-bundle json-mode js-comint jedi-direx isearch+ irfc ipython ioccur interaction-log init-loader info+ inf-ruby impatient-mode imenus imenu-list imenu+ image-dired+ iflipb iedit idomenu ido-ubiquitous ido-at-point icomplete+ ibuffer-vc ibuffer-projectile ibuffer-git http-post-simple hjkl-mode highlight-symbol highlight-numbers highlight hideshowvis hide-lines hide-comnt hexrgb helm-swoop helm-pydoc helm-projectile helm-proc helm-ls-git helm-helm-commands helm-gtags helm-google helm-git-grep helm-git-files helm-ghq helm-flycheck helm-flx helm-dired-recent-dirs helm-dictionary helm-descbinds helm-css-scss helm-c-yasnippet helm-c-moccur helm-bm hc-zenburn-theme hardhat guide-key grizzl goto-last-change gitconfig-mode git-wip-timemachine git-timemachine ggtags geiser fuzzy fringe-current-line free-keys frame-tag font-utils fold-this fold-dwim-org flymake flycheck-irony find-temp-file fic-mode fic-ext-mode fastnav eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-terminal-cursor-changer evil-tabs evil-surround evil-smartparens evil-paredit evil-org evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-cleverparens evil-args evil-anzu eval-in-repl emamux emacsql elx elpy elnode elfeed-web eldoc-extension el-mock el-init el-autoyas ein eimp ecb easy-kill drag-stuff dpaste_de download-region dirtree-prosjekt dired-toggle dired-subtree dired-single dired-imenu dired-details+ dired+ diff-hl dictionary dash-at-point cycbuf csv-mode css-mode company-c-headers colorsarenice-theme color-theme-sanityinc-solarized color-theme-heroku color-theme-approximate color-theme coffee-mode cmake-mode clippy cider centered-cursor-mode cedit cdnjs cask busybee-theme bufshow buffer-utils buffer-move bs-ext browse-url-dwim bpe bookmark+ bison-mode beacon bbdb-vcard bbdb-ext back-button awk-it auto-yasnippet auto-indent-mode auto-complete-c-headers auctex-latexmk ascope asciidoc ascii apache-mode annotate ack ace-jump-mode ac-helm ac-etags)))
+ '(package-user-dir "/usr/local/emacs/site-lisp/elpa")
+ '(paste-host "192.168.137.119:8000/dpaste")
+ '(pe/side (quote right))
+ '(projectile-completion-system (quote helm))
+ '(projectile-enable-caching t)
+ '(projectile-global-mode t)
+ '(projectile-use-git-grep t)
+ '(recentf-max-menu-items 300)
+ '(recentf-max-saved-items 300)
+ '(recentf-mode t)
+ '(ring-bell-function (quote ignore))
+ '(rtags-path "/usr/local/rtags/default/")
+ '(rtog/mode-repl-alist
+   (quote
+    ((emacs-lisp-mode . ielm)
+     (python-mode . python-shell-switch-to-shell)
+     (dos-mode . shell)
+     (sql-mode . sql-mysql)
+     (js2-mode lambda nil
+               (run-js inferior-js-program-command))
+     (js2-mode . slime-connect)
+     (js2-mode . jsshell)
+     (scheme-mode lambda nil
+                  (run-scheme scheme-program-name)))))
+ '(safe-local-variable-values
+   (quote
+    ((annotate-file . "k3link11icdanot")
+     (annotate-file . k3link11icdanot)
+     (annotate-file . k3link11icdanot\.txt)
+     (eval when
+           (fboundp
+            (quote rainbow-mode))
+           (rainbow-mode 1))
+     (eval set-variable
+           (quote geiser-guile-binary)
+           "/gitdir/dlplink11/proj/testgen/testgen.out")
+     (eval set-variable
+           (quote geiser-guile-binary)
+           "/home/buildadmin/gitdir/dlplink11/proj/testgen/testgen.out")
+     (eval set-variable
+           (quote geiser-guile-binary)
+           "/home/buildadmin/gitdir/dlpisdl/proj/testgen/testgen.out")
+     (eval set-variable geiser-guile-binary "/home/buildadmin/gitdir/dlpisdl/proj/testgen/testgen.out"))))
+ '(smtpmail-smtp-server "192.168.137.219")
+ '(smtpmail-smtp-service 586)
+ '(syslog-debug-face
+   (quote
+    ((t :background unspecified :foreground "#5FFFFF" :weight bold))))
+ '(syslog-error-face
+   (quote
+    ((t :background unspecified :foreground "#FF1493" :weight bold))))
+ '(syslog-hour-face (quote ((t :background unspecified :foreground "#87D700"))))
+ '(syslog-info-face
+   (quote
+    ((t :background unspecified :foreground "#5FD7FF" :weight bold))))
+ '(syslog-ip-face (quote ((t :background unspecified :foreground "#CDC673"))))
+ '(syslog-su-face (quote ((t :background unspecified :foreground "#D700D7"))))
+ '(syslog-warn-face
+   (quote
+    ((t :background unspecified :foreground "#FF8C00" :weight bold))))
+ '(tramp-default-method "ssh")
+ '(user-mail-address "di7979.kim@hanwha.com")
+ '(visible-bell nil)
+ '(weechat-color-list
+   (quote
+    (unspecified "#1B1E1C" "#303030" "#5F0000" "#FF1493" "#6B8E23" "#87D700" "#968B26" "#CDC673" "#21889B" "#5FD7FF" "#A41F99" "#D700D7" "#349B8D" "#5FFFFF" "#F5F5F5" "#FFFAFA")))
+ '(which-function-mode t)
+ '(woman-manpath
+   (quote
+    ("/usr/local/misctools/default/share/man" "/usr/local/emacs/default/share/man" "/usr/local/guile/default/share/man" "/usr/local/git/default/share/man" "/usr/local/git/mandoc" "/usr/local/python27/default/share/man" "/usr/local/subversion/default/share/man" "/usr/local/tcpreplay/default/share/man")) t)
+ '(xah-find-file-background-color "tomato")
+ '(xah-find-file-separator
+   "=========================================================================
+")
+ '(xah-find-match-background-color "blue1")
+ '(xah-find-occur-separator "-------------------------------------------------------
+"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(diredp-compressed-file-suffix ((t (:foreground "dodgerblue1"))))
+ '(diredp-dir-heading ((t (:background "magenta" :foreground "Yellow"))))
+ '(fringe ((t (:background "magenta" :foreground "#F5F5F5"))))
+ '(helm-selection ((t (:background "firebrick" :underline nil))))
+ '(helm-selection-line ((t (:background "RoyalBlue4"))))
+ '(highlight ((t (:background "slateblue4"))))
+ '(hl-line ((t (:inherit t :background "#5F5F5F"))))
+ '(isearch ((t (:background "#D700D7" :foreground "cyan1" :weight normal))))
+ '(isearch-fail ((t (:background "steelblue1" :foreground "#FF1493" :weight bold))))
+ '(magit-blame-heading ((t (:background "grey25" :foreground "steelblue1"))))
+ '(magit-hash ((t (:foreground "greenyellow"))))
+ '(magit-log-date ((t (:foreground "lightgoldenrod2"))))
+ '(magit-popup-disabled-argument ((t (:foreground "grey58" :weight normal))))
+ '(match ((t (:background "steelblue4" :foreground "#FFFAFA" :weight bold))))
+ '(powerline-evil-base-face ((t (:inherit mode-line :foreground "cyan1"))))
+ '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "green" :foreground "royalblue3"))))
+ '(region ((t (:inherit t :background "slateblue4"))))
+ '(underline ((t (:background "slateblue4" :weight bold))))
+ '(woman-bold ((t (:inherit bold :foreground "yellow"))))
+ '(woman-italic ((t (:inherit italic :foreground "mediumpurple1")))))
+
+(defvar emacsw32-home (file-truename (concat exec-directory "../../../../../")))
+(let (( default-directory  (file-truename (concat emacsw32-home "/site-lisp/"))))
+  (normal-top-level-add-subdirs-to-load-path))
+
+(add-to-list 'load-path (file-truename (concat emacsw32-home "/site-lisp/")))
+(add-to-list 'load-path (file-truename (concat emacsw32-home "/ergoemacs/packages")))
+
+
+(add-to-list 'load-path  "/usr/local/misctools/default/share/gtags/")
+
+
+(require 'cl)
+(require 'package)
+(package-initialize)
+(require 's)
+(require 'init-loader)
+(init-loader-load (concat emacsw32-home "/site-lisp/init/"))
+
+(message "init load done")
+
+
+;; (load "00_init-init.el")
+;; (load "01_init-package.el")
+;; (load "02_init-macro.el")
+;; (load "03_init-ext.el")
+;; (load "04_init-sql.el")
+;; (load "05_init-dired.el")
+;; (load "06_init-mode.el")
+;; (load "08_init-comint.el")
+;; (load "09_init-print.el")
+;; (load "10_init-encoding.el")
+;; (load "11_init-scratch.el")
+;; (load "12_init-encrypt.el")
+;; (load "13_init-personal.el")
+;; (load "14_init-scm.el")
+;; (load "15_init-compile.el")
+;; (load "16_init-search.el")
+;; (load "17_init-edit.el")
+;; (load "18_init-coding.el")
+;; (load "19_init-org.el")
+;; (load "20_init-comment.el")
+;; (load "21_init-tool.el")
+;; (load "22_init-buffer.el")
+;; (load "23_init-project.el")
+;; (load "24_init-external.el")
+;; (load "25_init-http.el")
+;; (load "25_init-jump.el")
+;; (load "26_init-journal.el")
+;; (load "28_init-mu4e.el")
+;; (load "29_init-ergo.el")
+;; (load "30_init-env.el")
+;; (load "31_init-desktop.el")
+;; (load "32_init-font.el")
+;; (load "33_init-alias.el")
+;; (load "34_init-abbrev.el")
+;; (load "35_init-evil.el")
+;; (load "36_init-appearance.el")
+;; (load "37_init-doc.el")
+;; (load "38_init-image.el")
+;; (load "39_init-yas.el")
+;; (load "40_init-html.el")
+;; (load "41_init-latex.el")
+;; (load "42_init-derived-mode.el")
+;; (load "43_init-repl.el")
+;; (load "44_init-web.el")
+;; (load "45_init-elpy.el")
+;; (load "46_init-url.el")
+;; (load "47_init-folding.el")
+;; (load "48_init-deprecated.el")
+
+
+ 
+(define-key key-translation-map (kbd "<cancel>") "\C-c")
+(define-key key-translation-map (kbd "M-O A")  (kbd "C-<up>"))
+(define-key key-translation-map (kbd "M-O B")  (kbd "C-<down>"))
+(define-key key-translation-map (kbd "M-O C")  (kbd "C-<right>"))
+(define-key key-translation-map (kbd "M-O D")  (kbd "C-<left>"))
+
+
+
+(require 'korea-util)
+(setenv "HANGUL_KEYBOARD_TYPE" "3f")
+(setq  default-korean-keyboard "3f")
+(set-language-environment "Korean")
+
+(setq default-input-method "korean-hangul3f")
+
+(setq-default file-name-coding-system 'utf-8)
+(setq-default default-process-coding-system  '( utf-8 . utf-8 ))
+
+
+(server-start)
+
+(message "server staerted load done")
