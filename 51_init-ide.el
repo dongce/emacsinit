@@ -19,6 +19,8 @@
   (add-to-list 'purpose-user-mode-purposes '(prog-mode . prog))
   (add-to-list 'purpose-user-mode-purposes '(compilation-mode . comp))
   (add-to-list 'purpose-user-mode-purposes '(org-mode . org))
+  (add-to-list 'purpose-user-mode-purposes '(dos-mode . dos))
+  (add-to-list 'purpose-user-mode-purposes '(shell-mode . shell))
 
   (add-to-list 'purpose-user-mode-purposes '(mu4e-headers-mode . mu4e-header))
   (add-to-list 'purpose-user-mode-purposes '(mu4e-view-mode  . mu4e-view))

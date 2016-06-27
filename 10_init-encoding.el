@@ -35,6 +35,7 @@
 ;; (modify-coding-system-alist 'process ".*" 'cp949)
 (modify-coding-system-alist 'process "git\.exe" '(utf-8 . cp949))
 (modify-coding-system-alist 'process "ls\.exe" 'utf-8 )
+(modify-coding-system-alist 'process "curl\.exe" 'utf-8 )
 ;;(require 'unicad ) ;;CP949 를 우선 하는 방법을 찾을 것 
 
 

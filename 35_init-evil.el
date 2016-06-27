@@ -45,6 +45,7 @@
     "bi" 'ido-switch-buffer-other-frame
     "bb" 'ivy-switch-buffer-other-window
     "bB" 'ivy-switch-buffer
+    "bp" 'evil-prev-buffer
     "bk" 'evil-prev-buffer
     "bj" 'evil-next-buffer
     "bn" 'narrow-to-region
@@ -56,6 +57,8 @@
     "bf"      'prelude-copy-file-name-to-clipboard
     "bh"      'mark-whole-buffer
     "br"      'revert-buffer
+    "bc"      'xah-close-current-buffer
+    "bl"      'xah-open-last-closed
     "j" 'save-buffer
     ;; "i" 'ibuffer
     ;; "j" 'tmpscratch
@@ -876,7 +879,7 @@
   "or" 'org-capture
   "oa" 'org-agenda
   "os" 'org-store-link
-  "oi" 'org-insert-link-global
+  "ol" 'org-insert-alllink
   "oo" 'org-open-at-point-global
   "oR" 'org-refile
   "oc" 'org-cliplink
@@ -889,6 +892,9 @@
   "ow" 'org-archive-subtree-default
   "op" 'org-link-copy-image
   "of" 'org-link-copy-file
+  "oe" 'org-set-effort
+  "oi" 'org-clock-in
+  "oI" 'org-clock-out
   )
 
 
@@ -1056,6 +1062,22 @@
     (kbd "M-K") 'org-metaup
     (kbd "M-L") 'org-metaright)
 
+  (evil-define-key 'visual org-mode-map
+    "gn"    'outline-next-visible-heading
+    "gp"    'outline-previous-visible-heading
+    "gf"    'org-forward-heading-same-level
+    "gb"    'org-backward-heading-same-level
+    "gu"    'outline-up-heading
+    "gt"    'org-goto
+    
+    "gj"    'outline-next-visible-heading
+    "gk"    'outline-previous-visible-heading
+    "gl"    'org-forward-heading-same-level
+    "gh"    'org-backward-heading-same-level
+    
+    )
+
+  
   (evil-define-key 'normal orgstruct-mode-map
     (kbd "RET") 'org-open-at-point
     "za" 'org-cycle

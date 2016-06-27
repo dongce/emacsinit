@@ -637,3 +637,15 @@ Version 2015-04-09"
                 ;;use-comint;; (gud-call (gdb-gud-context-command "-exec-interrupt")))
                 (t
                  (comint-interrupt-subjob)))))))
+
+;; http://ergoemacs.org/emacs/emacs_isearch_by_arrow_keys.html
+(progn
+  ;; set arrow keys in isearch. left/right is backward/forward, up/down is history. press Return to exit
+  (define-key isearch-mode-map (kbd "<up>") 'isearch-ring-retreat )
+  (define-key isearch-mode-map (kbd "<down>") 'isearch-ring-advance )
+
+  (define-key isearch-mode-map (kbd "<left>") 'isearch-repeat-backward)
+  (define-key isearch-mode-map (kbd "<right>") 'isearch-repeat-forward)
+
+  (define-key minibuffer-local-isearch-map (kbd "<left>") 'isearch-reverse-exit-minibuffer)
+  (define-key minibuffer-local-isearch-map (kbd "<right>") 'isearch-forward-exit-minibuffer))

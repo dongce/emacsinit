@@ -462,8 +462,13 @@ USAGE:  (org-get-entries-fn '(6 1 2015) '(6 30 2015))"
      ((not (equal answ t))
       (user-error "Invalid target location")))))
 
-(fset 'org-refile-get-location 'my/org-refile-get-location)
+(add-hook 'org-after-refile-insert-hook
+          (lambda () (save-buffer)
+            ;; (auto-save-mode)
+            ))
 
+
+(fset 'org-refile-get-location 'my/org-refile-get-location)
 
 
 (use-package elfeed-org
@@ -471,6 +476,27 @@ USAGE:  (org-get-entries-fn '(6 1 2015) '(6 30 2015))"
   :init
   (elfeed-org)
   ) 
+
+;; (use-package elfeed-goodies
+;;   :commands (elfeed)
+;;   :init
+;;   (with-eval-after-load 'elfeed
+;;     (elfeed-goodies/setup))
+;;   (defun private/org-elfeed-entry-store-link ()
+;;     (when elfeed-show-entry
+;;       (let* ((link (elfeed-entry-link elfeed-show-entry))
+;;              (title (elfeed-entry-title elfeed-show-entry)))
+;;         (org-store-link-props
+;;          :link link
+;;          :description title)
+;;         )))
+;;   (add-hook 'org-store-link-functions
+;;             'private/org-elfeed-entry-store-link)
+;;   (defun elfeedurl ()
+;;     (interactive)
+;;     (message  (get-text-property (point) 'shr-url)))
+;;   ) 
+
 
 (use-package os-fs-tree :commands org-fs-tree-dump )
 
@@ -515,3 +541,14 @@ currently open, based on `org-agenda-files'."
 ;; ;; "✺" "✹"
 ;;   )
 
+
+
+;;; * 저장되어 있는 모든 링크를 넣는다. 
+(defun org-insert-alllink ()
+  (interactive)
+  (while org-stored-links
+    (insert "\n ")
+    (org-insert-link t (car  (car org-stored-links)  ) (cadr  (car org-stored-links)  ))))
+
+
+(use-package org-protocol)

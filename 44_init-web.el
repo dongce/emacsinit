@@ -19,3 +19,11 @@
 
 
 (use-package  google-contacts :commands google-contacts)
+
+
+;; http://pragmaticemacs.com/emacs/weather-in-emacs/
+(use-package wttrin
+  :ensure t
+  :commands (wttrin)
+  :init
+  (setq wttrin-default-cities '("gumi-si" "Daegu")))

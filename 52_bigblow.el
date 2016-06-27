@@ -2,8 +2,11 @@
 
 
 
-(require 'org-mu4e)
-(setq org-mu4e-convert-to-html t)
+(use-package org-mu4e
+  :config
+  (setq org-mu4e-link-query-in-headers-mode nil)
+  (setq org-mu4e-convert-to-html t))
+
 (require 'org)
 (require 'ox-html)
 
@@ -101,7 +104,7 @@
              (title
               (if (stringp proptitle)
                   (substring-no-properties proptitle)
-                (if (derived-mode-p 'org-mode) (nth 4 (org-heading-components)) "무제"))))
+                (condition-case nil (nth 4  (org-heading-components)) (error "무제")) )))
     (mu4e-compose-new)
     (save-excursion
       (save-restriction
