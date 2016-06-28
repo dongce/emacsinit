@@ -8,11 +8,11 @@
 (setq w32-pass-lwindow-to-system nil 
       w32-pass-rwindow-to-system nil 
       w32-pass-apps-to-system nil 
-      w32-lwindow-modifier 'super ; Left Windows key 
-      w32-rwindow-modifier 'super ; Right Windows key 
+      w32-lwindow-modifier nil ;;'super ; Left Windows key 
+      w32-rwindow-modifier nil ;;'super ; Right Windows key 
       w32-apps-modifier 'hyper) ; Menu key
 
-
+(when-os 'windows-nt (global-set-key [rwindow] 'helm-smex))
 
 ;;hyper super define;;(global-set-key (kbd "H-b") 'backward-word) ; H is for hyper
 ;;hyper super define;;(global-set-key (kbd "s-b") 'backward-word) ; lower case “s” is for super
