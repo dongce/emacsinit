@@ -394,6 +394,7 @@
 
   (define-key evil-motion-state-map [down-mouse-1] 'mouse-drag-region)
 
+  
   (defun evil-undefine ()
     (interactive)
     (let (evil-mode-map-alist)
@@ -402,7 +403,36 @@
 
 
 ;;;* _ EVIL ORG setting 
-;;;** 참고 - https://github.com/cofi/dotfiles/blob/master/emacs.d/config/cofi-evil.el#L149 
+;;;** 참고 - https://github.com/cofi/dotfiles/blob/master/emacs.d/config/cofi-evil.el#L149
+
+
+  ;; kp-map 
+  (define-key evil-normal-state-map [kp-0] 'helm-smex)
+  (define-key evil-normal-state-map [kp-1] 'select-window-1)
+  (define-key evil-normal-state-map [kp-2] 'select-window-2)
+  (define-key evil-normal-state-map [kp-3] 'select-window-3)
+  (define-key evil-normal-state-map [kp-4] 'evil-prev-buffer)
+  (define-key evil-normal-state-map [kp-5] 'helm-mini)
+  (define-key evil-normal-state-map [kp-6] 'evil-next-buffer)
+  (define-key evil-normal-state-map [kp-8] 'split-window-below)
+  (define-key evil-normal-state-map [kp-add] 'evil-yank)
+  (define-key evil-normal-state-map [kp-enter] 'evil-paste-after)
+  (define-key evil-normal-state-map [kp-decimal] 'winexe)
+  (define-key evil-normal-state-map [kp-divide] 'ibuffer)
+
+  (define-key evil-visual-state-map [kp-0] 'helm-smex)
+  (define-key evil-visual-state-map [kp-1] 'select-window-1)
+  (define-key evil-visual-state-map [kp-2] 'select-window-2)
+  (define-key evil-visual-state-map [kp-3] 'select-window-3)
+  (define-key evil-visual-state-map [kp-4] 'evil-prev-buffer)
+  (define-key evil-visual-state-map [kp-5] 'helm-mini)
+  (define-key evil-visual-state-map [kp-6] 'evil-next-buffer)
+  (define-key evil-visual-state-map [kp-add] 'evil-yank)
+  (define-key evil-visual-state-map [kp-enter] 'evil-paste-after)
+  (define-key evil-visual-state-map [kp-decimal] 'winexe)
+  (define-key evil-visual-state-map [kp-divide] 'ibuffer)
+  (define-key evil-visual-state-map [kp-8] 'split-window-below)
+
   )
 
 (if (not  (eq window-system 'w32))
@@ -862,6 +892,9 @@
   ">" 'org-shiftright
   )
 
+
+
+
 (evil-leader/set-key-for-mode 'org-mode
   "ha" 'helm-org-agenda-files-headings
   "hH" 'helm-org-headlines
@@ -1159,4 +1192,9 @@
     "?" mu4e-headers-mode-map)
   (evil-define-key 'normal mu4e-view-mode-map
     "?" mu4e-view-mode-map))
+
+  (evil-define-key 'normal paredit-mode-map "\C-k" 'paredit-kill)
+  (evil-define-key 'visual paredit-mode-map "\C-k" 'paredit-kill)
+  (evil-define-key 'insert paredit-mode-map "\C-k" 'paredit-kill)
+
 

@@ -75,33 +75,33 @@
 
 
 
-(define-prefix-command 'xah-numpad-keymap)
-(global-set-key (kbd "<kp-home>") 'xah-numpad-keymap)
 
 
 ;;;_ fold-dwim
 (require 'fold-dwim)
 ;; more …
-
-(global-set-key (kbd "<kp-home> <kp-home>")      'ibuffer)
-(global-set-key (kbd "<kp-home> <kp-up>")        'bookmark-bmenu-list)
-(global-set-key (kbd "<kp-home> <kp-divide>")    'recentf-open-files)
-(global-set-key (kbd "<kp-home> <kp-multiply>")  'recentf-open-most-recent-file)
-
-(global-set-key (kbd "<kp-home> <kp-end>")    'keyboard-escape-quit)
-(global-set-key (kbd "<kp-home> <kp-add>")      'kill-ring-save)
-(global-set-key (kbd "<kp-home> <kp-enter>")    'yank)
-(global-set-key (kbd "<kp-home> <kp-delete>")   'kill-buffer)
-
-(global-set-key (kbd "<kp-home> <kp-left>")  'fold-dwim-hide-all)
-;;(global-set-key (kbd "<kp-home> <kp-space>") 'fold-dwim-toggle)
-(global-set-key (kbd "<kp-home> <kp-space>") 'kmacro-end-and-call-macro)
-(global-set-key (kbd "<kp-home> <kp-right>") 'fold-dwim-show-all)
-
-(global-set-key (kbd "<kp-home> <kp-down>") 'win-switch-dispatch)
-(global-set-key (kbd "<kp-home> <kp-subtract>") 'kill-line)
-
-(global-set-key (kbd "<kp-home> <kp-insert>") 'projectile-switch-to-buffer)
+;;deprecated;;(define-prefix-command 'xah-numpad-keymap)
+;;deprecated;;(global-set-key (kbd "<kp-home>") 'xah-numpad-keymap)
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-home>")      'ibuffer)
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-up>")        'bookmark-bmenu-list)
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-divide>")    'recentf-open-files)
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-multiply>")  'recentf-open-most-recent-file)
+;;deprecated;;
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-end>")    'keyboard-escape-quit)
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-add>")      'kill-ring-save)
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-enter>")    'yank)
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-delete>")   'kill-buffer)
+;;deprecated;;
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-left>")  'fold-dwim-hide-all)
+;;deprecated;;;;(global-set-key (kbd "<kp-home> <kp-space>") 'fold-dwim-toggle)
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-space>") 'kmacro-end-and-call-macro)
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-right>") 'fold-dwim-show-all)
+;;deprecated;;
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-down>") 'win-switch-dispatch)
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-subtract>") 'kill-line)
+;;deprecated;;
+;;deprecated;;(global-set-key (kbd "<kp-home> <kp-insert>") 'projectile-switch-to-buffer)
+;;deprecated;;
 
 ;;DEPRECATEDBY-WINSWITH//(global-set-key [M-up] '(lambda ( arg ) (interactive "p" ) ( other-window (* -1 arg) t )))
 ;;DEPRECATEDBY-WINSWITH//(global-set-key [M-down] 'other-window)
@@ -165,6 +165,8 @@ should be a list of keys that will be bound globally to
 
 (global-set-key (kbd "C-x x") 'delete-other-windows)
 (global-set-key (kbd "C-x c") 'delete-window)
+
+(global-set-key [(control meta ?y)]     'secondary-dwim)
 
 ;;eprecatedbyevil##(global-set-key [M-up]   'win-switch-up)
 ;;eprecatedbyevil##(global-set-key [M-down] 'win-switch-down)

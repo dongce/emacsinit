@@ -85,7 +85,7 @@
     ;; (insert (format "%s" (single-content ntag )))
     (mapcar 
      (lambda (x)
-       (let ((mail   (cdr (assoc 'mail x))))
+       (let ((mail   (s-replace "samsung.com"  "hanwha.com"(cdr (assoc 'mail x)))))
          (message mail)
          (kill-new  mail)))  
      (single-content ntag ))
@@ -99,7 +99,7 @@
     ;; (insert (format "%s" (single-content ntag )))
     (mapcar 
      (lambda (x)
-       (let ((mail   (cdr (assoc 'mail x))))
+       (let ((mail   (s-replace "samsung.com"  "hanwha.com"(cdr (assoc 'mail x)))))
          (message mail)
          (insert  (format "%s,"  mail))))  
      (single-content ntag ))

@@ -3172,3 +3172,20 @@ Version 2015-08-18"
       (while
           (search-forward-regexp "_" (point-max) 'NOERROR)
         (replace-match " " 'FIXEDCASE 'LITERAL)))))
+
+
+(defun uniq-region ()
+  "remove duplicate adjacent lines in the given region"
+  (interactive)
+  (save-excursion
+    (save-restriction
+      (narrow-to-region (region-beginning) (region-end))
+      (strip-trailing-whitespace (point-min) (point-max))
+      (let (( contents (s-split "\n" (buffer-substring-no-properties (point-min) (point-max))))
+            ( unified nil)
+            )
+        (dolist (it contents (setf unified  (reverse  unified)))
+          (if (not  (member it unified))
+              (setf unified (cons it unified) )))
+        (delete-region (point-min) (point-max))
+        (insert (s-join "\n" unified))))))

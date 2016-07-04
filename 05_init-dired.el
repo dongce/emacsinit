@@ -71,9 +71,6 @@
         (kill-new (replace-regexp-in-string "/" "\\" pathname nil t))
         )))
 
-  (require 'sml-modeline)
-  (sml-modeline-mode)
-
   (defvar nircmdexe 
     (concat (getenv "GUILE_HOME") "/nircmd/nircmd.exe"))
 

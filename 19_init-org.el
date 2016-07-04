@@ -475,6 +475,20 @@ USAGE:  (org-get-entries-fn '(6 1 2015) '(6 30 2015))"
   :commands (elfeed)
   :init
   (elfeed-org)
+  (defun private/org-elfeed-entry-store-link ()
+    (when elfeed-show-entry
+      (let* ((link (elfeed-entry-link elfeed-show-entry))
+             (title (elfeed-entry-title elfeed-show-entry)))
+        (org-store-link-props
+         :link link
+         :description title)
+        )))
+  (add-hook 'org-store-link-functions
+            'private/org-elfeed-entry-store-link)
+  (defun elfeedurl ()
+    (interactive)
+    (message  (get-text-property (point) 'shr-url)))
+  
   ) 
 
 ;; (use-package elfeed-goodies

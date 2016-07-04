@@ -148,13 +148,6 @@ Assumes that the frame is only split into two."
 ;; http://emacs-fu.blogspot.kr/2010/05/cleaning-up-mode-line.html
 
 
-;;(when (require 'diminish nil 'noerror)
-;;  (eval-after-load "company"
-;;      '(diminish 'company-mode "Cmp"))
-;;  (eval-after-load "abbrev"
-;;    '(diminish 'abbrev-mode "Ab"))
-;;  (eval-after-load "yasnippet"
-;;    '(diminish 'yas/minor-mode "Y")))
 
 ;;And the major-modes, for example for Emacs Lisp mode:
 ;;
@@ -172,6 +165,22 @@ Assumes that the frame is only split into two."
 (winner-mode t )
 
 ;; (with-package* (smart-mode-line) (sml-modeline-mode))
+
+(use-package diminish
+  :config
+  (diminish 'company-mode "Cmp")
+  (diminish 'abbrev-mode "Ab")
+  (diminish 'yas/minor-mode "Y")
+  (diminish 'yas/minor-mode "Y")
+  (diminish 'undo-tree-mode "ut")
+  (diminish 'paredit-mode "pe")
+  (diminish 'emacs-lisp-mode "EL")
+  (diminish 'elisp-mode "el")
+  (diminish 'evil-org-mode ))
+
+(use-package sml-modeline
+  :config
+  (sml-modeline-mode))
 
 ;;conflictwithhelm;;(with-package* (modeline-posn)
 ;;conflictwithhelm;;  (size-indication-mode t))
