@@ -419,6 +419,7 @@
   (define-key evil-normal-state-map [kp-enter] 'evil-paste-after)
   (define-key evil-normal-state-map [kp-decimal] 'winexe)
   (define-key evil-normal-state-map [kp-divide] 'ibuffer)
+  (define-key evil-normal-state-map [kp-subtract] 'recenter-top-bottom)
 
   (define-key evil-visual-state-map [kp-0] 'helm-smex)
   (define-key evil-visual-state-map [kp-1] 'select-window-1)
@@ -432,6 +433,7 @@
   (define-key evil-visual-state-map [kp-decimal] 'winexe)
   (define-key evil-visual-state-map [kp-divide] 'ibuffer)
   (define-key evil-visual-state-map [kp-8] 'split-window-below)
+  (define-key evil-normal-state-map [kp-subtract] 'recenter-top-bottom)
 
   )
 

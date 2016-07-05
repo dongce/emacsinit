@@ -487,7 +487,9 @@ USAGE:  (org-get-entries-fn '(6 1 2015) '(6 30 2015))"
             'private/org-elfeed-entry-store-link)
   (defun elfeedurl ()
     (interactive)
-    (message  (get-text-property (point) 'shr-url)))
+    (let ((url (get-text-property (point) 'shr-url)))
+      (kill-new url)
+      (message url )))
   
   ) 
 
