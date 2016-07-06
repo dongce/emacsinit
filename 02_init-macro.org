@@ -78,7 +78,6 @@
       )))
 #+END_SRC
 
-
 * convert 
 
 #+BEGIN_SRC emacs-lisp
@@ -171,7 +170,6 @@ Test cases
 ;;deprecated;;        (basic-save-buffer)
 ;;deprecated;;        (kill-this-buffer)))) files ))
 #+END_SRC
-
 
 * dired
 #+BEGIN_SRC emacs-lisp
@@ -330,7 +328,6 @@ Require unix zip commandline tool."
         (copy-image-file (car files)))))
 
 #+END_SRC
-
 
 * edit 
 #+BEGIN_SRC emacs-lisp
@@ -1091,8 +1088,6 @@ Version 2016-03-02"
 
 #+END_SRC
 
-
-
 * files
 #+BEGIN_SRC emacs-lisp
 ;;참고;;(defun fsproject-collect-files(root project-regexp file-filter &optional ignore-folders)
@@ -1194,9 +1189,6 @@ Note: the project list is sorted in descending alphabetic order."
   (message "emacs lisp 형태의 북마크를 복사하였습니다."))
 (global-set-key (kbd "M-p")   'clip-elisp-position)
 #+END_SRC
-
-
-
 
 * desktop
 #+BEGIN_SRC emacs-lisp
@@ -1410,7 +1402,6 @@ This command is similar to `find-file-at-point' but without prompting for confir
 
 #+END_SRC
 
-
 * elisp-prog
 
 #+BEGIN_SRC emacs-lisp
@@ -1522,13 +1513,6 @@ This command is similar to `find-file-at-point' but without prompting for confir
              (setq i (1+ i)))))))
 #+END_SRC
 
-
-  
-
-
-
-
-
 * scratch
 
 #+BEGIN_SRC emacs-lisp
@@ -1596,8 +1580,6 @@ This command is similar to `find-file-at-point' but without prompting for confir
   ;; Since we killed it, don't let caller do that.
   nil)
 #+END_SRC
-
-
 
 * paredit
 #+BEGIN_SRC emacs-lisp
@@ -1937,7 +1919,6 @@ No more \"End of file during parsing\" horrors!"
 
 #+END_SRC
 
-
 * web
 #+BEGIN_SRC emacs-lisp
 ;; (provide 'small-functions)
@@ -2108,8 +2089,6 @@ This works on the current region."
 
 #+END_SRC
 
-
-
 * copy
 #+BEGIN_SRC emacs-lisp
 (defun bfname ()
@@ -2207,7 +2186,6 @@ Version 2015-12-08"
       (message "Copied buffer file name '%s' to the clipboard." filename))))
 
 #+END_SRC
-
 
 * external
 
@@ -2328,7 +2306,6 @@ Version 2015-12-08"
       (kill-new (buffer-substring (point-min) (point-max))))
     ))
 #+END_SRC
-
 
 * buffer
 #+BEGIN_SRC emacs-lisp
@@ -3066,7 +3043,6 @@ Version 2015-03-03"
     )) 
 #+END_SRC
 
-
 * patch edit 
 
 #+BEGIN_SRC emacs-lisp
@@ -3134,10 +3110,6 @@ buffer being killed."
     (vimish-fold-toggle)))
 #+END_SRC
 
-
-
-
-
 * sorting
 
 #+BEGIN_SRC emacs-lisp
@@ -3157,7 +3129,6 @@ buffer being killed."
         (delete-region (point-min) (point-max))
         (insert (s-join "\n" unified))))))
 #+END_SRC
-
 
 * anal
 #+BEGIN_SRC emacs-lisp
@@ -3220,9 +3191,6 @@ of FILE in the current directory, suitable for creation"
 (load "~/savemacro.el")
 
 #+END_SRC
-
-
-
 
 * deprecated
 #+BEGIN_SRC emacs-lisp

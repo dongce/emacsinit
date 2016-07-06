@@ -43,6 +43,8 @@
     "ym" 'yankpad-map
     "yc" 'yankpad-set-category
     "bi" 'ido-switch-buffer-other-frame
+    "ba" 'ivy-push-view
+    "bA" 'ivy-pop-view
     "bb" 'ivy-switch-buffer-other-window
     "bB" 'ivy-switch-buffer
     "bp" 'evil-prev-buffer
@@ -87,7 +89,45 @@
     
     "u" #'wgrep
     ";" 'evilnc-comment-or-uncomment-lines
-    "l" 'evilnc-comment-or-uncomment-to-the-line
+    ;; "l" 'evilnc-comment-or-uncomment-to-the-line
+    ;; "l" paredit-mode-map
+
+   ;;TODO;;("("         paredit-open-round
+   ;;TODO;;(")"         paredit-close-round
+   ;;TODO;;("M-)"       paredit-close-round-and-newline
+   ;;TODO;;("["         paredit-open-square
+   ;;TODO;;("]"         paredit-close-square
+   ;;TODO;;("\""        paredit-doublequote
+   ;;TODO;;("M-\""      paredit-meta-doublequote
+   ;;TODO;;("\\"        paredit-backslash
+   ;;TODO;;(";"         paredit-semicolon
+   "l;"       #'paredit-comment-dwim
+   ;;TODO;;("C-j"       paredit-newline
+   ;;TODO;;;; "Deleting & Killing"
+   "lk"       #'paredit-kill
+   ;;TODO;;("M-d"       paredit-forward-kill-word
+   ;;TODO;;;; "Movement & Navigation"
+   ;;TODO;;("C-M-f"     paredit-forward
+   ;;TODO;;("C-M-b"     paredit-backward
+   "lu"     #'paredit-backward-up
+   "ln"     #'paredit-forward-up     
+   "ld"     #'paredit-forward-down
+   "lp"     #'paredit-backward-down  
+   ;;TODO;;"Depth-Changing Commands"
+   ;;TODO;;(("M-<up>" "ESC <up>")
+   ;;TODO;;(("M-<down>" "ESC <down>")
+   ;;TODO;;("M-r"       paredit-raise-sexp
+   ;;TODO;;("M-?"       paredit-convolute-sexp
+   ;;TODO;;;; "Barfage & Slurpage"
+   ;;TODO;;(("C-)" "C-<right>") paredit-forward-slurp-sexp
+   ;;TODO;;(("C-}" "C-<left>") paredit-forward-barf-sexp
+   ;;TODO;;(("C-(" "C-M-<left>" "ESC C-<left>") paredit-backward-slurp-sexp
+   ;;TODO;;(("C-{" "C-M-<right>" "ESC C-<right>") paredit-backward-barf-sexp
+   ;;TODO;;;; "Miscellaneous Commands"
+   ;;TODO;;("M-S"       paredit-split-sexp
+   ;;TODO;;("M-J"       paredit-join-sexps
+   ;;TODO;;("C-c C-M-l" paredit-recenter-on-sexp)
+   ;;TODO;;("M-q"       paredit-reindent-defun)
     "cw" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
     "cx" #'crux-open-with
     "cO" #'crux-smart-open-line-above

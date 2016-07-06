@@ -1,9 +1,10 @@
-;; -*-mode: emacs-lisp; coding: cp949; buffer-read-only: t;-*-
-
-(w32-unix-eval
- ;; À©µµ¿ì ½Ã½ºÅÛÀÇ °æ¿ì
- ;; emacs ¿¡¼­ FIND °¡´É
- (;;(color-theme-parus)
+# -*-mode: org; coding: utf-8; buffer-read-only: t;-*-
+* WINDOW dired
+#+BEGIN_SRC emacs-lisp
+(when-os 'windows-nt
+ ;; ìœˆë„ìš° ì‹œìŠ¤í…œì˜ ê²½ìš°
+ ;; emacs ì—ì„œ FIND ê°€ëŠ¥
+ ;;(color-theme-parus)
   ;;  (color-theme-vim-colors)
   ;;  (color-theme-blue2)
   ;;  (color-theme-emacs-21)
@@ -22,12 +23,12 @@
       (lwarn '(emacsw32) :error "Could not find emacsw32.el")))
 
 
-  ;; ÇÁ¸°ÆÃ °ü·Ã º¯¼ö
+  ;; í”„ë¦°íŒ… ê´€ë ¨ ë³€ìˆ˜
   (define-key dired-mode-map "o" 'w32-dired-open-explorer)
   (define-key dired-mode-map "," 'w32-dired-open-explorer-marked)
   (define-key dired-mode-map "\\" 'w32-dired-copy-file-name)
   (define-key dired-mode-map "["  'w32shell-cmd-here)
-  ;; À©µµ¿ì¿¡¼­ À¯¿ëÇÏ°Ô »ç¿ëÇÒ ¼ö ÀÖ´Â ¹æ¹ı
+  ;; ìœˆë„ìš°ì—ì„œ ìœ ìš©í•˜ê²Œ ì‚¬ìš©í•  ìˆ˜ ìˆëŠ” ë°©ë²•
   (defun w32open (fname)
     (let ((file-name (replace-regexp-in-string "/" "\\"  fname nil t)))
       ;;(message (replace-regexp-in-string "/" "\\" file-name nil t) )
@@ -64,7 +65,7 @@
   (defun w32-dired-copy-file-name(&optional arg)
     "Open a file in dired mode by explorer.exe as you double click it."
     (interactive "P")
-    ;;emacs¿Í »ó°ü¾øÀÌ µ¿ÀÛ ;;(w32-set-clipboard-data (replace-regexp-in-string "/" "\\" (file-truename (dired-get-filename nil t))nil t)))
+    ;;emacsì™€ ìƒê´€ì—†ì´ ë™ì‘ ;;(w32-set-clipboard-data (replace-regexp-in-string "/" "\\" (file-truename (dired-get-filename nil t))nil t)))
     (let ((pathname (file-truename (dired-get-filename nil t))))
       (if arg
           (kill-new pathname)
@@ -93,24 +94,24 @@
 
 
   (defun prkill (p)
-    (interactive "MÇÁ·Î¼¼½º : " p)
+    (interactive "Mí”„ë¡œì„¸ìŠ¤ : " p)
     (nircmd (concat "killprocess "  p)))
 
 
 
 
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* Component Services: %windir%/system32/comexp.msc
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* Computer Management: %windir%/system32/compmgmt.msc /s
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* Data Sources (ODBC): %windir%/system32/odbcad32.exe
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* Event Viewer: %windir%/system32/eventvwr.msc /s
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* iSCSI Initiator: %windir%/system32/iscsicpl.exe
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* Performance Monitor: %windir%/system32/perfmon.msc /s
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* Services: %windir%/system32/services.msc
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* System Configuration: %windir%/system32/msconfig.exe
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* Task Scheduler: %windir%/system32/taskschd.msc /s
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* Windows Firewall with Advanced Security: %windir%/system32/WF.msc
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* Windows Memory Diagnostic: %windir%/system32/MdSched.exe
-  ;;°¢Á¾À©µµ¿ìÇÁ·Î±×·¥;;* Windows PowerShell Modules: %SystemRoot%/system32/WindowsPowerShell/v1.0/powershell.exe -NoExit -ImportSystemModules
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* Component Services: %windir%/system32/comexp.msc
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* Computer Management: %windir%/system32/compmgmt.msc /s
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* Data Sources (ODBC): %windir%/system32/odbcad32.exe
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* Event Viewer: %windir%/system32/eventvwr.msc /s
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* iSCSI Initiator: %windir%/system32/iscsicpl.exe
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* Performance Monitor: %windir%/system32/perfmon.msc /s
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* Services: %windir%/system32/services.msc
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* System Configuration: %windir%/system32/msconfig.exe
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* Task Scheduler: %windir%/system32/taskschd.msc /s
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* Windows Firewall with Advanced Security: %windir%/system32/WF.msc
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* Windows Memory Diagnostic: %windir%/system32/MdSched.exe
+  ;;ê°ì¢…ìœˆë„ìš°í”„ë¡œê·¸ë¨;;* Windows PowerShell Modules: %SystemRoot%/system32/WindowsPowerShell/v1.0/powershell.exe -NoExit -ImportSystemModules
 
   (setf static-winexe-cmdlist 
         `(
@@ -123,7 +124,7 @@
                         "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\sh --login -i")
 
           (msys2term ,(fullpath  "../../conemul/conemu64.exe")
-                        "-reuse -dir \"%home%\" -run set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\conemu-msys2-64.exe")
+                     "-reuse -dir \"%home%\" -run set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\conemu-msys2-64.exe")
 
           (conemul ,(fullpath  "../../conemul/conemu64.exe") "-reuse")
           (filezilla  "t:/usr/local/FileZilla-3.7.1.1/filezilla.exe") 
@@ -190,7 +191,7 @@
     (let* ((winexe-cmdlist (cons `(gitbash  "t:/usr/local/msysgit/msys.bat" ,default-directory) static-winexe-cmdlist))
            (cmd 
             (ido-completing-read 
-             "¸í·ÉÀ» ÀÔ·ÂÇÏ¼¼¿ä: "
+             "ëª…ë ¹ì„ ì…ë ¥í•˜ì„¸ìš”: "
              ;;completing-read;;(mapcar (function (lambda (x) (list (car x) t))) winexe-cmdlist)
              (mapcar (lambda (x) (symbol-name (car x))) winexe-cmdlist)
              nil t nil nil 'qdir)))
@@ -224,7 +225,7 @@
   (defun run-current-file ()
     "Execute or compile the current file.
 For example, if the current buffer is the file x.pl,
-then it'll call ¡°perl x.pl¡± in a shell.
+then it'll call â€œperl x.plâ€ in a shell.
 The file can be PHP, Perl, Python, Ruby, javascript, Bash, ocaml, vb, elisp.
 File suffix is used to determine what program to run."
     (interactive)
@@ -253,7 +254,7 @@ File suffix is used to determine what program to run."
           (load-file fName) 
         (if progName
             (progn
-              (message "Running¡¦")
+              (message "Runningâ€¦")
               (shell-command cmdStr "*run-current-file output*" )
               )
           (message "No recognized program file suffix for this file.")
@@ -292,22 +293,24 @@ it if necessary."
   ;;(define-key dired-mode-map "\M-;" 'execute-program)
 
   (defun assocemacs ( ext) 
-    (interactive "MÈ®ÀåÀÚ :")
+    (interactive "Mí™•ì¥ì :")
     
     ;;(shell-command "ftype EmacsFile=emacsclientw.exe -na runemacs.exe \"\%1\"" )
     (shell-command (format "assoc %s=EmacsFile" ext)))
-
-  
-  )
- ()
+ 
  )
+#+END_SRC
 
+* linux dired
 
-;; 23 ¹öÁ¯ °ü·Ã ¼³Á¤ÀÔ´Ï´Ù.
+#+BEGIN_SRC emacs-lisp
+;; 23 ë²„ì ¼ ê´€ë ¨ ì„¤ì •ì…ë‹ˆë‹¤.
+(when-os 'gnu/linux
+(setq ls-lisp-verbosity '(uid)))
+#+END_SRC
 
-(setq ls-lisp-verbosity '(uid))
-
-
+* dired command 
+#+BEGIN_SRC emacs-lisp
 (defun mrc-dired-do-command (command)
   "Run COMMAND on marked files. Any files not already open will be opened.
 After this command has been run, any buffers it's modified will remain
@@ -318,12 +321,15 @@ open and unsaved."
             (find-file filename)
             (call-interactively command))
           (dired-get-marked-files))))
+#+END_SRC
 
+* dired buffer setting
+#+BEGIN_SRC emacs-lisp
 (toggle-diredp-find-file-reuse-dir 1)
 ;; writable-dired
-;;¡¼Ctrl+x Ctrl+q¡½ (emacs 23.1)	wdired-change-to-wdired-mode	Start rename by editing
-;;¡¼Ctrl+c Ctrl+c¡½	wdired-finish-edit	Commit changes
-;;¡¼Ctrl+c Esc¡½	wdired-abort-changes	Abort changes
+;;ã€Ctrl+x Ctrl+qã€‘ (emacs 23.1)	wdired-change-to-wdired-mode	Start rename by editing
+;;ã€Ctrl+c Ctrl+cã€‘	wdired-finish-edit	Commit changes
+;;ã€Ctrl+c Escã€‘	wdired-abort-changes	Abort changes
 
 ;;(with-package* (tramp)
 ;;  (setq tramp-default-method "ftp")
@@ -331,12 +337,18 @@ open and unsaved."
 ;;  ;; (setq ange-ftp-ftp-program-name "ftp.exe")
 ;;  (setq ange-ftp-ftp-program-name (fullpath "../../EmacsW32/gnuwin32/bin/ftp.exe")) ;ftp passive mode 
 ;;  )
+#+END_SRC
 
+* appearance
+#+BEGIN_SRC emacs-lisp
 (use-package hl-line+
   :config
   (add-hook 'dired-mode-hook (lambda () (interactive) (hl-line-mode t))))
+#+END_SRC
 
-
+* dired menu
+#+BEGIN_SRC emacs-lisp
 ;; (use-package dired-quick-sort
 ;;   :config
 ;;   (dired-quick-sort-setup))
+#+END_SRC
