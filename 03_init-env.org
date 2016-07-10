@@ -1,7 +1,7 @@
 # -*- coding: utf-8; -*-
 * 윈도우 환경 변수 
 #+BEGIN_SRC emacs-lisp
-(when-os windows-nt
+(when-os 'windows-nt
  (setenv "BZR_PLUGIN_PATH"      "t:/usr/local/bazaar/plugins"      t )
  (setenv "GUILE_HOME"      "t:/usr/local/guile"      t )
  (setenv "PYTHONUNBUFFERED"      "x" t )

@@ -228,3 +228,4 @@ Emacs buffers are those whose name starts with *."
 
 (use-package resize-window)
 
+(use-package ivy)

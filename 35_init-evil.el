@@ -43,7 +43,7 @@
     "ym" 'yankpad-map
     "yc" 'yankpad-set-category
     "bi" 'ido-switch-buffer-other-frame
-    "ba" 'ivy-push-view
+    "ba" 'ivy-push-view  
     "bA" 'ivy-pop-view
     "bb" 'ivy-switch-buffer-other-window
     "bB" 'ivy-switch-buffer
@@ -932,6 +932,7 @@
   "=" 'org-show-current-heading-tidily
   "<" 'org-shiftleft
   ">" 'org-shiftright
+  [kp-9] 'org-ctrl-c-ctrl-c
   )
 
 
