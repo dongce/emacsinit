@@ -44,7 +44,7 @@
    (quote
     (name old-name general-category decomposition decimal-digit-value)))
  '(desktop-load-locked-desktop t)
- '(diary-file "u:/orgdir/diary")
+ '(diary-file "~/orgdir/diary")
  '(dired-sort-menu-saved-config
    (quote
     ((dired-actual-switches . "-alt")
@@ -267,20 +267,20 @@ TIMESTAMP: %T ")
       "* TODO %a %?
 DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
      ("i" "정 보" entry
-      (file+headline "u:/orgdir/info.org" "정보")
+      (file+headline "~/orgdir/info.org" "정보")
       "* %?
   TIMESTAMP: %T 
 %a
 ")
      ("w" "사 업" entry
-      (file+headline "u:/orgdir/info.org" "사업")
+      (file+headline "~/orgdir/info.org" "사업")
       "* %a %? ")
      ("s" "일 정" entry
-      (file+headline "u:/orgdir/info.org" "일정")
+      (file+headline "~/orgdir/info.org" "일정")
       "* %a %? "))))
  '(org-confirm-babel-evaluate nil)
- '(org-default-notes-file "u:/orgdir/notes.org")
- '(org-directory "u:/orgdir/")
+ '(org-default-notes-file "~/orgdir/notes.org")
+ '(org-directory "~/orgdir/")
  '(org-export-with-section-numbers nil)
  '(org-export-with-smart-quotes t)
  '(org-export-with-toc nil)
@@ -414,7 +414,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
  '(package-check-signature nil)
  '(package-selected-packages
    (quote
-    (eval-in-repl window-purpose ranger magit-svn modern-cpp-font-lock yankpad datetime datetime-format 0blayout resize-window smartwin evil-extra-operator evil-embrace org-fstree dired-quick-sort which-key smart-mark smart-comment evil-lisp-state ob-translate workgroups2 evil-mu4e bog logview spinner helm-grepint company-math ox-html5slide persistent-scratch hl-line+ second-sel highline browse-kill-ring browse-kill-ring+ window-numbering elfeed-org org-eww org-attach-screenshot dired-narrow org-cliplink esup string-edit dom defproject xmlunicode better-defaults better-registers sicp unicode-fonts shut-up epl git commander orgit helm-mu evil-vimish-fold undo-tree zygospore yafolding xah-replace-pairs xah-lookup xah-get-thing world-time-mode winpoint win-switch wikidoc wiki-nav wiki whole-line-or-region wgrep w3 visual-regexp-steroids virtualenv vc-fossil uuid unfill tracwiki-mode tagedit swoop swbuff sr-speedbar sqlite spray smooth-scroll smartscan smart-shift slime-js simpleclip simp shadchen sass-mode ruby-electric repl-toggle regex-tool redo+ recursive-narrow rdp rainbow-delimiters quack pyvirtualenv python-pylint python-pep8 pymacs pydoc-info pycomplete project-explorer phi-search-mc phi-rectangle passthword parse-csv parenface-reversion palimpsest page-break-lines owdriver outlined-elisp-mode outline-magic org-ehtml org-bullets oauth2 nzenburn-theme nrepl-tracing nose mysql2sqlite mwe-log-commands mustang-theme multi moz-controller mode-compile mo-git-blame mark-multiple manage-minor-mode magit-push-remote magit-commit-training-wheels macro-utils macro-math list-processes+ less-css-mode launch key-combo jsshell-bundle json-mode jedi-direx irfc iregister ipython ioccur interaction-log init-loader impatient-mode image-dired+ iflipb idomenu http-post-simple hjkl-mode historyf highlight-numbers hideshowvis hide-lines helm-w32-launcher helm-proc helm-helm-commands helm-google helm-github-stars helm-git-files helm-flycheck helm-dired-recent-dirs helm-dictionary helm-css-scss helm-bm helm-bind-key hardhat goto-last-change gitconfig-mode fuzzy fringe-current-line free-keys frame-tag font-utils fold-this fold-dwim-org flymake fic-mode fic-ext-mode fastnav evil-visualstar evil-visual-mark-mode evil-surround evil-paredit evil-org evil-numbers evil-args evil-anzu elnode eldoc-extension el-autoyas eimp ecb dpaste_de download-region dirtree-prosjekt dired-toggle dired-sort-menu+ dired-single dired-imenu dired-details+ dictionary dash-at-point cycbuf csv-mode css-mode colorsarenice-theme color-theme-sanityinc-solarized color-theme-heroku color-theme clippy chess cedit cdnjs busybee-theme bufshow buffer-utils buffer-move bs-ext browse-url-dwim bpe bison-mode bbdb-vcard bbdb-ext back-button awk-it auto-indent-mode auctex-latexmk ascope asciidoc ascii annotate ada-mode ack ace-jump-mode ac-helm abl-mode)))
+    (xah-css-mode eval-in-repl window-purpose ranger magit-svn modern-cpp-font-lock yankpad datetime datetime-format 0blayout resize-window smartwin evil-extra-operator evil-embrace org-fstree dired-quick-sort which-key smart-mark smart-comment evil-lisp-state ob-translate workgroups2 evil-mu4e bog logview spinner helm-grepint company-math ox-html5slide persistent-scratch hl-line+ second-sel highline browse-kill-ring browse-kill-ring+ window-numbering elfeed-org org-eww org-attach-screenshot dired-narrow org-cliplink esup string-edit dom defproject xmlunicode better-defaults better-registers sicp unicode-fonts shut-up epl git commander orgit helm-mu evil-vimish-fold undo-tree zygospore yafolding xah-replace-pairs xah-lookup xah-get-thing world-time-mode winpoint win-switch wikidoc wiki-nav wiki whole-line-or-region wgrep w3 visual-regexp-steroids virtualenv vc-fossil uuid unfill tracwiki-mode tagedit swoop swbuff sr-speedbar sqlite spray smooth-scroll smartscan smart-shift slime-js simpleclip simp shadchen sass-mode ruby-electric repl-toggle regex-tool redo+ recursive-narrow rdp rainbow-delimiters quack pyvirtualenv python-pylint python-pep8 pymacs pydoc-info pycomplete project-explorer phi-search-mc phi-rectangle passthword parse-csv parenface-reversion palimpsest page-break-lines owdriver outlined-elisp-mode outline-magic org-ehtml org-bullets oauth2 nzenburn-theme nrepl-tracing nose mysql2sqlite mwe-log-commands mustang-theme multi moz-controller mode-compile mo-git-blame mark-multiple manage-minor-mode magit-push-remote magit-commit-training-wheels macro-utils macro-math list-processes+ less-css-mode launch key-combo jsshell-bundle json-mode jedi-direx irfc iregister ipython ioccur interaction-log init-loader impatient-mode image-dired+ iflipb idomenu http-post-simple hjkl-mode historyf highlight-numbers hideshowvis hide-lines helm-w32-launcher helm-proc helm-helm-commands helm-google helm-github-stars helm-git-files helm-flycheck helm-dired-recent-dirs helm-dictionary helm-css-scss helm-bm helm-bind-key hardhat goto-last-change gitconfig-mode fuzzy fringe-current-line free-keys frame-tag font-utils fold-this fold-dwim-org flymake fic-mode fic-ext-mode fastnav evil-visualstar evil-visual-mark-mode evil-surround evil-paredit evil-org evil-numbers evil-args evil-anzu elnode eldoc-extension el-autoyas eimp ecb dpaste_de download-region dirtree-prosjekt dired-toggle dired-sort-menu+ dired-single dired-imenu dired-details+ dictionary dash-at-point cycbuf csv-mode css-mode colorsarenice-theme color-theme-sanityinc-solarized color-theme-heroku color-theme clippy chess cedit cdnjs busybee-theme bufshow buffer-utils buffer-move bs-ext browse-url-dwim bpe bison-mode bbdb-vcard bbdb-ext back-button awk-it auto-indent-mode auctex-latexmk ascope asciidoc ascii annotate ada-mode ack ace-jump-mode ac-helm abl-mode)))
  '(package-user-dir "/opt/emacs/site-lisp/elpa")
  '(page-break-lines-char 8250)
  '(paradox-github-token t)
@@ -452,7 +452,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
     ("t:/usr/local/guile/bin/winprojcd.exe" "c:/usr" "c:\\icms\\CFCS\\DLPLINK11\\DLPLINK11\\proj\\winproj2005\\Debug\\winproj.exe" ".\\winproj.exe" "MFC_TDL_ISDL_GEN_CTRL" "bigloo" "c:/icms/CFCS/DLPLINK11/DLPLINK11/proj/winproj2005/Debug/winproj.exe" "c:/usr/local/guile/bin/winprojcd.exe" "c:\\ffx\\CFCS\\ICU_KNCCS\\ProjWin\\Debug\\icuknccs_win.exe" "codes" "csi" "csi -hygienic" "gosh" "gsi" "gsi ~~/syntax-case.scm -" "guile" "icuknccs_win.exe" "isdlcd" "isdlcde" "kawa" "mit-scheme" "mred -z" "mzscheme" "mzscheme -M errortrace" "rs" "rs232" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi" "tinyscheme" "win" "winprocd" "winproj.exe" "winprojcd" "winprojcdc" "winrpojcd" "winsigconv" "winsigconv.exe")))
  '(recentf-max-saved-items 1000)
  '(recentf-mode t)
- '(rmh-elfeed-org-files (quote ("u:/orgdir/feed.org")))
+ '(rmh-elfeed-org-files (quote ("~/orgdir/feed.org")))
  '(rtog/mode-repl-alist
    (quote
     ((emacs-lisp-mode . ielm)
