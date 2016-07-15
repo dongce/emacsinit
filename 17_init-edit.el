@@ -1,9 +1,4 @@
-;; -*-mode: org; coding: utf-8; buffer-read-only: t;-*-
-
-** unify region
-
- #+BEGIN_SRC emacs-lisp
- (defun uniq-region ()
+(defun uniq-region ()
    "remove duplicate adjacent lines in the given region"
    (interactive)
    (save-excursion
@@ -63,10 +58,6 @@
             (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
         (replace-match "\\1\n\\2")))))
 
- #+END_SRC
-
-** eol marker 
-#+BEGIN_SRC emacs-lisp
 ;; Useful function:
 ;; convert dos (^M) end of line to unix end of line
 ;; DOS CR-LF
@@ -88,12 +79,7 @@
   (goto-char (point-min))
   (while (search-forward-regexp "$" nil t)
     (replace-match "")))
-#+END_SRC
 
-** register
-
-
-#+BEGIN_SRC emacs-lisp
 ;; REGISTER 관련 
 (defun copy-to-register-1 ()
   "Copy current line or text selection to register 1.
@@ -119,32 +105,7 @@ See also: `copy-to-register-1', `insert-register'."
   (interactive)
   (save-excursion  (yank))
   (insert-register ?a))
-#+END_SRC
 
-** kill advice 
-
-#+BEGIN_SRC emacs-lisp :tangle no
-
-(defadvice kill-ring-save (before slick-copy activate compile)
-  "When called interactively with no active region, copy the current line."
-  (interactive
-   (if mark-active
-       (list (region-beginning) (region-end))
-     (progn
-       (message "Current line is copied.")
-       (list (line-beginning-position) (line-beginning-position 2)) ) ) ))
-
-(defadvice kill-region (before slick-copy activate compile)
-  "When called interactively with no active region, cut the current line."
-  (interactive
-   (if mark-active
-       (list (region-beginning) (region-end))
-     (list (line-beginning-position) (line-beginning-position 2)) ) ) )
-#+END_SRC
-
-** java script indent 
-
-#+BEGIN_SRC emacs-lisp
 ;;deprecated;; ;;; javascript indent 
 ;;deprecated;; (defun my-js2-indent-function ()
 ;;deprecated;;   (interactive)
@@ -222,22 +183,19 @@ See also: `copy-to-register-1', `insert-register'."
 ;;deprecated;;   (message "My JS2 hook"))
 ;;deprecated;; 
 ;;deprecated;; (add-hook 'js2-mode-hook 'my-js2-mode-hook)
-#+END_SRC
 
-** rectangle
-#+BEGIN_SRC emacs-lisp
 ;; 오른쪽에 일괄적으로 주석달 때 사용한다. 
 (require 'rect)
 (defun string-right (beg end str)                                             
   (interactive
    (progn (barf-if-buffer-read-only)
-	  (list
-	   (region-beginning)
-	   (region-end)
-	   (read-string (format "String insert rectangle (default %s): "
-				(or (car string-rectangle-history) ""))
-			nil 'string-rectangle-history
-			(car string-rectangle-history)))))
+    (list
+     (region-beginning)
+     (region-end)
+     (read-string (format "String insert rectangle (default %s): "
+        (or (car string-rectangle-history) ""))
+      nil 'string-rectangle-history
+      (car string-rectangle-history)))))
   (save-excursion
     (save-restriction
       (if (> end beg)
@@ -260,11 +218,7 @@ See also: `copy-to-register-1', `insert-register'."
           (forward-line 1))))))
 
 (define-key ctl-x-r-map "h" 'string-right)
-#+END_SRC
 
-** align
-
-#+BEGIN_SRC emacs-lisp
 (defun set-middle-m (start end &optional s)
   (interactive "r\ns구분자 : ")
   (save-excursion
@@ -311,12 +265,6 @@ See also: `copy-to-register-1', `insert-register'."
 
 (global-set-key (kbd "C-=") 'set-middle)
 
-#+END_SRC
-
-** insert 
-
-#+BEGIN_SRC emacs-lisp
-
 ;; 날짜 삽입가능 
 (defun insert-date ( )
   "편집 시점의 날짜를 삽입한다."
@@ -327,12 +275,12 @@ See also: `copy-to-register-1', `insert-register'."
 ;; 다음은 간단히 사용할 수 있는 함수이다. 
 
 (defun cmt ()
-	(interactive)
-	(insert "////////////////////////////////////////////////////////////////////////\n")
-	(insert "//\t\n")
-	(insert "////////////////////////////////////////////////////////////////////////")
-	(previous-line 1)
-	(end-of-line) )
+  (interactive)
+  (insert "////////////////////////////////////////////////////////////////////////\n")
+  (insert "//\t\n")
+  (insert "////////////////////////////////////////////////////////////////////////")
+  (previous-line 1)
+  (end-of-line) )
 
 
 (defun insert-string() 
@@ -348,11 +296,6 @@ See also: `copy-to-register-1', `insert-register'."
   (widen)
   )
 
-#+END_SRC
-
-** at point operation
-
-#+BEGIN_SRC emacs-lisp
 ;; https://gist.github.com/Wilfred/4715345
 
 (defun dwim-at-point ()
@@ -394,10 +337,7 @@ to the symbol at point."
          (from-string (first from-with-to))
          (to-string (second from-with-to)))
     (perform-replace from-string to-string nil nil nil)))
-#+END_SRC
 
-** copy
-#+BEGIN_SRC emacs-lisp 
 (defun copy-rectangle-to-clipboard (p1 p2)
   "Copy region as column (rectangle) to operating system's clipboard.
 This command will also put the text in register 0. (see: `copy-to-register')"
@@ -408,12 +348,6 @@ This command will also put the text in register 0. (see: `copy-to-register')"
      (with-temp-buffer
        (insert-register ?0)
        (buffer-string) ))))
-
-#+END_SRC
-
-** change
-
-#+BEGIN_SRC emacs-lisp
 
 (defun upcase-symbol (syms)
   (interactive)
@@ -489,10 +423,10 @@ or a marker."
     (setq beg (point-min) end (point-max))) 
   (goto-char beg)
   (while (re-search-forward
-	  (concat "\\(?:\\b\\(" (regexp-quote str1) "\\)\\|\\("
-		  (regexp-quote str2) "\\)\\b\\)") end t)
+    (concat "\\(?:\\b\\(" (regexp-quote str1) "\\)\\|\\("
+      (regexp-quote str2) "\\)\\b\\)") end t)
     (if (match-string 1)
-	(replace-match str2 t t)
+  (replace-match str2 t t)
       (replace-match str1 t t))))
 
 (defun forward-delete ( &optional x)
@@ -516,13 +450,6 @@ or a marker."
     (setq beg (point-min) end (point-max))) 
   (replace-regexp " *\\([0-9a-zA-Z_]+\\) * \\([=!]\\)= *\\([0-9a-zA-Z_]+\\) *" "\\3 \\2=\\1" nil beg end ))
 
-
-#+END_SRC
-
-** tab setting
-
-#+BEGIN_SRC emacs-lisp
-
 ;;;
 ;;;
 ;;; ※ 변수 설정
@@ -533,11 +460,7 @@ or a marker."
 ;; 탭을 공백으로 만들 수 있다. 
 (setq-default indent-tabs-mode nil )
 (setq-default tab-width 2 )
-#+END_SRC
 
-** read only function
-
-#+BEGIN_SRC emacs-lisp
 (defun make-buffer-readonly () (read-only-mode 1 ))
 
 (defun global-read-only ( &optional v)
@@ -548,12 +471,6 @@ or a marker."
         (remove-hook 'find-file-hook #'make-buffer-readonly)
         (add-hook 'find-file-hook #'make-buffer-readonly))
     (remove-hook 'find-file-hook #'make-buffer-readonly)))
-
-
-#+END_SRC
-
-** SDD
-#+BEGIN_SRC emacs-lisp
 
 ;;SDD;;(defun ib () (interactive)  (insert "default : break; "))
 ;;SDD;;(defun sdd () (interactive) (insert ( format "//@@@ " )) (kill-new "//@@@\n"))
@@ -607,13 +524,13 @@ or a marker."
 
 (defun xmltable ()
   (interactive)
-  (replace-string "기능	" "")
+  (replace-string "기능 " "")
   (beginning-of-buffer)
-  (replace-string "함수명	" "")
+  (replace-string "함수명 " "")
   (beginning-of-buffer)
-  (replace-string "입력	" "")
+  (replace-string "입력 " "")
   (beginning-of-buffer)
-  (replace-string "출력	" "")
+  (replace-string "출력 " "")
   (beginning-of-buffer)
   (replace-string "예외 처리
 " "")
@@ -624,53 +541,29 @@ or a marker."
   (replace-string "비고
 " ""))
 
+(defun backward-symbol (arg)
+  (interactive "p")
+  (forward-symbol (* -1 arg )))
 
-#+END_SRC
+(defun toggle-line-move-visual ()
+  "Toggle behavior of up/down arrow key, by visual line vs logical line."
+  (interactive)
+  (if line-move-visual
+      (setq line-move-visual nil)
+    (setq line-move-visual t))
+  )
 
-** move , selection, hide
+(use-package expand-region)
 
-#+BEGIN_SRC emacs-lisp
-  (defun backward-symbol (arg)
-    (interactive "p")
-    (forward-symbol (* -1 arg )))
+(require 'misc-cmds)
+(global-set-key (kbd "<home>") 'beginning-or-indentation)
 
-  (defun toggle-line-move-visual ()
-    "Toggle behavior of up/down arrow key, by visual line vs logical line."
-    (interactive)
-    (if line-move-visual
-        (setq line-move-visual nil)
-      (setq line-move-visual t))
-    )
+(use-package delsel
+  :config
+  (delete-selection-mode 1))
 
-  (use-package expand-region)
-
-  (require 'misc-cmds)
-  (global-set-key (kbd "<home>") 'beginning-or-indentation)
-
-  (use-package delsel
-    :config
-    (delete-selection-mode 1))
-
-  (use-package hide-region+
-    :commands hide-region-hide hide-region-unhide)
-
-#+END_SRC
-
-** auto complete
-
-#+BEGIN_SRC emacs-lisp :tangle no
-;;; _ AUTO COMPLETE 
-(use-package auto-complete
-:config
-(define-key ac-completing-map (kbd "C-j") 'ac-next)
-(define-key ac-completing-map (kbd "C-p") 'ac-previous)
-(define-key ac-completing-map (kbd "C-o") 'ac-expand))
-#+END_SRC
-
-
-
-** file change
-#+BEGIN_SRC emacs-lisp
+(use-package hide-region+
+  :commands hide-region-hide hide-region-unhide)
 
 (defun byte-compile-current-buffer ()
   "`byte-compile' current buffer if it's emacs-lisp-mode and compiled file exists."
@@ -681,168 +574,3 @@ or a marker."
 
 ;;;_ REVERT BUFFER http://www.emacswiki.org/emacs/RevertBuffer
 (global-auto-revert-mode 1)
-
-#+END_SRC
-
-** kill/copy dwim                                                :DEPRECATED:
-#+BEGIN_SRC emacs-lisp :tangle no
-;;;
-;;;
-;;; ※ 유용한 함수 정의
-;;;
-;;;
-
-;;; 영역이 있으면 KILL, 아니면 라인카피 
-(defun kill-region-dwim (beg end )
-  (interactive (list (point) (mark)))
-  (if mark-active (kill-region beg end) (copy-line)))
-
-(defun copy-region-dwim (beg end )
-  (interactive (list (point) (mark)))
-  (if mark-active (kill-ring-region beg end) (copy-line)))
-
-(global-set-key [remap kill-region] 'kill-region-dwim)
-#+END_SRC
-
-** block operation                                               :DEPRECATED:
-
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package mark-more-like-this
-    :config
-    (global-set-key (kbd "C-<") 'mark-previous-like-this)
-    (global-set-key (kbd "C->") 'mark-next-like-this)
-    (global-set-key (kbd "C-M-m") 'mark-more-like-this) ; like the other two, but takes an argument (negative is previous)
-    (global-set-key (kbd "C-*") 'mark-all-like-this))
-
-  (add-hook 
-   'sgml-mode-hook
-   (lambda ()
-     (require 'rename-sgml-tag)
-     (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
-
-#+END_SRC
-
-** not work                                                      :DEPRECATED:
-#+BEGIN_SRC emacs-lisp :tangle no
-(defun w32-fontified-region-to-clipboard (START END)
-  "Htmlizes region, saves it as a html file, scripts Microsoft Word to
-open in the background and to copy all text to the clipboard, then
-quits. Useful if you want to send fontified source code snippets to
-your friends using RTF-formatted e-mails.
-
-Version: 0.1
-
-Author:
-
-Mathias Dahl, <mathias@cucumber.dahl.net>. Remove the big, green
-vegetable from my e-mail address...
-
-Requirements:
-
- * htmlize.el
- * wscript.exe must be installed and enabled
- * Microsoft Word must be installed
-
-Usage:
-
-Mark a region of fontified text, run this function and in a number of
-seconds you have the whole colorful text on your clipboard, ready to
-be pasted into a RTF-enabled application.
-
-"
-  (interactive "r")
-  (let ((snippet (buffer-substring START END))
-        (buf (get-buffer-create "*htmlized_to_clipboard*"))
-        (script-file-name (expand-file-name "~/htmlized_to_clipboard.vbs"))
-        (htmlized-file-name (expand-file-name "~/htmlized.html")))
-    (set-buffer buf)
-    (delete-region (point-min) (point-max))
-    (insert snippet)
-    (htmlize-buffer)
-    (write-file htmlized-file-name)
-    (delete-region (point-min) (point-max))
-    (setq htmlized-file-name 
-          (substitute ?\\ ?/ htmlized-file-name))
-    (insert
-     (concat
-      "Set oWord = CreateObject(\"Word.Application\")\n"
-      "oWord.Documents.Open(\"" htmlized-file-name "\")\n"
-      "oWord.Selection.HomeKey 6\n"
-      "oWord.Selection.EndKey 6,1\n"
-      "oWord.Selection.Copy\n"
-      "oWord.Quit\n"
-      "Set oWord = Nothing\n"))
-    (write-file script-file-name)
-    (kill-buffer "htmlized_to_clipboard.vbs")
-    (setq script-file-name
-          (substitute ?\\ ?/ script-file-name))
-    (w32-shell-execute nil "wscript.exe" 
-                       script-file-name)))
-#+END_SRC
-** line operation                                                :DEPRECATED:
-#+BEGIN_SRC emacs-lisp :tangle no
-;;; Take the line from the cursor and move it up a line.
-(defun move-line-up ()
-  (interactive)
-  (let ((beg (point)))
-    (previous-line)
-    (delete-region beg (point))))
-
-(defun pg-kill-this-line (n)
-  "Kill the line point is on.
-  With prefix arg, kill this many lines starting at the line point is on."
-  (interactive "p")
-  (kill-region (line-beginning-position)
-               (progn (forward-line n) (point)))) 
-
-(defun pg-duplicate-this-line (n)
-  "Duplicates the line point is on.  
- With prefix arg, duplicate current line this many times."
-  (interactive "p")
-  (save-excursion 
-    (copy-region-as-kill (line-beginning-position) 
-                         (progn (forward-line 1) (point)))
-    (while (< 0 n)
-      (yank)
-      (setq n (1- n)))))
-
-
-(defun kill-line-retain-column ()
-  (interactive)
-  (let ((goal-column (truncate temporary-goal-column))
-        (column (current-column)))
-    ;; Are we on a blank line?
-    (if (= (line-beginning-position) (line-end-position))
-        (progn (if (= (point) (buffer-end 1))
-                   ;; Just delete the newline character.
-                   (backward-delete-char-untabify 1)
-                 (kill-line))
-               (move-to-column goal-column))
-      (progn
-        ;; Are we on the last line of the buffer?
-        (if (= (line-number-at-pos)
-               (line-number-at-pos (buffer-end 1)))
-            ;; We are, so delete the line and move up.
-            (kill-whole-line -1)
-          (kill-whole-line))
-        ;; Assign a new temporary goal column.
-        (setq temporary-goal-column column)
-        ;; Retain the column.
-        (move-to-column column)))))
-
-;;(global-set-key [delete] 'kill-line-retain-column)
-
-
-(define-key global-map (kbd "s-i") 'move-line-up)      ;;; A line killing function vaguely similar to vim's dd.
-(define-key global-map (kbd "s-k") 'pg-kill-this-line) 
-(define-key global-map (kbd "s-o") 'pg-duplicate-this-line) 
-#+END_SRC
-
-
-
-
-
-
-#+RESULTS:
-: crux
-
