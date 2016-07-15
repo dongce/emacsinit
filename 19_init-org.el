@@ -472,7 +472,7 @@ USAGE:  (org-get-entries-fn '(6 1 2015) '(6 30 2015))"
 
 
 (use-package elfeed-org
-  :commands (elfeed)
+  :commands elfeed)
   :init
   (elfeed-org)
   (defun private/org-elfeed-entry-store-link ()
@@ -494,7 +494,7 @@ USAGE:  (org-get-entries-fn '(6 1 2015) '(6 30 2015))"
   ) 
 
 ;; (use-package elfeed-goodies
-;;   :commands (elfeed)
+;;   :commands elfeed
 ;;   :init
 ;;   (with-eval-after-load 'elfeed
 ;;     (elfeed-goodies/setup))) 

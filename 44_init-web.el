@@ -24,6 +24,6 @@
 ;; http://pragmaticemacs.com/emacs/weather-in-emacs/
 (use-package wttrin
   :ensure t
-  :commands (wttrin)
+  :commands wttrin
   :init
   (setq wttrin-default-cities '("gumi-si" "Daegu")))

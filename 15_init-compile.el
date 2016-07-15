@@ -1,8 +1,9 @@
 ;; -*-mode: emacs-lisp; coding: cp949; buffer-read-only: t;-*-
 
 ;; compile 확장 버젼
-(require 'compile-)
-(require 'compile)
+(use-package compile-
+  :commands (compile))
+(use-package compile)
 ;;(require 'compile+)
 
 ;; 특정파일만 컴파일 할 수 있습니다. 

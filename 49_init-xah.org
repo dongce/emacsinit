@@ -1,3 +1,8 @@
+
+
+* xah blog content
+#+BEGIN_SRC emacs-lisp
+
 (setq minibuffer-prompt-properties
       (quote (read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
 
@@ -236,3 +241,41 @@ Version 2016-06-19"
     (switch-to-buffer ξbuf)
     (mapc (lambda (ξf) (insert (cdr ξf) "\n"))
           xah-recently-closed-buffers)))
+#+END_SRC
+
+
+** block movement
+
+#+BEGIN_SRC emacs-lisp
+(defun xah-forward-block (&optional φn)
+  "Move cursor beginning of next text block.
+A text block is separated by blank lines.
+This command similar to `forward-paragraph', but this command's behavior is the same regardless of syntax table.
+URL `http://ergoemacs.org/emacs/emacs_move_by_paragraph.html'
+Version 2016-06-15"
+  (interactive "p")
+  (let ((φn (if (null φn) 1 φn)))
+    (search-forward-regexp "\n[\t\n ]*\n+" nil "NOERROR" φn)))
+
+(defun xah-backward-block (&optional φn)
+  "Move cursor to previous text block.
+See: `xah-forward-block'
+URL `http://ergoemacs.org/emacs/emacs_move_by_paragraph.html'
+Version 2016-06-15"
+  (interactive "p")
+  (let ((φn (if (null φn) 1 φn))
+        (ξi 1))
+    (while (<= ξi φn)
+      (if (search-backward-regexp "\n[\t\n ]*\n+" nil "NOERROR")
+          (progn (skip-chars-backward "\n\t "))
+        (progn (goto-char (point-min))
+               (setq ξi φn)))
+      (setq ξi (1+ ξi)))))
+
+(global-set-key (kbd "<next>") 'xah-forward-block)
+(global-set-key (kbd "<prior>") 'xah-backward-block)
+#+END_SRC
+
+#+RESULTS:
+: xah-backward-block
+

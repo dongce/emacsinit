@@ -3110,26 +3110,6 @@ buffer being killed."
     (vimish-fold-toggle)))
 #+END_SRC
 
-* sorting
-
-#+BEGIN_SRC emacs-lisp
-(defun uniq-region ()
-  "remove duplicate adjacent lines in the given region"
-  (interactive)
-  (save-excursion
-    (save-restriction
-      (narrow-to-region (region-beginning) (region-end))
-      (strip-trailing-whitespace (point-min) (point-max))
-      (let (( contents (s-split "\n" (buffer-substring-no-properties (point-min) (point-max))))
-            ( unified nil)
-            )
-        (dolist (it contents (setf unified  (reverse  unified)))
-          (if (not  (member it unified))
-              (setf unified (cons it unified) )))
-        (delete-region (point-min) (point-max))
-        (insert (s-join "\n" unified))))))
-#+END_SRC
-
 * anal
 #+BEGIN_SRC emacs-lisp
 

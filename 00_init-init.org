@@ -11,6 +11,17 @@
   ;; 다른 변수들이 있을 것이다. 
   (setq input-method-verbose-flag nil )
 
+
+  ;; eamcs lisp 는 ielm 을 사용하면 됩니다. 
+
+  (global-set-key [(kana)] 'toggle-input-method)
+  (global-set-key [(kanji)] 'hangul-to-hanja-conversion)
+
+
+  ;; Type 3
+  (global-set-key [(shift kana)] 'toggle-input-method)
+  (global-set-key [(control kanji)] 'set-mark-command)
+
 #+END_SRC
 
 * fullpath function 

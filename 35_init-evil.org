@@ -1211,7 +1211,7 @@
 #+BEGIN_SRC emacs-lisp
 
 ;; (use-package magit
-;;   :commands (magit-status magit-diff magit-log magit-blame-mode)
+;;   :commands magit-status magit-diff magit-log magit-blame-mode
 ;;   :init
 ;;   (evil-leader/set-key
 ;;     "g t" 'magit-status
