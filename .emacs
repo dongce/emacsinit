@@ -19,8 +19,6 @@
  '(after-save-hook
    (quote
     (byte-compile-current-buffer svn-status-after-save-hook gtags-auto-update)))
- '(ansi-color-names-vector
-   ["#313131" "#D9A0A0" "#8CAC8C" "#FDECBC" "#99DDE0" "#E090C7" "#A0EDF0" "#DCDCCC"])
  '(autofit-frames-flag nil)
  '(better-registers-use-C-r nil)
  '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")

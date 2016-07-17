@@ -3,365 +3,289 @@
 
 
  
-(with-package*  
-  (evil-leader evil-org evil-nerd-commenter evil projectile  geiser-mode flycheck smerge-mode)
-  
-  ;; (owdriver-define-command scroll-up               t)
-  ;; (owdriver-define-command scroll-down             t)
-  ;; (owdriver-define-command move-beginning-of-line  t)
-  ;; (owdriver-define-command move-end-of-line        t)
-  ;; (owdriver-define-command beginning-of-buffer     t)
-  ;; (owdriver-define-command end-of-buffer           t)
-  ;; (owdriver-define-command isearch-forward         t (isearch-forward))
-  ;; (owdriver-define-command isearch-backward        t (isearch-backward))
-  ;; (owdriver-define-command set-mark-command        t)
 
 
 
-  (global-evil-leader-mode) 
+(require 'smerge-mode)
+
+(defun evil-replace-word-selection()
+  (interactive)
+  (if (use-region-p)
+      (let (
+            (selection (buffer-substring-no-properties (region-beginning) (region-end))))
+        (if (= (length selection) 0)
+            (message "empty string")
+          (evil-ex (concat "'<,'>s/" selection "/"))
+          ))
+    (evil-ex (concat "%s/" (thing-at-point 'word) "/"))))
 
 
-  (defun evil-replace-word-selection()
-    (interactive)
-    (if (use-region-p)
-        (let (
-              (selection (buffer-substring-no-properties (region-beginning) (region-end))))
-          (if (= (length selection) 0)
-              (message "empty string")
-            (evil-ex (concat "'<,'>s/" selection "/"))
-            ))
-      (evil-ex (concat "%s/" (thing-at-point 'word) "/"))))
+(spacemacs/set-leader-keys 
+ ;;left;; "j"   
+ ;;left;; "J"
+ "<tab>" #'back-to-indentation
+ "f" 'find-file
+ "yi" 'yankpad-insert
+ "ye" 'yankpad-edit
+ "ym" 'yankpad-map
+ "yc" 'yankpad-set-category
+ "bi" 'ido-switch-buffer-other-frame
+ "bb" 'ivy-switch-buffer-other-window
+ "bB" 'ivy-switch-buffer
+ "bk" 'evil-prev-buffer
+ "bj" 'evil-next-buffer
+ "bn" 'narrow-to-region
+ "bN" 'narrow-to-defun
+ "bw" 'widen
+ "bs" 'save-buffer
+ "bS" 'save-some-buffers
+ "bm" 'smartwin-switch-buffer
+ "bf"      'prelude-copy-file-name-to-clipboard
+ "bh"      'mark-whole-buffer
+ "j" 'save-buffer
+ ;; "i" 'ibuffer
+ ;; "j" 'tmpscratch
+ "<home>" 'ibuffer
+ "<end>" 'tmpscratch
 
-  
-  (evil-leader/set-key
-    ;;left;; "j"   
-    ;;left;; "J"
-    "<tab>" #'back-to-indentation
-    "f" 'find-file
-    "yi" 'yankpad-insert
-    "ye" 'yankpad-edit
-    "ym" 'yankpad-map
-    "yc" 'yankpad-set-category
-    "bi" 'ido-switch-buffer-other-frame
-    "bb" 'ivy-switch-buffer-other-window
-    "bB" 'ivy-switch-buffer
-    "bk" 'evil-prev-buffer
-    "bj" 'evil-next-buffer
-    "bn" 'narrow-to-region
-    "bN" 'narrow-to-defun
-    "bw" 'widen
-    "bs" 'save-buffer
-    "bS" 'save-some-buffers
-    "bm" 'smartwin-switch-buffer
-    "bf"      'prelude-copy-file-name-to-clipboard
-    "bh"      'mark-whole-buffer
-    "j" 'save-buffer
-    ;; "i" 'ibuffer
-    ;; "j" 'tmpscratch
-    "<home>" 'ibuffer
-    "<end>" 'tmpscratch
+ "<prior>" 'beginning-of-defun
+ "<next>" 'end-of-defun
+ 
+ "," 'smex
+ "." 'embrace-commander
+ "/" 'evil-replace-word-selection
 
-    "<prior>" 'beginning-of-defun
-    "<next>" 'end-of-defun
-    
-    "," 'smex
-    "." 'embrace-commander
-    "/" 'evil-replace-word-selection
+ ;; search
+ "s"  search-map ;;'save-buffer
+ "st" 'sr-speedbar-toggle
+ "sl" 'loccur
+ "sn" 'smartscan-symbol-go-forward
+ "sp" 'smartscan-symbol-go-backward
 
-    ;; search
-    "s"  search-map ;;'save-buffer
-    "st" 'sr-speedbar-toggle
-    "sl" 'loccur
-    "sn" 'smartscan-symbol-go-forward
-    "sp" 'smartscan-symbol-go-backward
+ ;; smerge
+ "S" smerge-basic-map
+ 
+ "u" #'wgrep
+ ";" 'evilnc-comment-or-uncomment-lines
+ "l" 'evilnc-comment-or-uncomment-to-the-line
+ "c" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
+ "O" 'win-switch-next-window
+ ;; "O" (lambda (multi) (interactive "P") (if multi  (call-interactively 'multi-occur-in-this-mode) (call-interactively 'occur))  (other-window 1)) 
+ "]" 'exit-recursive-edit
+ "v" 'evil-scroll-down
+ "V" 'evil-scroll-up
+ ;;ctrl-r problem on terminal "r" better-registers-r-map ;;better-registers-map
+ ;; "gg" 'keyboard-quit
+ ;; "g," 'grep-o-matic-visited-files
+ ;; "g." 'grep-o-matic-repository
+ ;; "g/" 'grep-o-matic-current-directory
 
-    ;; smerge
-    "S" smerge-basic-map
-    
-    "u" #'wgrep
-    ";" 'evilnc-comment-or-uncomment-lines
-    "l" 'evilnc-comment-or-uncomment-to-the-line
-    "c" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
-    "O" 'win-switch-next-window
-    ;; "O" (lambda (multi) (interactive "P") (if multi  (call-interactively 'multi-occur-in-this-mode) (call-interactively 'occur))  (other-window 1)) 
-    "]" 'exit-recursive-edit
-    "v" 'evil-scroll-down
-    "V" 'evil-scroll-up
-    ;;ctrl-r problem on terminal "r" better-registers-r-map ;;better-registers-map
-    ;; "gg" 'keyboard-quit
-    ;; "g," 'grep-o-matic-visited-files
-    ;; "g." 'grep-o-matic-repository
-    ;; "g/" 'grep-o-matic-current-directory
-
-    ;; "g[" 'beginning-of-buffer
-    ;; "g]" 'end-of-buffer
-    ;; "gl" 'goto-line
-    "G" 'keyboard-quit
-    ;; "gl" 'goto-line
-    "e" 'eval-last-sexp
-    "E"  mu4e-main-mode-map
-    "Eu" 'mu4e-update-mail-and-index
-    ;; "t" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
-    ;; "T" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
-    "n" 'purpose-load-window-layout
-    "r" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
-    ;; "R" ctl-x-r-map ;;'ido-choose-from-recentf
-    "R" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+ ;; "g[" 'beginning-of-buffer
+ ;; "g]" 'end-of-buffer
+ ;; "gl" 'goto-line
+ "G" 'keyboard-quit
+ ;; "gl" 'goto-line
+ "e" 'eval-last-sexp
+ "E"  mu4e-main-mode-map
+ "Eu" 'mu4e-update-mail-and-index
+ ;; "t" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+ ;; "T" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+ "n" 'purpose-load-window-layout
+ "r" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+ ;; "R" ctl-x-r-map ;;'ido-choose-from-recentf
+ "R" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
 
 
-    ;; window
-    "W" 'read-only-mode
-    "ww" 'read-only-mode
-    "wk" 'win-switch-up
-    "wj" 'win-switch-down
-    "wh" 'win-switch-left
-    "wl" 'win-switch-right
-    "w1" 'delete-other-windows
-    "w2" 'split-window-below
-    "w3" 'split-window-right
-    "w0" 'delete-window
-    "wo" 'win-switch-dispatch
-    "wd" 'delete-blank-lines
-    "ws" 'resize-window
-    "wj"      'winner-undo
-    "wk"      'winner-redo
+ ;; window
+ "W" 'read-only-mode
+ "ww" 'read-only-mode
+ "wk" 'win-switch-up
+ "wj" 'win-switch-down
+ "wh" 'win-switch-left
+ "wl" 'win-switch-right
+ "w1" 'delete-other-windows
+ "w2" 'split-window-below
+ "w3" 'split-window-right
+ "w0" 'delete-window
+ "wo" 'win-switch-dispatch
+ "wd" 'delete-blank-lines
+ "ws" 'resize-window
+ "wj"      'winner-undo
+ "wk"      'winner-redo
 
-    "a" 'winexe
-    "+" #'evil-numbers/inc-at-pt
-    "-" #'evil-numbers/dec-at-pt
-    "M" #'pop-to-mark-command ;;'evil-scroll-down
-    "m" #'er/expand-region ;;#'extend-selection
-    "S-m" #'mark-line ;;#'extend-selection
-    ;; "m" #'backward-sexp
-    ;; "." #'forward-sexp
-    "<" #'loccur
-    "0" #'delete-window
-    "1" #'delete-other-windows
-    "2" #'split-window-below
-    "3" #'split-window-right
-    "(" #'kmacro-start-macro
-    ")" #'kmacro-end-macro
-    ;;"x" ctl-x-map ;;projectile-mode-map
-    "x"  #'kmacro-end-and-call-macro
-    "d" 'dired
-    "D" #'toggle-current-window-dedication
-    "k" 'kill-buffer
-    ;; projectile -----------------------------------------------------------------
-    "p"  (cdar (cddr  (cadr  projectile-mode-map)))
-    "pw"  'purpose-load-window-layout
-    "pW"  'purpose-save-window-layout
-    "pE"  'project-explorer-open
-    "pC"  'project-explorer-close
-    ;;deprecated;; "pb" 'projectile-switch-to-buffer
-    ;;deprecated;; "pC" 'projectile-invalidate-cache
-    ;;deprecated;; "pd" 'projectile-dired
-    ;;deprecated;; "pf" 'helm-projectile
-    ;;deprecated;; "pF" 'projectile-find-file
-    ;;deprecated;; "pk" 'projectile-kill-buffers
-    ;;deprecated;; "pg" 'projectile-grep
-    ;;deprecated;; "po" 'projectile-multi-occur
-    ;;deprecated;; "pr" 'projectile-replace 
-    ;; "<SPC>" (lambda () (interactive) (evil-change-state 'insert) (set-mark (point)))
-    "<SPC>" #'smex
+ "a" 'winexe
+ "+" #'evil-numbers/inc-at-pt
+ "-" #'evil-numbers/dec-at-pt
+ "M" #'pop-to-mark-command ;;'evil-scroll-down
+ "m" #'er/expand-region ;;#'extend-selection
+ "S-m" #'mark-line ;;#'extend-selection
+ ;; "m" #'backward-sexp
+ ;; "." #'forward-sexp
+ "<" #'loccur
+ "0" #'delete-window
+ "1" #'delete-other-windows
+ "2" #'split-window-below
+ "3" #'split-window-right
+ "(" #'kmacro-start-macro
+ ")" #'kmacro-end-macro
+ ;;"x" ctl-x-map ;;projectile-mode-map
+ "x"  #'kmacro-end-and-call-macro
+ "d" 'dired
+ "D" #'toggle-current-window-dedication
+ "k" 'kill-buffer
+ ;; projectile -----------------------------------------------------------------
+ "p"  (cdar (cddr  (cadr  projectile-mode-map)))
+ "pw"  'purpose-load-window-layout
+ "pW"  'purpose-save-window-layout
+ "pE"  'project-explorer-open
+ "pC"  'project-explorer-close
+ ;;deprecated;; "pb" 'projectile-switch-to-buffer
+ ;;deprecated;; "pC" 'projectile-invalidate-cache
+ ;;deprecated;; "pd" 'projectile-dired
+ ;;deprecated;; "pf" 'helm-projectile
+ ;;deprecated;; "pF" 'projectile-find-file
+ ;;deprecated;; "pk" 'projectile-kill-buffers
+ ;;deprecated;; "pg" 'projectile-grep
+ ;;deprecated;; "po" 'projectile-multi-occur
+ ;;deprecated;; "pr" 'projectile-replace 
+ ;; "<SPC>" (lambda () (interactive) (evil-change-state 'insert) (set-mark (point)))
+ "<SPC>" #'smex
 
-    ;; helm
-    ;; "h" #'smex ;; "h" help-map
-    ;; "h" help-map
-    "hz" 'zeal-at-point
-    "hh"      'helm-mini
-    "ha"      'helm-apropos
-    "hB"      'helm-buffers-list
-    "hb"      'helm-descbindings
-    "hy"      'helm-show-kill-ring
-    "hx"      'helm-M-x
-    "ho"     'helm-occur
-    "hs"     'helm-swoop
-    "hy"     'helm-yas-complete
-    "hY"     'helm-yas-create-snippet-on-region
-    ;; "hcb"     'my/helm-do-grep-book-notes
-    "hr" 'helm-all-mark-rings
+ ;; helm
+ ;; "h" #'smex ;; "h" help-map
+ ;; "h" help-map
+ "hz" 'zeal-at-point
+ "hh"      'helm-mini
+ "ha"      'helm-apropos
+ "hB"      'helm-buffers-list
+ "hb"      'helm-descbindings
+ "hy"      'helm-show-kill-ring
+ "hx"      'helm-M-x
+ "ho"     'helm-occur
+ "hs"     'helm-swoop
+ "hy"     'helm-yas-complete
+ "hY"     'helm-yas-create-snippet-on-region
+ ;; "hcb"     'my/helm-do-grep-book-notes
+ "hr" 'helm-all-mark-rings
 
-    ;; org
-    "om" 'orgmail
-    "oS" 'tmpscratch
-    "oI" 'ibuffer
-    "ox" 'winexe
-    "or" 'org-capture
-    )
-  
-  
-
-
-  (if (and (eq system-uses-terminfo t) (not  (eq window-system 'x)))
-
-      (use-package powerline-evil
-        :config
-        (defpowerline powerline-lcl current-input-method-title)
-
-        (setq-default 
-         mode-line-format
-         '("%e"
-           (:eval
-            (let* ((active (powerline-selected-window-active))
-                   (mode-line (if active 'mode-line 'mode-line-inactive))
-                   (face1 (if active 'powerline-active1 'powerline-inactive1))
-                   (face2 (if active 'powerline-active2 'powerline-inactive2))
-                   (separator-left (intern (format "powerline-%s-%s"
-                                                   powerline-default-separator
-                                                   (car powerline-default-separator-dir))))
-                   (separator-right (intern (format "powerline-%s-%s"
-                                                    powerline-default-separator
-                                                    (cdr powerline-default-separator-dir))))
-                   (lhs (list 
-                         (powerline-lcl mode-line)
-                         ;; (powerline-raw "≡ " mode-line) 
-                         (powerline-raw "『" mode-line) 
-                         (powerline-raw  (window-numbering-get-number-string))
-                         (powerline-raw "』" mode-line) 
-
-                         (let ((evil-face (powerline-evil-face)))
-                           (if evil-mode
-                               (powerline-raw (powerline-evil-tag) evil-face)))
-                         (when (buffer-modified-p) (powerline-raw "[+]" mode-line))
-                         (when buffer-read-only (powerline-raw "[RO]" mode-line))
-                         (powerline-buffer-id `(mode-line-buffer-id ,mode-line) 'l)
-                         (powerline-raw "[" mode-line 'l)
-                         (powerline-major-mode mode-line)
-                         (powerline-process mode-line)
-                         (powerline-raw "]" mode-line)
-                         (powerline-raw "[%z]" mode-line)
-                         ;; (powerline-raw (concat "[" (mode-line-eol-desc) "]") mode-line)
-                         (when (boundp 'erc-modified-channels-object)
-                           (powerline-raw erc-modified-channels-object face1 'l))
-                         ;; (powerline-raw "[" mode-line 'l)
-                         ;; (powerline-minor-modes mode-line)
-                         ;; (powerline-raw "%n" mode-line)
-                         ;; (powerline-raw "]" mode-line)
-                         (when (and vc-mode buffer-file-name)
-                           (let ((backend (vc-backend buffer-file-name)))
-                             (when backend
-                               (concat (powerline-raw "[" mode-line 'l)
-                                       (powerline-raw (format "%s / %s" backend (vc-working-revision buffer-file-name backend)))
-                                       (powerline-raw "]" mode-line)))))))
-                   (rhs (list (powerline-raw '(10 "%i"))
-                              (powerline-raw global-mode-string mode-line 'r)
-                              (powerline-raw "%l," mode-line 'l)
-                              (powerline-raw (format-mode-line '(10 "%c")))
-                              (powerline-raw (replace-regexp-in-string  "%" "%%" (format-mode-line '(-3 "%p"))) mode-line 'r)
-                              (when (and (boundp 'which-func-mode) which-func-mode) (powerline-raw which-func-format nil 'l))
-                              )))
-              (concat (powerline-render lhs)
-                      (powerline-fill mode-line (powerline-width rhs))
-                      (powerline-render rhs)))))))
-    (use-package evil-mode-line))
-
-
-  (require 'evil-surround)
-  (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
-  (global-evil-surround-mode 1)
-  ;;deprecated;;(evilnc-default-hotkeys)
-
-  ;;deprecated;;(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
-  (evil-set-toggle-key "<pause>")
-  (define-key evil-normal-state-map "U" 'undo-tree-redo)
-  (define-key evil-normal-state-map [escape] 'keyboard-quit)
-  (define-key evil-visual-state-map [escape] 'keyboard-quit)
-  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-  ;; (define-key minibuffer-local-isearch-map [escape] 'keyboard-quit)
-  ;;(define-key minibuffer-local-isearch-map [?\S- ] 'toggle-korean-input-method)
+ ;; org
+ "om" 'orgmail
+ "oS" 'tmpscratch
+ "oI" 'ibuffer
+ "ox" 'winexe
+ "or" 'org-capture
+ )
 
 
 
 
-  ;;deprecated;;(global-set-key [M-return] 'smex)
-  (define-key evil-normal-state-map (kbd "C-c +") #'evil-numbers/inc-at-pt)
-  (define-key evil-normal-state-map (kbd "C-c -") #'evil-numbers/dec-at-pt)
-  (define-key evil-normal-state-map "zx" 'smex)
+
+(require 'evil-surround)
+(evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
+(global-evil-surround-mode 1)
+;;deprecated;;(evilnc-default-hotkeys)
+
+;;deprecated;;(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
+(evil-set-toggle-key "<pause>")
+(define-key evil-normal-state-map "U" 'undo-tree-redo)
+(define-key evil-normal-state-map [escape] 'keyboard-quit)
+(define-key evil-visual-state-map [escape] 'keyboard-quit)
+(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+;; (define-key minibuffer-local-isearch-map [escape] 'keyboard-quit)
+;;(define-key minibuffer-local-isearch-map [?\S- ] 'toggle-korean-input-method)
 
 
-  (define-key evil-normal-state-map "\C-a" 'evil-beginning-of-line)
-  (define-key evil-insert-state-map "\C-a" 'beginning-of-line)
-  (define-key evil-visual-state-map "\C-a" 'evil-beginning-of-line)
 
 
-  (define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
-  (define-key evil-insert-state-map "\C-e" 'end-of-line)
-  (define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
-  (define-key evil-normal-state-map "\C-f" 'evil-forward-char)
-  (define-key evil-insert-state-map "\C-f" 'evil-forward-char)
-  (define-key evil-insert-state-map "\C-f" 'evil-forward-char)
-  (define-key evil-normal-state-map "\C-b" 'evil-backward-char)
-  (define-key evil-insert-state-map "\C-b" 'evil-backward-char)
-  (define-key evil-visual-state-map "\C-b" 'evil-backward-char)
-  (define-key evil-normal-state-map "\C-d" 'evil-delete-char)
-  (define-key evil-insert-state-map "\C-d" 'evil-delete-char)
-  (define-key evil-visual-state-map "\C-d" 'evil-delete-char)
-  (define-key evil-normal-state-map "\C-n" 'evil-next-line)
-  (define-key evil-insert-state-map "\C-n" 'evil-next-line)
-  (define-key evil-visual-state-map "\C-n" 'evil-next-line)
-  (define-key evil-normal-state-map "\C-p" 'evil-previous-line)
-  (define-key evil-insert-state-map "\C-p" 'evil-previous-line)
-  (define-key evil-visual-state-map "\C-p" 'evil-previous-line)
-  ;; (define-key evil-normal-state-map "\C-w" 'phi-rectangle-kill-region)
-  ;; (define-key evil-insert-state-map "\C-w" 'phi-rectangle-kill-region)
-  ;; (define-key evil-visual-state-map "\C-w" 'phi-rectangle-kill-region)
-  (define-key evil-normal-state-map "\C-w" 'kill-region-dwim)
-  (define-key evil-insert-state-map "\C-w" 'kill-region-dwim)
-  (define-key evil-visual-state-map "\C-w" 'kill-region-dwim)
-  (define-key evil-normal-state-map "\C-y" 'yank)
-  (define-key evil-insert-state-map "\C-y" 'yank)
-  (define-key evil-visual-state-map "\C-y" 'yank)
-  (define-key evil-normal-state-map "\C-k" 'kill-line)
-  (define-key evil-insert-state-map "\C-k" 'kill-line)
-  (define-key evil-visual-state-map "\C-k" 'kill-line)
-  (define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
-  (define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
-  (define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
-  (define-key evil-motion-state-map "\C-]" 'find-tag-dwim)
+;;deprecated;;(global-set-key [M-return] 'smex)
+(define-key evil-normal-state-map (kbd "C-c +") #'evil-numbers/inc-at-pt)
+(define-key evil-normal-state-map (kbd "C-c -") #'evil-numbers/dec-at-pt)
+(define-key evil-normal-state-map "zx" 'smex)
 
 
-  (define-key evil-normal-state-map "gl" 'goto-line)
-  (define-key evil-normal-state-map "g[" 'beginning-of-buffer)
-  (define-key evil-normal-state-map "g]" 'end-of-buffer      )
-
-  (define-key evil-visual-state-map "gl" 'goto-line)
-  (define-key evil-visual-state-map "g[" 'beginning-of-buffer)
-  (define-key evil-visual-state-map "g]" 'end-of-buffer      )
-  
-  (define-key evil-normal-state-map "gg" 'revert-buffer)
+(define-key evil-normal-state-map "\C-a" 'evil-beginning-of-line)
+(define-key evil-insert-state-map "\C-a" 'beginning-of-line)
+(define-key evil-visual-state-map "\C-a" 'evil-beginning-of-line)
 
 
-  (define-key evil-normal-state-map "zf" 'vimish-fold-dwim) 
-  ;; (define-key evil-visual-state-map "zf" 'vimish-fold) 
-  (define-key evil-normal-state-map "zd" 'vimish-fold-delete) 
-  (define-key evil-normal-state-map "zs" 'vimish-fold-next-fold) 
-  (define-key evil-normal-state-map "zw" 'vimish-fold-previous-fold)
+(define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
+(define-key evil-insert-state-map "\C-e" 'end-of-line)
+(define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
+(define-key evil-normal-state-map "\C-f" 'evil-forward-char)
+(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
+(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
+(define-key evil-normal-state-map "\C-b" 'evil-backward-char)
+(define-key evil-insert-state-map "\C-b" 'evil-backward-char)
+(define-key evil-visual-state-map "\C-b" 'evil-backward-char)
+(define-key evil-normal-state-map "\C-d" 'evil-delete-char)
+(define-key evil-insert-state-map "\C-d" 'evil-delete-char)
+(define-key evil-visual-state-map "\C-d" 'evil-delete-char)
+(define-key evil-normal-state-map "\C-n" 'evil-next-line)
+(define-key evil-insert-state-map "\C-n" 'evil-next-line)
+(define-key evil-visual-state-map "\C-n" 'evil-next-line)
+(define-key evil-normal-state-map "\C-p" 'evil-previous-line)
+(define-key evil-insert-state-map "\C-p" 'evil-previous-line)
+(define-key evil-visual-state-map "\C-p" 'evil-previous-line)
+;; (define-key evil-normal-state-map "\C-w" 'phi-rectangle-kill-region)
+;; (define-key evil-insert-state-map "\C-w" 'phi-rectangle-kill-region)
+;; (define-key evil-visual-state-map "\C-w" 'phi-rectangle-kill-region)
+(define-key evil-normal-state-map "\C-w" 'kill-region-dwim)
+(define-key evil-insert-state-map "\C-w" 'kill-region-dwim)
+(define-key evil-visual-state-map "\C-w" 'kill-region-dwim)
+(define-key evil-normal-state-map "\C-y" 'yank)
+(define-key evil-insert-state-map "\C-y" 'yank)
+(define-key evil-visual-state-map "\C-y" 'yank)
+(define-key evil-normal-state-map "\C-k" 'kill-line)
+(define-key evil-insert-state-map "\C-k" 'kill-line)
+(define-key evil-visual-state-map "\C-k" 'kill-line)
+(define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
+(define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
+(define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
+(define-key evil-motion-state-map "\C-]" 'find-tag-dwim)
 
-  (define-key evil-normal-state-map "zF" 'hs-toggle-hiding)
+
+(define-key evil-normal-state-map "gl" 'goto-line)
+(define-key evil-normal-state-map "g[" 'beginning-of-buffer)
+(define-key evil-normal-state-map "g]" 'end-of-buffer      )
+
+(define-key evil-visual-state-map "gl" 'goto-line)
+(define-key evil-visual-state-map "g[" 'beginning-of-buffer)
+(define-key evil-visual-state-map "g]" 'end-of-buffer      )
+
+(define-key evil-normal-state-map "gg" 'revert-buffer)
 
 
-  ;; (define-key evil-motion-state-map "[[" 'backward-sexp)
-  ;; (define-key evil-motion-state-map "]]" 'forward-sexp)
+(define-key evil-normal-state-map "zf" 'vimish-fold-dwim) 
+;; (define-key evil-visual-state-map "zf" 'vimish-fold) 
+(define-key evil-normal-state-map "zd" 'vimish-fold-delete) 
+(define-key evil-normal-state-map "zs" 'vimish-fold-next-fold) 
+(define-key evil-normal-state-map "zw" 'vimish-fold-previous-fold)
 
-  (define-key evil-normal-state-map (kbd "C-c :" ) 'ac-complete-with-helm)
-  (define-key evil-insert-state-map (kbd "C-c :" ) 'ac-complete-with-helm)
+(define-key evil-normal-state-map "zF" 'hs-toggle-hiding)
 
-  (define-key evil-motion-state-map [down-mouse-1] 'mouse-drag-region)
 
-  (defun evil-undefine ()
-    (interactive)
-    (let (evil-mode-map-alist)
-      (call-interactively (key-binding (this-command-keys)))))
+;; (define-key evil-motion-state-map "[[" 'backward-sexp)
+;; (define-key evil-motion-state-map "]]" 'forward-sexp)
+
+(define-key evil-normal-state-map (kbd "C-c :" ) 'ac-complete-with-helm)
+(define-key evil-insert-state-map (kbd "C-c :" ) 'ac-complete-with-helm)
+
+(define-key evil-motion-state-map [down-mouse-1] 'mouse-drag-region)
+
+(defun evil-undefine ()
+  (interactive)
+  (let (evil-mode-map-alist)
+    (call-interactively (key-binding (this-command-keys)))))
 ;;; http://leavinsprogramming.blogspot.kr/2012/05/evil-emacs-mode-for-vivim-users.html
 
 
 ;;;* _ EVIL ORG setting 
 ;;;** 참고 - https://github.com/cofi/dotfiles/blob/master/emacs.d/config/cofi-evil.el#L149 
-  )
+
 
 (if (not  (eq window-system 'w32))
     (use-package owdriver
@@ -820,7 +744,7 @@
   ">" 'org-shiftright
   )
 
-(evil-leader/set-key-for-mode 'org-mode
+(spacemacs/set-leader-keys-for-major-mode 'org-mode
   "ha" 'helm-org-agenda-files-headings
   "hH" 'helm-org-headlines
   "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
@@ -851,13 +775,6 @@
   "op" 'org-link-copy-image
   "of" 'org-link-copy-file
   )
-
-
-(use-package evil-magit
-  :config
-  (evil-mode 1))
-
-
 
 ;; [[file:t:/gitdir/dot-emacs/etc/hyone-key-combo.el::(defun%20evil-key-combo-define%20(state%20keymap%20key%20commands)][combo for evil]]
 
