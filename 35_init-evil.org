@@ -279,7 +279,7 @@
 
 ** evil mode line 
 #+BEGIN_SRC emacs-lisp
-  (if (eq system-uses-terminfo t)
+  (if (eq window-system nil)
       (use-package powerline-evil
         :config
         (defpowerline powerline-lcl current-input-method-title)
