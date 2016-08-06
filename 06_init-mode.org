@@ -1,6 +1,7 @@
 # -*-mode: org ; coding: utf-8; buffer-read-only: t;-*-
 * paredit
 #+BEGIN_SRC emacs-lisp
+
 ;; 정규표현을 highlight 한다. 
 ;; (require 'highlight-sexp)
 ;;deprecated;;(add-hook 'lisp-mode-hook   'highlight-sexp-mode)
@@ -134,9 +135,18 @@
     :commands markdown-mode
     )
 
+
   (use-package js2-mode
     :config
     (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
+;;;
+;;;
+;;; ※ 파일모드 설정
+;;;
+;;;
+;; 다음과 같이 파일 헤더 부분을 이용하여 mode 를 결정할 수도 있다. 
+;;(add-to-list 'magic-mode-alist '("<!DOCTYPE html .+DTD XHTML .+>" . nxml-mode))
+
 
 
 
@@ -322,6 +332,18 @@
 * yas
 
 #+BEGIN_SRC emacs-lisp
+(require 'yaml-mode)
+
+
+;;(autoload 'dos-mode "dos" "Edit Dos scripts." t)
+
+(if (eq window-system 'w32)
+    (use-package  dos
+      (add-to-list 'auto-mode-alist '("\\.bat$" . dos-mode))
+      (add-to-list 'auto-mode-alist '("\\.cmd$" . dos-mode))
+      (define-key dos-mode-map [?\C-c ?\C-e] (lambda () "Run Dos script." (interactive)(save-buffer) (w32-shell-execute nil (buffer-file-name))))))
+
+
 ;; yas mode 
 ;; yas repo http://coderepos.org/share/browser/config/yasnippet
 ;; https://github.com/capitaomorte/yasnippet
@@ -346,8 +368,62 @@
 (global-set-key (kbd "s-y") 'expand-auto-yasnippet)
 #+END_SRC
 
+
 * utf-8
 #+BEGIN_SRC emacs-lisp
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode)) 
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode)) 
+(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode)) 
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode)) 
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+;;deprecatedby-xah-html-mode;;(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+(setq web-mode-html-offset 2)
+(setq web-mode-css-offset 2)
+(setq web-mode-html-offset 2)
+(setq web-mode-javascript-offset 2)
+(setq web-mode-java-offset 2)
+
+(require 'mmm-auto)
+(setq mmm-global-mode 'maybe)
+(mmm-add-mode-ext-class 'html-mode nil 'html-js)
+
+
+;;If your template extension is tpl, "\\.phtml" becomes "\\.tpl"
+;;
+;;Using web-mode for editing plain HTML files can be done this way 
+;;Customisation
+;;The following customisations (except the last one) can be put in a hook this way 
+;;
+;;(defun web-mode-hook () "Hooks for Web mode." (setq web-mode-html-offset 2) ) (add-hook 'web-mode-hook 'web-mode-hook)
+
+;;sp-offset. 
+
+;;Syntax Highlighting Change face color (set-face-attribute 'web-mode-css-rule-face nil :foreground "Pink3") Available faces:
+;;web-mode-doctype-face, web-mode-html-tag-face, web-mode-html-attr-name-face, web-mode-html-attr-value-face
+;;web-mode-css-rule-face, web-mode-css-prop-face, web-mode-css-pseudo-class-face, web-mode-css-at-rule-face
+;;web-mode-preprocessor-face, web-mode-string-face, web-mode-comment-face
+;;web-mode-variable-name-face, web-mode-function-name-face, web-mode-constant-face, web-mode-type-face, web-mode-keyword-face
+;;web-mode-folded-face
+;;Shortcuts Change the shortcut for element navigation (define-key web-mode-map (kbd "C-n") 'web-mode-match-tag)
+;;Snippets Add a snippet (add-to-list 'web-mode-snippets '("mydiv" "<div>" "</div>")) name, beg, end (if region exists, the content is inserted between beg and end)
+;;Autocompletes Disable autocomplete (setq web-mode-autocompletes-flag nil)
+;;Keywords Add PHP constants (setq web-mode-extra-php-constants '("constant1" "constant2")) Also available : web-mode-extra-php-keywords, web-mode-extra-js-keywords, web-mode-extra-jsp-keywords, web-mode-extra-asp-keywords
+;;(Note: do not put this line in the hook)
+
+
+
+;; · C-c C-; : comment / uncomment line(s)
+;; · C-c C-a : indent all buffer
+;; · C-c C-d : delete current HTML element
+;; · C-c C-f : toggle folding on a block
+;; · C-c C-i : insert snippet
+;; · C-c C-j : duplicate current HTML element
+;; · C-c C-n : jump to opening/closing tag
+;; · C-c C-p : jump to parent HTML element
+;; · C-c C-s : select current HTML element
+
 (require 'xub-mode)
 (defalias 'utf8-browser 'xub-mode)
 (defalias 'unicode-browser 'xub-mode)
@@ -438,6 +514,7 @@
             (emamux:reset-prompt target)
             (emamux:send-keys input)))
       (quit (emamux:unset-parameters)))))
+
 #+END_SRC
 
 * input completion
@@ -445,3 +522,4 @@
 ;; interactive name completion for describe-function, describe-variable, etc.
 (icomplete-mode 1)
 #+END_SRC
+

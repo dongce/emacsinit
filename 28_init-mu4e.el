@@ -16,6 +16,7 @@
            (normal-top-level-add-subdirs-to-load-path))
          (append-path  "/opt/emacs/mumail/default/bin/"))
         )
+         (append-path  "/opt/emacs/mumail/default/bin/")))
   :config
   (setq mu4e-bookmarks
         '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)

@@ -13,23 +13,23 @@
 
 (defun dgbcode( code1 code2 ) 
   (interactive "n대구은행 첫번째 코드: \nn대구은행 두번째 코드 : ")
-  (tjcode code1 code2 "f:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/대구은행.gpg" ))
+  (tjcode code1 code2 "q:/cypher/각종번호/대구은행.gpg" ))
 
 (defun mtjcode( code1 code2 ) 
   (interactive "n새마을 첫번째 코드: \nn새마을 두번째 코드 : ")
-  (tjcode code1 code2 "f:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/새마을.gpg" ))
+  (tjcode code1 code2 "q:/cypher/각종번호/새마을.gpg" ))
 
 (defun dtjcode (code1 code2 )
   (interactive "n동양증권 첫번째 코드: \nn동양증권 두번째 코드 : ")
-  (tjcode code1 code2 "f:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/동양종금보안카드.gpg" ))
+  (tjcode code1 code2 "q:/cypher/각종번호/동양종금보안카드.gpg" ))
 
 (defun stjcode (code1 code2 )
   (interactive "n삼성증권 첫번째 코드: \nn삼성증권 두번째 코드 : ")
-  (tjcode code1 code2 "f:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/삼성증권대구은행보안카드.gpg" ))
+  (tjcode code1 code2 "q:/cypher/각종번호/삼성증권대구은행보안카드.gpg" ))
 
 (defun  htjcode(code1 code2 )
   (interactive "n하나은행 첫번째 코드: \nn하나은행 두번째 코드 : ")
-  (tjcodeall code1 code2 "f:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/하나은행.gpg" ))
+  (tjcodeall code1 code2 "q:/cypher/각종번호/하나은행.gpg" ))
 
 
 

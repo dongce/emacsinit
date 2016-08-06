@@ -64,7 +64,7 @@
 ;; '^[' are mapped to '\e'
 
 (cond
- ((eq system-uses-terminfo t)
+ ((and (not  (eq window-system 'x)) (eq system-uses-terminfo t))
   
   (defun putty-patch ()
     (interactive)
