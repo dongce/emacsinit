@@ -193,10 +193,10 @@ This is important for non-interactive uses of the command."
 (setq org-refile-allow-creating-parent-nodes (quote confirm))
 
 ; Use IDO for both buffer and file completion and ido-everywhere to t
-(setq org-completion-use-ido t)
+;; (setq org-completion-use-ido t)
 ;;(setq ido-everywhere t)
 (setq ido-max-directory-size 100000)
-(ido-mode (quote both))
+;; deprecated ;; (ido-mode (quote both))
 
 (set-face-foreground 'org-level-5 "aquamarine4")
 
@@ -552,5 +552,6 @@ currently open, based on `org-agenda-files'."
     (insert "\n ")
     (org-insert-link t (car  (car org-stored-links)  ) (cadr  (car org-stored-links)  ))))
 
-
+(use-package ox-reveal)
+(use-package ox-html5presentation)
 (use-package org-protocol)

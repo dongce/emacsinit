@@ -331,759 +331,761 @@ Require unix zip commandline tool."
 
 * edit 
 #+BEGIN_SRC emacs-lisp
-;; ergoemacs 설정 입니다. 
-;; ergoemacs 
-(defun toggle-line-move-visual ()
-  "Toggle behavior of up/down arrow key, by visual line vs logical line."
-  (interactive)
-  (if line-move-visual
-      (setq line-move-visual nil)
-    (setq line-move-visual t))
-  )
+  ;; ergoemacs 설정 입니다. 
+  ;; ergoemacs 
+  (defun toggle-line-move-visual ()
+    "Toggle behavior of up/down arrow key, by visual line vs logical line."
+    (interactive)
+    (if line-move-visual
+        (setq line-move-visual nil)
+      (setq line-move-visual t))
+    )
 
-(defun soft-wrap-lines ()
-  "Make lines wrap at window edge and on word boundary,
-in current buffer."
-  (interactive)
-  (setq truncate-lines nil)
-  (setq word-wrap t)
-  )
-
-
-(defun sd ()
-  (interactive)
-  (dotimes (x 3 ) (forward-sexp))
-  (beginning-of-line)
-  (insert "default : break ; \n")
-  (win-switch-dispatch)
-  (next-line)
-)
-
-(defun ed ()
-  (interactive)
-  (right-char 1 )
-  (insert "else{  }")
-  (win-switch-dispatch)
-  (next-line)
-
-)
+  (defun soft-wrap-lines ()
+    "Make lines wrap at window edge and on word boundary,
+  in current buffer."
+    (interactive)
+    (setq truncate-lines nil)
+    (setq word-wrap t)
+    )
 
 
-(defun in()
-  (interactive)
-  (forward-sexp)
-  (insert "(0)")
-  (win-switch-dispatch)
-  (next-line)
-)
+  (defun sd ()
+    (interactive)
+    (dotimes (x 3 ) (forward-sexp))
+    (beginning-of-line)
+    (insert "default : break ; \n")
+    (win-switch-dispatch)
+    (next-line)
+    )
 
-(defun tst ()
- (interactive )
- (narrow-to-region (region-beginning) (region-end))
- (replace-string ":" " " nil (point-min) (point-max))
- (replace-regexp "([0-9])" "" nil (point-min) (point-max))
- (widen))
+  (defun ed ()
+    (interactive)
+    (right-char 1 )
+    (insert "else{  }")
+    (win-switch-dispatch)
+    (next-line)
 
-(defun tst2 ()
- (interactive )
- (insert "(topic-send \n '")
- (yank)
- (insert "\n`(\n"))
-
-(defun tst3 ()
- (interactive )
- (insert "(topic-add '")
- (yank)
- (insert "\n"))
+    )
 
 
-(defun sort-lines-length (reverse beg end)
-  "Sort lines in region alphabetically; argument means descending order.
-Called from a program, there are three arguments:
-REVERSE (non-nil means reverse order), BEG and END (region to sort).
-The variable `sort-fold-case' determines whether alphabetic case affects
-the sort order."
-  (interactive "P\nr")
-  (save-excursion
-    (save-restriction
-      (narrow-to-region beg end)
-      (goto-char (point-min))
-      (let ;; To make `end-of-line' and etc. to ignore fields.
-          ((inhibit-field-text-motion t))
-        (sort-subr 
-         reverse 
-         'forward-line 
-         'end-of-line 
-         '(lambda () (save-excursion (end-of-line) (current-column))))))))
+  (defun in()
+    (interactive)
+    (forward-sexp)
+    (insert "(0)")
+    (win-switch-dispatch)
+    (next-line)
+    )
 
+  (defun tst ()
+    (interactive )
+    (narrow-to-region (region-beginning) (region-end))
+    (replace-string ":" " " nil (point-min) (point-max))
+    (replace-regexp "([0-9])" "" nil (point-min) (point-max))
+    (widen))
 
-(defun wrap-html-tag (tagName &optional className ξid)
-  "Add a HTML tag to beginning and ending of current word or text selection.
+  (defun tst2 ()
+    (interactive )
+    (insert "(topic-send \n '")
+    (yank)
+    (insert "\n`(\n"))
 
-When preceded with `universal-argument',
-no arg = prompt for tag, class.
-2 = prompt for tag, id.
-any = prompt for tag, id, class.
+  (defun tst3 ()
+    (interactive )
+    (insert "(topic-add '")
+    (yank)
+    (insert "\n"))
 
-When called interactively,
-Default id value is [id<random number>].
-Default class value is [xy].
+  (use-package xah-get-thing
+    :commands xah-get-thing-or-selection)
 
-When called in lisp program, if className is nil or empty string, don't add the attribute. Same for ξid."
-  (interactive
-   (cond
-    ((equal current-prefix-arg nil)     ; universal-argument not called
-     (list
-      (read-string "Tag (span):" nil nil "span") ))
-    ((equal current-prefix-arg '(4))    ; C-u
-     (list
-      (read-string "Tag (span):" nil nil "span")
-      (read-string "Class (xyz):" nil nil "xyz") ))
-    ((equal current-prefix-arg 2)       ; C-u 2
-     (list
-      (read-string "Tag (span):" nil nil "span")
-      (read-string "id:" nil nil (format "id%d" (random (expt 2 28 ))))
-      ))
-    (t                                  ; all other cases
-     (list
-      (read-string "Tag (span):" nil nil "span")
-      (read-string "Class (xyz):" nil nil "xyz")
-      (read-string "id:" nil nil (format "id%d" (random (expt 2 28 )))) )) ) )
-  (let (bds p1 p2 inputText outputText
-            (classStr (if (equal className nil) "" (format " class=\"%s\"" className)))
-            (idStr (if (equal ξid nil) "" (format " id=\"%s\"" ξid)))      
-            )
-    (setq bds (get-selection-or-unit 'word))
-    (setq inputText (elt bds 0) )
-    (setq p1 (elt bds 1) )
-    (setq p2 (elt bds 2) )
-    
-    (setq outputText (format "<%s%s%s>%s</%s>" tagName idStr classStr inputText tagName ) )
-
-    (delete-region p1 p2)
-    (goto-char p1)
-    (insert outputText) ) )
-
-;;http://ergoemacs.org/emacs/elisp_idioms_batch.html
-(defun make-backup ()
-  "Make a backup copy of current buffer's file.
-Create a backup of current buffer's file.
-The new file name is the old file name postfixed with “~”, in the same dir.
-If such a file already exist, append more “~”.
-If the current buffer is not associated with a file, its a error."
-  (interactive)
-  (let (cfile bfilename)
-    (setq cfile (buffer-file-name))
-    (setq bfilename (concat cfile "~"))
-
-    (while (file-exists-p bfilename)
-      (setq bfilename (concat bfilename "~"))
-      )
-
-    (copy-file cfile bfilename t)
-    (message (concat "Backup saved as: " (file-name-nondirectory bfilename)))
-    ))
-
-;; http://ergoemacs.org/emacs/emacs_unfill-paragraph.html
-
-;;; package unfill
-;; (defun unfill-paragraph ()
-;;   "Replace newline chars in current paragraph by single spaces.
-;; This command does the reverse of `fill-paragraph'."
-;;   (interactive)
-;;   (let ((fill-column 90002000))
-;;     (fill-paragraph nil)))
-
-;; (defun unfill-region (start end)
-;;   "Replace newline chars in region by single spaces.
-;; This command does the reverse of `fill-region'."
-;;   (interactive "r")
-;;   (let ((fill-column 90002000))
-;;     (fill-region start end)))
-
-(defun compact-uncompact-block ()
-  "Remove or add line ending chars on current paragraph.
-This command is similar to a toggle of `fill-paragraph'.
-When there is a text selection, act on the region."
-  (interactive)
-
-  ;; This command symbol has a property “'stateIsCompact-p”.
-  (let (currentStateIsCompact (bigFillColumnVal 4333999) (deactivate-mark nil))
-
+  (defun sort-lines-length (reverse beg end)
+    "Sort lines in region alphabetically; argument means descending order.
+  Called from a program, there are three arguments:
+  REVERSE (non-nil means reverse order), BEG and END (region to sort).
+  The variable `sort-fold-case' determines whether alphabetic case affects
+  the sort order."
+    (interactive "P\nr")
     (save-excursion
-      ;; Determine whether the text is currently compact.
-      (setq currentStateIsCompact
-            (if (eq last-command this-command)
-                (get this-command 'stateIsCompact-p)
-              (if (> (- (line-end-position) (line-beginning-position)) fill-column) t nil) ) )
+      (save-restriction
+        (narrow-to-region beg end)
+        (goto-char (point-min))
+        (let ;; To make `end-of-line' and etc. to ignore fields.
+            ((inhibit-field-text-motion t))
+          (sort-subr 
+           reverse 
+           'forward-line 
+           'end-of-line 
+           '(lambda () (save-excursion (end-of-line) (current-column))))))))
+
+
+  (defun wrap-html-tag (tagName &optional className ξid)
+    "Add a HTML tag to beginning and ending of current word or text selection.
+
+  When preceded with `universal-argument',
+  no arg = prompt for tag, class.
+  2 = prompt for tag, id.
+  any = prompt for tag, id, class.
+
+  When called interactively,
+  Default id value is [id<random number>].
+  Default class value is [xy].
+
+  When called in lisp program, if className is nil or empty string, don't add the attribute. Same for ξid."
+    (interactive
+     (cond
+      ((equal current-prefix-arg nil)     ; universal-argument not called
+       (list
+        (read-string "Tag (span):" nil nil "span") ))
+      ((equal current-prefix-arg '(4))    ; C-u
+       (list
+        (read-string "Tag (span):" nil nil "span")
+        (read-string "Class (xyz):" nil nil "xyz") ))
+      ((equal current-prefix-arg 2)       ; C-u 2
+       (list
+        (read-string "Tag (span):" nil nil "span")
+        (read-string "id:" nil nil (format "id%d" (random (expt 2 28 ))))
+        ))
+      (t                                  ; all other cases
+       (list
+        (read-string "Tag (span):" nil nil "span")
+        (read-string "Class (xyz):" nil nil "xyz")
+        (read-string "id:" nil nil (format "id%d" (random (expt 2 28 )))) )) ) )
+    (let (bds p1 p2 inputText outputText
+              (classStr (if (equal className nil) "" (format " class=\"%s\"" className)))
+              (idStr (if (equal ξid nil) "" (format " id=\"%s\"" ξid)))      
+              )
+      (setq bds (xah-get-thing-or-selection 'word))
+      (setq inputText (elt bds 0) )
+      (setq p1 (elt bds 1) )
+      (setq p2 (elt bds 2) )
+    
+      (setq outputText (format "<%s%s%s>%s</%s>" tagName idStr classStr inputText tagName ) )
+
+      (delete-region p1 p2)
+      (goto-char p1)
+      (insert outputText) ) )
+
+  ;;http://ergoemacs.org/emacs/elisp_idioms_batch.html
+  (defun make-backup ()
+    "Make a backup copy of current buffer's file.
+  Create a backup of current buffer's file.
+  The new file name is the old file name postfixed with “~”, in the same dir.
+  If such a file already exist, append more “~”.
+  If the current buffer is not associated with a file, its a error."
+    (interactive)
+    (let (cfile bfilename)
+      (setq cfile (buffer-file-name))
+      (setq bfilename (concat cfile "~"))
+
+      (while (file-exists-p bfilename)
+        (setq bfilename (concat bfilename "~"))
+        )
+
+      (copy-file cfile bfilename t)
+      (message (concat "Backup saved as: " (file-name-nondirectory bfilename)))
+      ))
+
+  ;; http://ergoemacs.org/emacs/emacs_unfill-paragraph.html
+
+  ;;; package unfill
+  ;; (defun unfill-paragraph ()
+  ;;   "Replace newline chars in current paragraph by single spaces.
+  ;; This command does the reverse of `fill-paragraph'."
+  ;;   (interactive)
+  ;;   (let ((fill-column 90002000))
+  ;;     (fill-paragraph nil)))
+
+  ;; (defun unfill-region (start end)
+  ;;   "Replace newline chars in region by single spaces.
+  ;; This command does the reverse of `fill-region'."
+  ;;   (interactive "r")
+  ;;   (let ((fill-column 90002000))
+  ;;     (fill-region start end)))
+
+  (defun compact-uncompact-block ()
+    "Remove or add line ending chars on current paragraph.
+  This command is similar to a toggle of `fill-paragraph'.
+  When there is a text selection, act on the region."
+    (interactive)
+
+    ;; This command symbol has a property “'stateIsCompact-p”.
+    (let (currentStateIsCompact (bigFillColumnVal 4333999) (deactivate-mark nil))
+
+      (save-excursion
+        ;; Determine whether the text is currently compact.
+        (setq currentStateIsCompact
+              (if (eq last-command this-command)
+                  (get this-command 'stateIsCompact-p)
+                (if (> (- (line-end-position) (line-beginning-position)) fill-column) t nil) ) )
+
+        (if (region-active-p)
+            (if currentStateIsCompact
+                (fill-region (region-beginning) (region-end))
+              (let ((fill-column bigFillColumnVal))
+                (fill-region (region-beginning) (region-end))) )
+          (if currentStateIsCompact
+              (fill-paragraph nil)
+            (let ((fill-column bigFillColumnVal))
+              (fill-paragraph nil)) ) )
+
+        (put this-command 'stateIsCompact-p (if currentStateIsCompact nil t)) ) ) )
+
+  ;; http://ergoemacs.org/emacs/elisp_idioms_batch.html
+
+  (defun read-lines (fPath)
+    "Return a list of lines of a file at FPATH."
+    (with-temp-buffer
+      (insert-file-contents fPath)
+      (split-string (buffer-string) "\n" t)))
+
+  ;;; File and Dir Manipulation
+  ;;; Filename Manipulation
+  ;;; 
+  ;;; Commonly used functions to manipulate file names.
+
+  ;;doc;;(file-name-directory f)      ; get dir path
+  ;;doc;;(file-name-nondirectory f)   ; get file name
+  ;;doc;;
+  ;;doc;;(file-name-extension f)      ; get suffix
+  ;;doc;;(file-name-sans-extension f) ; remove suffix
+  ;;doc;;
+  ;;doc;;(file-relative-name f )      ; get relative path
+  ;;doc;;(expand-file-name f )        ; get full path
+  ;;doc;;
+  ;;doc;;default-directory       ; get the current dir (this is a variable)
+
+  ;;; File and Dir Manipulation
+  ;;; 
+  ;;; Commonly used functions to manipulate files and dirs.
+
+  ;;doc;; (file-exists-p FILENAME)
+  ;;doc;; 
+  ;;doc;; (rename-file FILE NEWNAME &optional OK-IF-ALREADY-EXISTS)
+  ;;doc;; 
+  ;;doc;; (copy-file FILE NEWNAME &optional OK-IF-ALREADY-EXISTS KEEP-TIME PRESERVE-UID-GID)
+  ;;doc;; 
+  ;;doc;; (delete-file FILE)
+  ;;doc;; 
+  ;;doc;; (set-file-modes FILE MODE)
+  ;;doc;; 
+  ;;doc;; ;; get list of file names
+  ;;doc;; (directory-files DIR &optional FULL MATCH NOSORT)
+  ;;doc;; 
+  ;;doc;; ;; create a dir. Non existent paren dirs will be created
+  ;;doc;; (make-directory DIR &optional PARENTS)
+  ;;doc;; 
+  ;;doc;; ;; copy/delete whole dir
+  ;;doc;; (delete-directory DIRECTORY &optional RECURSIVE) ; RECURSIVE option new in emacs 23.2
+  ;;doc;; (copy-directory DIR NEWNAME &optional KEEP-TIME PARENTS) ; new in emacs 23.2
+
+
+  ;;;_ Reading and Writing to Files
+  ;;;_ Reading Files Only
+  ;;;_ 
+  ;;;_ To process thousands of files, read only, use with-temp-buffer.
+
+  ;;doc;; (defun my-process-file (fPath)
+  ;;doc;;   "Process the file at path FPATH …"
+  ;;doc;;   (with-temp-buffer fPath
+  ;;doc;;     (insert-file-contents fPath)
+  ;;doc;;     ;; process it …
+  ;;doc;;     ) )
+
+  ;;;_ Modifying Files
+  ;;;_ 
+  ;;;_ If you want to write to file ONLY when you actually changed the file, you can create flag variable and call write-region, like this:
+
+  ;;doc;; (defun my-process-file (fPath)
+  ;;doc;;   "Process the file at path FPATH …"
+  ;;doc;;   (let ( fileChanged-p )
+  ;;doc;;     (with-temp-buffer
+  ;;doc;;       (insert-file-contents fPath)
+  ;;doc;; 
+  ;;doc;;       ;; process text …
+  ;;doc;;       ;; set fileChanged-p to true/false
+  ;;doc;; 
+  ;;doc;;       (when fileChanged-p (write-region 1 (point-max) fPath) ) ) ) )
+
+  ;;;_ http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html
+
+  (defun cycle-hyphen-underscore-space ()
+    "Cyclically replace {underscore, space, hypen} chars current line or text selection.
+  When called repeatedly, this command cycles the {“ ”, “_”, “-”} characters."
+    (interactive)
+    ;; this function sets a property 「'state」. Possible values are 0 to length of charArray.
+    (let (mainText charArray p1 p2 currentState nextState changeFrom
+                   changeTo startedWithRegion-p )
 
       (if (region-active-p)
-          (if currentStateIsCompact
-              (fill-region (region-beginning) (region-end))
-            (let ((fill-column bigFillColumnVal))
-              (fill-region (region-beginning) (region-end))) )
-        (if currentStateIsCompact
-            (fill-paragraph nil)
-          (let ((fill-column bigFillColumnVal))
-            (fill-paragraph nil)) ) )
+          (progn
+            (setq startedWithRegion-p t )
+            (setq p1 (region-beginning))
+            (setq p2 (region-end))
+            )
+        (progn (setq startedWithRegion-p nil ) 
+               (setq p1 (line-beginning-position))
+               (setq p2 (line-end-position)) ) )
 
-      (put this-command 'stateIsCompact-p (if currentStateIsCompact nil t)) ) ) )
+      (setq charArray [" " "_" "-"])
 
-;; http://ergoemacs.org/emacs/elisp_idioms_batch.html
+      (setq currentState
+            (if (get 'cycle-hyphen-underscore-space 'state) 
+                (get 'cycle-hyphen-underscore-space 'state)
+              0))
+      (setq nextState (% (+ currentState 1) (length charArray)))
 
-(defun read-lines (fPath)
-  "Return a list of lines of a file at FPATH."
-  (with-temp-buffer
-    (insert-file-contents fPath)
-    (split-string (buffer-string) "\n" t)))
+      (setq changeFrom (elt charArray currentState ))
+      (setq changeTo (elt charArray nextState ))
 
-;;; File and Dir Manipulation
-;;; Filename Manipulation
-;;; 
-;;; Commonly used functions to manipulate file names.
-
-;;doc;;(file-name-directory f)      ; get dir path
-;;doc;;(file-name-nondirectory f)   ; get file name
-;;doc;;
-;;doc;;(file-name-extension f)      ; get suffix
-;;doc;;(file-name-sans-extension f) ; remove suffix
-;;doc;;
-;;doc;;(file-relative-name f )      ; get relative path
-;;doc;;(expand-file-name f )        ; get full path
-;;doc;;
-;;doc;;default-directory       ; get the current dir (this is a variable)
-
-;;; File and Dir Manipulation
-;;; 
-;;; Commonly used functions to manipulate files and dirs.
-
-;;doc;; (file-exists-p FILENAME)
-;;doc;; 
-;;doc;; (rename-file FILE NEWNAME &optional OK-IF-ALREADY-EXISTS)
-;;doc;; 
-;;doc;; (copy-file FILE NEWNAME &optional OK-IF-ALREADY-EXISTS KEEP-TIME PRESERVE-UID-GID)
-;;doc;; 
-;;doc;; (delete-file FILE)
-;;doc;; 
-;;doc;; (set-file-modes FILE MODE)
-;;doc;; 
-;;doc;; ;; get list of file names
-;;doc;; (directory-files DIR &optional FULL MATCH NOSORT)
-;;doc;; 
-;;doc;; ;; create a dir. Non existent paren dirs will be created
-;;doc;; (make-directory DIR &optional PARENTS)
-;;doc;; 
-;;doc;; ;; copy/delete whole dir
-;;doc;; (delete-directory DIRECTORY &optional RECURSIVE) ; RECURSIVE option new in emacs 23.2
-;;doc;; (copy-directory DIR NEWNAME &optional KEEP-TIME PARENTS) ; new in emacs 23.2
-
-
-;;;_ Reading and Writing to Files
-;;;_ Reading Files Only
-;;;_ 
-;;;_ To process thousands of files, read only, use with-temp-buffer.
-
-;;doc;; (defun my-process-file (fPath)
-;;doc;;   "Process the file at path FPATH …"
-;;doc;;   (with-temp-buffer fPath
-;;doc;;     (insert-file-contents fPath)
-;;doc;;     ;; process it …
-;;doc;;     ) )
-
-;;;_ Modifying Files
-;;;_ 
-;;;_ If you want to write to file ONLY when you actually changed the file, you can create flag variable and call write-region, like this:
-
-;;doc;; (defun my-process-file (fPath)
-;;doc;;   "Process the file at path FPATH …"
-;;doc;;   (let ( fileChanged-p )
-;;doc;;     (with-temp-buffer
-;;doc;;       (insert-file-contents fPath)
-;;doc;; 
-;;doc;;       ;; process text …
-;;doc;;       ;; set fileChanged-p to true/false
-;;doc;; 
-;;doc;;       (when fileChanged-p (write-region 1 (point-max) fPath) ) ) ) )
-
-;;;_ http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html
-
-(defun cycle-hyphen-underscore-space ()
-  "Cyclically replace {underscore, space, hypen} chars current line or text selection.
-When called repeatedly, this command cycles the {“ ”, “_”, “-”} characters."
-  (interactive)
-  ;; this function sets a property 「'state」. Possible values are 0 to length of charArray.
-  (let (mainText charArray p1 p2 currentState nextState changeFrom
-                 changeTo startedWithRegion-p )
-
-    (if (region-active-p)
-        (progn
-          (setq startedWithRegion-p t )
-          (setq p1 (region-beginning))
-          (setq p2 (region-end))
-          )
-      (progn (setq startedWithRegion-p nil ) 
-             (setq p1 (line-beginning-position))
-             (setq p2 (line-end-position)) ) )
-
-    (setq charArray [" " "_" "-"])
-
-    (setq currentState
-          (if (get 'cycle-hyphen-underscore-space 'state) 
-              (get 'cycle-hyphen-underscore-space 'state)
-            0))
-    (setq nextState (% (+ currentState 1) (length charArray)))
-
-    (setq changeFrom (elt charArray currentState ))
-    (setq changeTo (elt charArray nextState ))
-
-    (setq mainText (replace-regexp-in-string changeFrom changeTo (buffer-substring-no-properties p1 p2)) )
-    (delete-region p1 p2)
-    (insert mainText)
+      (setq mainText (replace-regexp-in-string changeFrom changeTo (buffer-substring-no-properties p1 p2)) )
+      (delete-region p1 p2)
+      (insert mainText)
     
-    (put 'cycle-hyphen-underscore-space 'state nextState)
+      (put 'cycle-hyphen-underscore-space 'state nextState)
 
-    (when startedWithRegion-p 
-      (goto-char p2)
-      (set-mark p1)
-      (setq deactivate-mark nil) ) ) )
+      (when startedWithRegion-p 
+        (goto-char p2)
+        (set-mark p1)
+        (setq deactivate-mark nil) ) ) )
 
-(defun insert-line (x)
-  (insert (concat x "\n")))
+  (defun insert-line (x)
+    (insert (concat x "\n")))
 
-(defun iarrange ()
-  (interactive)
-  (insert-line "* 정리필요")
-  (insert-line "** 지금해")
-  (insert-line "** 연락해")
-  (insert-line "** 도움받아")
-  (insert-line "** 버려")
-  (org-mode))
+  (defun iarrange ()
+    (interactive)
+    (insert-line "* 정리필요")
+    (insert-line "** 지금해")
+    (insert-line "** 연락해")
+    (insert-line "** 도움받아")
+    (insert-line "** 버려")
+    (org-mode))
 
-;;; http://sachachua.com/notebook/emacs/small-functions.el
+  ;;; http://sachachua.com/notebook/emacs/small-functions.el
 
-;; small-functions.el --- Small function definitions that are usefull.
-;;
-;;  Steve Kemp <skx@tardis.ed.ac.uk>
-;;  http://www.tardis.ed.ac.uk/~skx/
-;;
-;;  These function definitions are the partly written myself
-;; and partly borrowed/stolen/copied from other people - credit
-;; is given where known.
-;;
-;;  Feel free to borrow/copy/steal code found in this file..
-;;
-;; Tue Aug 17 15:51:03 1999
-;;
-;;;;
+  ;; small-functions.el --- Small function definitions that are usefull.
+  ;;
+  ;;  Steve Kemp <skx@tardis.ed.ac.uk>
+  ;;  http://www.tardis.ed.ac.uk/~skx/
+  ;;
+  ;;  These function definitions are the partly written myself
+  ;; and partly borrowed/stolen/copied from other people - credit
+  ;; is given where known.
+  ;;
+  ;;  Feel free to borrow/copy/steal code found in this file..
+  ;;
+  ;; Tue Aug 17 15:51:03 1999
+  ;;
+  ;;;;
 
-;;
-;;;;  Make sure I don't accidentally kill emacs.
-;;;; This will force emacs to ask me if I'm sure that I want to quit.
-;;;; Bind the function to C-c C-x
-;;(global-set-key "\C-x\C-c" '(lambda () 
-;;			      (interactive)
-;;			      (if (y-or-n-p-with-timeout "Do you want to exit " 4 nil)
-;;				  (save-buffers-kill-emacs))))
+  ;;
+  ;;;;  Make sure I don't accidentally kill emacs.
+  ;;;; This will force emacs to ask me if I'm sure that I want to quit.
+  ;;;; Bind the function to C-c C-x
+  ;;(global-set-key "\C-x\C-c" '(lambda () 
+  ;;            (interactive)
+  ;;            (if (y-or-n-p-with-timeout "Do you want to exit " 4 nil)
+  ;;          (save-buffers-kill-emacs))))
 
-;; Stop Emacs from asking for "y-e-s", when a "y" will do.
-;;(fset 'yes-or-no-p 'y-or-n-p)
-
-
-
-;; The following little lump of lisp will ensure the first assignment operators
-;; on each of the lines line up. This is part of our local formatting style
-;; 'cos it looks nice ;-)
-;; The style of the lisp however, is atrocious. All the problems come from ==,
-;; which looks too much like 'op='.
-;; Paul Hudson
-(defun align-equals (start end)
- "Make the first assignment operator on each line line up vertically"
- (interactive "*r")
- (save-excursion
-   (let ((indent 0))
-     (narrow-to-region start end)
-     (beginning-of-buffer)
-     (while (not (eobp))
-       (if (find-assignment)
-	   (progn
-	     (exchange-point-and-mark)
-	     (setq indent (max indent (current-column)))
-	     (delete-horizontal-space)
-	     (insert " ")))
-       (forward-line 1))
-     (beginning-of-buffer)
-     (while (not (eobp))
-       (if (find-assignment)
-	   (indent-to-column (1+ (- indent  (- (mark) (point))))))
-       (forward-line 1)))
-   (widen)))
+  ;; Stop Emacs from asking for "y-e-s", when a "y" will do.
+  ;;(fset 'yes-or-no-p 'y-or-n-p)
 
 
-;;
-;; Find an assignment statement
-;;
-(defun find-assignment ()
-  (if (re-search-forward
-	     "[^<>=!]=\\|\\+=\\|-=\\|\\*=\\|/=\\|&=\\||=\\|\\^=\\|<<=\\|>>="
-	     (save-excursion (end-of-line) (point)) t)
-      (progn
-	(goto-char (match-beginning 0))
-	(if (looking-at ".==")
-	    nil
-	  (if (looking-at "\\+=\\|-=\\|\\*=\\|/=\\|&=\\||=\\|\\^=\\|<<=\\|>>=")
-	      (set-mark (match-end 0))
-	    (forward-char 1)
-	    (set-mark (1+ (point))))
-	  (delete-horizontal-space)
-	  t))
-    nil))
+
+  ;; The following little lump of lisp will ensure the first assignment operators
+  ;; on each of the lines line up. This is part of our local formatting style
+  ;; 'cos it looks nice ;-)
+  ;; The style of the lisp however, is atrocious. All the problems come from ==,
+  ;; which looks too much like 'op='.
+  ;; Paul Hudson
+  (defun align-equals (start end)
+    "Make the first assignment operator on each line line up vertically"
+    (interactive "*r")
+    (save-excursion
+      (let ((indent 0))
+        (narrow-to-region start end)
+        (beginning-of-buffer)
+        (while (not (eobp))
+          (if (find-assignment)
+              (progn
+                (exchange-point-and-mark)
+                (setq indent (max indent (current-column)))
+                (delete-horizontal-space)
+                (insert " ")))
+          (forward-line 1))
+        (beginning-of-buffer)
+        (while (not (eobp))
+          (if (find-assignment)
+              (indent-to-column (1+ (- indent  (- (mark) (point))))))
+          (forward-line 1)))
+      (widen)))
 
 
-;;
-;; Insert a time stamp at the point
-;;
-;;(defun insert-time-stamp ()
-;;  "Insert current date and time."
-;;  (interactive "*")
-;;  (insert (current-time-string)))
+  ;;
+  ;; Find an assignment statement
+  ;;
+  (defun find-assignment ()
+    (if (re-search-forward
+         "[^<>=!]=\\|\\+=\\|-=\\|\\*=\\|/=\\|&=\\||=\\|\\^=\\|<<=\\|>>="
+         (save-excursion (end-of-line) (point)) t)
+        (progn
+          (goto-char (match-beginning 0))
+          (if (looking-at ".==")
+              nil
+            (if (looking-at "\\+=\\|-=\\|\\*=\\|/=\\|&=\\||=\\|\\^=\\|<<=\\|>>=")
+                (set-mark (match-end 0))
+              (forward-char 1)
+              (set-mark (1+ (point))))
+            (delete-horizontal-space)
+            t))
+      nil))
 
-;;
-;;  A simple function to move the point the the previous window, when
-;; there are multiple windows on screen.  Simpler to use that
-;; "other-window"
-;;
-(defun other-window-backward (&optional n)
-  "Select Nth previous window"
-  (interactive "P")
-  (other-window (- (prefix-numeric-value n))))
 
-;;
-;; Key bindings for next window, and previous window.
-;; taken straight from the Glickenstein.
-;;(global-set-key "\C-x\C-n" 'other-window)
-;;(global-set-key "\C-x\C-p" 'other-window-backward)
+  ;;
+  ;; Insert a time stamp at the point
+  ;;
+  ;;(defun insert-time-stamp ()
+  ;;  "Insert current date and time."
+  ;;  (interactive "*")
+  ;;  (insert (current-time-string)))
 
-;;
-;; An equivilent of Apropos, but it acts up lisp variables.
-;;
-(defun variable-apropos (string)
-  "Like apropos, but lists only symbols that are names of user
-modifiable variables.  Argument REGEXP is a regular expression.
-   Returns a list of symbols, and documentation found"
-  (interactive "sVariable apropos (regexp): ")
-  (let ((message
-         (let ((standard-output (get-buffer-create "*Help*")))
-           (print-help-return-message 'identity))))
-    (if (apropos string  'user-variable-p)
-        (and message (message message)))))
-(define-key help-map "\C-v" 'variable-apropos)
+  ;;
+  ;;  A simple function to move the point the the previous window, when
+  ;; there are multiple windows on screen.  Simpler to use that
+  ;; "other-window"
+  ;;
+  (defun other-window-backward (&optional n)
+    "Select Nth previous window"
+    (interactive "P")
+    (other-window (- (prefix-numeric-value n))))
 
-(defun reindent-files (filelist)
-  "Allow files to be reindented.."
-  (while filelist
+  ;;
+  ;; Key bindings for next window, and previous window.
+  ;; taken straight from the Glickenstein.
+  ;;(global-set-key "\C-x\C-n" 'other-window)
+  ;;(global-set-key "\C-x\C-p" 'other-window-backward)
+
+  ;;
+  ;; An equivilent of Apropos, but it acts up lisp variables.
+  ;;
+  (defun variable-apropos (string)
+    "Like apropos, but lists only symbols that are names of user
+  modifiable variables.  Argument REGEXP is a regular expression.
+     Returns a list of symbols, and documentation found"
+    (interactive "sVariable apropos (regexp): ")
+    (let ((message
+           (let ((standard-output (get-buffer-create "*Help*")))
+             (print-help-return-message 'identity))))
+      (if (apropos string  'user-variable-p)
+          (and message (message message)))))
+  (define-key help-map "\C-v" 'variable-apropos)
+
+  (defun reindent-files (filelist)
+    "Allow files to be reindented.."
+    (while filelist
       (reindent-file (car filelist))
       (setq filelist (cdr filelist))))
 
-(defun reindent-file (file)
-  "This will reindent a file"
-  (interactive)
-  (save-excursion
-    (find-file file)
-    (indent-region (point-min) (point-max) nil)
-    ;; uncomment these two lines after testing with a few files
-    ;;(save-buffer)
-    ;;(kill-buffer nil)
-    ))
+  (defun reindent-file (file)
+    "This will reindent a file"
+    (interactive)
+    (save-excursion
+      (find-file file)
+      (indent-region (point-min) (point-max) nil)
+      ;; uncomment these two lines after testing with a few files
+      ;;(save-buffer)
+      ;;(kill-buffer nil)
+      ))
 
-;;(reindent-files (list "first.c" "second.c" "some/path/third.c"))
+  ;;(reindent-files (list "first.c" "second.c" "some/path/third.c"))
 
-(defun ^m-buffer ()
-  "Remove all ^M's from the buffer."
-  (interactive)
-  (^m-region (point-min) (point-max)))
+  (defun ^m-buffer ()
+    "Remove all ^M's from the buffer."
+    (interactive)
+    (^m-region (point-min) (point-max)))
 
-(defalias '^M '^m-buffer)
-(defalias '^M '^m-buffer)
+  (defalias '^M '^m-buffer)
+  (defalias '^M '^m-buffer)
 
-(defun ^m-region (min max)
-  "Remove all ^M's from the region."
-  (interactive "r")
-  (save-excursion
-    (goto-char max)
-    (while (re-search-backward "\C-m$" min t)
-      (delete-char 1))))
-
-
-
-(defun remove-blank-lines ()
-  "Delete blank lines from the current buffer."
-  (interactive "*")
-  (while (re-search-forward "^$")
-    (kill-line)))
-
-(defun add-full-stop ()
-  "Terminate each line with a full stop."
-  (interactive "*")
-  (while (re-search-forward "$")
-    (insert ".")
-    (forward-char )))
+  (defun ^m-region (min max)
+    "Remove all ^M's from the region."
+    (interactive "r")
+    (save-excursion
+      (goto-char max)
+      (while (re-search-backward "\C-m$" min t)
+        (delete-char 1))))
 
 
 
-(defun strip-html ()
-  "Remove HTML tags from the current buffer, 
-   (this will affect the whole buffer regardless of the restrictions in effect)."
-  (interactive "*")
-  (save-excursion
-    (save-restriction
-      (widen)
-      (goto-char (point-min))
-      (while (re-search-forward "<[^<]*>" (point-max) t)
-	(replace-match "\\1"))
-      (goto-char (point-min))
-      (replace-string "&copy;" "(c)")
-      (goto-char (point-min))
-      (replace-string "&amp;" "&")
-      (goto-char (point-min))
-      (replace-string "&lt;" "<")
-      (goto-char (point-min))
-      (replace-string "&gt;" ">")
-      (goto-char (point-min)))))
+  (defun remove-blank-lines ()
+    "Delete blank lines from the current buffer."
+    (interactive "*")
+    (while (re-search-forward "^$")
+      (kill-line)))
 
-(defun unfill-paragraph ()
-  "Replace newline chars in current paragraph by single spaces.
-This command does the inverse of `fill-paragraph'."
-  (interactive)
-  (let ((fill-column 90002000)) ; 90002000 is just random. you can use `most-positive-fixnum'
-    (fill-paragraph nil)))
-
-(defun unfill-region (start end)
-  "Replace newline chars in region by single spaces.
-This command does the inverse of `fill-region'."
-  (interactive "r")
-  (let ((fill-column 90002000))
-    (fill-region start end)))
+  (defun add-full-stop ()
+    "Terminate each line with a full stop."
+    (interactive "*")
+    (while (re-search-forward "$")
+      (insert ".")
+      (forward-char )))
 
 
 
-;; http://ergoemacs.org/emacs/modernization_mark-word.html
-;; by Nikolaj Schumacher, 2008-10-20. Released under GPL.
-(defun semnav-up (arg)
-  (interactive "p")
-  (when (nth 3 (syntax-ppss))
-    (if (> arg 0)
-        (progn
-          (skip-syntax-forward "^\"")
-          (goto-char (1+ (point)))
-          (decf arg))
-      (skip-syntax-backward "^\"")
-      (goto-char (1- (point)))
-      (incf arg)))
-  (up-list arg))
+  (defun strip-html ()
+    "Remove HTML tags from the current buffer, 
+     (this will affect the whole buffer regardless of the restrictions in effect)."
+    (interactive "*")
+    (save-excursion
+      (save-restriction
+        (widen)
+        (goto-char (point-min))
+        (while (re-search-forward "<[^<]*>" (point-max) t)
+          (replace-match "\\1"))
+        (goto-char (point-min))
+        (replace-string "&copy;" "(c)")
+        (goto-char (point-min))
+        (replace-string "&amp;" "&")
+        (goto-char (point-min))
+        (replace-string "&lt;" "<")
+        (goto-char (point-min))
+        (replace-string "&gt;" ">")
+        (goto-char (point-min)))))
+
+  (defun unfill-paragraph ()
+    "Replace newline chars in current paragraph by single spaces.
+  This command does the inverse of `fill-paragraph'."
+    (interactive)
+    (let ((fill-column 90002000)) ; 90002000 is just random. you can use `most-positive-fixnum'
+      (fill-paragraph nil)))
+
+  (defun unfill-region (start end)
+    "Replace newline chars in region by single spaces.
+  This command does the inverse of `fill-region'."
+    (interactive "r")
+    (let ((fill-column 90002000))
+      (fill-region start end)))
 
 
-(defun delete-header-cruft (P)
-  "Delete lines which appear to be RFC-822 cruft, mail or news.
-With prefix arg, start from point; otherwise do whole buffer."
-  (interactive "P")
-  (or P (goto-char (point-min)))
-  (while (re-search-forward
-          (concat "^\\("
-                  "Xref\\|Path\\|Newsgroups\\|Followup-To\\|"
-                  "Lines\\|Message-ID\\|Reply-To\\|NNTP-Posting-Host\\|"
-                  "Received\\|X-Mailer\\|MIME-Version\\|References\\|"
-                  "Content-Type\\|Content-Transfer-Encoding\\|Status\\|"
-                  "In-Reply-To\\|X-Newsreader\\|"
-                  "\\): .*\n")
-          nil t)
-    (replace-match "")))
+
+  ;; http://ergoemacs.org/emacs/modernization_mark-word.html
+  ;; by Nikolaj Schumacher, 2008-10-20. Released under GPL.
+  (defun semnav-up (arg)
+    (interactive "p")
+    (when (nth 3 (syntax-ppss))
+      (if (> arg 0)
+          (progn
+            (skip-syntax-forward "^\"")
+            (goto-char (1+ (point)))
+            (decf arg))
+        (skip-syntax-backward "^\"")
+        (goto-char (1- (point)))
+        (incf arg)))
+    (up-list arg))
 
 
-(defsubst PMIN ()
-  "Go to `point-min'."
-  (goto-char (point-min)))
+  (defun delete-header-cruft (P)
+    "Delete lines which appear to be RFC-822 cruft, mail or news.
+  With prefix arg, start from point; otherwise do whole buffer."
+    (interactive "P")
+    (or P (goto-char (point-min)))
+    (while (re-search-forward
+            (concat "^\\("
+                    "Xref\\|Path\\|Newsgroups\\|Followup-To\\|"
+                    "Lines\\|Message-ID\\|Reply-To\\|NNTP-Posting-Host\\|"
+                    "Received\\|X-Mailer\\|MIME-Version\\|References\\|"
+                    "Content-Type\\|Content-Transfer-Encoding\\|Status\\|"
+                    "In-Reply-To\\|X-Newsreader\\|"
+                    "\\): .*\n")
+            nil t)
+      (replace-match "")))
 
-(defsubst PMAX ()
-  "Go to `point-max'."
-  (goto-char (point-max)))
 
-(defun strline (b e &optional arg)
-  (interactive "r\nP")
-  (save-excursion
-    (save-restriction 
-      (message (format"%d" e))
-      (narrow-to-region b e)
-      (if (not  arg) 
-          (strip-trailing-whitespace (point-min) (point-max)))
-      (message (format "%s" arg))
-      (goto-char (point-min))
+  (defsubst PMIN ()
+    "Go to `point-min'."
+    (goto-char (point-min)))
 
-      (move-beginning-of-line nil)
-      (insert "\"")
-      (end-of-line)    
-      (insert "\"")
+  (defsubst PMAX ()
+    "Go to `point-max'."
+    (goto-char (point-max)))
 
-      (while (and  (= (forward-line) 0)  (not  (= (point-at-bol) (point-at-eol) )))
+  (defun strline (b e &optional arg)
+    (interactive "r\nP")
+    (save-excursion
+      (save-restriction 
+        (message (format"%d" e))
+        (narrow-to-region b e)
+        (if (not  arg) 
+            (strip-trailing-whitespace (point-min) (point-max)))
+        (message (format "%s" arg))
+        (goto-char (point-min))
+
         (move-beginning-of-line nil)
         (insert "\"")
         (end-of-line)    
-        (insert "\"")))
-    ;; (widen)
-    ))
+        (insert "\"")
 
-(defun parline (b e &optional arg)
-  (interactive "r\nP")
-  (save-excursion
-    (save-restriction 
-      (message (format"%d" e))
-      (narrow-to-region b e)
-      (if (not  arg) 
-          (strip-trailing-whitespace (point-min) (point-max)))
-      (message (format "%s" arg))
-      (goto-char (point-min))
+        (while (and  (= (forward-line) 0)  (not  (= (point-at-bol) (point-at-eol) )))
+          (move-beginning-of-line nil)
+          (insert "\"")
+          (end-of-line)    
+          (insert "\"")))
+      ;; (widen)
+      ))
 
-      (move-beginning-of-line nil)
-      (insert "(")
-      (end-of-line)    
-      (insert ")")
+  (defun parline (b e &optional arg)
+    (interactive "r\nP")
+    (save-excursion
+      (save-restriction 
+        (message (format"%d" e))
+        (narrow-to-region b e)
+        (if (not  arg) 
+            (strip-trailing-whitespace (point-min) (point-max)))
+        (message (format "%s" arg))
+        (goto-char (point-min))
 
-      (while (and  (= (forward-line) 0)  (not  (= (point-at-bol) (point-at-eol) )))
         (move-beginning-of-line nil)
         (insert "(")
         (end-of-line)    
-        (insert ")")))
-    ;; (widen)
-    ))
+        (insert ")")
+
+        (while (and  (= (forward-line) 0)  (not  (= (point-at-bol) (point-at-eol) )))
+          (move-beginning-of-line nil)
+          (insert "(")
+          (end-of-line)    
+          (insert ")")))
+      ;; (widen)
+      ))
 
 
-(defun lstline (b e &optional arg)
-  (interactive "r\nP")
-  (save-excursion
-    (save-restriction 
-      (message (format"%d" e))
-      (narrow-to-region b e)
-      (if (not  arg) 
-          (strip-trailing-whitespace (point-min) (point-max)))
-      (message (format "%s" arg))
-      (goto-char (point-min))
+  (defun lstline (b e &optional arg)
+    (interactive "r\nP")
+    (save-excursion
+      (save-restriction 
+        (message (format"%d" e))
+        (narrow-to-region b e)
+        (if (not  arg) 
+            (strip-trailing-whitespace (point-min) (point-max)))
+        (message (format "%s" arg))
+        (goto-char (point-min))
 
-      (move-beginning-of-line nil)
-      (insert "(")
-      (end-of-line)    
-      (insert ")")
-
-      (while (and  (= (forward-line) 0)  (not  (= (point-at-bol) (point-at-eol) )))
         (move-beginning-of-line nil)
         (insert "(")
         (end-of-line)    
-        (insert ")")))
-    ;; (widen)
-    ))
+        (insert ")")
 
-(defun unfill-paragraph ()
-  "Replace newline chars in current paragraph by single spaces.
-This command does the inverse of `fill-paragraph'."
-  (interactive)
-  (let ((fill-column 90002000)) ; 90002000 is just random. you can use `most-positive-fixnum'
-    (fill-paragraph nil)))
+        (while (and  (= (forward-line) 0)  (not  (= (point-at-bol) (point-at-eol) )))
+          (move-beginning-of-line nil)
+          (insert "(")
+          (end-of-line)    
+          (insert ")")))
+      ;; (widen)
+      ))
 
-(defun unfill-region (start end)
-  "Replace newline chars in region by single spaces.
-This command does the inverse of `fill-region'."
-  (interactive "r")
-  (let ((fill-column 90002000))
-    (fill-region start end)))
+  (defun unfill-paragraph ()
+    "Replace newline chars in current paragraph by single spaces.
+  This command does the inverse of `fill-paragraph'."
+    (interactive)
+    (let ((fill-column 90002000)) ; 90002000 is just random. you can use `most-positive-fixnum'
+      (fill-paragraph nil)))
 
-(defun xah-cycle-hyphen-underscore-space ()
-  "Cycle {underscore, space, hypen} chars of current word or text selection.
-When called repeatedly, this command cycles the {“_”, “-”, “ ”} characters, in that order.
+  (defun unfill-region (start end)
+    "Replace newline chars in region by single spaces.
+  This command does the inverse of `fill-region'."
+    (interactive "r")
+    (let ((fill-column 90002000))
+      (fill-region start end)))
 
-URL `http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html'
-Version 2016-01-14"
-  (interactive)
-  ;; this function sets a property 「'state」. Possible values are 0 to length of ξcharArray.
-  (let (ξp1 ξp2)
-    (if (use-region-p)
+  (defun xah-cycle-hyphen-underscore-space ()
+    "Cycle {underscore, space, hypen} chars of current word or text selection.
+  When called repeatedly, this command cycles the {“_”, “-”, “ ”} characters, in that order.
+
+  URL `http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html'
+  Version 2016-01-14"
+    (interactive)
+    ;; this function sets a property 「'state」. Possible values are 0 to length of ξcharArray.
+    (let (ξp1 ξp2)
+      (if (use-region-p)
+          (progn
+            (setq ξp1 (region-beginning))
+            (setq ξp2 (region-end)))
+        (save-excursion
+          ;; 2016-01-14 not use (bounds-of-thing-at-point 'symbol), because if at end of buffer, it returns nil. also, it's syntax table dependent
+          (skip-chars-backward "-_[:alnum:]")
+          (setq ξp1 (point))
+          (skip-chars-forward "-_[:alnum:]")
+          (setq ξp2 (point))))
+      (let* ((ξinputText (buffer-substring-no-properties ξp1 ξp2))
+             (ξcharArray ["_" "-" " "])
+             (ξlength (length ξcharArray))
+             (ξregionWasActive-p (region-active-p))
+             (ξnowState
+              (if (equal last-command this-command )
+                  (get 'xah-cycle-hyphen-underscore-space 'state)
+                0 ))
+             (ξchangeTo (elt ξcharArray ξnowState)))
+        (save-excursion
+          (save-restriction
+            (narrow-to-region ξp1 ξp2)
+            (goto-char (point-min))
+            (while
+                (search-forward-regexp
+                 (concat
+                  (elt ξcharArray (% (+ ξnowState 1) ξlength))
+                  "\\|"
+                  (elt ξcharArray (% (+ ξnowState 2) ξlength)))
+                 (point-max)
+                 'NOERROR)
+              (replace-match ξchangeTo 'FIXEDCASE 'LITERAL))))
+        (when (or (string= ξchangeTo " ") ξregionWasActive-p)
+          (goto-char ξp2)
+          (set-mark ξp1)
+          (setq deactivate-mark nil))
+        (put 'xah-cycle-hyphen-underscore-space 'state (% (+ ξnowState 1) ξlength)))))
+
+
+  (defun xah-underscore-to-space-region (φbegin φend)
+    "Change  underscore char to space.
+  URL `http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html'
+  Version 2015-08-18"
+    (interactive "r")
+    (save-excursion
+      (save-restriction
+        (narrow-to-region φbegin φend)
+        (goto-char (point-min))
+        (while
+            (search-forward-regexp "_" (point-max) 'NOERROR)
+          (replace-match " " 'FIXEDCASE 'LITERAL)))))
+
+  (defun xah-clean-whitespace-and-save (φbegin φend)
+    "Delete trailing whitespace, and replace repeated blank lines into just 2.
+  Only space and tab is considered whitespace here.
+  Works on whole buffer or text selection, respects `narrow-to-region'.
+  Saves the file if it is a file.
+
+  URL `http://ergoemacs.org/emacs/elisp_compact_empty_lines.html'
+  Version 2016-03-02"
+    (interactive
+     (if (region-active-p)
+         (list (region-beginning) (region-end))
+       (list (point-min) (point-max))))
+    (save-excursion
+      (save-restriction
+        (narrow-to-region φbegin φend)
         (progn
-          (setq ξp1 (region-beginning))
-          (setq ξp2 (region-end)))
-      (save-excursion
-        ;; 2016-01-14 not use (bounds-of-thing-at-point 'symbol), because if at end of buffer, it returns nil. also, it's syntax table dependent
-        (skip-chars-backward "-_[:alnum:]")
-        (setq ξp1 (point))
-        (skip-chars-forward "-_[:alnum:]")
-        (setq ξp2 (point))))
-    (let* ((ξinputText (buffer-substring-no-properties ξp1 ξp2))
-           (ξcharArray ["_" "-" " "])
-           (ξlength (length ξcharArray))
-           (ξregionWasActive-p (region-active-p))
-           (ξnowState
-            (if (equal last-command this-command )
-                (get 'xah-cycle-hyphen-underscore-space 'state)
-              0 ))
-           (ξchangeTo (elt ξcharArray ξnowState)))
-      (save-excursion
-        (save-restriction
-          (narrow-to-region ξp1 ξp2)
           (goto-char (point-min))
-          (while
-              (search-forward-regexp
-               (concat
-                (elt ξcharArray (% (+ ξnowState 1) ξlength))
-                "\\|"
-                (elt ξcharArray (% (+ ξnowState 2) ξlength)))
-               (point-max)
-               'NOERROR)
-            (replace-match ξchangeTo 'FIXEDCASE 'LITERAL))))
-      (when (or (string= ξchangeTo " ") ξregionWasActive-p)
-        (goto-char ξp2)
-        (set-mark ξp1)
-        (setq deactivate-mark nil))
-      (put 'xah-cycle-hyphen-underscore-space 'state (% (+ ξnowState 1) ξlength)))))
-
-
-(defun xah-underscore-to-space-region (φbegin φend)
-  "Change  underscore char to space.
-URL `http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html'
-Version 2015-08-18"
-  (interactive "r")
-  (save-excursion
-    (save-restriction
-      (narrow-to-region φbegin φend)
-      (goto-char (point-min))
-      (while
-          (search-forward-regexp "_" (point-max) 'NOERROR)
-        (replace-match " " 'FIXEDCASE 'LITERAL)))))
-
-(defun xah-clean-whitespace-and-save (φbegin φend)
-  "Delete trailing whitespace, and replace repeated blank lines into just 2.
-Only space and tab is considered whitespace here.
-Works on whole buffer or text selection, respects `narrow-to-region'.
-Saves the file if it is a file.
-
-URL `http://ergoemacs.org/emacs/elisp_compact_empty_lines.html'
-Version 2016-03-02"
-  (interactive
-   (if (region-active-p)
-       (list (region-beginning) (region-end))
-     (list (point-min) (point-max))))
-  (save-excursion
-    (save-restriction
-      (narrow-to-region φbegin φend)
-      (progn
-        (goto-char (point-min))
-        (while (search-forward-regexp "[ \t]+\n" nil "noerror")
-          (replace-match "\n")))
-      (progn
-        (goto-char (point-min))
-        (while (search-forward-regexp "\n\n\n+" nil "noerror")
-          (replace-match "\n\n")))
-      (progn
-        (goto-char (point-max))
-        (while (equal (char-before) 32)
-          (delete-char -1)))))
-  (when (buffer-file-name)
-    (save-buffer)))
+          (while (search-forward-regexp "[ \t]+\n" nil "noerror")
+            (replace-match "\n")))
+        (progn
+          (goto-char (point-min))
+          (while (search-forward-regexp "\n\n\n+" nil "noerror")
+            (replace-match "\n\n")))
+        (progn
+          (goto-char (point-max))
+          (while (equal (char-before) 32)
+            (delete-char -1)))))
+    (when (buffer-file-name)
+      (save-buffer)))
 
 
 #+END_SRC
@@ -1996,7 +1998,7 @@ When called in lisp program, fromType and toType is a string of a bracket pair. 
       (ido-completing-read "To:" bracketTypes ) ) ) )
 
   (let* (
-         (bds (get-selection-or-unit 'block))
+         (bds (xah-get-thing-or-selection 'block))
          (p1 (elt bds 1))
          (p2 (elt bds 2))
          (changePairs (vector

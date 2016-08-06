@@ -116,7 +116,7 @@ See `cycle-font'."
 
 (let ((fallbackfont (find-if 
                     (lambda (x) (font-utils-exists-p x)) 
-                    '( "Symbola" "StixGeneral"))))
+                    '( "Symbola" "StixGeneral"  ))))
   (if (stringp  fallbackfont) 
       (set-fontset-font "fontset-default" nil (font-spec :name fallbackfont :size fontsize))))
 
