@@ -326,7 +326,9 @@ open and unsaved."
 
 * dired buffer setting
 #+BEGIN_SRC emacs-lisp
-(toggle-diredp-find-file-reuse-dir 1)
+(use-package dired+
+  :config
+  (toggle-diredp-find-file-reuse-dir 1))
 ;; writable-dired
 ;;【Ctrl+x Ctrl+q】 (emacs 23.1)	wdired-change-to-wdired-mode	Start rename by editing
 ;;【Ctrl+c Ctrl+c】	wdired-finish-edit	Commit changes

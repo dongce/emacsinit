@@ -197,6 +197,7 @@ This is important for non-interactive uses of the command."
 ;;(setq ido-everywhere t)
 (setq ido-max-directory-size 100000)
 ;; deprecated ;; (ido-mode (quote both))
+(ido-mode nil)
 
 (set-face-foreground 'org-level-5 "aquamarine4")
 

@@ -171,14 +171,8 @@ See also `multi-occur'."
 (require 'xcscope) 
 
 (w32-unix-eval
- ;; 윈도우 시스템의 경우
- ;; emacs 에서 FIND 가능
- (
-  (setq gtags-global-command (file-truename (fullpath "../../global/bin/global.exe")))
-  )
- (
-  (setq gtags-global-command  "/usr/local/misctools/default/bin/global")
-  ))
+ ((setq gtags-global-command (file-truename (fullpath "../../global/bin/global.exe"))))
+ ((setq gtags-global-command  "/usr/local/misctools/default/bin/global")))
 
 
 
