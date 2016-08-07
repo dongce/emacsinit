@@ -100,7 +100,7 @@
 See also: `paste-from-register-1', `copy-to-register'."
   (interactive)
   (let* (
-         (bds (get-selection-or-unit 'line ))
+         (bds (xah-get-thing-or-selection 'line ))
          (inputStr (elt bds 0) )
          (p1 (elt bds 1) )
          (p2 (elt bds 2) )
@@ -120,6 +120,9 @@ See also: `copy-to-register-1', `insert-register'."
   (save-excursion  (yank))
   (insert-register ?a))
 #+END_SRC
+
+#+RESULTS:
+: insert-a
 
 ** kill advice 
 
@@ -644,8 +647,10 @@ or a marker."
 
   (use-package expand-region)
 
-  (require 'misc-cmds)
-  (global-set-key (kbd "<home>") 'beginning-or-indentation)
+  (use-package mwim
+    :config
+    (global-set-key (kbd "<home>") 'mwim-beginning-of-code-or-line)
+    (global-set-key (kbd "<end>")  'mwim-end-of-code-or-line))
 
   (use-package delsel
     :config
@@ -667,8 +672,6 @@ or a marker."
 (define-key ac-completing-map (kbd "C-o") 'ac-expand))
 #+END_SRC
 
-
-
 ** file change
 #+BEGIN_SRC emacs-lisp
 
@@ -685,7 +688,7 @@ or a marker."
 #+END_SRC
 
 ** kill/copy dwim                                                :DEPRECATED:
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp 
 ;;;
 ;;;
 ;;; ※ 유용한 함수 정의
@@ -703,6 +706,9 @@ or a marker."
 
 (global-set-key [remap kill-region] 'kill-region-dwim)
 #+END_SRC
+
+#+RESULTS:
+: kill-region-dwim
 
 ** block operation                                               :DEPRECATED:
 

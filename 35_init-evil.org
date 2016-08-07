@@ -8,7 +8,7 @@
    ;; http://d.hatena.ne.jp/tarao/20130304/evil_config
 
    (with-package*  
-     (evil-leader evil-org evil-nerd-commenter evil projectile  geiser-mode flycheck smerge-mode)
+     (evil-leader evil-org evil-nerd-commenter evil projectile  geiser-mode flycheck smerge-mode evil-visual-replace)
 
      (global-evil-leader-mode) 
 
@@ -29,6 +29,7 @@
        ;;left;; "j"   
        ;;left;; "J"
        "<tab>" #'back-to-indentation
+       "%" 'evil-virep-replace-regexp
        "f" 'find-file
        "yi" 'yankpad-insert
        "ye" 'yankpad-edit
@@ -467,6 +468,8 @@
   (define-key evil-normal-state-map [kp-decimal] 'winexe)
   (define-key evil-normal-state-map [kp-divide] 'ibuffer)
   (define-key evil-normal-state-map [kp-subtract] 'recenter-top-bottom)
+  (define-key evil-normal-state-map [kp-7] 'copy-to-register-1)
+  (define-key evil-normal-state-map [kp-9] 'paste-from-register-1)
 
   (define-key evil-visual-state-map [kp-0] 'helm-smex)
   (define-key evil-visual-state-map [kp-1] 'select-window-1)
@@ -480,7 +483,11 @@
   (define-key evil-visual-state-map [kp-decimal] 'winexe)
   (define-key evil-visual-state-map [kp-divide] 'ibuffer)
   (define-key evil-visual-state-map [kp-8] 'split-window-below)
-  (define-key evil-normal-state-map [kp-subtract] 'recenter-top-bottom)
+  (define-key evil-visual-state-map [kp-subtract] 'recenter-top-bottom)
+  (define-key evil-visual-state-map [kp-7] 'copy-to-register-1)
+  (define-key evil-visual-state-map [kp-9] 'paste-from-register-1)
+
+
 #+END_SRC
 
 ** evil surround

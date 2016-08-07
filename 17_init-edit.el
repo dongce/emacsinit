@@ -86,7 +86,7 @@
 See also: `paste-from-register-1', `copy-to-register'."
   (interactive)
   (let* (
-         (bds (get-selection-or-unit 'line ))
+         (bds (xah-get-thing-or-selection 'line ))
          (inputStr (elt bds 0) )
          (p1 (elt bds 1) )
          (p2 (elt bds 2) )
@@ -555,8 +555,10 @@ or a marker."
 
 (use-package expand-region)
 
-(require 'misc-cmds)
-(global-set-key (kbd "<home>") 'beginning-or-indentation)
+(use-package mwim
+  :config
+  (global-set-key (kbd "<home>") 'mwim-beginning-of-code-or-line)
+  (global-set-key (kbd "<end>")  'mwim-end-of-code-or-line))
 
 (use-package delsel
   :config
@@ -574,3 +576,20 @@ or a marker."
 
 ;;;_ REVERT BUFFER http://www.emacswiki.org/emacs/RevertBuffer
 (global-auto-revert-mode 1)
+
+;;;
+;;;
+;;; ※ 유용한 함수 정의
+;;;
+;;;
+
+;;; 영역이 있으면 KILL, 아니면 라인카피 
+(defun kill-region-dwim (beg end )
+  (interactive (list (point) (mark)))
+  (if mark-active (kill-region beg end) (copy-line)))
+
+(defun copy-region-dwim (beg end )
+  (interactive (list (point) (mark)))
+  (if mark-active (kill-ring-region beg end) (copy-line)))
+
+(global-set-key [remap kill-region] 'kill-region-dwim)
