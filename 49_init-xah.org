@@ -1,6 +1,11 @@
+# -*- coding: utf-8; -*-
 
 
 * xah blog content
+** encoding 
+#+BEGIN_SRC emacs-lisp 
+;; -*- coding: utf-8; -*-
+#+END_SRC
 #+BEGIN_SRC emacs-lisp
 
 (setq minibuffer-prompt-properties
@@ -272,8 +277,8 @@ Version 2016-06-15"
                (setq ξi φn)))
       (setq ξi (1+ ξi)))))
 
-(global-set-key (kbd "<next>") 'xah-forward-block)
-(global-set-key (kbd "<prior>") 'xah-backward-block)
+(global-set-key (kbd "<S-next>") 'xah-forward-block)
+(global-set-key (kbd "<S-prior>") 'xah-backward-block)
 #+END_SRC
 
 #+RESULTS:

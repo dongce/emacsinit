@@ -3170,7 +3170,7 @@ of FILE in the current directory, suitable for creation"
   (async-shell-command (format "emacs -Q --batch --script \"%s\"" (buffer-file-name)))
   )
 
-(load "~/savemacro.el")
+(load "~/savemacro.el" t)
 
 #+END_SRC
 

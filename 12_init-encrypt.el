@@ -6,7 +6,7 @@
 
 (epa-file--file-name-regexp-set 'epa-file-name-regexp "\\.gpg\\(~\\|\\.~[0-9]+~\\)?\\'\\|¾ÏÈ£È­\\|cipher-folder")
 
-(when-os 'window-nt 
+(when-os 'windows-nt 
   (defun epa-file-decode-and-insert (string file visit beg end replace)
     (insert (epa-file--decode-coding-string string 'cp949)))
   (defun epg--start (context args)

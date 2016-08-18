@@ -326,20 +326,23 @@ open and unsaved."
 
 * dired buffer setting
 #+BEGIN_SRC emacs-lisp
-(use-package dired+
-  :config
-  (toggle-diredp-find-file-reuse-dir 1))
-;; writable-dired
-;;【Ctrl+x Ctrl+q】 (emacs 23.1)	wdired-change-to-wdired-mode	Start rename by editing
-;;【Ctrl+c Ctrl+c】	wdired-finish-edit	Commit changes
-;;【Ctrl+c Esc】	wdired-abort-changes	Abort changes
+  (use-package dired+
+    :config
+    (toggle-diredp-find-file-reuse-dir 1)
+    ;;(define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file) ; was dired-advertised-find-file
+    ;;(define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))  ; was dired-up-directory
+  )
+  ;; writable-dired
+  ;;【Ctrl+x Ctrl+q】 (emacs 23.1)  wdired-change-to-wdired-mode  Start rename by editing
+  ;;【Ctrl+c Ctrl+c】 wdired-finish-edit  Commit changes
+  ;;【Ctrl+c Esc】  wdired-abort-changes  Abort changes
 
-;;(with-package* (tramp)
-;;  (setq tramp-default-method "ftp")
-;;  (setq ange-ftp-default-user "user1")
-;;  ;; (setq ange-ftp-ftp-program-name "ftp.exe")
-;;  (setq ange-ftp-ftp-program-name (fullpath "../../EmacsW32/gnuwin32/bin/ftp.exe")) ;ftp passive mode 
-;;  )
+  ;;(with-package* (tramp)
+  ;;  (setq tramp-default-method "ftp")
+  ;;  (setq ange-ftp-default-user "user1")
+  ;;  ;; (setq ange-ftp-ftp-program-name "ftp.exe")
+  ;;  (setq ange-ftp-ftp-program-name (fullpath "../../EmacsW32/gnuwin32/bin/ftp.exe")) ;ftp passive mode 
+  ;;  )
 #+END_SRC
 
 * appearance

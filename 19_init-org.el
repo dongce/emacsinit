@@ -197,7 +197,7 @@ This is important for non-interactive uses of the command."
 ;;(setq ido-everywhere t)
 (setq ido-max-directory-size 100000)
 ;; deprecated ;; (ido-mode (quote both))
-(ido-mode nil)
+;; (ido-mode nil)
 
 (set-face-foreground 'org-level-5 "aquamarine4")
 
@@ -359,6 +359,24 @@ USAGE:  (org-get-entries-fn '(6 1 2015) '(6 30 2015))"
        result))
     ;;    (display-buffer org-agenda-buffer-name t)
     result))
+
+(defun my/helm-org-create-task (candidate)
+  (let ((entry (org-capture-select-template "T")))
+    (org-capture-set-plist entry)
+    (org-capture-get-template)
+    (org-capture-set-target-location)
+    (condition-case error
+        (progn
+          (org-capture-put
+           :template
+           (org-capture-fill-template
+            (sacha/org-capture-prefill-template (org-capture-get :template)
+                                                candidate)))
+          (org-capture-place-template
+           (equal (car (org-capture-get :target)) 'function)))
+      ((error quit)
+       (if (get-buffer "*Capture*") (kill-buffer "*Capture*"))
+       (error "Capture abort: %s" error)))) t)
 
 (defun my/helm-org-refile-read-location (tbl)
   (setq my/helm-org-refile-locations tbl)
