@@ -227,7 +227,7 @@
     ")" #'kmacro-end-macro
     ;;"x" ctl-x-map ;;projectile-mode-map
     "xx"  #'kmacro-end-and-call-macro
-    "xi"  #'string-inflection-cycle
+    "xi"  #'string-inflection-all-cycle
     "d" 'dired
     "D" #'toggle-current-window-dedication
     "kb" 'kill-buffer
