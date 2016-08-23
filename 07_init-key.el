@@ -551,9 +551,9 @@ Version 2015-04-09"
 (define-key ctl-x-r-map "p" 'copy-rectangle-to-clipboard )
 
 
-(use-package zygospore
-  :config
-  (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows))
+;;deprecated;;(use-package zygospore
+;;deprecated;;  :config
+;;deprecated;;  (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows))
 
 
 (use-package helm-descbinds
