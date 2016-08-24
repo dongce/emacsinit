@@ -3,16 +3,16 @@
 
 * top level 
 ** header
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 ; -*- coding: utf-8; -*-
-#+END_SRC
+   #+END_SRC
 ** smerge
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 
  (require 'smerge-mode)
-#+END_SRC 
+   #+END_SRC 
 ** leader
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 
   ;; http://d.hatena.ne.jp/tarao/20130304/evil_config
 
@@ -36,7 +36,7 @@
     ;;left;; "J"
     "<tab>" #'back-to-indentation
     "%" 'evil-virep-replace-regexp
-    "f" 'find-file
+    ;;"f" 'find-file
     "yi" 'yankpad-insert
     "ye" 'yankpad-edit
     "ym" 'yankpad-map
@@ -63,7 +63,7 @@
     "bh"      'mark-whole-buffer
     "br"      'revert-buffer
     "bc"      'xah-close-current-buffer
-    "j" 'save-buffer
+    ;;"j" 'save-buffer
     ;; "i" 'ibuffer
     ;; "j" 'tmpscratch
     "<home>" 'ibuffer
@@ -77,19 +77,28 @@
     "/" 'evil-replace-word-selection
 
     ;; search
-    "s"  search-map ;;'save-buffer
-    "st" 'sr-speedbar-toggle
-    "sl" 'loccur
+    ;;"s"  search-map ;;'save-buffer
+    ;;"st" 'sr-speedbar-toggle              ;
+    "sL" 'loccur
+    "so" 'occur
     "sn" 'smartscan-symbol-go-forward
     "sp" 'smartscan-symbol-go-backward
     "sc" 'xah-lookup-cppreference
     "s." 'gtags-find-tag
     "s," 'gtags-pop-stack
+    "s_" 'isearch-forward-symbol
+    "s-" 'isearch-forward-at-point
+    "ss" 'isearch-forward
+    "sm" 'grep-word
+    "st" 'xah-find-text
+    "sT" 'xah-find-text-regex
 
     ;; smerge
     "S" smerge-basic-map
 
-    "u" #'wgrep
+    ;;"u" #'wgrep
+    "u" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+    "U" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
     ";" 'evilnc-comment-or-uncomment-lines
     ;; "l" 'evilnc-comment-or-uncomment-to-the-line
     ;; "l" paredit-mode-map
@@ -178,10 +187,10 @@
     "Eu" 'mu4e-update-mail-and-index
     ;; "t" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
     ;; "T" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
-    "n" 'purpose-load-window-layout
-    "r" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+    ;;"n" 'purpose-load-window-layout ;;deprecated by spacemacs 
+    ;;"r" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
     ;; "R" ctl-x-r-map ;;'ido-choose-from-recentf
-    "R" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+    ;;"R" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
 
 
     ;; window
@@ -201,7 +210,7 @@
     "wj"      'winner-undo
     "wk"      'winner-redo
 
-    "a" 'winexe
+    "aw" 'winexe
     "+" #'evil-numbers/inc-at-pt
     "-" #'evil-numbers/dec-at-pt
     "M" #'pop-to-mark-command ;;'evil-scroll-down
@@ -217,10 +226,11 @@
     "(" #'kmacro-start-macro
     ")" #'kmacro-end-macro
     ;;"x" ctl-x-map ;;projectile-mode-map
-    "x"  #'kmacro-end-and-call-macro
+    "xx"  #'kmacro-end-and-call-macro
+    "xi"  #'string-inflection-all-cycle
     "d" 'dired
     "D" #'toggle-current-window-dedication
-    "k" 'kill-buffer
+    "kb" 'kill-buffer
     ;; projectile -----------------------------------------------------------------
     "p"  (cdar (cddr  (cadr  projectile-mode-map)))
     "pw"  'purpose-load-window-layout
@@ -282,10 +292,10 @@
 
 
 
-#+END_SRC
+   #+END_SRC
 
 ** evil mode line 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (if (eq window-system nil)
       (use-package powerline-evil
         :config
@@ -348,12 +358,12 @@
                       (powerline-render rhs)))))))
     (use-package evil-mode-line))
 
-#+END_SRC
+   #+END_SRC
 
 ** evil default override 
 
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   ;;deprecated;;(evilnc-default-hotkeys)
 
   ;;deprecated;;(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
@@ -459,10 +469,10 @@
 
   (define-key evil-motion-state-map [down-mouse-1] 'mouse-drag-region)
 
-#+END_SRC
+   #+END_SRC
 
 ** kp map
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   ;; kp-map 
   (define-key evil-normal-state-map [kp-0] 'helm-smex)
   (define-key evil-normal-state-map [kp-1] 'select-window-1)
@@ -497,10 +507,10 @@
   (define-key evil-visual-state-map [kp-9] 'paste-from-register-1)
 
 
-#+END_SRC
+   #+END_SRC
 
 ** evil surround
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (use-package evil-surround
     :config
     (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
@@ -511,9 +521,9 @@
     (add-hook 'org-mode-hook 'embrace-org-mode-hook)
     (evil-embrace-enable-evil-surround-integration))
 
-#+END_SRC
+   #+END_SRC
 ** use other window
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (use-package owdriver
     :config
     (owdriver-define-command scroll-up               t)
@@ -536,11 +546,11 @@
       "`<" #'owdriver-do-beginning-of-buffer
       "`>" #'owdriver-do-end-of-buffer))
 
-#+END_SRC
+   #+END_SRC
 
 ** search override                                               :DEPRECATED:
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 ;;;* vim keys -  http://www.tuxfiles.org/linuxhelp/vimcheat.html  
 
 ;; http://stackoverflow.com/questions/11052678/emacs-combine-iseach-forward-and-recenter-top-bottom
@@ -628,11 +638,11 @@
 ;;deprecated;;      (evil-normal-state)
 ;;deprecated;;    ))
 
-#+END_SRC
+   #+END_SRC
 
 ** auto complete
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 ;;; Auto-complete
 (use-package auto-complete
   :config
@@ -665,10 +675,10 @@
       ;; Finish repeation
       (evil-repeat-finish-record-changes)))))
 
-#+END_SRC
+   #+END_SRC
 
 ** evil extra operator
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 ;; https://github.com/redguardtoo/evil-matchit/blob/master/README.org
 (use-package evil-matchit
   :config
@@ -703,11 +713,11 @@
   (global-evil-visualstar-mode t))
 
 
-#+END_SRC
+   #+END_SRC
 
 ** mode specific 
 *** ibuffer
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
  ;; https://github.com/emacsmirror/evil/blob/master/evil-integration.el
  ;; Ibuffer
  (define-key ibuffer-mode-map (kbd  "<SPC>") nil)
@@ -717,10 +727,10 @@
      "j" 'evil-next-line
      "k" 'evil-previous-line
      "RET" 'ibuffer-visit-buffer))
-#+END_SRC
+    #+END_SRC
 *** w related mode 
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (progn
     (add-hook 'wdired-mode-hook #'evil-change-to-initial-state)
     (defadvice wdired-change-to-dired-mode (after evil activate)
@@ -801,11 +811,11 @@
     (evil-declare-key 'motion wgrep-mode-map "x" 'wgrep-abort-changes))
 
 
-#+END_SRC
+    #+END_SRC
 
 *** sexp
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   ;;; https://github.com/laynor/emacs-conf/blob/master/site-lisp/evil-sexp/evil-sexp.el
 
   (defun beginning-and-end-of-sexp ()
@@ -929,9 +939,9 @@
   (evil-define-key 'visual paredit-mode-map "\C-k" 'paredit-kill)
   (evil-define-key 'insert paredit-mode-map "\C-k" 'paredit-kill)
 
-#+END_SRC
+    #+END_SRC
 *** org 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (defun org-show-current-heading-tidily ()
     (interactive)  ;Inteactive
     "Show next entry, keeping other entries closed."
@@ -1082,9 +1092,9 @@
 
 
 
-#+END_SRC
+    #+END_SRC
 *** mu4e
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (use-package evil-mu4e
     :config
     (mapcar 
@@ -1125,10 +1135,10 @@
     (evil-define-key 'normal mu4e-view-mode-map
       "?" mu4e-view-mode-map))
 
-#+END_SRC
+    #+END_SRC
 
 *** dired                                                        :DEPRECATED:
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 ;;  (use-package dired
 ;;    :config
 ;;;;; Dired
@@ -1153,10 +1163,10 @@
 ;;    (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first))
 
 
-#+END_SRC
+    #+END_SRC
 *** key combo
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package key-combo
   :config
   ;;   (global-key-combo-mode t)
@@ -1195,10 +1205,10 @@
       (key-combo-define evil-insert-state-map (kbd "-")  '("-" "_"))))
   )
 
-#+END_SRC
+    #+END_SRC
 *** key guide
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 ;;; guide-key 
 ;; @see https://bitbucket.org/lyro/evil/issue/511/let-certain-minor-modes-key-bindings
 
@@ -1222,10 +1232,10 @@
   (setq which-key-side-window-max-width 0.5)
   )
 
-#+END_SRC
+    #+END_SRC
 
 *** magit
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
 ;; (use-package magit
 ;;   :commands magit-status magit-diff magit-log magit-blame-mode
@@ -1256,10 +1266,10 @@
   :commands
   (magit-status))
 
-#+END_SRC
+    #+END_SRC
 
 *** deprecated
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 ;;deprecated;;(defun gf/narrow-grep-buffer ()
 ;;deprecated;;  "Narrow the grep buffer stripping out the really long grep command."
 ;;deprecated;;  (interactive)
@@ -1274,14 +1284,27 @@
 ;;deprecated;;    (other-window 1)
 ;;deprecated;;    (gf/narrow-grep-buffer)
 ;;deprecated;;    ))
-#+END_SRC
+    #+END_SRC
 
 
 
 
-
+** bind map
+   #+BEGIN_SRC emacs-lisp
+(use-package evil-lisp-state
+  :init
+  (let ((leader ","))
+    (bind-map evil-lisp-state-map
+      :evil-keys (leader)
+      :major-modes (emacs-lisp-mode)
+      :evil-states (normal lisp))
+    (bind-map evil-lisp-state-major-mode-map
+       :evil-keys (leader)
+       :evil-states (normal lisp)
+       :major-modes (emacs-lisp-mode))) )
+   #+END_SRC
 ** evil start
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
  (evil-mode 1)
-#+END_SRC
+   #+END_SRC
