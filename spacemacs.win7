@@ -29,7 +29,7 @@ values."
      ;; auto-completion
      better-defaults
      emacs-lisp
-     ;; git
+     git
      ;; markdown
      org
      ;; (shell :variables
@@ -37,7 +37,7 @@ values."
      ;;        shell-default-position 'bottom)
      ;; spell-checking
      ;; syntax-checking
-     ;; version-control
+     version-control
      ;; (org :variables org-enable-github-support t)
      (python :variables python-test-runner 'pytest)
      )
@@ -246,7 +246,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  (setq  package-user-dir "t:/usr/local/editor/emacsW32/site-lisp/elpa")
+  (setq  package-user-dir "/usr/local/emacs/site-lisp/elpa")
   )
 
 (defun dotspacemacs/user-config ()
@@ -256,8 +256,8 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (defvar emacsw32-home "t:/usr/local/editor/emacsW32/")
-  ;; (defvar emacsw32-home "t:/usr/local/editor/emacsW32/")
+  (defvar emacsw32-home "/usr/local/emacs/")
+  ;; (defvar emacsw32-home "/usr/local/emacs/")
   (let (( default-directory  (file-truename (concat emacsw32-home "/site-lisp/"))))
     (normal-top-level-add-subdirs-to-load-path))
 
@@ -297,7 +297,7 @@ you should place your code here."
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
  '(autofit-frames-flag nil)
  '(better-registers-use-C-r nil)
- '(bmkp-last-as-first-bookmark-file "t:/usr/local/editor/emacsW32/spacemacs/.cache/bookmarks")
+ '(bmkp-last-as-first-bookmark-file "/usr/local/emacs/spacemacs/.cache/bookmarks")
  '(bookmark-version-control t)
  '(browse-url-firefox-program "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")
  '(c-default-style "gnu")
@@ -319,7 +319,7 @@ you should place your code here."
    (quote
     (name old-name general-category decomposition decimal-digit-value)))
  '(desktop-load-locked-desktop t)
- '(diary-file "u:/orgdir/diary")
+ '(diary-file "~/orgdir/diary")
  '(dired-sort-menu-saved-config
    (quote
     ((dired-actual-switches . "-alt")
@@ -394,7 +394,6 @@ you should place your code here."
  '(elpy-rpc-backend nil)
  '(elpy-rpc-ignored-buffer-size 10240)
  '(elpy-rpc-python-command "python3")
- '(epg-gpg-program "t:/usr/local/gpg2/gpg2.exe")
  '(evil-cross-lines t)
  '(evil-emacs-state-modes
    (quote
@@ -529,7 +528,6 @@ you should place your code here."
  '(magit-diff-options (quote ("--ignore-space-at-eol")))
  '(magit-diff-refine-hunk (quote all))
  '(magit-diff-use-overlays nil)
- '(magit-git-executable "e:/msys264/usr/bin/git.exe")
  '(magit-git-global-arguments nil)
  '(magit-git-standard-options nil)
  '(magit-process-connection-type t)
@@ -552,11 +550,11 @@ you should place your code here."
  '(nxml-slash-auto-complete-flag t)
  '(on-screen-global-mode t)
  '(org-M-RET-may-split-line (quote ((default))))
- '(org-agenda-files "u:/orgdir/agenda.txt")
+ '(org-agenda-files "~/orgdir/k3agenda.txt")
  '(org-agenda-include-diary t)
  '(org-agenda-start-with-follow-mode t)
  '(org-attach-screenshot-command-line
-   "t:/usr/local/editor/emacsW32/iview441_x64/i_view64.exe /capture=4 /convert=%f")
+   "/usr/local/emacs/iview441_x64/i_view64.exe /capture=4 /convert=%f")
  '(org-attach-screenshot-relative-links nil)
  '(org-babel-load-languages
    (quote
@@ -584,26 +582,26 @@ TIMESTAMP: %T ")
       "* TODO %a %?
 DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
      ("i" "정 보" entry
-      (file+headline "u:/orgdir/info.org" "정보")
+      (file+headline "~/orgdir/info.org" "정보")
       "* %?
   TIMESTAMP: %T 
 %a
 ")
      ("x" "org-protocol" entry
-      (file "u:/orgdir/web.org")
+      (file "~/orgdir/web.org")
       "* TODO Review %c
 %U
 %i
 " :immediate-finish)
      ("w" "사 업" entry
-      (file+headline "u:/orgdir/info.org" "사업")
+      (file+headline "~/orgdir/info.org" "사업")
       "* %a %? ")
      ("s" "일 정" entry
-      (file+headline "u:/orgdir/info.org" "일정")
+      (file+headline "~/orgdir/info.org" "일정")
       "* %a %? "))))
  '(org-confirm-babel-evaluate nil)
- '(org-default-notes-file "u:/orgdir/notes.org")
- '(org-directory "u:/orgdir/")
+ '(org-default-notes-file "~/orgdir/k3notes.org")
+ '(org-directory "~/orgdir/")
  '(org-ellipsis " »")
  '(org-export-with-section-numbers nil)
  '(org-export-with-smart-quotes t)
@@ -671,7 +669,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
  '(org-latex-pdf-process
    (quote
     ("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f" "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
- '(org-log-done (quote time))
+ '(org-log-done (quote time) t)
  '(org-mu4e-link-desc-func
    (lambda
      (msg)
@@ -710,7 +708,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
      ("shell" . sh)
      ("bash" . sh)
      ("plantuml" . puml))))
- '(org-startup-indented nil)
+ '(org-startup-indented nil t)
  '(org-structure-template-alist
    (quote
     (("s" "#+BEGIN_SRC ?
@@ -767,7 +765,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
     ((sequence "TODO(t!)" "REVIEW(v!)" "STARTED(s!)" "RESOLVED(r!)" "|" "DONE(d!)" "DELEGATED(l!)" "CANCELED(c!)" "PENDING(p!)"))))
  '(package-archives
    (quote
-    (("DELPA" . "t:/usr/local/editor/emacsW32/delpa/")
+    (("DELPA" . "/usr/local/emacs/delpa/")
      ("org" . "http://orgmode.org/elpa/")
      ("ELPA" . "http://tromey.com/elpa/")
      ("gnu" . "http://elpa.gnu.org/packages/")
@@ -775,8 +773,8 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
  '(package-check-signature nil)
  '(package-selected-packages
    (quote
-    (semi jade evil-visual-replace epresent hyperbole helm-unicode puml-mode ws-butler toc-org pytest pyenv-mode py-yapf pip-requirements org-repo-todo org-present org-plus-contrib hy-mode hl-todo help-fns+ gnuplot fill-column-indicator exec-path-from-shell elisp-slime-nav cython-mode auto-compile anaconda-mode pythonic quelpa mwim emamux xah-css-mode vdiff s origami unicode-escape restart-emacs elfeed-goodies wttrin spaceline evil-mu4e crux helm-smex xah-lookup xah-replace-pairs ranger magit-svn datetime datetime-format 0blayout resize-window evil-extra-operator evil-embrace org-fstree dired-quick-sort smart-mark smart-comment evil-lisp-state ob-translate workgroups2 bog logview spinner helm-grepint company-math ox-html5slide persistent-scratch hl-line+ second-sel highline browse-kill-ring window-numbering elfeed-org org-attach-screenshot dired-narrow org-cliplink esup string-edit dom defproject xmlunicode better-defaults better-registers sicp unicode-fonts shut-up epl git commander orgit helm-mu evil-vimish-fold undo-tree zygospore yafolding xah-get-thing world-time-mode winpoint win-switch wikidoc wiki-nav wiki whole-line-or-region wgrep w3 virtualenv vc-fossil uuid unfill tracwiki-mode swoop swbuff sr-speedbar sqlite spray smooth-scroll smart-shift slime-js simpleclip simp shadchen sass-mode ruby-electric repl-toggle regex-tool redo+ recursive-narrow rdp rainbow-delimiters quack pyvirtualenv python-pylint python-pep8 pymacs pydoc-info pycomplete project-explorer phi-search-mc phi-rectangle passthword parse-csv parenface-reversion palimpsest page-break-lines owdriver outlined-elisp-mode outline-magic org-ehtml org-bullets oauth2 nzenburn-theme nrepl-tracing nose mysql2sqlite mwe-log-commands mustang-theme multi moz-controller mode-compile mo-git-blame mark-multiple manage-minor-mode magit-push-remote magit-commit-training-wheels macro-utils macro-math list-processes+ less-css-mode launch key-combo jsshell-bundle json-mode jedi-direx irfc iregister ipython ioccur interaction-log impatient-mode image-dired+ iflipb idomenu http-post-simple hjkl-mode historyf highlight-numbers hideshowvis hide-lines helm-w32-launcher helm-proc helm-helm-commands helm-google helm-github-stars helm-git-files helm-flycheck helm-dired-recent-dirs helm-dictionary helm-css-scss helm-bm helm-bind-key hardhat goto-last-change gitconfig-mode fuzzy fringe-current-line free-keys frame-tag font-utils fold-this fold-dwim-org flymake fic-mode fic-ext-mode fastnav evil-visualstar evil-visual-mark-mode evil-surround evil-paredit evil-org evil-numbers evil-args evil-anzu elnode eldoc-extension el-autoyas eimp ecb dpaste_de download-region dirtree-prosjekt dired-toggle dired-sort-menu+ dired-single dired-imenu dired-details+ dictionary dash-at-point cycbuf csv-mode css-mode colorsarenice-theme color-theme-sanityinc-solarized color-theme-heroku color-theme clippy chess cedit cdnjs busybee-theme bufshow buffer-utils buffer-move bs-ext browse-url-dwim bpe bison-mode bbdb-vcard bbdb-ext back-button awk-it auto-indent-mode auctex-latexmk ascope asciidoc ascii annotate ada-mode ack ace-jump-mode ac-helm abl-mode)))
- '(package-user-dir "t:/usr/local/editor/emacsW32/site-lisp/elpa")
+    (smeargle magit-gitflow helm-gitignore gitignore-mode gitattributes-mode git-messenger git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter semi jade evil-visual-replace epresent hyperbole helm-unicode puml-mode ws-butler toc-org pytest pyenv-mode py-yapf pip-requirements org-repo-todo org-present org-plus-contrib hy-mode hl-todo help-fns+ gnuplot fill-column-indicator exec-path-from-shell elisp-slime-nav cython-mode auto-compile anaconda-mode pythonic quelpa mwim emamux xah-css-mode vdiff s origami unicode-escape restart-emacs elfeed-goodies wttrin spaceline evil-mu4e crux helm-smex xah-lookup xah-replace-pairs ranger magit-svn datetime datetime-format 0blayout resize-window evil-extra-operator evil-embrace org-fstree dired-quick-sort smart-mark smart-comment evil-lisp-state ob-translate workgroups2 bog logview spinner helm-grepint company-math ox-html5slide persistent-scratch hl-line+ second-sel highline browse-kill-ring window-numbering elfeed-org org-attach-screenshot dired-narrow org-cliplink esup string-edit dom defproject xmlunicode better-defaults better-registers sicp unicode-fonts shut-up epl git commander orgit helm-mu evil-vimish-fold undo-tree zygospore yafolding xah-get-thing world-time-mode winpoint win-switch wikidoc wiki-nav wiki whole-line-or-region wgrep w3 virtualenv vc-fossil uuid unfill tracwiki-mode swoop swbuff sr-speedbar sqlite spray smooth-scroll smart-shift slime-js simpleclip simp shadchen sass-mode ruby-electric repl-toggle regex-tool redo+ recursive-narrow rdp rainbow-delimiters quack pyvirtualenv python-pylint python-pep8 pymacs pydoc-info pycomplete project-explorer phi-search-mc phi-rectangle passthword parse-csv parenface-reversion palimpsest page-break-lines owdriver outlined-elisp-mode outline-magic org-ehtml org-bullets oauth2 nzenburn-theme nrepl-tracing nose mysql2sqlite mwe-log-commands mustang-theme multi moz-controller mode-compile mo-git-blame mark-multiple manage-minor-mode magit-push-remote magit-commit-training-wheels macro-utils macro-math list-processes+ less-css-mode launch key-combo jsshell-bundle json-mode jedi-direx irfc iregister ipython ioccur interaction-log impatient-mode image-dired+ iflipb idomenu http-post-simple hjkl-mode historyf highlight-numbers hideshowvis hide-lines helm-w32-launcher helm-proc helm-helm-commands helm-google helm-github-stars helm-git-files helm-flycheck helm-dired-recent-dirs helm-dictionary helm-css-scss helm-bm helm-bind-key hardhat goto-last-change gitconfig-mode fuzzy fringe-current-line free-keys frame-tag font-utils fold-this fold-dwim-org flymake fic-mode fic-ext-mode fastnav evil-visualstar evil-visual-mark-mode evil-surround evil-paredit evil-org evil-numbers evil-args evil-anzu elnode eldoc-extension el-autoyas eimp ecb dpaste_de download-region dirtree-prosjekt dired-toggle dired-sort-menu+ dired-single dired-imenu dired-details+ dictionary dash-at-point cycbuf csv-mode css-mode colorsarenice-theme color-theme-sanityinc-solarized color-theme-heroku color-theme clippy chess cedit cdnjs busybee-theme bufshow buffer-utils buffer-move bs-ext browse-url-dwim bpe bison-mode bbdb-vcard bbdb-ext back-button awk-it auto-indent-mode auctex-latexmk ascope asciidoc ascii annotate ada-mode ack ace-jump-mode ac-helm abl-mode)))
+ '(package-user-dir "/usr/local/emacs/site-lisp/elpa")
  '(page-break-lines-char 8250)
  '(paradox-github-token t)
  '(paste-host "10.239.12.181:8000/dpaste")
@@ -813,7 +811,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
     ("t:/usr/local/guile/bin/winprojcd.exe" "c:/usr" "c:\\icms\\CFCS\\DLPLINK11\\DLPLINK11\\proj\\winproj2005\\Debug\\winproj.exe" ".\\winproj.exe" "MFC_TDL_ISDL_GEN_CTRL" "bigloo" "c:/icms/CFCS/DLPLINK11/DLPLINK11/proj/winproj2005/Debug/winproj.exe" "c:/usr/local/guile/bin/winprojcd.exe" "c:\\ffx\\CFCS\\ICU_KNCCS\\ProjWin\\Debug\\icuknccs_win.exe" "codes" "csi" "csi -hygienic" "gosh" "gsi" "gsi ~~/syntax-case.scm -" "guile" "icuknccs_win.exe" "isdlcd" "isdlcde" "kawa" "mit-scheme" "mred -z" "mzscheme" "mzscheme -M errortrace" "rs" "rs232" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi" "tinyscheme" "win" "winprocd" "winproj.exe" "winprojcd" "winprojcdc" "winrpojcd" "winsigconv" "winsigconv.exe")))
  '(recentf-max-saved-items 1000)
  '(recentf-mode t)
- '(rmh-elfeed-org-files (quote ("u:/orgdir/feed.org")))
+ '(rmh-elfeed-org-files (quote ("~/orgdir/feed.org")))
  '(rtog/mode-repl-alist
    (quote
     ((emacs-lisp-mode . ielm)
@@ -875,8 +873,8 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
  '(savehist-mode t)
  '(scheme-compile-exp-command "%s")
  '(scheme-program-name "winprojcd")
- '(sendmail-program "t:/usr/local/editor/emacsW32/mumailindexer/bin/msmtp.exe")
- '(server-auth-dir "u:/emacs-home/.emacs.d/server/")
+ '(sendmail-program "/usr/local/emacs/mumailindexer/bin/msmtp.exe")
+ '(server-auth-dir "~/emacs-home/.emacs.d/server/")
  '(server-name "server")
  '(setq ecb-tip-of-the-day)
  '(show-paren-mode t nil (paren))

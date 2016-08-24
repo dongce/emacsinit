@@ -656,3 +656,11 @@ Version 2015-04-09"
 
   (define-key minibuffer-local-isearch-map (kbd "<left>") 'isearch-reverse-exit-minibuffer)
   (define-key minibuffer-local-isearch-map (kbd "<right>") 'isearch-forward-exit-minibuffer))
+
+(if (eq window-system nil)
+    (progn 
+      (define-key key-translation-map (kbd "<cancel>") "\C-c")
+      (define-key key-translation-map (kbd "M-O A")  (kbd "C-<up>"))
+      (define-key key-translation-map (kbd "M-O B")  (kbd "C-<down>"))
+      (define-key key-translation-map (kbd "M-O C")  (kbd "C-<right>"))
+      (define-key key-translation-map (kbd "M-O D")  (kbd "C-<left>"))))
