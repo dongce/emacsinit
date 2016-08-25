@@ -256,8 +256,8 @@
     ;;    (c-set-style "stroustrup"))
     ))
 
-
-(add-hook 'c++-mode-hook '(lambda () (gtags-mode 1)))
+(if (and (boundp 'gtags-mode) gtags-mode)
+(add-hook 'c++-mode-hook '(lambda () (gtags-mode 1))))
 (remove-hook 'c++-mode-hook 'semantic-default-c-setup)
 
 (setq gtags-mode-hook '(lambda () (setq gtags-pop-delete t) (setq gtags-path-style 'relative)))
