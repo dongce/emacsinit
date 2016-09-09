@@ -523,3 +523,8 @@
 (icomplete-mode 1)
 #+END_SRC
 
+
+* lentic 
+#+BEGIN_SRC emacs-lisp
+  (use-package lentic-mode)
+#+END_SRC

@@ -295,7 +295,7 @@
    #+END_SRC
 
 ** evil mode line 
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp 
   (if (eq window-system nil)
       (use-package powerline-evil
         :config
