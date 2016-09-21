@@ -3,13 +3,500 @@
 
 * header
 
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
 ;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
-#+END_SRC
+  #+END_SRC
+
+
+* print
+  #+BEGIN_SRC emacs-lisp
+
+(setq ps-lpr-switches '("-query"))
+(setq ps-printer-name t)
+
+;; 헤더가 붙지 않도록 설정한다. 
+(setq ps-print-header nil )
+
+(w32-unix-eval
+ (
+  ;; WIN32 설정 
+  (setq ps-lpr-command "t:/usr/local/postscript/gsview/gsview/gsprint.exe")
+  (setq preview-gs-command "t:/usr/local/postscript/gs910/bin/gswin32c.exe")
+  (require 'w32-winprint)
+  )
+ (
+  ;; 다음을 이용하용 ENSCRIPT 사용 가능
+  ;; 언어에 때라 특정한 옵션 사용가능
+  (defvar *enscript-syntax* 
+    '( (c++-mode . "-Ecpp")
+       (c-mode . "-Ecpp" )
+       (ada-mode . "-Eada" )
+       (sh-mode . "-Ebash" )
+       (diff-mode . "-Ediff" )
+       (emacs-lisp-mode ."-Eelisp" )
+       (idl-mode . "-Eidl")
+       (makefile-mode ."-Emakefile")
+       (python-mode ."-Epython") ) )
+
+  (defun enscript()
+    (interactive)
+    (print 
+     (with-output-to-string
+       (call-process-region 
+        (point-min) 
+        (point-max)
+        "/opt/sfw/bin/enscript"  
+        nil 
+        standard-output
+        nil
+        "-Plplpx"
+        (cdr (assoc major-mode *enscript-syntax* ) ) ) ) )  )
+
+  (defun enscript-region()
+    (interactive)
+    (print 
+     (with-output-to-string
+       (call-process-region 
+        (region-beginning) 
+        (region-end) 
+        "enscript"  
+        nil 
+        standard-output
+        nil
+        "-Plplpx"
+        (cdr (assoc major-mode *enscript-syntax* ) ) ) ) )  )))
+
+;; 한글 프린팅이 가능하다. 
+(require 'ps-print)
+(require 'ps-mule)
+(require 'ps-bdf)
+(require 'ps2pdf)
+
+
+;; latex listings 를 이용합니다. 
+;; http://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+
+;; Supported languages
+;; It supports the following programming languages:
+;; ABAP2,4 	IDL4 	PL/I
+;; ACSL 	inform 	Plasm
+;; Ada4 	Java4 	POV
+;; Algol4 	JVMIS 	Prolog
+;; Ant 	ksh 	Promela
+;; Assembler2,4 	Lisp4 	Python
+;; Awk4 	Logo 	R
+;; bash 	make4 	Reduce
+;; Basic2,4 	Mathematica1,4 	Rexx
+;; C4 	Matlab 	RSL
+;; C++4 	Mercury 	Ruby
+;; Caml4 	MetaPost 	S4
+;; Clean 	Miranda 	SAS
+;; Cobol4 	Mizar 	Scilab
+;; Comal 	ML 	sh
+;; csh 	Modelica3 	SHELXL
+;; Delphi 	Modula-2 	Simula4
+;; Eiffel 	MuPAD 	SQL
+;; Elan 	NASTRAN 	tcl4
+;; erlang 	Oberon-2 	TeX4
+;; Euphoria 	OCL4 	VBScript
+;; Fortran4 	Octave 	Verilog
+;; GCL 	Oz 	VHDL4
+;; Gnuplot 	Pascal4 	VRML
+;; Haskell 	Perl 	XML
+;; HTML 	PHP 	XSLT
+
+
+;; breakindent=0em,
+;; language=XML,
+;; basicstyle=\\footnotesize,
+;; numbers=left,
+;; numberstyle=\\footnotesize,
+;; stepnumber=2,
+;; numbersep=5pt,
+;; backgroundcolor=\\color{white},
+;; showspaces=false,
+;; showstringspaces=false,
+;; showtabs=false,
+;; frame=single,
+;; tabsize=2,
+;; captionpos=b,
+;; escapeinside={\\%*}{*)},
+;; linewidth=\\textwidth
+;; http://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+;; http://www.personal.ceu.hu/tex/docclass.htm
+;; http://stackoverflow.com/questions/1965702/how-to-mark-line-breaking-of-long-lines 
+;; http://en.wikibooks.org/wiki/LaTeX/Page_Layout
+;; http://stackoverflow.com/questions/1116266/listings-in-latex-with-utf-8-or-at-least-german-umlauts kim dong il 
+
+
+;; \documentclass [10pt ,a4paper, oneside]{article}
+
+;; \usepackage{listings}   %per la stampa del codice
+
+;; \newenvironment{C}
+;; {\lstset{language=[ANSI]C++,
+;; basicstyle=\small\ttfamily,
+;; %numbers=left,
+;; showspaces=false,
+;; numberstyle=\tiny,
+;; stepnumber=2,
+;; tabsize=2,
+;; numbersep=5pt,
+;; numberfirstline = false,
+;; framexleftmargin=5mm, frame=shadowbox,
+;; breaklines = true}
+;; }
+;; {}
+
+;; \begin{document}
+
+;; \begin{C}
+;; \begin{lstlisting}
+;; void initIrqVectors(void) {    
+;;    // IVPR = address base used with IVOR's
+;;    asm ("lis r5, IV_ADDR@h");
+;;    for (int i = 0; i < 5 ; i++) { ... }
+;; }
+;; \end{lstlisting}
+;; \end{C}
+;; \end{document}
+
+
+(defcustom lstlngnames 
+  '((python-mode . python)
+                     (c++-mode . c++)
+                     (c-mode . c++)
+                     (sh-mode . sh)
+                     (idl-mode . idl)
+                     (emacs-lisp-mode . lisp)
+                     (lisp-mode . lisp)
+                     (ruby-mode . ruby)
+                     (web-mode . html)
+                     (java-mode . java)
+                     )
+  "latex listings 언어 목록" 
+  )
+
+
+(defmacro listing-template (fontsize &rest forms)
+  `(progn
+      ;; http://en.wikibooks.org/wiki/LaTeX/Page_Layout
+      ;; (insert-line "\\documentclass[a4paper, landscape, 11pt]{article}")
+      ;; http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
+     ;; http://tex.stackexchange.com/questions/33685/set-the-font-family-for-lstlisting
+  (insert-line (format "\\documentclass[a4paper, %dpt]{extarticle}" (if (member ,fontsize '(8 9 10 11 12 14 17 20)) ,fontsize 10 )))
+  (insert-line "\\usepackage{extsizes}") ;http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
+  (insert-line "\\usepackage[utf8]{inputenc}")
+  (insert-line "\\usepackage{fullpage}")
+  (insert-line "\\usepackage{courier}")
+  (insert-line "\\usepackage{listings}")
+  (insert-line "\\usepackage{color}")
+  (insert-line "\\usepackage{MnSymbol}")
+  (insert-line "\\usepackage[hangul]{kotex}")
+  ;; http://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+  ;; http://stackoverflow.com/questions/981020/how-to-force-line-wrapping-in-listings-package
+  (insert  "\\lstset{
+%inputencoding=utf8
+%showspaces=false,
+showstringspaces=false,
+extendedchars=\\true,
+breaklines=true,
+breakatwhitespace=true,
+breakautoindent=false,
+basicstyle=\\footnotesize\\ttfamily,
+}
+")
+  ;; http://stackoverflow.com/questions/1965702/how-to-mark-line-breaking-of-long-lines
+  (insert "
+\\lstset{prebreak=\\raisebox{0ex}[0ex][0ex]
+        {\\ensuremath{\\rhookswarrow}}}
+\\lstset{postbreak=\\raisebox{0ex}[0ex][0ex]
+        {\\ensuremath{\\rcurvearrowse\\space}}}\n" )
+  (mapcar #'insert-line '("\\usepackage {fancyhdr}" "\\pagestyle{fancy}")) 
+
+
+  ,@forms
+))
+
+(defmacro verbatim-template (fontsize &rest forms)
+  `(progn
+  (insert-line (format "\\documentclass[a4paper, %dpt]{extarticle}" (if (member ,fontsize '(8 9 10 11 12 14 17 20)) ,fontsize 10 )))
+  (insert-line "\\usepackage{extsizes}") ;http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
+  (insert-line "\\usepackage[utf8]{inputenc}")
+  (insert-line "\\usepackage{fullpage}")
+  (insert-line "\\usepackage{courier}")
+  (insert-line "\\usepackage{lmodern}")
+  (insert-line "\\usepackage{spverbatim}")
+  (insert-line "\\usepackage{listings}")
+  (insert-line "\\usepackage{color}")
+  (insert-line "\\usepackage{MnSymbol}")
+  (insert-line "\\usepackage[hangul]{kotex}")
+  (mapcar #'insert-line '("\\usepackage {fancyhdr}" "\\pagestyle{fancy}")) 
+  ,@forms))
+
+(defun listings (&optional  fontsize)
+  (interactive "p")
+  (save-some-buffers)
+  (let* ((fname (file-truename  (make-temp-file "listings")))
+         (lexical-binding t)
+         (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
+         (inputlisting (format  "\\lstinputlisting[language=%s]{%s}" language (buffer-file-name)))
+         (filename  (buffer-file-name))
+         (jobname (file-name-base filename))
+         )
+    (with-temp-file fname
+      (listing-template 
+       fontsize 
+       (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
+
+       (insert-line "\\begin{document}")
+       (insert-line "\\newline")
+       (insert-line "\\newline")
+       (insert-line "\\newline")
+       (insert-line inputlisting)
+       (insert-line "\\end{document}")
+
+       ))
+
+    ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-no-file-line-error" "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
+    (async-start-process "pdflatex" "pdflatexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)  
+    )) 
+
+
+
+(defun listing-region (b e &optional  fontsize)
+  (interactive "r\np")
+  (save-some-buffers)
+  (let* ((fname (file-truename  (make-temp-file "listings")))
+         (lexical-binding t)
+         (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
+         (bufstring (buffer-substring b e ))
+         (filename  (buffer-file-name))
+         (jobname (file-name-base filename))
+         )
+    (with-temp-file fname
+      (set-buffer-file-coding-system 'utf-8) 
+      (listing-template 
+       fontsize 
+       (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
+       ;; (insert-line "\\lstset{language=}")
+       (insert-line "\\begin{document}")
+       (insert-line "\\newline")
+       (insert-line "\\begin{lstlisting}"  )
+       (insert bufstring)
+       (insert-line "\\end{lstlisting}")
+       (insert-line "\\end{document}")))
+
+    ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
+    (async-start-process "pdflatex" "pdflatexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)  
+))
+
+
+
+
+(defun verbatim-region (b e &optional  fontsize)
+  (interactive "r\np")
+  (save-some-buffers)
+  (let* ((fname (file-truename  (make-temp-file "verbatim")))
+         (lexical-binding t)
+         (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
+         (bufstring (buffer-substring b e ))
+         (filename  (buffer-file-name))
+         (jobname (file-name-base filename))
+         )
+    (with-temp-file fname
+      (set-buffer-file-coding-system 'utf-8) 
+      (verbatim-template 
+       fontsize 
+       (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
+
+       (insert-line "\\begin{document}")
+       (insert-line "\\newline")
+       (insert-line "\\begin{spverbatim}" )
+       (insert bufstring)
+       (insert-line "\\end{spverbatim}")
+       (insert-line "\\end{document}")))
+
+    ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
+    (async-start-process "pdflatex" "pdflatexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)  
+))
+(defmacro pytex-template (fontsize &rest forms)
+  `(progn
+  (insert-line (format "\\documentclass[a4paper, %dpt]{extarticle}" (if (member ,fontsize '(8 9 10 11 12 14 17 20)) ,fontsize 10 )))
+  (insert-line "\\usepackage{extsizes}") ;http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
+  (insert-line "\\usepackage[margin=2cm]{geometry}")
+  (insert-line "\\usepackage{courier}")
+  (insert-line "\\usepackage{kotex}")
+  (mapcar #'insert-line '("\\usepackage {fancyhdr}" "\\pagestyle{fancy}")) 
+  (insert "
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage{pythontex}
+")
+
+
+  ,@forms
+))
+
+(defun pytex-region (b e &optional  fontsize)
+  (interactive "r\np")
+  (save-some-buffers)
+  (let* ((fname (file-truename  (make-temp-file "pytex")))
+         (lexical-binding t)
+         (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
+         (bufstring (buffer-substring b e ))
+         (filename  (buffer-file-name))
+         (jobname (file-name-base filename))
+         )
+    (with-temp-file fname
+      (set-buffer-file-coding-system 'utf-8) 
+      (pytex-template 
+       fontsize 
+       (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
+
+       (insert-line "\\begin{document}")
+       (insert-line (format  "\\begin{pygments}{%s}" language))
+       (insert-line bufstring)
+       (insert-line "\\end{pygments}")
+       (insert-line "\\end{document}")))
+
+    ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
+    (async-start-process "pytex" "pytexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)  
+))
+
+  #+END_SRC
+* external
+  #+BEGIN_SRC emacs-lisp
+(use-package calc-ext)
+(use-package sqlite
+  :config
+  (setq  sqlite-program "t:/usr/local/sqlite/sqlite3.exe"))
+
+
+;;; http://www.mikusa.com/python-mysql-docs/index.html
+;;; pymacs 등을 이용하여 emacs -> sql 이 가능하다. 
+
+
+
+(require 'cmuscheme )
+(defun socket-scheme ()
+  "Run an inferior Scheme process, input and output via buffer `*scheme*'.
+If there is a process already running in `*scheme*', switch to that buffer.
+With argument, allows you to edit the command line (default is value
+of `scheme-program-name').
+If the file `~/.emacs_SCHEMENAME' or `~/.emacs.d/init_SCHEMENAME.scm' exists,
+it is given as initial input.
+Note that this may lose due to a timing error if the Scheme processor
+discards input when it starts up.
+Runs the hook `inferior-scheme-mode-hook' \(after the `comint-mode-hook'
+is run).
+\(Type \\[describe-mode] in the process buffer for a list of commands.)"
+
+  (interactive )
+  (if (not (comint-check-proc "*scheme*"))
+      (progn (set-buffer (make-comint "scheme" (cons "localhost" 7979 )))
+             (inferior-scheme-mode)))
+  (setq scheme-buffer "*scheme*")
+  (pop-to-buffer "*scheme*"))
+
+
+;;한글을 사용하는데 어려움이 전혀 없음을 알 수 있다. 
+
+;; package auto load next line 
+;;(require 'slime)
+;;(slime-setup)
+
+;;; SMILE 설정
+;;(setq inferior-lisp-program "clisp")
+(setq slime-multiprocessing t )
+(setq inferior-lisp-program "c:\\usr\\local\\lisp\\allegro\\mlisp.exe")
+(setq *slime-lisp* "c:\\usr\\local\\lisp\\allegro\\mlisp.exe")
+(setq *slime-port* 4006 )
+(defun aslime ()
+  (print "Allegro slime...")
+  (interactive)
+  (shell-command
+   (format 
+    "%s +B +cm -L %s\\slime.lisp -- -p %s --ef %s &"
+    *slime-lisp*
+    (getenv "HOME")
+    *slime-port*
+    slime-net-coding-system))
+  (delete-other-windows)
+  (while (not (ignore-errors ( slime-connect "localhost" *slime-port*)))
+    (sleep-for 0.2 )))
+
+;;(require 'dedicated) 
+;; (require 'quack)
+
+;;(require 'comint-popup)  
+;;(setq comint-popup-idle-threshold -1)
+;; (add-hook 'comint-mode-hook (lambda () (dedicated-mode )))
+;;(add-hook 'comint-output-filter-functions 'comint-popup-buffer)
+
+(require 'telnet)
+
+(defun start-telnet (host)
+  "Open a network login connection to host named HOST (a string).
+   Communication with HOST is recorded in a buffer `*termx*'.
+   Normally input is edited in Emacs and sent a line at a time."
+  (interactive "sOpen telnet connection to host: ")
+  (let* ((comint-delimiter-argument-list '(?\  ?\t))
+         (name "termx")
+         (buffer (get-buffer "*termx*"))
+         process)
+    (setq telnet-new-line (char-to-string 13))
+
+    (if (and buffer (get-buffer-process buffer))
+        (pop-to-buffer buffer)
+      (pop-to-buffer (make-comint name "c:\\usr\\local\\guile\\bin\\plink.exe" nil "-telnet" host))
+      (setq process (get-buffer-process (current-buffer)))
+      (set-process-filter process 'telnet-initial-filter)
+      (accept-process-output process)
+      (telnet-mode)
+      (setq comint-input-sender 'telnet-simple-send)
+      (setq telnet-count telnet-initial-count))))
+
+(defun start-rs232 (host)
+  "Open a network login connection to host named HOST (a string).
+   Communication with HOST is recorded in a buffer `*termx*'.
+   Normally input is edited in Emacs and sent a line at a time."
+  (interactive "sOpen telnet connection to host: ")
+  (let* ((comint-delimiter-argument-list '(?\  ?\t))
+         (buffer (get-buffer "*rs232-term*"))
+         process)
+    (setq telnet-new-line (char-to-string 13))
+
+    (if (and buffer (get-buffer-process buffer))
+        (pop-to-buffer buffer)
+      (pop-to-buffer (make-comint "rs232-term" "c:\\usr\\local\\guile\\bin\\plink.exe" nil "-load" host))
+      (setq process (get-buffer-process (current-buffer)))
+      ;;(set-process-filter process 'telnet-initial-filter)
+      (telnet-mode)
+      (setq comint-input-sender 'telnet-simple-send)
+      ;;(setq telnet-count telnet-initial-count)
+      )))
+
+
+
+(defun num-list (start end  )
+  (interactive)
+  (let ((result '()))
+    (while 
+        (not (= start end ))
+      (setq result (cons start result))
+      (setq start (+ start 1 )))
+    (reverse result)))
+
+
+(setf comint-input-sender-no-newline t )
+
+  #+END_SRC
+
 * encrypt
 
 
-#+BEGIN_SRC 
+  #+BEGIN_SRC 
 
 ;;암호화 기능을 사용할 수 있습니다. 
 (require 'epg-config)
@@ -150,10 +637,10 @@
   )
 
 
-#+END_SRC
+  #+END_SRC
 
 * personal
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
 (defun tjcode (code1 code2 securitycard )
   (let ((table (eval (read (epg-decrypt-file (epg-make-context) securitycard nil)))))
     (message "코드: %d %d"  (car (cadr (assoc code1 table))) (cadr (cadr (assoc code2 table))))
@@ -266,10 +753,10 @@
   (setq secret-password-file (fullpath "secrets.gpg"))
   (secret-load-keys))
 
-#+END_SRC
+  #+END_SRC
 
 * SCM
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; SVN 관련
@@ -449,10 +936,10 @@ The value of DEFAULT is inserted into PROMPT."
     (interactive)
     (git-timemachine--start #'my-git-timemachine-show-selected-revision)))
 
-#+END_SRC
+  #+END_SRC
 
 * compile
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
 
 
 ;; compile 확장 버젼
@@ -694,11 +1181,11 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
   (setenv "PATH"           "$WIND_BASE\\host\\$WIND_HOST_TYPE\\bin;$PATH" t )
   (setenv "DIABLIB"        "$WIND_BASE\\host\\diab"                       t )
   (setenv "PATH"           "$DIABLIB\\WIN32\\bin;$PATH"                   t ))
-#+END_SRC
+  #+END_SRC
 
 * search
 
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
 
 (defun link11-grep (word &optional case-senstive )
   "현제커서 위치의 단어를 검색한다."
@@ -1039,13 +1526,13 @@ See also `multi-occur'."
      ;; Use � as a placeholder in the query URL.
      "http://en.cppreference.com/mwiki/index.php?search=�"
      xah-lookup-browser-function)))
-#+END_SRC
+  #+END_SRC
 
 * edit
 
 ** unify region
 
- #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
  (defun uniq-region ()
    "remove duplicate adjacent lines in the given region"
    (interactive)
@@ -1106,10 +1593,10 @@ See also `multi-occur'."
             (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
         (replace-match "\\1\n\\2")))))
 
- #+END_SRC
+   #+END_SRC
 
 ** eol marker 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 ;; Useful function:
 ;; convert dos (^M) end of line to unix end of line
 ;; DOS CR-LF
@@ -1131,12 +1618,12 @@ See also `multi-occur'."
   (goto-char (point-min))
   (while (search-forward-regexp "$" nil t)
     (replace-match "")))
-#+END_SRC
+   #+END_SRC
 
 ** register
 
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 ;; REGISTER 관련 
 (defun copy-to-register-1 ()
   "Copy current line or text selection to register 1.
@@ -1162,14 +1649,14 @@ See also: `copy-to-register-1', `insert-register'."
   (interactive)
   (save-excursion  (yank))
   (insert-register ?a))
-#+END_SRC
+   #+END_SRC
 
-#+RESULTS:
-: insert-a
+   #+RESULTS:
+   : insert-a
 
 ** kill advice 
 
-#+BEGIN_SRC emacs-lisp :tangle no
+   #+BEGIN_SRC emacs-lisp :tangle no
 
 (defadvice kill-ring-save (before slick-copy activate compile)
   "When called interactively with no active region, copy the current line."
@@ -1186,11 +1673,11 @@ See also: `copy-to-register-1', `insert-register'."
    (if mark-active
        (list (region-beginning) (region-end))
      (list (line-beginning-position) (line-beginning-position 2)) ) ) )
-#+END_SRC
+   #+END_SRC
 
 ** java script indent 
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 ;;deprecated;; ;;; javascript indent 
 ;;deprecated;; (defun my-js2-indent-function ()
 ;;deprecated;;   (interactive)
@@ -1268,10 +1755,10 @@ See also: `copy-to-register-1', `insert-register'."
 ;;deprecated;;   (message "My JS2 hook"))
 ;;deprecated;; 
 ;;deprecated;; (add-hook 'js2-mode-hook 'my-js2-mode-hook)
-#+END_SRC
+   #+END_SRC
 
 ** rectangle
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 ;; 오른쪽에 일괄적으로 주석달 때 사용한다. 
 (require 'rect)
 (defun string-right (beg end str)                                             
@@ -1306,11 +1793,11 @@ See also: `copy-to-register-1', `insert-register'."
           (forward-line 1))))))
 
 (define-key ctl-x-r-map "h" 'string-right)
-#+END_SRC
+   #+END_SRC
 
 ** align
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (defun set-middle-m (start end &optional s)
   (interactive "r\ns구분자 : ")
   (save-excursion
@@ -1357,11 +1844,11 @@ See also: `copy-to-register-1', `insert-register'."
 
 (global-set-key (kbd "C-=") 'set-middle)
 
-#+END_SRC
+   #+END_SRC
 
 ** insert 
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 
 ;; 날짜 삽입가능 
 (defun insert-date ( )
@@ -1394,11 +1881,11 @@ See also: `copy-to-register-1', `insert-register'."
   (widen)
   )
 
-#+END_SRC
+   #+END_SRC
 
 ** at point operation
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 ;; https://gist.github.com/Wilfred/4715345
 
 (defun dwim-at-point ()
@@ -1440,10 +1927,10 @@ to the symbol at point."
          (from-string (first from-with-to))
          (to-string (second from-with-to)))
     (perform-replace from-string to-string nil nil nil)))
-#+END_SRC
+   #+END_SRC
 
 ** copy
-#+BEGIN_SRC emacs-lisp 
+   #+BEGIN_SRC emacs-lisp 
 (defun copy-rectangle-to-clipboard (p1 p2)
   "Copy region as column (rectangle) to operating system's clipboard.
 This command will also put the text in register 0. (see: `copy-to-register')"
@@ -1455,11 +1942,11 @@ This command will also put the text in register 0. (see: `copy-to-register')"
        (insert-register ?0)
        (buffer-string) ))))
 
-#+END_SRC
+   #+END_SRC
 
 ** change
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 
 (defun upcase-symbol (syms)
   (interactive)
@@ -1563,11 +2050,11 @@ or a marker."
   (replace-regexp " *\\([0-9a-zA-Z_]+\\) * \\([=!]\\)= *\\([0-9a-zA-Z_]+\\) *" "\\3 \\2=\\1" nil beg end ))
 
 
-#+END_SRC
+   #+END_SRC
 
 ** tab setting
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 
 ;;;
 ;;;
@@ -1579,11 +2066,11 @@ or a marker."
 ;; 탭을 공백으로 만들 수 있다. 
 (setq-default indent-tabs-mode nil )
 (setq-default tab-width 2 )
-#+END_SRC
+   #+END_SRC
 
 ** read only function
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (defun make-buffer-readonly () (read-only-mode 1 ))
 
 (defun global-read-only ( &optional v)
@@ -1596,10 +2083,10 @@ or a marker."
     (remove-hook 'find-file-hook #'make-buffer-readonly)))
 
 
-#+END_SRC
+   #+END_SRC
 
 ** SDD
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 
 ;;SDD;;(defun ib () (interactive)  (insert "default : break; "))
 ;;SDD;;(defun sdd () (interactive) (insert ( format "//@@@ " )) (kill-new "//@@@\n"))
@@ -1671,11 +2158,11 @@ or a marker."
 " ""))
 
 
-#+END_SRC
+   #+END_SRC
 
 ** move , selection, hide
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (defun backward-symbol (arg)
     (interactive "p")
     (forward-symbol (* -1 arg )))
@@ -1702,21 +2189,21 @@ or a marker."
   (use-package hide-region+
     :commands hide-region-hide hide-region-unhide)
 
-#+END_SRC
+   #+END_SRC
 
 ** auto complete
 
-#+BEGIN_SRC emacs-lisp :tangle no
+   #+BEGIN_SRC emacs-lisp :tangle no
 ;;; _ AUTO COMPLETE 
 (use-package auto-complete
 :config
 (define-key ac-completing-map (kbd "C-j") 'ac-next)
 (define-key ac-completing-map (kbd "C-p") 'ac-previous)
 (define-key ac-completing-map (kbd "C-o") 'ac-expand))
-#+END_SRC
+   #+END_SRC
 
 ** file change
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 
 (defun byte-compile-current-buffer ()
   "`byte-compile' current buffer if it's emacs-lisp-mode and compiled file exists."
@@ -1728,10 +2215,10 @@ or a marker."
 ;;;_ REVERT BUFFER http://www.emacswiki.org/emacs/RevertBuffer
 (global-auto-revert-mode 1)
 
-#+END_SRC
+   #+END_SRC
 
 ** kill/copy dwim                                                :DEPRECATED:
-#+BEGIN_SRC emacs-lisp 
+   #+BEGIN_SRC emacs-lisp 
 ;;;
 ;;;
 ;;; ※ 유용한 함수 정의
@@ -1748,14 +2235,14 @@ or a marker."
   (if mark-active (kill-ring-region beg end) (copy-line)))
 
 (global-set-key [remap kill-region] 'kill-region-dwim)
-#+END_SRC
+   #+END_SRC
 
-#+RESULTS:
-: kill-region-dwim
+   #+RESULTS:
+   : kill-region-dwim
 
 ** block operation                                               :DEPRECATED:
 
-#+BEGIN_SRC emacs-lisp :tangle no
+   #+BEGIN_SRC emacs-lisp :tangle no
   (use-package mark-more-like-this
     :config
     (global-set-key (kbd "C-<") 'mark-previous-like-this)
@@ -1769,10 +2256,10 @@ or a marker."
      (require 'rename-sgml-tag)
      (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
 
-#+END_SRC
+   #+END_SRC
 
 ** not work                                                      :DEPRECATED:
-#+BEGIN_SRC emacs-lisp :tangle no
+   #+BEGIN_SRC emacs-lisp :tangle no
 (defun w32-fontified-region-to-clipboard (START END)
   "Htmlizes region, saves it as a html file, scripts Microsoft Word to
 open in the background and to copy all text to the clipboard, then
@@ -1827,9 +2314,9 @@ be pasted into a RTF-enabled application.
           (substitute ?\\ ?/ script-file-name))
     (w32-shell-execute nil "wscript.exe" 
                        script-file-name)))
-#+END_SRC
+   #+END_SRC
 ** line operation                                                :DEPRECATED:
-#+BEGIN_SRC emacs-lisp :tangle no
+   #+BEGIN_SRC emacs-lisp :tangle no
 ;;; Take the line from the cursor and move it up a line.
 (defun move-line-up ()
   (interactive)
@@ -1885,12 +2372,948 @@ be pasted into a RTF-enabled application.
 (define-key global-map (kbd "s-i") 'move-line-up)      ;;; A line killing function vaguely similar to vim's dd.
 (define-key global-map (kbd "s-k") 'pg-kill-this-line) 
 (define-key global-map (kbd "s-o") 'pg-duplicate-this-line) 
-#+END_SRC
+   #+END_SRC
 
 
 
 
 
 
-#+RESULTS:
-: crux
+   #+RESULTS:
+   : crux
+
+
+* coding standard
+** header
+   #+BEGIN_SRC emacs-lisp
+
+ ;; 삼성탈래스 코딩 스탠다드
+
+ (defun ins-body-header()
+   (interactive)
+   (insert "/////////////////////////////////////////////////////////////////\n")
+   (insert "// Subsystem   :\n" )
+   (insert "// Class       :\n")
+   (insert (format "// File        : %s\n" (buffer-name)))
+   (insert "// Description :\n")
+   (insert "// See Also    : \n")
+   (insert "// Author      : 김동일\n")
+   (insert "// Dept.       : 시스템팀\n")
+   (insert (format "// Created     : %s\n" (date-string))) 
+   (insert "// Version     :\n")
+   (insert "// Revision history :\n")
+   (insert "// date revised by revised information:\n")
+   (insert "// ========== ============ =========================\n")
+   (insert "// 2001/12/26\n")
+   (insert "///////////////////////////////////////////////////////////////////////\n"))
+
+
+ (defun ins-inc-header()
+   (interactive)
+   ( insert "/////////////////////////////////////////////////////////////////\n")
+   ( insert "// Subsystem    : \n")
+   ( insert "// Class        : \n")
+   ( insert (format "// File         : %s\n" (buffer-name)))
+   ( insert "// Description  : \n")
+   ( insert "// See Also     : \n")
+   ( insert "// Author       : 김동일\n")
+   ( insert "// Dept.        : 시스템팀\n")
+   ( insert (format "// Created      : %s\n" (date-string)))
+   ( insert "// Version :\n")
+   ( insert "// Revision history : \n")
+   ( insert "// date revised by revised information:\n")
+   ( insert "// ========== ============ =========================\n")
+   ( insert "// 2001/12/26\n")
+   ( insert "///////////////////////////////////////////////////////////////////////\n") )
+
+ (defun ins-fun-header()
+   (interactive)
+   (insert "//////////////////////////////////////////////////////////////////////\n")
+   (insert "// Operation       : \n")
+   (insert "// Description     : \n")
+   (insert "// Pre-conditions  : \n")
+   (insert "// Post-conditions : \n")
+   (insert "// Exceptions      : \n")
+   (insert "//////////////////////////////////////////////////////////////////////\n"))
+
+ 
+
+
+
+
+ ;; ※ Scope Tags
+ ;; 인포파일로 확인 할 수 있다. 
+ ;; +--------------+------------------------------+
+ ;; |Scope Tags    |Description                   |
+ ;; |              |                              |
+ ;; +--------------+------------------------------+
+ ;; |g             |Global Scope                  |
+ ;; +--------------+------------------------------+
+ ;; |gs            |gs Global Static Scope        |
+ ;; +--------------+------------------------------+
+ ;; |ls            |Local Static Scope            |
+ ;; +--------------+------------------------------+
+ ;; |z or null     |Auto(Local) Scope ( optional )|
+ ;; |              |                              |
+ ;; |              |                              |
+ ;; +--------------+------------------------------+
+ ;; 
+ ;; ※ Return Type Tags
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |category data|normal      |unsigned                    |prointer      |
+ ;; |types        |            |                            |              |
+ ;; |             |            |                            |              |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |    void     |     v      |             -              |     vp       |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |    int      |     i      |             ui             |     ip       |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |    handle   |     h      |             -              |     hp       |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |    long     |     l      |             ul             |     lp       |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |    float    |     f      |             uf             |     fp       |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |    double   |     d      |             ud             |     dp       |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |    char     |     c      |             uc             |    cp,cpp    |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |    boolean  |     b      |             -              |      n       |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |             |  sz : NULL terminated char string       |              |
+ ;; | char string |                                         |              |
+ ;; |             +-----------------------------------------+--------------+
+ ;; |             |  s : None NULL terminated char string   |              |
+ ;; |             |                                         |              |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |    struct   |     st     |              -             |      stp     |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |    union    |     un     |              -             |      unp     |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; |    Object   |    obj     |              -             |      objp    |
+ ;; +-------------+------------+----------------------------+--------------+
+ ;; 
+ ;; ※ Access Level Control
+ ;; 
+ ;; +-------------+---------------+
+ ;; |access level |               |
+ ;; |tags         |description    |
+ ;; |             |               |
+ ;; +-------------+---------------+
+ ;; |     b       |   public      |
+ ;; +-------------+---------------+
+ ;; |     t       |   protected   |
+ ;; +-------------+---------------+
+ ;; |     p       |   private     |
+ ;; +-------------+---------------+
+ ;; 
+ ;; ※ Class Naming Convention
+ ;; 
+ ;; - Naming Convention : <Class Name>[Expt] 
+ ;; - 위에서 정의한 Class Name은 Default이며, '[Expt]'부분은 Optional
+ ;;   부분으로서 만일 해당Class가 ExceptionClass인경우 Class Name 다음에"
+ ;;   Expt"라고 명시한다.
+ ;; - Class name의 첫글자는 대문자로한다.
+ ;; - 여러word로 구성된 ClassName은 각word의 첫글자를 대문자로 나머지는소문자로
+ ;;   정의한다.
+ ;; - underscore("_")를사용하지않는다.
+ ;; - Class name이 약자인 경우에는 모두 대문자로 한다.
+ ;; 
+ ;; ※ Struct Naming Convention
+ ;; 
+ ;; 
+ ;; - Naming Convention : tag<Struct Name>
+ ;; - Struct Name의 첫 글자는 대문자로 한다.
+ ;; - 여러 word로 구성된 Struct Name은 각 word의 첫 글자는 대문자로 나머지는 소문자로
+ ;;   정의한다.
+ ;; - underscore("_")를 사용하지 않는다.
+ ;; - Struct Name이 약자인 경우에는 모두 대문자로 한다.
+ ;; 
+ ;; examples) :
+ ;; struct tagCustomer
+ ;; struct tagOderItem
+ ;; struct tagATV
+ ;; 
+ ;; ※ Non-Class Member Function
+ ;; 
+ ;; 
+ ;; - Naming Convention
+ ;; 
+ ;;   : f_<Return Type Tags><[Debug|Get|Set|Flag|Fact]Funtion Name>
+ ;; 
+ ;; - Debug 관련 Function인 경우 : "Debug"라고 명시한다.
+ ;; - Get 관련된 Function인 경우 : "Get"라고 명시한다.
+ ;; - Set 관련된 Function인 경우 : "Set"라고 명시한다.
+ ;; - Boolean return type의 Function인 경우 : "Flag"라고 명시한다.
+ ;; - Factory 관련 Function인 경우 : "Fact"라고 명시한다.
+ ;; 
+ ;; Example :
+ ;; f_iGetState(); // int Non-Class Member Function for Get
+ ;; f_iSetState(); // int Non-Class Member Function for Set
+ ;; f_iDebugState(); // int Non-Class Member Function for Debug
+ ;; f_iFactCpuWidget(); // int Non-Class Member Function for Factory
+ ;; f_bFlagCpuAlarm(); // boolean Non-Class Member Function
+ ;; 
+ ;; ※ Class Member Function
+ ;; 
+ ;; 
+ ;; - Naming Convention
+ ;; 
+ ;;   : m_<Return Type Tags><[Debug|Get|Set|Flag|Fact]Funtion Name>
+ ;; 
+ ;; - Debug 관련 Function인 경우 : "Debug"라고 명시한다.
+ ;; - Get 관련된 Function인 경우 : "Get"라고 명시한다.
+ ;; - Set 관련된 Function인 경우 : "Set"라고 명시한다.
+ ;; - Boolean return type의 Function인 경우 : "Flag"라고 명시한다.
+ ;; - Factory 관련 Function인 경우 : "Fact"라고 명시한다.
+ ;; 
+ ;; Example :
+ ;; 
+ ;; class NcCPU {
+ ;; public :
+ ;;     m_iGetState(); // int Class Member Function for Get
+ ;;     m_iSetState(); // int Class Member Function for Set
+ ;;     m_iDebugState(); // int Class Member Function for Debug
+ ;;     m_iFactCpuWidget(); // int Class Member Function for Factory
+ ;;     m_bFlagCpuAlarm(); // boolean Class Member Function
+ ;; };
+ ;; 
+ ;; 
+ ;; ※ Non-Class Data Members
+ ;; 
+ ;; - Naming Convention : <Scope Tags>_[k]<Data Type Tags><Data Member Name>
+ ;; - 2 단어 이상으로 구성되어 있는 것은 각 word의 첫 글자를 대문자로 하고 나머지는
+ ;;    소문자로 구성한다.
+ ;; - 만약 Constant인 경우는 "k"라고 명시한다.
+ ;; 
+ ;; 
+ ;; Example :
+ ;; 
+ ;; int g_iCpuState; // global int Non-Class Data Member
+ ;; static int gs_iCpuState; // global static int Non-Class Data Member
+ ;; function() {
+ ;;     int z_iCpuState;// local int
+ ;;     int iCpuValue; // local int
+ ;;     const int kiCpuNo = 2; // constant int
+ ;; }
+ ;; 
+ ;; ※ Class Data Members
+ ;; 
+ ;; - Naming Convention
+ ;; 
+ ;;     : <Access Level Control Tags>_<Data Type Tags><Data Member Name>
+ ;; 
+ ;; - 2 단어 이상으로 구성되어 있는 것은 각 word의 첫 글자를 대문자로 하고 나머지는
+ ;;   소문자로 구성한다.
+ ;; 
+ ;; 
+ ;; Example :
+ ;; 
+ ;; classNcCpuState : public NcKernelState {
+ ;; public :
+ ;;     int b_iGetState; // public acccess level & int
+ ;; protected :
+ ;;     int t_iGetState; // protected access level & int
+ ;; private :
+ ;;     int p_iGetState; // private access level & int
+ ;; }
+ ;; 
+ ;; ※ Object Variables
+ ;; 
+ ;; - Naming Convention : <Scope Tags>_<obj><Class Name>[Expt]
+ ;; - 2 단어 이상으로 구성되어 있는 것은 각 word의 첫 글자를 대문자로 하고 나머지는
+ ;;   소문자로 구성한다.
+ ;; - Exception Class인 경우는 "Expt"라고 명시한다.
+ ;; 
+ ;; 
+ ;; 
+ ;; 
+ ;; Example :
+ ;; 
+ ;; WidgetClass g_objWidgetClass;
+ ;; NcNmsExpt g_objNcNmsExpt;
+ ;; 
+ ;; function() {
+ ;;     NcCpu z_objNcCpu("RISC","CISC");
+ ;; }
+ ;; 
+ ;; ※ Type Defined Structure, Enum Type Definition, Object Variables, Top
+ ;; 
+ ;; - Naming Convention : new<Struct Name>
+ ;; ※ Enum Type Definition,  , Type Defined Structure, Top
+ ;; 
+ ;; - Type Naming Convention : en<enum name>
+ ;; - Element Naming Convention : E_<element name>
+ ;; - enum name : 각 word를 모두 대문자로 구성한다.
+ ;; - element name : 각 word를 모두 대문자로 구성하고 "_"로 연결한다.
+ ;; 
+ ;; Example :
+ ;; 
+ ;; enum enSYSTEM_ERROR
+ ;; {
+ ;;     E_FILE_NOT_FOUND = 0,
+ ;;     E_FILE_OPEN_ERROR = 1
+ ;; } ;
+
+   #+END_SRC
+** comment
+   #+BEGIN_SRC emacs-lisp
+   
+;;(require 'edom)
+
+(defun find-prototype-region ()
+  (interactive)
+  (re-search-forward "#include")
+  (while (not (equal nil (re-search-forward "^[a-zA-Z]" (point-max) t) ))
+    (goto-char (point-at-bol))
+    (cmt-fun)))
+
+
+(defun current-time-stamp ()
+  (concat  (format-time-string  "%Y년 %m월 %d일 %V주 %H시 %M분 %S초 ")
+           (cadr (assoc  (nth 6  (decode-time (current-time)))
+                         '(
+                           (0 "일요일")
+                           (1 "월요일")
+                           (2 "화요일")
+                           (3 "수요일")
+                           (4 "목요일")
+                           (5 "금요일")
+                           (6 "토요일"))))))
+
+(defun cmt-fun ()
+  (interactive)
+  (let* ((min (point-at-bol))
+         (max (- (re-search-forward ")") 1 ))
+         (str (buffer-substring min max))
+         (name (car (s-split "(" str )))
+         (args (cadr (s-split "(" str )))
+         (rtn "")
+         (fname "")
+         (keywords '("struct" "enum" "class" "File" "Author:" "E-mail:" "$Rev:" "Limitation" "마지막" "Description:" "Limitation:" "Caution:" "Usage:" "Copyright" "All"))
+         (tstamp (format-time-string  "%Y년 %m월 %d일 %V주 %a 요일 %p %I시 %M분 %S초"))
+         ;;(tstamp (current-time-stamp))
+         )
+    (goto-char min)
+
+    (setf name (s-replace "\n+" " " name ))
+    (setf name (s-split " " name))
+    (setf args (s-split "," args))
+
+    (case (length name )
+      ((1) (setf fname (s-trim (car name ))) (setf rtn "void"))
+      ((2 3) (setf fname (s-trim (cadr name ))) (setf rtn (s-trim (car name )))))
+    
+    (if (and
+         (> 3 (length name))
+         (equal nil (member fname keywords))
+         (equal nil (member rtn keywords)))
+        
+        (progn
+          
+          (insert "//|||***************************************************************************") (newline)
+          (insert (format "//||| 파일명        : %s" (buffer-name))) (newline)
+          (insert (format "//||| 최초 작성일   : %s" tstamp)) (newline)
+          (insert (format "//||| 마지막 수정일 : %s" tstamp)) (newline)
+          (insert "//||| 최초 작성자   : SW22 김동일") (newline)
+          (insert "//||| 마지막 수정자 : SW22 김동일") (newline)
+          (insert (format "//||| 함수명        : %s" fname)) (newline)
+          (insert "//||| 설명          : ") (newline)
+
+          (if (equal 0 (length args)) 
+              (insert "//||| 입력값        : [IN] 없음\n")
+            (insert (format "//||| 입력값        : [IN] %s\n"  (s-trim (car args) ))))
+
+          (mapcar 
+           (lambda (arg)
+             (insert (format "//|||        [IN] %s\n" (s-trim arg))))
+           (cdr args))
+
+          (insert "//||| 리턴값        : " (s-trim rtn))(newline)
+          (insert "//||| 비고          : ")(newline)
+          (insert "//|||***************************************************************************")(newline)))
+    (re-search-forward ")")))
+
+
+
+
+
+(defun cmt-class ()
+  (interactive)
+  (end-of-buffer)
+  (if (not (equal nil (re-search-backward "^class" (point-min) t)))
+      
+      (let* ((min (point-at-bol))
+             (max (- (re-search-forward "{") 1 ))
+             (str (buffer-substring min max))
+             (name (car (s-split ":" str )))
+             (tstamp (format-time-string  "%Y년 %m월 %d일 %V주 %a요일 %p %I시 %M분 %S초"))
+             ;;(tstamp (current-time-stamp))
+             (cname (cadr (s-split " " name))))
+
+        (goto-char min)
+
+        (insert "//***************************************************************************") (newline)
+        (insert (format "// 파일명        : %s" (buffer-name))) (newline)
+        (insert "// 프로젝트명    : FFX LINK11 DLP") (newline)
+        (insert (format "// 최초 작성일     : %s" tstamp )) (newline)
+        (insert (format "// 마지막 수정일   : %s" tstamp )) (newline)
+        (insert "// 최초 작성자   : SW22 김동일") (newline)
+        (insert "// 마지막 수정자 : SW22 김동일 ") (newline)
+        (insert (format "// 클래스명      : %s" cname)) (newline)
+        (insert "// 클래스 설명   :  ") (newline)
+        (insert "// 비고          : ") (newline)
+        (insert "//***************************************************************************") (newline)
+        )))
+
+
+
+;;deprecated;;(defun ffx-header ( funname )
+;;deprecated;;  (interactive)
+;;deprecated;;  (message funname)
+;;deprecated;;  (if (symbolp funname) (setf funname (symbol-name funname)))
+;;deprecated;;  (macrolet (( with-writable-file 
+;;deprecated;;               (name &rest body)
+;;deprecated;;               `(let ((omodes (file-modes ,name)))
+;;deprecated;;                  (set-file-modes ,name (logior omodes 128 ))
+;;deprecated;;                  (with-current-buffer (find-file ,name)
+;;deprecated;;                    (read-only-mode  -2 )
+;;deprecated;;                    ,@body)
+;;deprecated;;                  (set-file-modes ,name omodes))))
+;;deprecated;;    (with-writable-file funname
+;;deprecated;;     (beginning-of-buffer)
+;;deprecated;;     
+;;deprecated;;     (insert (format 
+;;deprecated;;              "/*****************************************************************************
+;;deprecated;;    File name:    %s
+;;deprecated;;    Author:       김동일
+;;deprecated;;    E-mail:       di7979.kim@samsung.com
+;;deprecated;;
+;;deprecated;;    마지막 변경 시각: <>
+;;deprecated;;
+;;deprecated;;------------------------------------------------------------------------------
+;;deprecated;;    Description:
+;;deprecated;;        -
+;;deprecated;;
+;;deprecated;;Limitation:
+;;deprecated;;- None
+;;deprecated;;
+;;deprecated;;Caution:
+;;deprecated;;- None
+;;deprecated;;
+;;deprecated;;------------------------------------------------------------------------------
+;;deprecated;;Usage:
+;;deprecated;;
+;;deprecated;;------------------------------------------------------------------------------
+;;deprecated;;Update History:
+;;deprecated;;- 2009년 07월 10일 28주 금요일 오전 10시 24분 56초 헤더생성
+;;deprecated;;
+;;deprecated;;------------------------------------------------------------------------------
+;;deprecated;;Copyright (c) 2006 Samsung Thales Co.,Inc.
+;;deprecated;;All Rights Reserved
+;;deprecated;;*****************************************************************************/
+;;deprecated;;" funname))
+;;deprecated;;     (basic-save-buffer)
+;;deprecated;;     (kill-this-buffer))))
+
+
+;;deprecated;;(defun ffx-prototype ( fname )
+;;deprecated;;  (interactive)
+;;deprecated;;  (if (symbolp fname) (setf fname (symbol-name fname)))
+;;deprecated;;  (macrolet (( with-writable-file 
+;;deprecated;;               (&rest body)
+;;deprecated;;               `(let ((omodes (file-modes ,fname)))
+;;deprecated;;                  (set-file-modes ,fname (logior omodes 128 ))
+;;deprecated;;                  (with-current-buffer (find-file ,fname)
+;;deprecated;;                    (read-only-mode  -2 )
+;;deprecated;;                    ,@body)
+;;deprecated;;                  (set-file-modes ,fname omodes))))
+;;deprecated;;    (with-writable-file 
+;;deprecated;;     (find-prototype-region)
+;;deprecated;;     (basic-save-buffer)
+;;deprecated;;     (kill-this-buffer))))
+
+
+
+
+
+(defun count-fun ()
+  (interactive)
+  (count-matches "^[a-zA-Z]" (re-search-forward "^#") (point-max)))
+
+
+(defun cmt-py ()
+  (interactive)
+  (evil-beginning-of-line)
+  (evil-forward-word-begin 2)
+
+  (let* ((str (buffer-substring (point) (- (re-search-forward ")") 1 )))
+         (name (s-trim  (car (s-split "(" str ))))
+         (args (mapcar (lambda (x) (s-trim x)) (s-split "," (cadr (s-split "(" str ))))))
+    (save-excursion
+      (save-restriction
+        (narrow-to-region (point-at-bol ) (point-at-eol))
+        (evil-open-below 0) (insert "\"\"\"" ) (evil-open-below 0) (insert "\"\"\"" ) (evil-open-above 0 )
+        (insert "기능 : ") (evil-open-below 0)
+        (insert (format  "함수명 : %s" name) ) (evil-open-below 0)
+        (insert "입력 : ") (evil-open-below 0)
+        
+        (string= "abcd" "abcd")
+        (mapcar (lambda (arg) 
+                  (if (string= "self" arg)
+                      (insert (format "    %s - 클래스 인스턴스" arg))
+                    (insert (format "    %s - " arg)))
+                   (evil-open-below 0)) args)
+        (insert "출력 : ")    (evil-open-below 0)
+        (insert "처리 : ")    (evil-open-below 0)
+        (insert "예외처리 : ")(evil-open-below 0)
+        (insert "비고 : ")    (evil-open-below 0)
+
+     ))
+    (evil-normal-state))) 
+
+
+(defun cmt-xml (b e)
+
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region b e)
+      (replace-string "기능 : "      ""             nil (point-min) (point-max))
+      (replace-string "함수명 : "    "|"            nil (point-min) (point-max))
+      (replace-string "입력 : "      "|MISCDialog.py"    nil (point-min) (point-max))
+      (replace-string "출력 : "      "|"            nil (point-min) (point-max))
+      (replace-string "예외처리 : "  "|"            nil (point-min) (point-max))
+      (replace-string "비고 : "      "|"            nil (point-min) (point-max))
+      
+      (goto-char (point-min))
+      (re-search-forward "처리 : ")
+      (end-of-line)
+      (replace-string " " "^" nil (point) (point-max))
+      (replace-string "처리 : "      "|"            nil (point-min) (point-max))
+
+(goto-char (point-min))
+(insert "
+      <함수테이블>
+        <클래스>MISDialog</클래스>
+        <내용><![CDATA[
+")
+
+      (goto-char (point-max))
+
+(insert "
+        ]]></내용>
+      </함수테이블>
+")
+
+
+))
+)
+
+
+;; (global-set-key [f9] #'cmt-py)
+   #+END_SRC
+
+* http
+  #+BEGIN_SRC emacs-lisp
+
+    ;;(setq 
+    ;; browse-url-browser
+    ;; browse-url-new-window-flag           t
+    ;; browse-url-firefox-new-window-is-tab t)
+
+    ;; webjump 의 내용을 재정의
+    (setq 
+     browse-url-browser-function
+     (lambda (url &optional new-window)
+       "Ask the Firefox WWW browser to load URL.
+    Default to the URL around or before point.  The strings in
+    variable `browse-url-firefox-arguments' are also passed to
+    Firefox.
+
+    When called interactively, if variable
+    `browse-url-new-window-flag' is non-nil, load the document in a
+    new Firefox window, otherwise use a random existing one.  A
+    non-nil interactive prefix argument reverses the effect of
+    `browse-url-new-window-flag'.
+
+    If `browse-url-firefox-new-window-is-tab' is non-nil, then
+    whenever a document would otherwise be loaded in a new window, it
+    is loaded in a new tab in an existing window instead.
+
+    When called non-interactively, optional second argument
+    NEW-WINDOW is used instead of `browse-url-new-window-flag'.
+
+    On MS-Windows systems the optional `new-window' parameter is
+    ignored.  Firefox for Windows does not support the \"-remote\"
+    command line parameter.  Therefore, the
+    `browse-url-new-window-flag' and `browse-url-firefox-new-window-is-tab'
+    are ignored as well.  Firefox on Windows will always open the requested
+    URL in a new window."
+       (setq url (browse-url-encode-url url))
+       (apply 'start-process
+              (concat "firefox " url) nil
+              browse-url-firefox-program
+              (append
+               browse-url-firefox-arguments
+               (list url)
+               ))))
+
+
+
+    (defun httpcall ()
+      (interactive)
+      (save-excursion
+        (let ((url (read-from-minibuffer "url: " "http://")))
+          (set-buffer (get-buffer-create "*httpcall*"))
+          (erase-buffer)
+          (insert-buffer (url-retrieve-synchronously url))
+          (switch-to-buffer "*httpcall*"))))
+
+
+    (defun httpstring ( url )
+      (interactive (list (read-from-minibuffer "url: " "http://")))
+      (save-excursion
+        (with-temp-buffer
+          (insert-buffer (url-retrieve-synchronously url))
+          (goto-char (point-min))
+          (if (looking-at "^HTTP/1.1 200 OK$")
+              (progn
+                (forward-line 1)
+                (while (looking-at "^.+[:].+$")
+                  (forward-line 1))
+                (forward-line 1)
+                (delete-region (point-min) (point))))
+          (buffer-string))))
+
+
+    (defun httpeval ( url )
+      (interactive (list (read-from-minibuffer "url: " "http://")))
+      (save-excursion
+        (with-temp-buffer
+          (insert-buffer (url-retrieve-synchronously url))
+          (goto-char (point-min))
+          (if (looking-at "^HTTP/1.1 200 OK$")
+              (progn
+                (forward-line 1)
+                (while (looking-at "^.+[:].+$")
+                  (forward-line 1))
+                (forward-line 1)
+                (delete-region (point-min) (point))))
+          (eval-current-buffer))))
+
+
+    ;; 다음과 같이 authentication 을 사용할 수 있다. 
+    ;; http://stackoverflow.com/questions/1597959/how-does-emacs-url-package-handle-authentication
+    ;; http://www.emacswiki.org/emacs/UrlPackage
+
+    ;; M-x mail 을 이용하여 메일을 전송할 수 있다. 
+    ;;(setq send-mail-function 'sendmail-send-it)
+    ;;(setq sendmail-program "C:/usr/local/msmtp/msmtp.exe")
+    ;;(setq message-sendmail-extra-arguments '("-a" "gmail"))
+    ;;(setq mail-host-address "gmail.com")
+    ;;(setq user-full-name "dongce")
+    ;;(setq user-mail-address "dongce@gmail.com")
+    ;;
+    ;;http://kaisyu.springnote.com/pages/575011.xhtml
+
+
+    ;; post 메시지를 전송할 수 있다. 
+    (require 'http-post-simple)
+    ;; 다음과 같이 메일전송가능 
+    ;;(http-post-simple 
+    ;; "http://10.239.12.219/singlemail/send_bitten_result"
+    ;; '((title       . "TEST EMACS MAIL")
+    ;;   (sender      . "di7979.kim@samsung.com")
+    ;;   (recipients  . "di7979.kim@samsung.com" )
+    ;;   (txtcontents . "한글을 사용할 수 있다. "))
+    ;; 'utf-8)
+
+
+    ;;; Emacs/W3 설정
+    (condition-case () (require 'w3-auto "w3-auto") (error nil))
+    (add-hook 'w3-parse-hooks 'w3-tidy-page)
+    (defvar w3-fast-parse-tidy-program "tidy")
+    (defun w3-tidy-page (&optional buff)
+      "Use html tidy to clean up the HTML in the current buffer."
+      (save-excursion
+        (if buff
+            (set-buffer buff)
+          (setq buff (current-buffer)))
+        (widen)
+        (call-process-region (point-min) (point-max)
+                             w3-fast-parse-tidy-program
+                             t (list buff nil) nil ;nil nil nil;
+                             "--show-warnings" "no" "--show-errors" "0" "--force-output" "yes"
+                             "-quiet" "-clean" "-bare" "-omit"
+                             "--drop-proprietary-attributes" "yes" "--hide-comments" "yes"
+                             )))
+  #+END_SRC
+
+* web
+  #+BEGIN_SRC emacs-lisp
+
+;; https://github.com/skeeto/skewer-mode
+
+
+(use-package httprepl)
+(use-package skewer-mode
+  :config
+  ( skewer-setup ))
+
+
+(defun httpget (url)
+  (interactive "sURL: ")
+  (let ((url-request-method "GET")
+        ;;(arg-stuff (concat "?query=" (url-hexify-string str)
+        ;;                   "&filter=" (url-hexify-string type)))
+        )
+    (url-retrieve url (lambda (status) (switch-to-buffer (current-buffer))))))
+
+
+
+(use-package  google-contacts :commands google-contacts)
+
+
+;; http://pragmaticemacs.com/emacs/weather-in-emacs/
+(use-package wttrin
+  :ensure t
+  :commands wttrin
+  :init
+  (setq wttrin-default-cities '("gumi-si" "Daegu")))
+  #+END_SRC
+* jump
+  #+BEGIN_SRC emacs-lisp
+  ;; ace jump mode 를 사용할 수 있다. 
+
+
+  ;; FUNCTION DEFINITION
+
+
+
+  (require 'webjump)
+  (global-set-key "\C-cw" 'webjump)
+
+  (setq 
+  webjump-sites
+  (append
+  webjump-sites
+  '(("emacs"           . "http://www.gnu.org/software/emacs/manual/emacs.html")
+  ("elisp-intro"     . "http://www.gnu.org/software/emacs/emacs-lisp-intro/html_mono/emacs-lisp-intro.html")
+  ("elisp-reference" . "http://www.gnu.org/software/emacs/elisp-manual/html_mono/elisp.html")
+  ("msdn"            . "http://msdn.microsoft.com/library/default.asp")
+  ("msdn-forum"      . "http://forums.microsoft.com/msdn/")
+  ("iostream"        . "http://www.cplusplus.com/ref/")
+  ("stl"             . "http://www.sgi.com/tech/stl/table_of_contents.html")
+  ("sgi"             . "http://www.sgi.com/tech/stl/")
+  ("tr1"             . "http://www.aristeia.com/EC3E/TR1_info.html")
+  ("man"             . "http://www.freebsd.org/cgi/man.cgi")
+  ("wikipedia"       . "http://en.wikipedia.org/wiki/Main_Page")
+  ("koders"          . "http://www.koders.com")
+  ("c++faq"          . "http://www.parashift.com/c++-faq-lite/index.html")
+  ("python"          . "http://www.python.org/doc/")
+  ("erlang"          . "http://www.erlang.org/doc.html")
+  ("sbcl"            . "http://www.sbcl.org/manual/")
+  ("java"            . "http://java.sun.com/javase/6/docs/api/")
+  ("haskell"         . "http://haskell.org/ghc/docs/latest/html/libraries/")
+
+  ("FFX"             . "http://10.239.12.181/projects/ffx/")
+  ("FBUILD"          . "http://10.239.12.134/buildserver")
+  ("FFXCODESONAR"    . "http://10.239.12.181/projects/ffxcodesonar/")
+  ("IIDS"            . "http://10.239.12.181/projects/iids/")
+  ("LST"             . "http://10.239.12.181/projects/lst/")
+  ("HILS"            . "http://10.239.12.181/projects/hils/")
+  ("MISC"            . "http://10.239.12.181/projects/misc/")
+  ("CORESW"          . "http://10.239.12.181/projects/coresw/")
+
+  ("LPX"             . "http://10.239.12.87/projects/lpx/")
+  ("bzrsync"         . "http://10.239.12.181/syncbzr/ffx")
+  ("CODESONAR"       . "http://10.239.12.219:7340/")
+  ("gmail   "        . "http://www.gmail.com")
+
+  ("swankjs"         . "http://localhost:8009/swank-js/test.html")
+  ("MDMS"            . "http://10.239.12.87:3000/login/login")
+  )))
+
+
+
+  ;;Typing the Form Feed Character
+  ;;
+  ;;In emacs, you can type the char by pressing 【Ctrl+q】 then 【Ctrl+l】. ( Emacs's Key Notations Explained (/r, ^M, C-m, RET, <return>, M-, meta)) 
+
+  ;; keys for moving to prev/next code section (Form Feed; ^L)
+  (global-set-key (kbd "<C-M-prior>") 'backward-page) ; Ctrl+Alt+PageUp
+  (global-set-key (kbd "<C-M-next>") 'forward-page)   ; Ctrl+Alt+PageDown
+
+
+
+
+
+  (setq bm-restore-repository-on-load t)
+  (require 'bm)
+
+  ;; bm-bookmart-annotate
+  ;;(global-set-key (kbd "<M-f2>") 'bm-toggle)
+  ;;(global-set-key (kbd "<f2>")   'bm-next)
+  ;;(global-set-key (kbd "<S-f2>") 'bm-previous)
+ 
+  ;; make bookmarks persistent as default
+  (setq-default bm-buffer-persistence t)
+ 
+  ;; Loading the repository from file when on start up.
+  (add-hook' after-init-hook 'bm-repository-load)
+ 
+  ;; Restoring bookmarks when on file find.
+  (add-hook 'find-file-hooks 'bm-buffer-restore)
+ 
+  ;; Saving bookmark data on killing a buffer
+  (add-hook 'kill-buffer-hook 'bm-buffer-save)
+ 
+  ;; Restore bookmarks when buffer is reverted.
+  (add-hook 'after-revert-hook 'bm-buffer-restore)
+
+  ;; Saving the repository to file when on exit.
+  ;; kill-buffer-hook is not called when emacs is killed, so we
+  ;; must save all bookmarks first.
+  (add-hook 
+  'kill-emacs-hook 
+  '(lambda nil
+  (bm-buffer-save-all)
+  (bm-repository-save)))
+
+  ;; STANDARD emacs bookmark 
+  ;;;; C-x r m   set a bookmark at the current location (e.g. in a file)
+  ;;;; C-x r b   jump to a bookmark
+  ;;;; C-x r l   list all of your bookmarks
+  ;;;; M-x bookmark-delete   delete a bookmark by name
+
+  (require 'bookmark+)
+  (global-set-key (kbd "C-*") 'bookmark-bmenu-list)
+
+
+  (fset 'bmkp-url-target-set-origin #'bmkp-url-target-set)       ;원본버젼 
+
+  (defun bmkp-url-target-set (url &optional prefix-only-p name/prefix no-update-p msg-p) ; `C-x p c u'
+  "Set a bookmark for a URL.  Return the bookmark.
+  Interactively you are prompted for the URL.  Completion is available.
+  Use `M-n' to pick up the url at point as the default.
+
+  You are also prompted for the bookmark name.  But with a prefix arg,
+  you are prompted only for a bookmark-name prefix.  In that case, the
+  bookmark name is the prefix followed by the URL.
+
+  When entering a bookmark name you can use completion against existing
+  names.  This completion is lax, so you can easily edit an existing
+  name.  See `bookmark-set' for particular keys available during this
+  input.
+
+  Non-interactively:
+ * Non-nil PREFIX-ONLY-P means NAME/PREFIX is a bookmark-name prefix.
+ * NAME/PREFIX is the bookmark name or its prefix (the suffix = URL).
+ * Non-nil NO-UPDATE-P means do not refresh/rebuild the bookmark-list
+  display.
+ * Non-nil MSG-P means display a status message."
+  (interactive
+  (list (if (require 'ffap nil t)
+  (ffap-read-file-or-url "URL: " (or (bmkp-thing-at-point 'url)
+  (and (fboundp 'url-get-url-at-point)
+  (url-get-url-at-point))))
+  (let ((icicle-unpropertize-completion-result-flag  t))
+  (read-file-name "URL: " nil (or (bmkp-thing-at-point 'url)
+  (and (fboundp 'url-get-url-at-point)
+  (url-get-url-at-point))))))
+  current-prefix-arg
+  (if current-prefix-arg
+  (read-string "Prefix for bookmark name: ")
+  (bmkp-completing-read-lax "Bookmark name"))
+  nil
+  'MSG))
+  (unless name/prefix (setq name/prefix  ""))
+  ;;usedynamicbinding;;(lexical-let* ((ul                             url)
+  (let* ((ul                             url)
+  (bookmark-make-record-function  (if (eq major-mode 'w3m-mode)
+  'bmkp-make-w3m-record
+  (lambda () (bmkp-make-url-browse-record ul))))
+  bmk failure)
+  (condition-case err
+  (setq bmk  (bookmark-store (if prefix-only-p (concat name/prefix url) name/prefix)
+  (cdr (bookmark-make-record))  nil  no-update-p  (not msg-p)))
+  (error (setq failure  err)))
+  (when failure (error "Failed to create bookmark for `%s':\n%s\n" url failure))
+  bmk))
+
+
+  (require 'point-stack)
+
+
+  #+END_SRC
+
+
+* backward compatable
+  #+BEGIN_SRC emacs-lisp
+(fset 'shell-quote-argument-origin #'shell-quote-argument)       ;원본버젼 )
+(defun shell-quote-argument (argument)
+  "Quote ARGUMENT for passing as argument to an inferior shell."
+  (cond
+   ((or (eq system-type 'ms-dos) (and (eq system-type 'windows-nt) (w32-shell-dos-semantics)));;(eq system-type 'ms-dos)
+    
+    ;; Quote using double quotes, but escape any existing quotes in
+    ;; the argument with backslashes.
+    (let ((result "")
+          (start 0)
+          end)
+      (if (or (null (string-match "[^\"]" argument))
+              (< (match-end 0) (length argument)))
+          (while (string-match "[\"]" argument start)
+            (setq end (match-beginning 0)
+                  result (concat result (substring argument start end)
+                                 "\\" (substring argument end (1+ end)))
+                  start (1+ end))))
+      (concat "\"" result (substring argument start) "\"")))
+
+   ((and (eq system-type 'windows-nt) (w32-shell-dos-semantics))
+
+    ;; First, quote argument so that CommandLineToArgvW will
+    ;; understand it.  See
+    ;; http://msdn.microsoft.com/en-us/library/17w5ykft%28v=vs.85%29.aspx
+    ;; After we perform that level of quoting, escape shell
+    ;; metacharacters so that cmd won't mangle our argument.  If the
+    ;; argument contains no double quote characters, we can just
+    ;; surround it with double quotes.  Otherwise, we need to prefix
+    ;; each shell metacharacter with a caret.
+
+    (setq argument
+          ;; escape backslashes at end of string
+          (replace-regexp-in-string
+           "\\(\\\\*\\)$"
+           "\\1\\1"
+           ;; escape backslashes and quotes in string body
+           (replace-regexp-in-string
+            "\\(\\\\*\\)\""
+            "\\1\\1\\\\\""
+            argument)))
+
+    (if (string-match "[%!\"]" argument)
+        (concat
+         "^\""
+         (replace-regexp-in-string
+          "\\([%!()\"<>&|^]\\)"
+          "^\\1"
+          argument)
+         "^\"")
+      (concat "\"" argument "\"")))
+
+   (t
+    (if (equal argument "")
+        "''"
+      ;; Quote everything except POSIX filename characters.
+      ;; This should be safe enough even for really weird shells.
+      (replace-regexp-in-string
+       "\n" "'\n'"
+       (replace-regexp-in-string "[^-0-9a-zA-Z_./\n]" "\\\\\\&" argument))))
+   ))
+
+
+(if (not (fboundp 'read-only-mode))
+    (defalias 'read-only-mode 'toggle-read-only))
+  #+END_SRC
