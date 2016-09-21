@@ -1314,3 +1314,15 @@
    #+BEGIN_SRC emacs-lisp
  (evil-mode 1)
    #+END_SRC
+* bind map                                                       :DEPRECATED:
+#+BEGIN_SRC emacs-lisp :tangle no
+
+;; (use-package bind-map
+;;   :config
+;;   (bind-map my-org-map
+;;             :evil-keys (",")
+;;             :major-modes (org-mode))
+;;   (bind-map-set-keys my-org-map
+;;                      "t" 'ido-choose-from-recentf)) 
+  
+#+END_SRC
