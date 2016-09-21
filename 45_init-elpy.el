@@ -215,6 +215,7 @@
 ;;       (define-key python-mode-map "\C-m" 'newline-and-indent)))
    ))
 
+(add-hook 'python-mode-hook 'evil-text-object-python-add-bindings)
 
 ;;deprecated;;(require 'python-mode)
 ;;deprecated;;(require 'ipython)

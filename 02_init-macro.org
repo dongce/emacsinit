@@ -173,159 +173,174 @@ Test cases
 
 * dired
 #+BEGIN_SRC emacs-lisp
-(defun 2zip ()
-  "Zip the current file/dir in `dired'.
-If multiple files are marked, only zip the first one.
-Require unix zip commandline tool."
-  (interactive)
-  (require 'dired)
-  (let ( (fileName (elt (dired-get-marked-files) 0))  )
-    (shell-command (format "zip -r '%s.zip' '%s'" (file-relative-name fileName) (file-relative-name fileName)))
-    ))
+  (defun 2zip ()
+    "Zip the current file/dir in `dired'.
+  If multiple files are marked, only zip the first one.
+  Require unix zip commandline tool."
+    (interactive)
+    (require 'dired)
+    (let ( (fileName (elt (dired-get-marked-files) 0))  )
+      (shell-command (format "zip -r '%s.zip' '%s'" (file-relative-name fileName) (file-relative-name fileName)))
+      ))
 
 
-(defun upward-find-file (filename &optional startdir)
-  "Move up directories until we find a certain filename. If we
-  manage to find it, return the containing directory. Else if we
-  get to the toplevel directory and still can't find it, return
-  nil. Start at startdir or . if startdir not given"
+  (defun upward-find-file (filename &optional startdir)
+    "Move up directories until we find a certain filename. If we
+    manage to find it, return the containing directory. Else if we
+    get to the toplevel directory and still can't find it, return
+    nil. Start at startdir or . if startdir not given"
 
-  (let ((dirname (expand-file-name
-		  (if startdir startdir ".")))
-	(found nil) ; found is set as a flag to leave loop if we find it
-	(top nil))  ; top is set when we get
-		    ; to / so that we only check it once
+    (let ((dirname (expand-file-name
+        (if startdir startdir ".")))
+    (found nil) ; found is set as a flag to leave loop if we find it
+    (top nil))  ; top is set when we get
+          ; to / so that we only check it once
 
-    ; While we've neither been at the top last time nor have we found
-    ; the file.
-    (while (not (or found top))
-      ; If we're at / set top flag.
-      (if (string= (expand-file-name dirname) "/")
-	  (setq top t))
+      ; While we've neither been at the top last time nor have we found
+      ; the file.
+      (while (not (or found top))
+        ; If we're at / set top flag.
+        (if (string= (expand-file-name dirname) "/")
+      (setq top t))
       
-      ; Check for the file
-      (if (file-exists-p (expand-file-name filename dirname))
-	  (setq found t)
-	; If not, move up a directory
-	(setq dirname (expand-file-name ".." dirname))))
-    ; return statement
-    (if found dirname nil)))
+        ; Check for the file
+        (if (file-exists-p (expand-file-name filename dirname))
+      (setq found t)
+    ; If not, move up a directory
+    (setq dirname (expand-file-name ".." dirname))))
+      ; return statement
+      (if found dirname nil)))
 
-(use-package dired
-  :config
-  (define-key dired-mode-map ":c" 'clip-file)
-  (define-key dired-mode-map ":i" 'clip-image))
-
-
-
-(defun 2-zip ()
-  "Zip the current file/dir in `dired'.
-If multiple files are marked, only zip the first one.
-Require unix zip commandline tool."
-  (interactive)
-  (require 'dired)
-  (let ( (fileName (elt (dired-get-marked-files) 0))  )
-    (shell-command (format "zip -r '%s.zip' '%s'" (file-relative-name fileName) (file-relative-name fileName)))
-    ))
-
-
-(defun unzip(fileList)
-  "Zip the current file/dir in `dired'.
-If multiple files are marked, only zip the first one.
-Require unix zip commandline tool."
-  (interactive (list (dired-get-marked-files) ))
-  (require 'dired)
-  (mapc
-   (lambda (ξf)
-     (let ( newName cmdStr )
-       (setq newName (file-name-sans-extension ξf))
-       (while (file-exists-p newName)
-         (setq newName (concat (file-name-sans-extension newName) "-2" (file-name-extension newName t))) )
-
-       ;; (async-shell-command cmdStr)
-       ;;deprecated;;(async-shell-command 
-       ;;deprecated;; (format "convert -rotate 180 \"%s\" \"%s\""   (file-relative-name ξf) (file-relative-name newName)) )
-
-       (async-start-process 
-        "unzip"
-        "unzip"   
-        nil
-        ξf
-        "-d"
-        (file-relative-name newName))
-
-       ))
-   fileList ))
-
-
-(defun 2-7zip ()
-  "Zip the current file/dir in `dired'.
-If multiple files are marked, only zip the first one.
-Require unix zip commandline tool."
-  (interactive)
-  (require 'dired)
-  (let ( (fileName (elt (dired-get-marked-files) 0))  )
-    (async-shell-command (format "7z a \"%s.7z\" \"%s\"" (file-relative-name fileName) (file-relative-name fileName)))
-    ))
+  (use-package dired
+    :config
+    (define-key dired-mode-map ":c" 'clip-file)
+    (define-key dired-mode-map ":i" 'clip-image))
 
 
 
-(defcustom pyclip (fullpath "../misc/pyclip3.py") "python clip")
+  (defun 2-zip ()
+    "Zip the current file/dir in `dired'.
+  If multiple files are marked, only zip the first one.
+  Require unix zip commandline tool."
+    (interactive)
+    (require 'dired)
+    (let ( (fileName (elt (dired-get-marked-files) 0))  )
+      (shell-command (format "zip -r '%s.zip' '%s'" (file-relative-name fileName) (file-relative-name fileName)))
+      ))
 
 
 
-(defun copy-image-file (file)
-  "Display Windows context menu on selected files"
-  (interactive)
+  (defun unzip(fileList)
+    "Zip the current file/dir in `dired'.
+  If multiple files are marked, only zip the first one.
+  Require unix zip commandline tool."
+    (interactive (list (dired-get-marked-files) ))
+    (require 'dired)
+    (mapc
+     (lambda (ξf)
+       (let ( newName cmdStr )
+         (setq newName (file-name-sans-extension ξf))
+         (while (file-exists-p newName)
+           (setq newName (concat (file-name-sans-extension newName) "-2" (file-name-extension newName t))) )
 
-  (if (eq system-type 'windows-nt)
+         ;; (async-shell-command cmdStr)
+         ;;deprecated;;(async-shell-command 
+         ;;deprecated;; (format "convert -rotate 180 \"%s\" \"%s\""   (file-relative-name ξf) (file-relative-name newName)) )
+         (message (format "7z x  \"%s\"  -o\"%s\"  "  ξf newName))
+         (async-shell-command
+          (format "7z x  \"%s\"  -o\"%s\"  "  ξf newName))))
+     fileList ))
+
+  (defun unzipcur(fileList)
+    "Zip the current file/dir in `dired'.
+  If multiple files are marked, only zip the first one.
+  Require unix zip commandline tool."
+    (interactive (list (dired-get-marked-files) ))
+    (require 'dired)
+    (mapc
+     (lambda (ξf)
+       (let ( newName cmdStr )
+         (setq newName (file-name-sans-extension ξf))
+         (while (file-exists-p newName)
+           (setq newName (concat (file-name-sans-extension newName) "-2" (file-name-extension newName t))) )
+
+         ;; (async-shell-command cmdStr)
+         ;;deprecated;;(async-shell-command 
+         ;;deprecated;; (format "convert -rotate 180 \"%s\" \"%s\""   (file-relative-name ξf) (file-relative-name newName)) )
+         (message (format "7z x  \"%s\"  -o\"%s\"  "  ξf (file-name-directory newName)))
+         (async-shell-command
+          (format "7z x  \"%s\"  -o\"%s\"  "  ξf (file-name-directory newName)))))
+     fileList ))
+
+
+  (defun 2-7zip ()
+    "Zip the current file/dir in `dired'.
+  If multiple files are marked, only zip the first one.
+  Require unix zip commandline tool."
+    (interactive)
+    (require 'dired)
+    (let ( (fileName (elt (dired-get-marked-files) 0))  )
+      (async-shell-command (format "7z a \"%s.7z\" \"%s\"" (file-relative-name fileName) (file-relative-name fileName)))
+      ))
+
+
+
+  (defcustom pyclip (fullpath "../misc/pyclip3.py") "python clip")
+
+
+
+  (defun copy-image-file (file)
+    "Display Windows context menu on selected files"
+    (interactive)
+
+    (if (eq system-type 'windows-nt)
       
-      ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
-      (async-start-process ;;impossible;;-reuse-buffer 
-       "clip-image" 
-       "python.exe"
-       (lambda (p) (message "이미지 복사 완료"))
-       pyclip
-       "--image"
-       file)))
-
-(defun copy-files (&rest files)
-  "Display Windows context menu on selected files"
-  (interactive)
-  (if (eq system-type 'windows-nt)
-      
-        (apply
-         #'async-start-process  ;;impossible;;-reuse-buffer 
-         "clip-file" 
-         "c:/usr/local/python35/python.exe"
-         (lambda (p) (message "파일복사 완료"))
+        ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
+        (async-start-process ;;impossible;;-reuse-buffer 
+         "clip-image" 
+         "python.exe"
+         (lambda (p) (message "이미지 복사 완료"))
          pyclip
-         files)))
+         "--image"
+         file)))
+
+  (defun copy-files (&rest files)
+    "Display Windows context menu on selected files"
+    (interactive)
+    (if (eq system-type 'windows-nt)
+      
+          (apply
+           #'async-start-process  ;;impossible;;-reuse-buffer 
+           "clip-file" 
+           "c:/usr/local/python35/python.exe"
+           (lambda (p) (message "파일복사 완료"))
+           pyclip
+           files)))
 
 
-(defun clip-file ()
-  "Display Windows context menu on selected files"
-  (interactive)
+  (defun clip-file ()
+    "Display Windows context menu on selected files"
+    (interactive)
 
-  (if (eq system-type 'windows-nt)
-      (let* ((files (dired-get-marked-files))
-             (files (if (null files)
-                        (list (dired-current-directory) )
-                      files)))
-        ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
-        (apply #'copy-files files))))
+    (if (eq system-type 'windows-nt)
+        (let* ((files (dired-get-marked-files))
+               (files (if (null files)
+                          (list (dired-current-directory) )
+                        files)))
+          ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
+          (apply #'copy-files files))))
 
-(defun clip-image ()
-  "Display Windows context menu on selected files"
-  (interactive)
+  (defun clip-image ()
+    "Display Windows context menu on selected files"
+    (interactive)
 
-  (if (eq system-type 'windows-nt)
-      (let* ((files (dired-get-marked-files))
-             (files (if (null files)
-                        (list (dired-current-directory) )
-                      files)))
-        ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
-        (copy-image-file (car files)))))
+    (if (eq system-type 'windows-nt)
+        (let* ((files (dired-get-marked-files))
+               (files (if (null files)
+                          (list (dired-current-directory) )
+                        files)))
+          ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
+          (copy-image-file (car files)))))
 
 #+END_SRC
 
@@ -3016,34 +3031,67 @@ Version 2015-03-03"
 #+END_SRC
 
 * firefox
+[[http://stackoverflow.com/questions/464516/firefox-bookmarks-sqlite-structure][Firefox Bookmarks SQLite structure - Stack Overflow]]
 #+BEGIN_SRC emacs-lisp
-(defvar firefox-bookmark-backup-folder (fullpath "../../bookmarks/"))
-(defun fbmk ()
-  (interactive)
-  (let* ((fb
-          (caar (sort 
-                 (directory-files-and-attributes "C:/Users/dongil/AppData/Roaming/Mozilla/Firefox/Profiles/iyq62fu7.default/bookmarkbackups" t ".json")
-                 (lambda (x y) (> (float-time (nth 6 x)) (float-time (nth 6 y))))
-                 )))
+  (defvar firefox-bookmark-backup-folder (fullpath "../../bookmarks/"))
+  (defvar firefox-places "c:/Users/dongil/AppData/Roaming/Mozilla/Firefox/Profiles/iyq62fu7.default/places.sqlite")
+  (defun fbmk ()
+    (interactive)
+    (let* ((fb
+            (caar (sort 
+                   (directory-files-and-attributes "C:/Users/dongil/AppData/Roaming/Mozilla/Firefox/Profiles/iyq62fu7.default/bookmarkbackups" t ".json")
+                   (lambda (x y) (> (float-time (nth 6 x)) (float-time (nth 6 y))))
+                   )))
 
-         (children (cdr (assoc 'children (json-read-file (pyutil-mozlz4-decompress fb)) )))
-         ;;(bookmenu (elt children 0))
-         ;;(booktool (elt children 1))
-         (allbookmark (cdr (assoc 'children (elt children 0))))
-         ;;(untag (elt children 3))
-         (stag (helm-comp-read ;;ido-completing-read 
-                "TAG 를 입력하세요 : "
-                ;;completing-read;;(mapcar (function (lambda (x) (list (car x) t))) winexe-cmdlist)
-                (sort (delete-dups (remove nil  (mapcar (lambda (x)  (cdr (assoc 'tags x ))) allbookmark ))) #'string<)))
-         (tagcontents (remove-if (lambda (x) (not (string= stag (cdr (assoc 'tags x ))))) allbookmark))
-         (btitle (helm-comp-read
-                  "TITLE 를 입력하세요 : "
-                  (mapcar (lambda (x) (cdr (assoc 'title x ))) tagcontents ) ))
-         (bookmark (find-if (lambda (x) (string= btitle (cdr (assoc 'title x )))) tagcontents)))
-    (browse-url (cdr (assoc 'uri bookmark )))
-    (copy-file fb firefox-bookmark-backup-folder  t t   )
-    )) 
+           (children (cdr (assoc 'children (json-read-file (pyutil-mozlz4-decompress fb)) )))
+           ;;(bookmenu (elt children 0))
+           ;;(booktool (elt children 1))
+           (allbookmark (cdr (assoc 'children (elt children 0))))
+           ;;(untag (elt children 3))
+           (stag (helm-comp-read ;;ido-completing-read 
+                  "TAG 를 입력하세요 : "
+                  ;;completing-read;;(mapcar (function (lambda (x) (list (car x) t))) winexe-cmdlist)
+                  (sort (delete-dups (remove nil  (mapcar (lambda (x)  (cdr (assoc 'tags x ))) allbookmark ))) #'string<)))
+           (tagcontents (remove-if (lambda (x) (not (string= stag (cdr (assoc 'tags x ))))) allbookmark))
+           (btitle (helm-comp-read
+                    "TITLE 를 입력하세요 : "
+                    (mapcar (lambda (x) (cdr (assoc 'title x ))) tagcontents ) ))
+           (bookmark (find-if (lambda (x) (string= btitle (cdr (assoc 'title x )))) tagcontents)))
+      (browse-url (cdr (assoc 'uri bookmark )))
+      (copy-file fb firefox-bookmark-backup-folder  t t   )
+      )) 
+
+  (defun fbmk2 ()
+    (interactive)
+    (let* (
+           (allbookmark (json-read-file (pyutil-moz-bookmarks firefox-places)))
+           ;;(untag (elt children 3))
+           (stag (helm-comp-read ;;ido-completing-read 
+                  "TAG 를 입력하세요 : "
+                  ;;completing-read;;(mapcar (function (lambda (x) (list (car x) t))) winexe-cmdlist)
+                  (sort (delete-dups (remove nil  (mapcar (lambda (x) (car x ) ) allbookmark ))) #'string<)))
+           (tagcontents (find-if (lambda (x) (string= stag (elt  x 0))) allbookmark))
+           (btitle (helm-comp-read
+                    "TITLE 를 입력하세요 : "
+                    (sort (delete-dups
+                           (mapcar (lambda (x) (let ((y (elt x 0 ))) (if  y y (elt x 1)))) (cdr   tagcontents) )) #'string<) ))
+           (bookmark (find-if (lambda (x)
+                                (let ((y (elt x 0 )))
+                                  (if y
+                                      (string= btitle y)
+                                    (string= btitle (elt x 1))))) (cdr  tagcontents)))
+           )
+      (browse-url (elt  bookmark 1))
+      )) 
+
+
+
+
+
 #+END_SRC
+
+#+RESULTS:
+: fbmk2
 
 * patch edit 
 
@@ -3260,3 +3308,91 @@ of FILE in the current directory, suitable for creation"
 #+END_SRC
 
 
+* win32 windows
+#+BEGIN_SRC emacs-lisp
+ 
+
+  (defun twin ()
+    (interactive)
+    (let* ((allwindow (json-read-file (pyutil-top-windows )))
+           ;;(untag (elt children 3))
+           (stag (helm-comp-read ;;ido-completing-read 
+                  "TITLE 를 입력하세요 : "
+                  ;;completing-read;;(mapcar (function (lambda (x) (list (car x) t))) winexe-cmdlist)
+                  (sort (delete-dups (remove ""  (mapcar (lambda (x) (elt x 1  ) ) allwindow ))) #'string<))))
+      (message stag)
+      (pyutil-foreground-window (elt (find-if (lambda (x) (string= stag (elt x 1 ))) allwindow) 0 )))) 
+
+  (defun kproc ()
+    (interactive)
+    (let* (
+           (proc (helm-comp-read ;;ido-completing-read 
+                  "process 를 입력하세요 : "
+                  (sort (delete-dups (pyutil-list-proc)) #'string<))))
+      (message proc)
+      (pyutil-kill-proc proc))) 
+
+
+
+#+END_SRC
+
+#+RESULTS:
+: fbmk2
+
+
+
+* alarm 
+[[https://www.emacswiki.org/emacs/alarm.el][EmacsWiki: alarm.el]]
+[[https://ignaciopp.wordpress.com/2009/07/09/roosters-crow-setting-up-an-alarm-clock-in-emacs/][rooster’s crow, setting up an alarm clock in emacs | Nachopp's Blog]]
+
+
+#+BEGIN_SRC emacs-lisp
+  (defvar alarm-clock-timer nil
+    "Keep timer so that the user can cancel the alarm.")
+
+  (defun alarm-clock-message (text)
+    "The actual alarm action.
+  Argument TEXT alarm message."
+    (let ((buf (get-buffer-create " *alarm notify* ")))
+    (async-shell-command (format "notify-send -t 5000 \"%s\" \"%s\" " text text) buf) ;
+    ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe --g-fatal-warnings --warning --text=\"%s\"  " text) buf)
+    (async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe  --info --text=\"%s\"  " text) buf)
+    ;;(message-box text)
+    )) 
+  (defun alarm-clock ()
+    "Set an alarm.
+  The time format is the same accepted by `run-at-time'.  For
+  example \"11:30am\"."
+    (interactive)
+    (let ((time (read-string "Time(example, 11:30am): "))
+          (text (read-string "Message: ")))
+      (setq alarm-clock-timer (run-at-time time nil 'alarm-clock-message text))))
+  (defun alarm-clock-cancel ()
+    "Cancel the alarm clock."
+    (interactive)
+    (cancel-timer alarm-clock-timer))
+
+  (defun myalarm( time text)
+    (run-at-time time nil 'alarm-clock-message text)) 
+#+END_SRC
+
+#+RESULTS:
+: myalarm
+
+
+
+* change capture tool
+
+  #+BEGIN_SRC emacs-lisp
+    (defun captool(arg)
+      (interactive "P")
+      (setf
+       org-attach-screenshot-command-line
+       (cond
+        ((equal 1 arg )
+         "t:/usr/local/editor/emacsW32/MiniCap/MiniCap.exe -captureobjselect -noaero -bordershadow -save %f -exit")
+        ((equal 2 arg )
+         "t:/usr/local/editor/emacsW32/iview441_x64/i_view64.exe /capture=5 ")
+        (t
+         "t:/usr/local/editor/emacsW32/iview441_x64/i_view64.exe /capture=4 /convert=%f"))))
+  #+END_SRC

@@ -3,7 +3,7 @@
 (use-package calc-ext)
 (use-package sqlite
   :config
-  (setq  sqlite-program "c:/usr/local/sqlite/sqlite3.exe"))
+  (setq  sqlite-program "t:/usr/local/sqlite/sqlite3.exe"))
 
 
 ;;; http://www.mikusa.com/python-mysql-docs/index.html

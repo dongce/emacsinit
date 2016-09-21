@@ -154,12 +154,7 @@
 
 
   ;;(autoload 'dos-mode "dos" "Edit Dos scripts." t)
-  (use-package dos
-    :config
-    (add-to-list 'auto-mode-alist '("\\.bat$" . dos-mode))
-    (add-to-list 'auto-mode-alist '("\\.cmd$" . dos-mode))
-    (define-key dos-mode-map [?\C-c ?\C-e]
-      (lambda () "Run Dos script." (interactive)(save-buffer) (w32-shell-execute nil (buffer-file-name)))))
+  
 
 ;;If your template extension is tpl, "\\.phtml" becomes "\\.tpl"
 ;;
@@ -338,10 +333,12 @@
 ;;(autoload 'dos-mode "dos" "Edit Dos scripts." t)
 
 (if (eq window-system 'w32)
-    (use-package  dos
-      (add-to-list 'auto-mode-alist '("\\.bat$" . dos-mode))
-      (add-to-list 'auto-mode-alist '("\\.cmd$" . dos-mode))
-      (define-key dos-mode-map [?\C-c ?\C-e] (lambda () "Run Dos script." (interactive)(save-buffer) (w32-shell-execute nil (buffer-file-name))))))
+    (use-package dos
+    :config
+    (add-to-list 'auto-mode-alist '("\\.bat$" . dos-mode))
+    (add-to-list 'auto-mode-alist '("\\.cmd$" . dos-mode))
+    (define-key dos-mode-map [?\C-c ?\C-e]
+      (lambda () "Run Dos script." (interactive)(save-buffer) (w32-shell-execute nil (buffer-file-name))))))
 
 
 ;; yas mode 
@@ -523,3 +520,9 @@
 (icomplete-mode 1)
 #+END_SRC
 
+* lentic 
+#+BEGIN_SRC emacs-lisp
+  (use-package lentic-mode
+    :config (global-lentic-mode)
+    )
+#+END_SRC

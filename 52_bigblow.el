@@ -416,6 +416,20 @@ Version 2015-04-29"
         (goto-char (point-max))
         (buffer-substring-no-properties (point-min) (line-end-position -1))))))
 
+(defun pyg (linum)
+  (interactive "P")
+  (let* ((outname (concat  (file-name-sans-extension (buffer-file-name)) ".html")))
+    (async-shell-command
+     (if linum
+         (format
+          
+          "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe -O full,style=colorful,linenos=inline,linenostart=1 -o %s -f html -l cpp %s "
+          outname (buffer-file-name))
+       (format  "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe -O full,style=colorful -o %s -f html -l cpp %s " outname (buffer-file-name))))))
+
+
+
+
   ;add whatever you want
 (defconst org-pygments-language-alist
   '(
@@ -648,4 +662,5 @@ Version 2015-06-12"
   ;; (bind-key "<f7>" 'yankpad-map)
 
   )
+
 
