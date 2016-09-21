@@ -1,6 +1,9 @@
 ;; -*- coding: utf-8; -*-
 
 
+* yas
+#+BEGIN_SRC emacs-lisp
+
 
 (use-package yasnippet
   :config 
@@ -56,3 +59,17 @@
 
   (add-to-list 'yas-prompt-functions #'shk-yas/helm-prompt)
   (add-to-list 'yas-snippet-dirs (concat emacsw32-home "YASnippet")))
+
+#+END_SRC
+
+
+* company
+#+BEGIN_SRC emacs-lisp
+
+(require  'company)
+(setq company-backends (delete 'company-semantic company-backends))
+(add-hook 'after-init-hook 'global-company-mode)
+(define-key c-mode-map  [(backtab)] 'company-complete)
+(define-key c++-mode-map  [(backtab)] 'company-complete)
+
+#+END_SRC

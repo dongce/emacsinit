@@ -1,4 +1,9 @@
-;; -*- coding: utf-8; -*-
+# -*- coding: utf-8; -*-
+
+
+* key
+
+#+BEGIN_SRC emacs-lisp
 
 ;;;_ hyper key 
 ;; hyper super key define
@@ -657,6 +662,7 @@ Version 2015-04-09"
   (define-key minibuffer-local-isearch-map (kbd "<left>") 'isearch-reverse-exit-minibuffer)
   (define-key minibuffer-local-isearch-map (kbd "<right>") 'isearch-forward-exit-minibuffer))
 
+
 (if (eq window-system nil)
     (progn 
       (define-key key-translation-map (kbd "<cancel>") "\C-c")
@@ -664,3 +670,6 @@ Version 2015-04-09"
       (define-key key-translation-map (kbd "M-O B")  (kbd "C-<down>"))
       (define-key key-translation-map (kbd "M-O C")  (kbd "C-<right>"))
       (define-key key-translation-map (kbd "M-O D")  (kbd "C-<left>"))))
+
+#+END_SRC
+

@@ -1,6 +1,13 @@
 ;; -*- coding: utf-8; -*-
 ;;; http://ergoemacs.org/emacs/elisp_syntax_coloring.html
 ;;; my own mode 
+* header
+#+BEGIN_SRC emacs-lisp 
+;; -*- coding: utf-8; -*-
+#+END_SRC
+
+* qac mode 
+#+BEGIN_SRC emacs-lisp
 (define-derived-mode qac-mode compilation-mode "qac"
   "Major mode for editing Octave code.
 
@@ -13,3 +20,12 @@ definitions can also be stored in files and used in batch mode."
   ;; 위의 두 변수를 수정하여 새로은 컴파일모드를 생성할 수 있다. 
   (message "qac mode")
   )
+#+END_SRC
+
+* ELF MODE 
+[[http://oremacs.com/2016/08/28/elf-mode/][elf-mode - view the symbol list in a binary · (or emacs]]
+#+BEGIN_SRC elf-mode
+(use-package elf-mode
+ :commands elf-mode
+)
+#+END_SRC
