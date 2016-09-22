@@ -186,9 +186,9 @@ Assumes that the frame is only split into two."
   (diminish 'elisp-mode "el")
   (diminish 'evil-org-mode ))
 
-(use-package sml-modeline
-  :config
-  (sml-modeline-mode))
+;;deprecated;;(use-package sml-modeline
+;;deprecated;;  :config
+;;deprecated;;  (sml-modeline-mode))
 
 ;;conflictwithhelm;;(with-package* (modeline-posn)
 ;;conflictwithhelm;;  (size-indication-mode t))
