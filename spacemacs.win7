@@ -13,7 +13,7 @@ values."
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
    ;; or `spacemacs'. (default 'spacemacs)
-   dotspacemacs-distribution 'spacemacs-base
+   dotspacemacs-distribution 'spacemacs ;;-base
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '()
@@ -266,7 +266,7 @@ you should place your code here."
   (add-to-list 'load-path (concat emacsw32-home "/global/share/gtags/"))
 
   (add-to-list 'load-path (concat emacsw32-home "/ergoemacs/packages"))
-  (require 'evil-mode-line)
+  ;;(require 'evil-mode-line)
 
   ;; (shell-command "xmodmap /etc/X11/Xmodmap")
 
@@ -295,6 +295,7 @@ you should place your code here."
  '(ack-executable (executable-find "ack.bat"))
  '(ansi-color-names-vector
    ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
+ '(async-shell-command-buffer (quote new-buffer))
  '(autofit-frames-flag nil)
  '(better-registers-use-C-r nil)
  '(bmkp-last-as-first-bookmark-file "t:/usr/local/editor/emacsW32/spacemacs/.cache/bookmarks")
@@ -335,6 +336,12 @@ you should place your code here."
      ("G:" "사내한")
      ("H:" "일반-매뉴얼")
      ("T:" "사내한-소스코드"))))
+ '(display-buffer-alist
+   (quote
+    (("^\\*Ilist\\*$" imenu-list-display-buffer)
+     ("^ \\*alarm notify.*" display-buffer-no-window
+      (nil))
+     (popwin:display-buffer-condition popwin:display-buffer-action))))
  '(dvc-read-project-tree-mode (quote always))
  '(dynamic-fonts-preferred-monospace-fonts
    (quote
@@ -398,7 +405,7 @@ you should place your code here."
  '(evil-cross-lines t)
  '(evil-emacs-state-modes
    (quote
-    (archive-mode bbdb-mode bookmark-bmenu-mode bookmark-edit-annotation-mode browse-kill-ring-mode bzr-annotate-mode calc-mode cfw:calendar-mode completion-list-mode Custom-mode debugger-mode delicious-search-mode desktop-menu-blist-mode desktop-menu-mode doc-view-mode dvc-bookmarks-mode dvc-diff-mode dvc-info-buffer-mode dvc-log-buffer-mode dvc-revlist-mode dvc-revlog-mode dvc-status-mode dvc-tips-mode ediff-mode ediff-meta-mode efs-mode Electric-buffer-menu-mode emms-browser-mode emms-mark-mode emms-metaplaylist-mode emms-playlist-mode etags-select-mode fj-mode gc-issues-mode gdb-breakpoints-mode gdb-disassembly-mode gdb-frames-mode gdb-locals-mode gdb-memory-mode gdb-registers-mode gdb-threads-mode gist-list-mode gnus-article-mode gnus-browse-mode gnus-group-mode gnus-server-mode gnus-summary-mode google-maps-static-mode jde-javadoc-checker-report-mode magit-commit-mode magit-key-mode magit-show-branches-mode magit-branch-manager-mode magit-wazzup-mode mh-folder-mode monky-mode notmuch-hello-mode notmuch-search-mode notmuch-show-mode occur-mode proced-mode rcirc-mode rebase-mode reftex-select-bib-mode reftex-toc-mode sldb-mode slime-inspector-mode slime-thread-control-mode slime-xref-mode sr-buttons-mode sr-mode sr-tree-mode sr-virtual-mode tar-mode tetris-mode tla-annotate-mode tla-archive-list-mode tla-bconfig-mode tla-bookmarks-mode tla-branch-list-mode tla-browse-mode tla-category-list-mode tla-changelog-mode tla-follow-symlinks-mode tla-inventory-file-mode tla-inventory-mode tla-lint-mode tla-logs-mode tla-revision-list-mode tla-revlog-mode tla-tree-lint-mode tla-version-list-mode twittering-mode urlview-mode vc-annotate-mode vc-dir-mode vc-git-log-view-mode vc-svn-log-view-mode vm-mode vm-summary-mode w3m-mode wab-compilation-mode xgit-annotate-mode xgit-changelog-mode xgit-diff-mode xgit-revlog-mode xhg-annotate-mode xhg-log-mode xhg-mode xhg-mq-mode xhg-mq-sub-mode xhg-status-extra-mode svn-status-mode dvc-log-edit-mode project-buffer-mode gtags-selection-mode speedbar-mode elfeed-mode elfeed-show-mode elfeed-search-mode elfeed-show-mode)))
+    (archive-mode bbdb-mode bookmark-bmenu-mode bookmark-edit-annotation-mode browse-kill-ring-mode bzr-annotate-mode calc-mode cfw:calendar-mode completion-list-mode Custom-mode debugger-mode delicious-search-mode desktop-menu-blist-mode desktop-menu-mode dvc-bookmarks-mode dvc-diff-mode dvc-info-buffer-mode dvc-log-buffer-mode dvc-revlist-mode dvc-revlog-mode dvc-status-mode dvc-tips-mode ediff-mode ediff-meta-mode efs-mode Electric-buffer-menu-mode emms-browser-mode emms-mark-mode emms-metaplaylist-mode emms-playlist-mode etags-select-mode fj-mode gc-issues-mode gdb-breakpoints-mode gdb-disassembly-mode gdb-frames-mode gdb-locals-mode gdb-memory-mode gdb-registers-mode gdb-threads-mode gist-list-mode gnus-article-mode gnus-browse-mode gnus-group-mode gnus-server-mode gnus-summary-mode google-maps-static-mode jde-javadoc-checker-report-mode magit-commit-mode magit-key-mode magit-show-branches-mode magit-branch-manager-mode magit-wazzup-mode mh-folder-mode monky-mode notmuch-hello-mode notmuch-search-mode notmuch-show-mode occur-mode proced-mode rcirc-mode rebase-mode reftex-select-bib-mode reftex-toc-mode sldb-mode slime-inspector-mode slime-thread-control-mode slime-xref-mode sr-buttons-mode sr-mode sr-tree-mode sr-virtual-mode tar-mode tetris-mode tla-annotate-mode tla-archive-list-mode tla-bconfig-mode tla-bookmarks-mode tla-branch-list-mode tla-browse-mode tla-category-list-mode tla-changelog-mode tla-follow-symlinks-mode tla-inventory-file-mode tla-inventory-mode tla-lint-mode tla-logs-mode tla-revision-list-mode tla-revlog-mode tla-tree-lint-mode tla-version-list-mode twittering-mode urlview-mode vc-annotate-mode vc-dir-mode vc-git-log-view-mode vc-svn-log-view-mode vm-mode vm-summary-mode w3m-mode wab-compilation-mode xgit-annotate-mode xgit-changelog-mode xgit-diff-mode xgit-revlog-mode xhg-annotate-mode xhg-log-mode xhg-mode xhg-mq-mode xhg-mq-sub-mode xhg-status-extra-mode svn-status-mode dvc-log-edit-mode project-buffer-mode gtags-selection-mode speedbar-mode elfeed-mode elfeed-show-mode elfeed-search-mode elfeed-show-mode)))
  '(evil-emacs-state-msg "이멕스")
  '(evil-extra-operator-eval-key [(shift 103) 114])
  '(evil-extra-operator-eval-modes-alist
@@ -547,6 +554,9 @@ you should place your code here."
  '(mu4e-use-fancy-chars t)
  '(mu4e-view-show-images t)
  '(nodejs-repl-command "t:/usr/local/nodejs/node.exe")
+ '(nrepl-message-colors
+   (quote
+    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(nxml-heading-element-name-regexp "title\\|head\\|글")
  '(nxml-section-element-name-regexp
    "article\\|\\(sub\\)*section\\|chapter\\|div\\|appendix\\|part\\|preface\\|reference\\|simplesect\\|bibliography\\|bibliodiv\\|glossary\\|glossdiv\\|제목[0-9]+")
@@ -573,7 +583,7 @@ you should place your code here."
  '(org-babel-shell-names
    (quote
     ("sh" "bash" "csh" "ash" "dash" "ksh" "mksh" "posh" "bc" "cmdproxy")))
- '(org-bullets-bullet-list (quote ("⧖" "❇" "✱" "❖" "✦" "✢" "★" "≣")))
+ '(org-bullets-bullet-list (quote ("⌖" "❇" "✱" "❖" "✦" "✢" "★" "≣")))
  '(org-capture-templates
    (quote
     (("t" "할 일" entry
@@ -617,7 +627,9 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
      ("\\.pdf\\'" . default)
      ("\\.png\\'" . "mspaint \"%s\"")
      ("\\.xls[x]\\'" . system)
-     ("\\.doc[x]\\'" . system))))
+     ("\\.doc[x]\\'" . system)
+     ("\\.ppt[x]\\'" . system)
+     (t . system))))
  '(org-global-properties nil)
  '(org-html-head-include-default-style nil)
  '(org-html-infojs-options
@@ -764,123 +776,129 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
 \\begin{align*}
 ?
 \\end{align*}
-#+END_MATH"))))
+#+END_MATH")
+     ("m" "#+BEGIN_SRC emacs-lisp
+(myalarm \"?\" \" \")
+#+END_SRC"))))
  '(org-todo-keyword-faces
-   (quote
-    (("TODO" :foreground "DarkGoldenRod3" :weight bold)
-     ("WAITING" :foreground "chocolate" :weight bold)
-     ("STARTED" :foreground "olive drab" :weight bold)
-     ("DELEGATED" :foreground "PaleVioletRed3" :weight bold)
-     ("DONE" :foreground "gray" :weight bold)
-     ("RESOLVED" :foreground "sea green" :weight bold))))
- '(org-todo-keywords
-   (quote
-    ((sequence "TODO(t!)" "REVIEW(v!)" "STARTED(s!)" "RESOLVED(r!)" "|" "DONE(d!)" "DELEGATED(l!)" "CANCELED(c!)" "PENDING(p!)"))))
- '(package-archives
-   (quote
-    (("DELPA" . "t:/usr/local/editor/emacsW32/delpa/")
-     ("org" . "http://orgmode.org/elpa/")
-     ("ELPA" . "http://tromey.com/elpa/")
-     ("gnu" . "http://elpa.gnu.org/packages/")
-     ("MELPA" . "http://melpa.org/packages/"))))
+(quote
+ (("TODO" :foreground "DarkGoldenRod3" :weight bold)
+  ("WAITING" :foreground "chocolate" :weight bold)
+  ("STARTED" :foreground "olive drab" :weight bold)
+  ("DELEGATED" :foreground "PaleVioletRed3" :weight bold)
+  ("DONE" :foreground "gray" :weight bold)
+  ("RESOLVED" :foreground "sea green" :weight bold))))
+'(org-todo-keywords
+(quote
+ ((sequence "TODO(t!)" "REVIEW(v!)" "STARTED(s!)" "RESOLVED(r!)" "|" "DONE(d!)" "DELEGATED(l!)" "CANCELED(c!)" "PENDING(p!)"))))
+'(package-archives
+(quote
+ (("DELPA" . "t:/usr/local/editor/emacsW32/delpa/")
+  ("org" . "http://orgmode.org/elpa/")
+  ("ELPA" . "http://tromey.com/elpa/")
+  ("gnu" . "http://elpa.gnu.org/packages/")
+  ("MELPA" . "http://melpa.org/packages/"))))
  '(package-check-signature nil)
- '(package-selected-packages
-   (quote
-    (string-inflection smeargle magit-gitflow helm-gitignore gitignore-mode gitattributes-mode git-messenger ac-math semi jade evil-visual-replace epresent hyperbole helm-unicode puml-mode ws-butler toc-org pytest pyenv-mode py-yapf pip-requirements org-repo-todo org-present org-plus-contrib hy-mode hl-todo help-fns+ gnuplot fill-column-indicator exec-path-from-shell elisp-slime-nav cython-mode auto-compile anaconda-mode pythonic quelpa mwim emamux xah-css-mode vdiff s origami unicode-escape restart-emacs elfeed-goodies wttrin spaceline evil-mu4e crux helm-smex xah-lookup xah-replace-pairs ranger magit-svn datetime datetime-format 0blayout resize-window evil-extra-operator evil-embrace org-fstree dired-quick-sort smart-mark smart-comment evil-lisp-state ob-translate workgroups2 bog logview spinner helm-grepint company-math ox-html5slide persistent-scratch hl-line+ second-sel highline browse-kill-ring window-numbering elfeed-org org-attach-screenshot dired-narrow org-cliplink esup string-edit dom defproject xmlunicode better-defaults better-registers sicp unicode-fonts shut-up epl git commander orgit helm-mu evil-vimish-fold undo-tree yafolding xah-get-thing world-time-mode winpoint win-switch wikidoc wiki-nav wiki whole-line-or-region wgrep w3 virtualenv vc-fossil uuid unfill tracwiki-mode swoop swbuff sr-speedbar sqlite spray smooth-scroll smart-shift slime-js simpleclip simp shadchen sass-mode ruby-electric repl-toggle regex-tool redo+ recursive-narrow rdp rainbow-delimiters quack pyvirtualenv python-pylint python-pep8 pymacs pydoc-info pycomplete project-explorer phi-search-mc phi-rectangle passthword parse-csv parenface-reversion palimpsest page-break-lines owdriver outlined-elisp-mode outline-magic org-ehtml org-bullets oauth2 nzenburn-theme nrepl-tracing nose mysql2sqlite mwe-log-commands mustang-theme multi moz-controller mode-compile mo-git-blame mark-multiple manage-minor-mode magit-push-remote magit-commit-training-wheels macro-utils macro-math list-processes+ less-css-mode launch key-combo jsshell-bundle json-mode jedi-direx irfc iregister ipython ioccur interaction-log impatient-mode image-dired+ iflipb idomenu http-post-simple hjkl-mode historyf highlight-numbers hideshowvis hide-lines helm-w32-launcher helm-proc helm-helm-commands helm-google helm-github-stars helm-git-files helm-flycheck helm-dired-recent-dirs helm-dictionary helm-css-scss helm-bm helm-bind-key hardhat goto-last-change gitconfig-mode fuzzy fringe-current-line free-keys frame-tag font-utils fold-this fold-dwim-org flymake fic-mode fic-ext-mode fastnav evil-visualstar evil-visual-mark-mode evil-surround evil-paredit evil-org evil-numbers evil-args evil-anzu elnode eldoc-extension el-autoyas eimp ecb dpaste_de download-region dirtree-prosjekt dired-toggle dired-sort-menu+ dired-single dired-imenu dired-details+ dictionary dash-at-point cycbuf csv-mode css-mode colorsarenice-theme color-theme-sanityinc-solarized color-theme-heroku color-theme clippy chess cedit cdnjs busybee-theme bufshow buffer-utils buffer-move bs-ext browse-url-dwim bpe bison-mode bbdb-vcard bbdb-ext back-button awk-it auto-indent-mode auctex-latexmk ascope asciidoc ascii annotate ada-mode ack ace-jump-mode ac-helm abl-mode)))
+'(package-selected-packages
+(quote
+ (solarized-theme spacemacs-theme volatile-highlights vi-tilde-fringe smooth-scrolling paradox open-junk-file neotree move-text lorem-ipsum linum-relative leuven-theme indent-guide hungry-delete highlight-parentheses helm-themes helm-mode-manager helm-make helm-ag golden-ratio flx-ido fancy-battery evil-tutor evil-mc evil-indent-plus evil-iedit-state evil-exchange eval-sexp-fu define-word clean-aindent-mode bracketed-paste auto-highlight-symbol aggressive-indent adaptive-wrap ace-link ace-jump-helm-line kanban evil-text-object-python string-inflection smeargle magit-gitflow helm-gitignore gitignore-mode gitattributes-mode git-messenger ac-math semi jade evil-visual-replace epresent hyperbole helm-unicode puml-mode ws-butler toc-org pytest pyenv-mode py-yapf pip-requirements org-repo-todo org-present org-plus-contrib hy-mode hl-todo help-fns+ gnuplot fill-column-indicator exec-path-from-shell elisp-slime-nav cython-mode auto-compile anaconda-mode pythonic quelpa mwim emamux xah-css-mode vdiff s origami unicode-escape restart-emacs elfeed-goodies wttrin spaceline evil-mu4e crux helm-smex xah-lookup xah-replace-pairs ranger magit-svn datetime datetime-format 0blayout resize-window evil-extra-operator evil-embrace org-fstree dired-quick-sort smart-mark smart-comment evil-lisp-state ob-translate workgroups2 bog logview spinner helm-grepint company-math ox-html5slide persistent-scratch hl-line+ second-sel highline browse-kill-ring window-numbering elfeed-org org-attach-screenshot dired-narrow org-cliplink esup string-edit dom defproject xmlunicode better-defaults better-registers sicp unicode-fonts shut-up epl git commander orgit helm-mu evil-vimish-fold undo-tree yafolding xah-get-thing world-time-mode winpoint win-switch wikidoc wiki-nav wiki whole-line-or-region wgrep w3 virtualenv vc-fossil uuid unfill tracwiki-mode swoop swbuff sr-speedbar sqlite spray smooth-scroll smart-shift slime-js simpleclip simp shadchen sass-mode ruby-electric repl-toggle regex-tool redo+ recursive-narrow rdp rainbow-delimiters quack pyvirtualenv python-pylint python-pep8 pymacs pydoc-info pycomplete project-explorer phi-search-mc phi-rectangle passthword parse-csv parenface-reversion palimpsest page-break-lines owdriver outlined-elisp-mode outline-magic org-ehtml org-bullets oauth2 nzenburn-theme nrepl-tracing nose mysql2sqlite mwe-log-commands mustang-theme multi moz-controller mode-compile mo-git-blame mark-multiple manage-minor-mode magit-push-remote magit-commit-training-wheels macro-utils macro-math list-processes+ less-css-mode launch key-combo jsshell-bundle json-mode jedi-direx irfc iregister ipython ioccur interaction-log impatient-mode image-dired+ iflipb idomenu http-post-simple hjkl-mode historyf highlight-numbers hideshowvis hide-lines helm-w32-launcher helm-proc helm-helm-commands helm-google helm-github-stars helm-git-files helm-flycheck helm-dired-recent-dirs helm-dictionary helm-css-scss helm-bm helm-bind-key hardhat goto-last-change gitconfig-mode fuzzy fringe-current-line free-keys frame-tag font-utils fold-this fold-dwim-org flymake fic-mode fic-ext-mode fastnav evil-visualstar evil-visual-mark-mode evil-surround evil-paredit evil-org evil-numbers evil-args evil-anzu elnode eldoc-extension el-autoyas eimp ecb dpaste_de download-region dirtree-prosjekt dired-toggle dired-sort-menu+ dired-single dired-imenu dired-details+ dictionary dash-at-point cycbuf csv-mode css-mode colorsarenice-theme color-theme-sanityinc-solarized color-theme-heroku color-theme clippy chess cedit cdnjs busybee-theme bufshow buffer-utils buffer-move bs-ext browse-url-dwim bpe bison-mode bbdb-vcard bbdb-ext back-button awk-it auctex-latexmk ascope asciidoc ascii annotate ada-mode ack ace-jump-mode ac-helm abl-mode)))
  '(package-user-dir "t:/usr/local/editor/emacsW32/site-lisp/elpa")
  '(page-break-lines-char 8250)
  '(paradox-github-token t)
  '(paste-host "10.239.12.181:8000/dpaste")
+ '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(prettify-symbols-unprettify-at-point (quote right-edge))
  '(preview-image-type (quote dvipng))
  '(printer-name "IP_10.239.12.81")
- '(proced-filter-alist
-   (quote
-    ((user)
-     (user-running
-      (state . "\\`[Rr]\\'"))
-     (all)
-     (all-running
-      (state . "\\`[Rr]\\'"))
-     (emacs
-      (fun-all lambda
-               (list)
-               (proced-filter-children list 1632))))))
+'(proced-filter-alist
+(quote
+ ((user)
+  (user-running
+   (state . "\\`[Rr]\\'"))
+  (all)
+  (all-running
+   (state . "\\`[Rr]\\'"))
+  (emacs
+   (fun-all lambda
+            (list)
+            (proced-filter-children list 1632))))))
  '(projectile-buffers-filter-function (quote projectile-buffers-with-file))
  '(projectile-completion-system (quote grizzl))
  '(projectile-enable-caching t)
  '(projectile-indexing-method (quote native))
  '(ps-lpr-switches (quote ("-query")))
  '(ps-multibyte-buffer (quote non-latin-printer))
- '(ps2pdf-gs-program
-   "t:\\usr\\local\\postscript\\ghostscript\\bin\\gswin32c.exe")
+'(ps2pdf-gs-program
+"t:\\usr\\local\\postscript\\ghostscript\\bin\\gswin32c.exe")
+'(puml-plantuml-jar-path
+"T:\\usr\\local\\editor\\emacsW32\\site-lisp\\thirdparty\\plantuml\\plantuml.jar")
  '(python-check-command "pyflakes")
  '(python-shell-interpreter "ipython.exe")
  '(python-shell-interpreter-args "--colors=NoColor")
  '(python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: ")
  '(python-shell-prompt-regexp "In \\[[0-9]+\\]: ")
- '(quack-programs
-   (quote
-    ("t:/usr/local/guile/bin/winprojcd.exe" "c:/usr" "c:\\icms\\CFCS\\DLPLINK11\\DLPLINK11\\proj\\winproj2005\\Debug\\winproj.exe" ".\\winproj.exe" "MFC_TDL_ISDL_GEN_CTRL" "bigloo" "c:/icms/CFCS/DLPLINK11/DLPLINK11/proj/winproj2005/Debug/winproj.exe" "c:/usr/local/guile/bin/winprojcd.exe" "c:\\ffx\\CFCS\\ICU_KNCCS\\ProjWin\\Debug\\icuknccs_win.exe" "codes" "csi" "csi -hygienic" "gosh" "gsi" "gsi ~~/syntax-case.scm -" "guile" "icuknccs_win.exe" "isdlcd" "isdlcde" "kawa" "mit-scheme" "mred -z" "mzscheme" "mzscheme -M errortrace" "rs" "rs232" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi" "tinyscheme" "win" "winprocd" "winproj.exe" "winprojcd" "winprojcdc" "winrpojcd" "winsigconv" "winsigconv.exe")))
+'(quack-programs
+(quote
+ ("t:/usr/local/guile/bin/winprojcd.exe" "c:/usr" "c:\\icms\\CFCS\\DLPLINK11\\DLPLINK11\\proj\\winproj2005\\Debug\\winproj.exe" ".\\winproj.exe" "MFC_TDL_ISDL_GEN_CTRL" "bigloo" "c:/icms/CFCS/DLPLINK11/DLPLINK11/proj/winproj2005/Debug/winproj.exe" "c:/usr/local/guile/bin/winprojcd.exe" "c:\\ffx\\CFCS\\ICU_KNCCS\\ProjWin\\Debug\\icuknccs_win.exe" "codes" "csi" "csi -hygienic" "gosh" "gsi" "gsi ~~/syntax-case.scm -" "guile" "icuknccs_win.exe" "isdlcd" "isdlcde" "kawa" "mit-scheme" "mred -z" "mzscheme" "mzscheme -M errortrace" "rs" "rs232" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi" "tinyscheme" "win" "winprocd" "winproj.exe" "winprojcd" "winprojcdc" "winrpojcd" "winsigconv" "winsigconv.exe")))
  '(recentf-max-saved-items 1000)
  '(recentf-mode t)
  '(rmh-elfeed-org-files (quote ("u:/orgdir/feed.org")))
- '(rtog/mode-repl-alist
-   (quote
-    ((emacs-lisp-mode . ielm)
-     (python-mode . python-shell-switch-to-shell)
-     (dos-mode . shell)
-     (sql-mode . sql-mysql)
-     (js2-mode lambda nil
-               (run-js inferior-js-program-command))
-     (js2-mode . slime-connect)
-     (js2-mode . jsshell)
-     (scheme-mode lambda nil
-                  (run-scheme scheme-program-name)))))
- '(safe-local-variable-values
-   (quote
-    ((eval org-display-inline-images nil t)
-     (eval when
-           (require
-            (quote rainbow-mode)
-            nil t)
-           (rainbow-mode 1))
-     (eval set-variable
-           (quote geiser-guile-binary)
-           "t:/gitdir/dlp_link11/proj/testgen/testgen.out")
-     (eval set-variable
-           (quote geiser-guile-binary)
-           "/gitdir/dlplink11/proj/testgen/testgen.out")
-     (auto-fill-monde)
-     (eval font-lock-add-keywords nil
-           (\`
-            (((\,
-               (concat "("
-                       (regexp-opt
-                        (quote
-                         ("sp-do-move-op" "sp-do-move-cl" "sp-do-put-op" "sp-do-put-cl" "sp-do-del-op" "sp-do-del-cl"))
-                        t)
-                       "\\_>"))
-              1
-              (quote font-lock-variable-name-face)))))
-     (mangle-whitespace . t)
-     (eval when
-           (fboundp
-            (quote rainbow-mode))
-           (rainbow-mode 1))
-     (eval setq orgstruct-heading-prefix-regexp ";;;;")
-     (eval orgstruct-mode t)
-     (eval if
-           (fboundp
-            (quote pretty-symbols-mode))
-           (pretty-symbols-mode -1))
-     (major-mode . org-mode)
-     (eval allout-hide-bodies)
-     (eval progn
-           (allout-minor-mode)
-           (allout-hide-bodies))
-     (Eval allout-hide-bodies)
-     (buffer-file-coding-system . utf-8))))
+'(rtog/mode-repl-alist
+(quote
+ ((emacs-lisp-mode . ielm)
+  (python-mode . python-shell-switch-to-shell)
+  (dos-mode . shell)
+  (sql-mode . sql-mysql)
+  (js2-mode lambda nil
+            (run-js inferior-js-program-command))
+  (js2-mode . slime-connect)
+  (js2-mode . jsshell)
+  (scheme-mode lambda nil
+               (run-scheme scheme-program-name)))))
+'(safe-local-variable-values
+(quote
+ ((eval org-display-inline-images nil t)
+  (eval when
+        (require
+         (quote rainbow-mode)
+         nil t)
+        (rainbow-mode 1))
+  (eval set-variable
+        (quote geiser-guile-binary)
+        "t:/gitdir/dlp_link11/proj/testgen/testgen.out")
+  (eval set-variable
+        (quote geiser-guile-binary)
+        "/gitdir/dlplink11/proj/testgen/testgen.out")
+  (auto-fill-monde)
+  (eval font-lock-add-keywords nil
+        (\`
+         (((\,
+            (concat "("
+                    (regexp-opt
+                     (quote
+                      ("sp-do-move-op" "sp-do-move-cl" "sp-do-put-op" "sp-do-put-cl" "sp-do-del-op" "sp-do-del-cl"))
+                     t)
+                    "\\_>"))
+           1
+           (quote font-lock-variable-name-face)))))
+  (mangle-whitespace . t)
+  (eval when
+        (fboundp
+         (quote rainbow-mode))
+        (rainbow-mode 1))
+  (eval setq orgstruct-heading-prefix-regexp ";;;;")
+  (eval orgstruct-mode t)
+  (eval if
+        (fboundp
+         (quote pretty-symbols-mode))
+        (pretty-symbols-mode -1))
+  (major-mode . org-mode)
+  (eval allout-hide-bodies)
+  (eval progn
+        (allout-minor-mode)
+        (allout-hide-bodies))
+  (Eval allout-hide-bodies)
+  (buffer-file-coding-system . utf-8))))
  '(save-place-mode t)
  '(savehist-additional-variables (quote (kill-ring)))
  '(savehist-mode t)
@@ -904,455 +922,455 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
  '(sql-mysql-program "t:\\usr\\local\\mysql\\bin\\mysql.exe")
  '(sql-sqlite-program "sqlite3")
  '(sublimity-global-mode t)
- '(syslog-debug-face
-   (quote
-    ((t :background unspecified :foreground "#2aa198" :weight bold))))
- '(syslog-error-face
-   (quote
-    ((t :background unspecified :foreground "#dc322f" :weight bold))))
+'(syslog-debug-face
+(quote
+ ((t :background unspecified :foreground "#2aa198" :weight bold))))
+'(syslog-error-face
+(quote
+ ((t :background unspecified :foreground "#dc322f" :weight bold))))
  '(syslog-hour-face (quote ((t :background unspecified :foreground "#859900"))))
- '(syslog-info-face
-   (quote
-    ((t :background unspecified :foreground "#268bd2" :weight bold))))
+'(syslog-info-face
+(quote
+ ((t :background unspecified :foreground "#268bd2" :weight bold))))
  '(syslog-ip-face (quote ((t :background unspecified :foreground "#b58900"))))
  '(syslog-su-face (quote ((t :background unspecified :foreground "#d33682"))))
- '(syslog-warn-face
-   (quote
-    ((t :background unspecified :foreground "#cb4b16" :weight bold))))
+'(syslog-warn-face
+(quote
+ ((t :background unspecified :foreground "#cb4b16" :weight bold))))
  '(tab-width 2)
  '(tabkey2-alternate-key [pause])
  '(text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
  '(tramp-adb-sdk-dir "c:/usr/local/androidsdk/")
  '(tramp-default-host "k3client")
  '(tramp-default-method "pscp")
- '(tramp-default-user-alist
-   (quote
-    (("\\`smb\\'" nil nil)
-     ("\\`\\(?:fcp\\|krlogin\\|nc\\|r\\(?:cp\\|emcp\\|sh\\)\\|telnet\\)\\'" nil "dongil")
-     ("\\`\\(?:ksu\\|su\\(?:do\\)?\\)\\'" nil "root")
-     ("\\`\\(?:socks\\|tunnel\\)\\'" nil "dongil")
-     ("\\`synce\\'" nil nil)
-     ("plink" "nil" "buildadmin"))))
+'(tramp-default-user-alist
+(quote
+ (("\\`smb\\'" nil nil)
+  ("\\`\\(?:fcp\\|krlogin\\|nc\\|r\\(?:cp\\|emcp\\|sh\\)\\|telnet\\)\\'" nil "dongil")
+  ("\\`\\(?:ksu\\|su\\(?:do\\)?\\)\\'" nil "root")
+  ("\\`\\(?:socks\\|tunnel\\)\\'" nil "dongil")
+  ("\\`synce\\'" nil nil)
+  ("plink" "nil" "buildadmin"))))
  '(transient-mark-mode t)
  '(undo-tree-auto-save-history nil)
- '(unicode-fonts-block-font-mapping
-   (quote
-    (("Aegean Numbers"
-      ("Aegean" "Quivira"))
-     ("Alchemical Symbols"
-      ("Symbola" "Quivira"))
-     ("Alphabetic Presentation Forms"
-      ("DejaVu Sans:width=condensed" "Arial Unicode MS" "Quivira"))
-     ("Ancient Greek Musical Notation"
-      ("Musica" "Symbola" "Quivira"))
-     ("Ancient Greek Numbers"
-      ("Apple Symbols" "Aegean" "Quivira"))
-     ("Ancient Symbols"
-      ("Aegean" "Quivira"))
-     ("Arabic Presentation Forms-A"
-      ("Geeza Pro" "Arial Unicode MS" "Microsoft Sans Serif" "Tahoma" "Kufi Standard GK" "Andalus" "Arabic Typesetting" "Adobe Arabic" "DecoType Naskh" "Al Bayan" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "MPH 2B Damase" "Code2000"))
-     ("Arabic Presentation Forms-B"
-      ("DejaVu Sans Mono" "Geeza Pro" "Adobe Arabic" "Arial Unicode MS" "Microsoft Sans Serif" "Kufi Standard GK" "DejaVu Sans:width=condensed" "DecoType Naskh"))
-     ("Arabic Supplement"
-      ("Courier New" "Simplified Arabic Fixed" "Simplified Arabic" "Geeza Pro" "Damascus" "Andalus" "Arabic Typesetting" "Traditional Arabic" "Adobe Arabic" "Scheherazade" "Tahoma" "Microsoft Sans Serif" "MPH 2B Damase"))
-     ("Arabic"
-      ("Courier New" "Simplified Arabic Fixed" "Simplified Arabic" "Adobe Arabic" "Geeza Pro" "Baghdad" "Damascus" "Al Bayan" "Andalus" "Arabic Typesetting" "Traditional Arabic" "Scheherazade" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Nadeem" "Tahoma" "Microsoft Sans Serif" "MPH 2B Damase" "Kufi Standard GK" "DecoType Naskh" "Koodak"))
-     ("Armenian"
-      ("Mshtakan" "Sylfaen" "DejaVu Sans:width=condensed" "Quivira" "MPH 2B Damase" "Arial Unicode MS"))
-     ("Arrows"
-      ("DejaVu Sans Mono" "Apple Symbols" "Cambria Math" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Symbola" "Quivira"))
-     ("Avestan"
-      ("Ahuramzda"))
-     ("Balinese"
-      ("Aksara Bali"))
-     ("Basic Latin"
-      ("DejaVu Sans Mono"))
-     ("Bengali"
-      ("Bangla Sangam MN" "Vrinda" "Mukti Narrow" "Akaash" "Arial Unicode MS" "Code2000"))
-     ("Block Elements"
-      ("DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Apple Symbols" "Symbola" "Quivira"))
-     ("Bopomofo Extended"
-      ("MingLiU" "SimHei" "FangSong" "SimSun" "DFKai-SB" "Microsoft JhengHei" "BabelStone Han"))
-     ("Bopomofo"
-      ("Lantinghei TC" "MingLiU" "SimHei" "LiSong Pro" "FangSong" "SimSun" "DFKai-SB" "WenQuanYi Zen Hei Mono" "Microsoft JhengHei" "Microsoft YaHei" "Lantinghei SC" "Arial Unicode MS" "BabelStone Han"))
-     ("Box Drawing"
-      ("DejaVu Sans Mono" "DejaVu Sans" "Symbola" "Quivira"))
-     ("Braille Patterns"
-      ("Quivira" "DejaVu Sans:width=condensed" "Apple Symbols" "Symbola"))
-     ("Buginese"
-      ("MPH 2B Damase"))
-     ("Buhid"
-      ("Quivira"))
-     ("Byzantine Musical Symbols"
-      ("Musica" "Symbola"))
-     ("CJK Compatibility Forms"
-      ("WenQuanYi Zen Hei Mono" "Lantinghei SC" "SimHei" "FangSong" "SimSun" "LiSong Pro" "Baoli SC" "Microsoft YaHei" "Lantinghei TC" "BabelStone Han" "MingLiU" "Microsoft JhengHei" "Symbola" "Xingkai SC" "DFKai-SB"))
-     ("CJK Compatibility Ideographs Supplement"
-      ("WenQuanYi Zen Hei Mono" "SimHei" "FangSong" "SimSun" "MingLiU" "HanaMinA" "Hiragino Kaku Gothic Pro" "Hiragino Maru Gothic Pro" "Hiragino Mincho Pro" "Microsoft JhengHei" "LiSong Pro"))
-     ("CJK Compatibility Ideographs"
-      ("SimHei" "FangSong" "SimSun" "Microsoft YaHei" "WenQuanYi Zen Hei Mono" "BabelStone Han" "UnBatang" "MingLiU" "Microsoft JhengHei" "Arial Unicode MS" "Lantinghei SC" "HanaMinA"))
-     ("CJK Compatibility"
-      ("SimHei" "FangSong" "SimSun" "MingLiU" "Microsoft JhengHei" "Lantinghei SC" "Lantinghei TC" "Arial Unicode MS" "WenQuanYi Zen Hei Mono" "HanaMinA" "BabelStone Han"))
-     ("CJK Radicals Supplement"
-      ("WenQuanYi Zen Hei Mono" "SimHei" "FangSong" "SimSun" "Microsoft YaHei" "HanaMinA" "BabelStone Han" "MingLiU" "Microsoft JhengHei" "DFKai-SB" "Apple Symbols"))
-     ("CJK Strokes"
-      ("WenQuanYi Zen Hei Mono" "HanaMinA" "BabelStone Han"))
-     ("CJK Symbols and Punctuation"
-      ("Lantinghei SC" "SimHei" "FangSong" "SimSun" "HanaMinA" "WenQuanYi Zen Hei Mono" "LiSong Pro" "ST Fangsong" "Microsoft YaHei" "Lantinghei TC" "MingLiU" "Arial Unicode MS" "PC Myungjo" "BabelStone Han" "Osaka:spacing=m"))
-     ("CJK Unified Ideographs Extension A"
-      ("SimHei" "FangSong" "ST Fangsong" "SimSun" "Songti SC" "Microsoft YaHei" "MingLiU" "Microsoft JhengHei" "Code2000" "DFKai-SB" "BabelStone Han" "GB18030 Bitmap"))
-     ("CJK Unified Ideographs Extension B"
-      ("SimHei" "FangSong" "SimSun" "LiSong Pro" "Microsoft YaHei" "HanaMinB" "Code2002" "MingLiU" "Microsoft JhengHei" "BabelStone Han" "DFKai-SB"))
-     ("CJK Unified Ideographs Extension C"
-      ("HanaMinB" "BabelStone Han"))
-     ("CJK Unified Ideographs Extension D"
-      ("HanaMinB" "BabelStone Han"))
-     ("CJK Unified Ideographs"
-      ("WenQuanYi Zen Hei Mono" "Lantinghei SC" "Songti SC" "SimHei" "FangSong" "ST Fangsong" "SimSun" "LiSong Pro" "Baoli SC" "HanaMinA" "BabelStone Han" "Apple LiGothic" "Lantinghei TC" "MingLiU" "Microsoft JhengHei" "DFKai-SB" "Arial Unicode MS" "Xingkai SC" "GB18030 Bitmap" "UnBatang"))
-     ("Carian"
-      ("Aegean" "Quivira"))
-     ("Cham"
-      ("Code2000"))
-     ("Cherokee"
-      ("Plantagenet Cherokee" "MPH 2B Damase" "Quivira"))
-     ("Combining Diacritical Marks Supplement"
-      ("Consolas" "Courier New" "Doulos SIL" "DejaVu Sans:width=condensed" "Segoe UI" "Tahoma" "Code2000"))
-     ("Combining Diacritical Marks for Symbols"
-      ("Cambria Math" "Symbola"))
-     ("Combining Diacritical Marks"
-      ("Monaco" "Consolas" "Cambria Math" "Courier New" "DejaVu Sans:width=condensed" "DejaVu Sans Mono" "Tahoma" "Microsoft Sans Serif" "Arial" "Quivira"))
-     ("Combining Half Marks"
-      ("Monaco" "Consolas" "Symbola"))
-     ("Common Indic Number Forms"
-      ("Siddhanta"))
-     ("Control Pictures"
-      ("Apple Symbols" "Arial Unicode MS" "Symbola" "Quivira"))
-     ("Counting Rod Numerals"
-      ("WenQuanYi Zen Hei Mono" "Apple Symbols" "Symbola" "Quivira" "Code2001"))
-     ("Cuneiform Numbers and Punctuation"
-      ("Akkadian"))
-     ("Cuneiform"
-      ("Akkadian"))
-     ("Currency Symbols"
-      ("Monaco" "Consolas" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Apple Symbols" "Symbola" "Quivira"))
-     ("Cypriot Syllabary"
-      ("Aegean" "Code2001"))
-     ("Cyrillic Extended-A"
-      ("Quivira"))
-     ("Cyrillic Extended-B"
-      ("Quivira"))
-     ("Cyrillic Supplement"
-      ("Consolas" "Courier New" "Calibri" "DejaVu Sans:width=condensed" "Doulos SIL" "Symbola" "Quivira"))
-     ("Cyrillic"
-      ("Consolas" "Monaco" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Courier New" "Calibri" "Microsoft Sans Serif" "Code2000" "Arial Unicode MS" "Doulos SIL" "Symbola" "Charcoal CY" "Geneva CY"))
-     ("Deseret"
-      ("Apple Symbols" "Analecta" "Code2001"))
-     ("Devanagari Extended"
-      ("Siddhanta"))
-     ("Devanagari"
-      ("Devanagari Sangam MN" "Devanagari MT" "Mangal" "Samyak Devanagari" "Samyak" "Siddhanta" "Arial Unicode MS"))
-     ("Dingbats"
-      ("DejaVu Sans Mono" "Zapf Dingbats" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Code2000" "Symbola" "Quivira"))
-     ("Domino Tiles"
-      ("DejaVu Sans:width=condensed" "Symbola" "Quivira"))
-     ("Egyptian Hieroglyphs"
-      ("Aegyptus"))
-     ("Emoticons"
-      ("Symbola" "Quivira"))
-     ("Enclosed Alphanumeric Supplement"
-      ("Quivira" "BabelStone Han"))
-     ("Enclosed Alphanumerics"
-      ("Arial Unicode MS" "Quivira" "BabelStone Han"))
-     ("Enclosed CJK Letters and Months"
-      ("WenQuanYi Zen Hei Mono" "SimHei" "FangSong" "MingLiU" "Arial Unicode MS" "HanaMinA" "BabelStone Han" "Quivira" "UnBatang"))
-     ("Enclosed Ideographic Supplement"
-      ("HanaMinA" "BabelStone Han"))
-     ("Ethiopic Extended"
-      ("Kefa" "Abyssinica SIL" "Code2000"))
-     ("Ethiopic Extended-A"
-      ("Kefa" "Abyssinica SIL" "Code2000"))
-     ("Ethiopic Supplement"
-      ("Kefa" "Abyssinica SIL" "Code2000"))
-     ("Ethiopic"
-      ("Kefa" "Nyala" "Abyssinica SIL" "Ethiopia Jiret" "Ethiopia WashRa SemiBold" "Ethopic Yebse" "Code2000"))
-     ("General Punctuation"
-      ("Monaco" "Apple Symbols" "Cambria Math" "DejaVu Sans:width=condensed" "Symbola" "Quivira"))
-     ("Geometric Shapes"
-      ("DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Symbola" "Quivira"))
-     ("Georgian Supplement"
-      ("DejaVu Serif:width=condensed" "MPH 2B Damase" "Quivira"))
-     ("Georgian"
-      ("DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Code2000" "Quivira" "Sylfaen" "MPH 2B Damase"))
-     ("Glagolitic"
-      ("MPH 2B Damase" "Quivira"))
-     ("Gothic"
-      ("Analecta" "Quivira" "Code2001"))
-     ("Greek Extended"
-      ("Consolas" "DejaVu Sans Mono" "Courier New" "DejaVu Sans:width=condensed" "Microsoft Sans Serif" "Gentium Plus Compact" "Gentium Plus" "Arial Unicode MS" "Arial" "Tahoma" "Doulos SIL" "Quivira"))
-     ("Greek and Coptic"
-      ("Consolas" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Calibri" "Microsoft Sans Serif" "Gentium Plus Compact" "Gentium Plus" "Lucida Console" "Arial Unicode MS" "Symbola" "Quivira"))
-     ("Gujarati"
-      ("Gujarati Sangam MN" "Gujarati MT" "Shruti" "Samyak Gujarati" "Samyak" "Arial Unicode MS"))
-     ("Gurmukhi"
-      ("Gurmukhi Sangam MN" "Gurmukhi MN" "Raavi" "Arial Unicode MS" "AnmolUni"))
-     ("Halfwidth and Fullwidth Forms"
-      ("Meiryo" "Arial Unicode MS" "Microsoft JhengHei" "BabelStone Han" "Apple Symbols" "Code2000"))
-     ("Hangul Compatibility Jamo"
-      ("PC Myungjo" "Malgun Gothic" "Gulim" "Dotum" "Batang" "Gungsuh" "Apple Myungjo" "UnBatang" "WenQuanYi Zen Hei Mono" "Arial Unicode MS" "Code2000" "HeadLineA"))
-     ("Hangul Jamo Extended-A"
-      ("UnBatang"))
-     ("Hangul Jamo"
-      ("UnBatang" "WenQuanYi Zen Hei Mono" "PC Myungjo" "Malgun Gothic" "Gulim" "Dotum" "Batang" "Gungsuh" "Arial Unicode MS" "Code2000"))
-     ("Hangul Syllables"
-      ("Apple Gothic" "Malgun Gothic" "Gulim" "Dotum" "Batang" "Gungsuh" "UnBatang" "WenQuanYi Zen Hei Mono" "Arial Unicode MS" "Code2000"))
-     ("Hanunoo"
-      ("MPH 2B Damase" "Quivira"))
-     ("Hebrew"
-      ("Miriam Fixed" "Arial Hebrew" "Raanana" "New Peninim MT" "Aharoni" "David" "FrankRuehl" "Gisha" "Levenim MT" "Narkisim" "Rod" "Courier New" "Adobe Hebrew" "Microsoft Sans Serif" "Tahoma" "Lucida Sans Unicode" "Arial Unicode MS" "Arial" "Quivira"))
-     ("Hiragana"
-      ("Osaka:spacing=m" "MS Gothic" "MS Mincho" "MingLiU" "Hiragino Kaku Gothic Pro" "Meiryo" "Arial Unicode MS" "HanaMinA" "BabelStone Han"))
-     ("IPA Extensions"
-      ("Monaco" "Consolas" "DejaVu Sans Mono" "Courier New" "Arial Unicode MS" "Arial" "Tahoma" "Microsoft Sans Serif" "Symbola" "Quivira"))
-     ("Ideographic Description Characters"
-      ("SimHei" "FangSong" "SimSun" "Microsoft YaHei" "BabelStone Han" "MingLiU" "Microsoft JhengHei" "Apple Myungjo" "HanaMinA" "Quivira" "DFKai-SB"))
-     ("Imperial Aramaic"
-      ("Quivira"))
-     ("Inscriptional Pahlavi"
-      ("WenQuanYi Zen Hei"))
-     ("Inscriptional Parthian"
-      ("WenQuanYi Zen Hei"))
-     ("Javanese"
-      ("Tuladha Jejeg"))
-     ("Kana Supplement"
-      ("HanaMinA" "BabelStone Han"))
-     ("Kanbun"
-      ("SimHei" "FangSong" "SimSun" "Meiryo" "Arial Unicode MS" "WenQuanYi Zen Hei Mono" "HanaMinA" "BabelStone Han" "MingLiU"))
-     ("Kangxi Radicals"
-      ("WenQuanYi Zen Hei Mono" "SimHei" "FangSong" "SimSun" "Microsoft YaHei" "BabelStone Han" "HanaMinA" "MingLiU" "Microsoft JhengHei" "DFKai-SB" "Apple Myungjo" "Apple Symbols"))
-     ("Kannada"
-      ("Kannada Sangam MN" "Tunga" "Akshar Unicode" "Arial Unicode MS" "Kedage" "Code2000"))
-     ("Katakana Phonetic Extensions"
-      ("MS Gothic" "MingLiU" "Meiryo" "HanaMinA" "BabelStone Han"))
-     ("Katakana"
-      ("Osaka:spacing=m" "MS Gothic" "MingLiU" "Meiryo" "HanaMinA" "Arial Unicode MS" "BabelStone Han"))
-     ("Kayah Li"
-      ("Code2000"))
-     ("Kharoshthi"
-      ("MPH 2B Damase"))
-     ("Khmer Symbols"
-      ("Khmer Sangam MN" "Khmer Mondulkiri" "Khmer Busra" "Code2000"))
-     ("Khmer"
-      ("Khmer Sangam MN" "DaunPenh" "Code2000" "MoolBoran" "Khmer Mondulkiri" "Khmer Busra"))
-     ("Lao"
-      ("DejaVu Sans Mono" "Lao Sangam MN" "DokChampa" "Arial Unicode MS" "Saysettha MX" "DejaVu Sans:width=condensed"))
-     ("Latin Extended-C"
-      ("DejaVu Sans:width=condensed" "Cambria Math" "Quivira"))
-     ("Latin Extended-D"
-      ("Quivira" "Code2000"))
-     ("Letterlike Symbols"
-      ("Apple Symbols" "Cambria Math" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Code2000" "Symbola" "Quivira"))
-     ("Limbu"
-      ("MPH 2B Damase"))
-     ("Linear B Ideograms"
-      ("Aegean" "Code2001"))
-     ("Linear B Syllabary"
-      ("Aegean" "Code2001"))
-     ("Lisu"
-      ("Quivira"))
-     ("Lycian"
-      ("Aegean" "Quivira"))
-     ("Lydian"
-      ("Aegean" "Quivira"))
-     ("Mahjong Tiles"
-      ("Symbola" "Quivira"))
-     ("Malayalam"
-      ("Malayalam Sangam MN" "Kartika" "Samyak Malayalam" "Samyak" "Akshar Unicode" "Arial Unicode MS"))
-     ("Mathematical Alphanumeric Symbols"
-      ("Cambria Math" "Code2001" "Symbola" "Quivira"))
-     ("Mathematical Operators"
-      ("DejaVu Sans Mono" "Apple Symbols" "Cambria Math" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Code2000" "Symbola" "Quivira"))
-     ("Meetei Mayek"
-      ("Eeyek Unicode" "Meetei Mayek"))
-     ("Meroitic Cursive"
-      ("Aegyptus"))
-     ("Meroitic Hieroglyphs"
-      ("Aegyptus"))
-     ("Miscellaneous Mathematical Symbols-A"
-      ("Apple Symbols" "Symbola" "Quivira" "Cambria Math"))
-     ("Miscellaneous Mathematical Symbols-B"
-      ("Apple Symbols" "Cambria Math" "Code2000" "Symbola" "Quivira"))
-     ("Miscellaneous Symbols and Pictographs"
-      ("Symbola" "Quivira"))
-     ("Miscellaneous Symbols and Arrows"
-      ("Symbola" "Quivira"))
-     ("Miscellaneous Symbols"
-      ("Apple Symbols" "Arial Unicode MS" "Symbola" "Quivira"))
-     ("Miscellaneous Technical"
-      ("Apple Symbols" "Cambria Math" "Symbola" "Quivira"))
-     ("Modifier Tone Letters"
-      ("Apple Myungjo" "Apple Symbols" "Doulos SIL" "Code2000" "Quivira"))
-     ("Mongolian"
-      ("ST Fangsong" "ST Heiti" "ST Kaiti" "ST Song" "Mongolian Baiti" "Daicing Xiaokai" "Code2000"))
-     ("Musical Symbols"
-      ("Musica" "Symbola" "Quivira"))
-     ("Myanmar Extended-A"
-      ("Myanmar Sangam MN" "Padauk"))
-     ("Myanmar"
-      ("Myanmar Sangam MN" "Myanmar MN" "Padauk" "Code2000"))
-     ("NKo"
-      ("Conakry" "DejaVu Sans:width=condensed" "Code2000"))
-     ("New Tai Lue"
-      ("Dai Banna SIL Book" "Dai Banna SIL Book:style=Regular"))
-     ("Number Forms"
-      ("DejaVu Sans:width=condensed" "Arial Unicode MS" "Symbola" "Quivira" "Code2000"))
-     ("Ogham"
-      ("DejaVu Sans:width=condensed" "Quivira"))
-     ("Ol Chiki"
-      ("Code2000"))
-     ("Old Italic"
-      ("Aegean" "Quivira" "Code2001"))
-     ("Old Persian"
-      ("Aegean" "Code2001"))
-     ("Old South Arabian"
-      ("Qataban" "Quivira"))
-     ("Old Turkic"
-      ("Quivira"))
-     ("Optical Character Recognition"
-      ("Apple Symbols" "Arial Unicode MS" "Symbola" "Quivira"))
-     ("Oriya"
-      ("Oriya Sangam MN" "Kalinga" "Samyak Oriya" "Samyak" "Arial Unicode MS"))
-     ("Osmanya"
-      ("MPH 2B Damase" "Code2001"))
-     ("Phags-pa"
-      ("Microsoft PhagsPa" "BabelStone Phags-pa Book" "BabelStone Phags-pa Book:style=Regular" "Code2000"))
-     ("Phaistos Disc"
-      ("Aegean" "Code2001"))
-     ("Phoenician"
-      ("Aegean" "Quivira" "Code2001"))
-     ("Phonetic Extensions Supplement"
-      ("Consolas" "Calibri" "Courier New" "Quivira" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Code2000"))
-     ("Phonetic Extensions"
-      ("Monaco" "Consolas" "Calibri" "Quivira" "Courier New" "DejaVu Sans:width=condensed"))
-     ("Playing Cards"
-      ("DejaVu Sans:width=condensed" "Symbola" "Quivira"))
-     ("Rejang"
-      ("Code2000"))
-     ("Runic"
-      ("Quivira"))
-     ("Samaritan"
-      ("Quivira"))
-     ("Saurashtra"
-      ("Code2000" "Sourashtra"))
-     ("Shavian"
-      ("Apple Symbols" "MPH 2B Damase" "Code2001"))
-     ("Sinhala"
-      ("Sinhala Sangam MN" "Iskoola Pota" "Akshar Unicode"))
-     ("Small Form Variants"
-      ("Apple Symbols" "Arial Unicode MS" "WenQuanYi Zen Hei Mono" "Code2000"))
-     ("Specials"
-      ("Apple Symbols" "Arial Unicode MS" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Symbola" "Quivira" "BabelStone Han"))
-     ("Sundanese"
-      ("Sundanese Unicode" "Hacen Sudan"))
-     ("Superscripts and Subscripts"
-      ("Cambria Math" "Consolas" "Symbola" "Quivira"))
-     ("Supplemental Arrows-A"
-      ("Apple Symbols" "Cambria Math" "DejaVu Sans:width=condensed" "Symbola" "Quivira"))
-     ("Supplemental Arrows-B"
-      ("Apple Symbols" "Cambria Math" "Symbola" "Quivira"))
-     ("Supplemental Mathematical Operators"
-      ("Apple Symbols" "Cambria Math" "Symbola" "Quivira"))
-     ("Supplemental Punctuation"
-      ("Symbola" "Quivira" "Code2000"))
-     ("Syloti Nagri"
-      ("MPH 2B Damase"))
-     ("Syriac"
-      ("Estrangelo Edessa" "Estrangelo Nisibin" "Code2000"))
-     ("Tagalog"
-      ("Quivira"))
-     ("Tagbanwa"
-      ("Quivira"))
-     ("Tags"
-      ("BabelStone Han"))
-     ("Tai Le"
-      ("Microsoft Tai Le" "MPH 2B Damase"))
-     ("Tai Tham"
-      ("Lanna Alif"))
-     ("Tai Viet"
-      ("Tai Heritage Pro"))
-     ("Tai Xuan Jing Symbols"
-      ("Apple Symbols" "WenQuanYi Zen Hei Mono" "BabelStone Han" "DejaVu Sans:width=condensed" "Symbola" "Quivira" "Code2001"))
-     ("Tamil"
-      ("Tamil Sangam MN" "InaiMathi" "Latha" "Maduram" "Akshar Unicode" "Samyak Tamil" "Samyak" "Arial Unicode MS"))
-     ("Telugu"
-      ("Telugu Sangam MN" "Gautami" "Akshar Unicode" "Code2000" "Arial Unicode MS"))
-     ("Thaana"
-      ("MV Boli" "MPH 2B Damase"))
-     ("Thai"
-      ("Ayuthaya" "Silom" "Krungthep" "Sathu" "Thonburi" "DokChampa" "Angsana New" "Tahoma" "Arial Unicode MS" "Quivira"))
-     ("Tibetan"
-      ("Kailasa" "Kokonor" "Microsoft Himalaya" "Jomolhari" "Monlam Uni Sans Serif" "Arial Unicode MS"))
-     ("Tifinagh"
-      ("DejaVu Sans:width=condensed" "Quivira"))
-     ("Transport and Map Symbols"
-      ("Symbola"))
-     ("Ugaritic"
-      ("Aegean" "Code2001"))
-     ("Unified Canadian Aboriginal Syllabics Extended"
-      ("Euphemia UCAS" "Euphemia" "Quivira"))
-     ("Unified Canadian Aboriginal Syllabics"
-      ("Euphemia UCAS" "Euphemia" "Quivira"))
-     ("Vai"
-      ("Quivira"))
-     ("Variation Selectors Supplement"
-      ("BabelStone Han"))
-     ("Variation Selectors"
-      ("BabelStone Han"))
-     ("Vedic Extensions"
-      ("Siddhanta"))
-     ("Vertical Forms"
-      ("Symbola"))
-     ("Yi Radicals"
-      ("ST Fangsong" "PC Myungjo" "Microsoft Yi Baiti" "Nuosu SIL"))
-     ("Yi Syllables"
-      ("ST Fangsong" "Apple Myungjo" "Microsoft Yi Baiti" "Nuosu SIL"))
-     ("Yijing Hexagram Symbols"
-      ("Apple Symbols" "DejaVu Sans:width=condensed" "WenQuanYi Zen Hei Mono" "BabelStone Han" "Symbola" "Quivira")))))
+'(unicode-fonts-block-font-mapping
+(quote
+ (("Aegean Numbers"
+   ("Aegean" "Quivira"))
+  ("Alchemical Symbols"
+   ("Symbola" "Quivira"))
+  ("Alphabetic Presentation Forms"
+   ("DejaVu Sans:width=condensed" "Arial Unicode MS" "Quivira"))
+  ("Ancient Greek Musical Notation"
+   ("Musica" "Symbola" "Quivira"))
+  ("Ancient Greek Numbers"
+   ("Apple Symbols" "Aegean" "Quivira"))
+  ("Ancient Symbols"
+   ("Aegean" "Quivira"))
+  ("Arabic Presentation Forms-A"
+   ("Geeza Pro" "Arial Unicode MS" "Microsoft Sans Serif" "Tahoma" "Kufi Standard GK" "Andalus" "Arabic Typesetting" "Adobe Arabic" "DecoType Naskh" "Al Bayan" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "MPH 2B Damase" "Code2000"))
+  ("Arabic Presentation Forms-B"
+   ("DejaVu Sans Mono" "Geeza Pro" "Adobe Arabic" "Arial Unicode MS" "Microsoft Sans Serif" "Kufi Standard GK" "DejaVu Sans:width=condensed" "DecoType Naskh"))
+  ("Arabic Supplement"
+   ("Courier New" "Simplified Arabic Fixed" "Simplified Arabic" "Geeza Pro" "Damascus" "Andalus" "Arabic Typesetting" "Traditional Arabic" "Adobe Arabic" "Scheherazade" "Tahoma" "Microsoft Sans Serif" "MPH 2B Damase"))
+  ("Arabic"
+   ("Courier New" "Simplified Arabic Fixed" "Simplified Arabic" "Adobe Arabic" "Geeza Pro" "Baghdad" "Damascus" "Al Bayan" "Andalus" "Arabic Typesetting" "Traditional Arabic" "Scheherazade" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Nadeem" "Tahoma" "Microsoft Sans Serif" "MPH 2B Damase" "Kufi Standard GK" "DecoType Naskh" "Koodak"))
+  ("Armenian"
+   ("Mshtakan" "Sylfaen" "DejaVu Sans:width=condensed" "Quivira" "MPH 2B Damase" "Arial Unicode MS"))
+  ("Arrows"
+   ("DejaVu Sans Mono" "Apple Symbols" "Cambria Math" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Symbola" "Quivira"))
+  ("Avestan"
+   ("Ahuramzda"))
+  ("Balinese"
+   ("Aksara Bali"))
+  ("Basic Latin"
+   ("DejaVu Sans Mono"))
+  ("Bengali"
+   ("Bangla Sangam MN" "Vrinda" "Mukti Narrow" "Akaash" "Arial Unicode MS" "Code2000"))
+  ("Block Elements"
+   ("DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Apple Symbols" "Symbola" "Quivira"))
+  ("Bopomofo Extended"
+   ("MingLiU" "SimHei" "FangSong" "SimSun" "DFKai-SB" "Microsoft JhengHei" "BabelStone Han"))
+  ("Bopomofo"
+   ("Lantinghei TC" "MingLiU" "SimHei" "LiSong Pro" "FangSong" "SimSun" "DFKai-SB" "WenQuanYi Zen Hei Mono" "Microsoft JhengHei" "Microsoft YaHei" "Lantinghei SC" "Arial Unicode MS" "BabelStone Han"))
+  ("Box Drawing"
+   ("DejaVu Sans Mono" "DejaVu Sans" "Symbola" "Quivira"))
+  ("Braille Patterns"
+   ("Quivira" "DejaVu Sans:width=condensed" "Apple Symbols" "Symbola"))
+  ("Buginese"
+   ("MPH 2B Damase"))
+  ("Buhid"
+   ("Quivira"))
+  ("Byzantine Musical Symbols"
+   ("Musica" "Symbola"))
+  ("CJK Compatibility Forms"
+   ("WenQuanYi Zen Hei Mono" "Lantinghei SC" "SimHei" "FangSong" "SimSun" "LiSong Pro" "Baoli SC" "Microsoft YaHei" "Lantinghei TC" "BabelStone Han" "MingLiU" "Microsoft JhengHei" "Symbola" "Xingkai SC" "DFKai-SB"))
+  ("CJK Compatibility Ideographs Supplement"
+   ("WenQuanYi Zen Hei Mono" "SimHei" "FangSong" "SimSun" "MingLiU" "HanaMinA" "Hiragino Kaku Gothic Pro" "Hiragino Maru Gothic Pro" "Hiragino Mincho Pro" "Microsoft JhengHei" "LiSong Pro"))
+  ("CJK Compatibility Ideographs"
+   ("SimHei" "FangSong" "SimSun" "Microsoft YaHei" "WenQuanYi Zen Hei Mono" "BabelStone Han" "UnBatang" "MingLiU" "Microsoft JhengHei" "Arial Unicode MS" "Lantinghei SC" "HanaMinA"))
+  ("CJK Compatibility"
+   ("SimHei" "FangSong" "SimSun" "MingLiU" "Microsoft JhengHei" "Lantinghei SC" "Lantinghei TC" "Arial Unicode MS" "WenQuanYi Zen Hei Mono" "HanaMinA" "BabelStone Han"))
+  ("CJK Radicals Supplement"
+   ("WenQuanYi Zen Hei Mono" "SimHei" "FangSong" "SimSun" "Microsoft YaHei" "HanaMinA" "BabelStone Han" "MingLiU" "Microsoft JhengHei" "DFKai-SB" "Apple Symbols"))
+  ("CJK Strokes"
+   ("WenQuanYi Zen Hei Mono" "HanaMinA" "BabelStone Han"))
+  ("CJK Symbols and Punctuation"
+   ("Lantinghei SC" "SimHei" "FangSong" "SimSun" "HanaMinA" "WenQuanYi Zen Hei Mono" "LiSong Pro" "ST Fangsong" "Microsoft YaHei" "Lantinghei TC" "MingLiU" "Arial Unicode MS" "PC Myungjo" "BabelStone Han" "Osaka:spacing=m"))
+  ("CJK Unified Ideographs Extension A"
+   ("SimHei" "FangSong" "ST Fangsong" "SimSun" "Songti SC" "Microsoft YaHei" "MingLiU" "Microsoft JhengHei" "Code2000" "DFKai-SB" "BabelStone Han" "GB18030 Bitmap"))
+  ("CJK Unified Ideographs Extension B"
+   ("SimHei" "FangSong" "SimSun" "LiSong Pro" "Microsoft YaHei" "HanaMinB" "Code2002" "MingLiU" "Microsoft JhengHei" "BabelStone Han" "DFKai-SB"))
+  ("CJK Unified Ideographs Extension C"
+   ("HanaMinB" "BabelStone Han"))
+  ("CJK Unified Ideographs Extension D"
+   ("HanaMinB" "BabelStone Han"))
+  ("CJK Unified Ideographs"
+   ("WenQuanYi Zen Hei Mono" "Lantinghei SC" "Songti SC" "SimHei" "FangSong" "ST Fangsong" "SimSun" "LiSong Pro" "Baoli SC" "HanaMinA" "BabelStone Han" "Apple LiGothic" "Lantinghei TC" "MingLiU" "Microsoft JhengHei" "DFKai-SB" "Arial Unicode MS" "Xingkai SC" "GB18030 Bitmap" "UnBatang"))
+  ("Carian"
+   ("Aegean" "Quivira"))
+  ("Cham"
+   ("Code2000"))
+  ("Cherokee"
+   ("Plantagenet Cherokee" "MPH 2B Damase" "Quivira"))
+  ("Combining Diacritical Marks Supplement"
+   ("Consolas" "Courier New" "Doulos SIL" "DejaVu Sans:width=condensed" "Segoe UI" "Tahoma" "Code2000"))
+  ("Combining Diacritical Marks for Symbols"
+   ("Cambria Math" "Symbola"))
+  ("Combining Diacritical Marks"
+   ("Monaco" "Consolas" "Cambria Math" "Courier New" "DejaVu Sans:width=condensed" "DejaVu Sans Mono" "Tahoma" "Microsoft Sans Serif" "Arial" "Quivira"))
+  ("Combining Half Marks"
+   ("Monaco" "Consolas" "Symbola"))
+  ("Common Indic Number Forms"
+   ("Siddhanta"))
+  ("Control Pictures"
+   ("Apple Symbols" "Arial Unicode MS" "Symbola" "Quivira"))
+  ("Counting Rod Numerals"
+   ("WenQuanYi Zen Hei Mono" "Apple Symbols" "Symbola" "Quivira" "Code2001"))
+  ("Cuneiform Numbers and Punctuation"
+   ("Akkadian"))
+  ("Cuneiform"
+   ("Akkadian"))
+  ("Currency Symbols"
+   ("Monaco" "Consolas" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Apple Symbols" "Symbola" "Quivira"))
+  ("Cypriot Syllabary"
+   ("Aegean" "Code2001"))
+  ("Cyrillic Extended-A"
+   ("Quivira"))
+  ("Cyrillic Extended-B"
+   ("Quivira"))
+  ("Cyrillic Supplement"
+   ("Consolas" "Courier New" "Calibri" "DejaVu Sans:width=condensed" "Doulos SIL" "Symbola" "Quivira"))
+  ("Cyrillic"
+   ("Consolas" "Monaco" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Courier New" "Calibri" "Microsoft Sans Serif" "Code2000" "Arial Unicode MS" "Doulos SIL" "Symbola" "Charcoal CY" "Geneva CY"))
+  ("Deseret"
+   ("Apple Symbols" "Analecta" "Code2001"))
+  ("Devanagari Extended"
+   ("Siddhanta"))
+  ("Devanagari"
+   ("Devanagari Sangam MN" "Devanagari MT" "Mangal" "Samyak Devanagari" "Samyak" "Siddhanta" "Arial Unicode MS"))
+  ("Dingbats"
+   ("DejaVu Sans Mono" "Zapf Dingbats" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Code2000" "Symbola" "Quivira"))
+  ("Domino Tiles"
+   ("DejaVu Sans:width=condensed" "Symbola" "Quivira"))
+  ("Egyptian Hieroglyphs"
+   ("Aegyptus"))
+  ("Emoticons"
+   ("Symbola" "Quivira"))
+  ("Enclosed Alphanumeric Supplement"
+   ("Quivira" "BabelStone Han"))
+  ("Enclosed Alphanumerics"
+   ("Arial Unicode MS" "Quivira" "BabelStone Han"))
+  ("Enclosed CJK Letters and Months"
+   ("WenQuanYi Zen Hei Mono" "SimHei" "FangSong" "MingLiU" "Arial Unicode MS" "HanaMinA" "BabelStone Han" "Quivira" "UnBatang"))
+  ("Enclosed Ideographic Supplement"
+   ("HanaMinA" "BabelStone Han"))
+  ("Ethiopic Extended"
+   ("Kefa" "Abyssinica SIL" "Code2000"))
+  ("Ethiopic Extended-A"
+   ("Kefa" "Abyssinica SIL" "Code2000"))
+  ("Ethiopic Supplement"
+   ("Kefa" "Abyssinica SIL" "Code2000"))
+  ("Ethiopic"
+   ("Kefa" "Nyala" "Abyssinica SIL" "Ethiopia Jiret" "Ethiopia WashRa SemiBold" "Ethopic Yebse" "Code2000"))
+  ("General Punctuation"
+   ("Monaco" "Apple Symbols" "Cambria Math" "DejaVu Sans:width=condensed" "Symbola" "Quivira"))
+  ("Geometric Shapes"
+   ("DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Symbola" "Quivira"))
+  ("Georgian Supplement"
+   ("DejaVu Serif:width=condensed" "MPH 2B Damase" "Quivira"))
+  ("Georgian"
+   ("DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Code2000" "Quivira" "Sylfaen" "MPH 2B Damase"))
+  ("Glagolitic"
+   ("MPH 2B Damase" "Quivira"))
+  ("Gothic"
+   ("Analecta" "Quivira" "Code2001"))
+  ("Greek Extended"
+   ("Consolas" "DejaVu Sans Mono" "Courier New" "DejaVu Sans:width=condensed" "Microsoft Sans Serif" "Gentium Plus Compact" "Gentium Plus" "Arial Unicode MS" "Arial" "Tahoma" "Doulos SIL" "Quivira"))
+  ("Greek and Coptic"
+   ("Consolas" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Calibri" "Microsoft Sans Serif" "Gentium Plus Compact" "Gentium Plus" "Lucida Console" "Arial Unicode MS" "Symbola" "Quivira"))
+  ("Gujarati"
+   ("Gujarati Sangam MN" "Gujarati MT" "Shruti" "Samyak Gujarati" "Samyak" "Arial Unicode MS"))
+  ("Gurmukhi"
+   ("Gurmukhi Sangam MN" "Gurmukhi MN" "Raavi" "Arial Unicode MS" "AnmolUni"))
+  ("Halfwidth and Fullwidth Forms"
+   ("Meiryo" "Arial Unicode MS" "Microsoft JhengHei" "BabelStone Han" "Apple Symbols" "Code2000"))
+  ("Hangul Compatibility Jamo"
+   ("PC Myungjo" "Malgun Gothic" "Gulim" "Dotum" "Batang" "Gungsuh" "Apple Myungjo" "UnBatang" "WenQuanYi Zen Hei Mono" "Arial Unicode MS" "Code2000" "HeadLineA"))
+  ("Hangul Jamo Extended-A"
+   ("UnBatang"))
+  ("Hangul Jamo"
+   ("UnBatang" "WenQuanYi Zen Hei Mono" "PC Myungjo" "Malgun Gothic" "Gulim" "Dotum" "Batang" "Gungsuh" "Arial Unicode MS" "Code2000"))
+  ("Hangul Syllables"
+   ("Apple Gothic" "Malgun Gothic" "Gulim" "Dotum" "Batang" "Gungsuh" "UnBatang" "WenQuanYi Zen Hei Mono" "Arial Unicode MS" "Code2000"))
+  ("Hanunoo"
+   ("MPH 2B Damase" "Quivira"))
+  ("Hebrew"
+   ("Miriam Fixed" "Arial Hebrew" "Raanana" "New Peninim MT" "Aharoni" "David" "FrankRuehl" "Gisha" "Levenim MT" "Narkisim" "Rod" "Courier New" "Adobe Hebrew" "Microsoft Sans Serif" "Tahoma" "Lucida Sans Unicode" "Arial Unicode MS" "Arial" "Quivira"))
+  ("Hiragana"
+   ("Osaka:spacing=m" "MS Gothic" "MS Mincho" "MingLiU" "Hiragino Kaku Gothic Pro" "Meiryo" "Arial Unicode MS" "HanaMinA" "BabelStone Han"))
+  ("IPA Extensions"
+   ("Monaco" "Consolas" "DejaVu Sans Mono" "Courier New" "Arial Unicode MS" "Arial" "Tahoma" "Microsoft Sans Serif" "Symbola" "Quivira"))
+  ("Ideographic Description Characters"
+   ("SimHei" "FangSong" "SimSun" "Microsoft YaHei" "BabelStone Han" "MingLiU" "Microsoft JhengHei" "Apple Myungjo" "HanaMinA" "Quivira" "DFKai-SB"))
+  ("Imperial Aramaic"
+   ("Quivira"))
+  ("Inscriptional Pahlavi"
+   ("WenQuanYi Zen Hei"))
+  ("Inscriptional Parthian"
+   ("WenQuanYi Zen Hei"))
+  ("Javanese"
+   ("Tuladha Jejeg"))
+  ("Kana Supplement"
+   ("HanaMinA" "BabelStone Han"))
+  ("Kanbun"
+   ("SimHei" "FangSong" "SimSun" "Meiryo" "Arial Unicode MS" "WenQuanYi Zen Hei Mono" "HanaMinA" "BabelStone Han" "MingLiU"))
+  ("Kangxi Radicals"
+   ("WenQuanYi Zen Hei Mono" "SimHei" "FangSong" "SimSun" "Microsoft YaHei" "BabelStone Han" "HanaMinA" "MingLiU" "Microsoft JhengHei" "DFKai-SB" "Apple Myungjo" "Apple Symbols"))
+  ("Kannada"
+   ("Kannada Sangam MN" "Tunga" "Akshar Unicode" "Arial Unicode MS" "Kedage" "Code2000"))
+  ("Katakana Phonetic Extensions"
+   ("MS Gothic" "MingLiU" "Meiryo" "HanaMinA" "BabelStone Han"))
+  ("Katakana"
+   ("Osaka:spacing=m" "MS Gothic" "MingLiU" "Meiryo" "HanaMinA" "Arial Unicode MS" "BabelStone Han"))
+  ("Kayah Li"
+   ("Code2000"))
+  ("Kharoshthi"
+   ("MPH 2B Damase"))
+  ("Khmer Symbols"
+   ("Khmer Sangam MN" "Khmer Mondulkiri" "Khmer Busra" "Code2000"))
+  ("Khmer"
+   ("Khmer Sangam MN" "DaunPenh" "Code2000" "MoolBoran" "Khmer Mondulkiri" "Khmer Busra"))
+  ("Lao"
+   ("DejaVu Sans Mono" "Lao Sangam MN" "DokChampa" "Arial Unicode MS" "Saysettha MX" "DejaVu Sans:width=condensed"))
+  ("Latin Extended-C"
+   ("DejaVu Sans:width=condensed" "Cambria Math" "Quivira"))
+  ("Latin Extended-D"
+   ("Quivira" "Code2000"))
+  ("Letterlike Symbols"
+   ("Apple Symbols" "Cambria Math" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Code2000" "Symbola" "Quivira"))
+  ("Limbu"
+   ("MPH 2B Damase"))
+  ("Linear B Ideograms"
+   ("Aegean" "Code2001"))
+  ("Linear B Syllabary"
+   ("Aegean" "Code2001"))
+  ("Lisu"
+   ("Quivira"))
+  ("Lycian"
+   ("Aegean" "Quivira"))
+  ("Lydian"
+   ("Aegean" "Quivira"))
+  ("Mahjong Tiles"
+   ("Symbola" "Quivira"))
+  ("Malayalam"
+   ("Malayalam Sangam MN" "Kartika" "Samyak Malayalam" "Samyak" "Akshar Unicode" "Arial Unicode MS"))
+  ("Mathematical Alphanumeric Symbols"
+   ("Cambria Math" "Code2001" "Symbola" "Quivira"))
+  ("Mathematical Operators"
+   ("DejaVu Sans Mono" "Apple Symbols" "Cambria Math" "DejaVu Sans:width=condensed" "Arial Unicode MS" "Code2000" "Symbola" "Quivira"))
+  ("Meetei Mayek"
+   ("Eeyek Unicode" "Meetei Mayek"))
+  ("Meroitic Cursive"
+   ("Aegyptus"))
+  ("Meroitic Hieroglyphs"
+   ("Aegyptus"))
+  ("Miscellaneous Mathematical Symbols-A"
+   ("Apple Symbols" "Symbola" "Quivira" "Cambria Math"))
+  ("Miscellaneous Mathematical Symbols-B"
+   ("Apple Symbols" "Cambria Math" "Code2000" "Symbola" "Quivira"))
+  ("Miscellaneous Symbols and Pictographs"
+   ("Symbola" "Quivira"))
+  ("Miscellaneous Symbols and Arrows"
+   ("Symbola" "Quivira"))
+  ("Miscellaneous Symbols"
+   ("Apple Symbols" "Arial Unicode MS" "Symbola" "Quivira"))
+  ("Miscellaneous Technical"
+   ("Apple Symbols" "Cambria Math" "Symbola" "Quivira"))
+  ("Modifier Tone Letters"
+   ("Apple Myungjo" "Apple Symbols" "Doulos SIL" "Code2000" "Quivira"))
+  ("Mongolian"
+   ("ST Fangsong" "ST Heiti" "ST Kaiti" "ST Song" "Mongolian Baiti" "Daicing Xiaokai" "Code2000"))
+  ("Musical Symbols"
+   ("Musica" "Symbola" "Quivira"))
+  ("Myanmar Extended-A"
+   ("Myanmar Sangam MN" "Padauk"))
+  ("Myanmar"
+   ("Myanmar Sangam MN" "Myanmar MN" "Padauk" "Code2000"))
+  ("NKo"
+   ("Conakry" "DejaVu Sans:width=condensed" "Code2000"))
+  ("New Tai Lue"
+   ("Dai Banna SIL Book" "Dai Banna SIL Book:style=Regular"))
+  ("Number Forms"
+   ("DejaVu Sans:width=condensed" "Arial Unicode MS" "Symbola" "Quivira" "Code2000"))
+  ("Ogham"
+   ("DejaVu Sans:width=condensed" "Quivira"))
+  ("Ol Chiki"
+   ("Code2000"))
+  ("Old Italic"
+   ("Aegean" "Quivira" "Code2001"))
+  ("Old Persian"
+   ("Aegean" "Code2001"))
+  ("Old South Arabian"
+   ("Qataban" "Quivira"))
+  ("Old Turkic"
+   ("Quivira"))
+  ("Optical Character Recognition"
+   ("Apple Symbols" "Arial Unicode MS" "Symbola" "Quivira"))
+  ("Oriya"
+   ("Oriya Sangam MN" "Kalinga" "Samyak Oriya" "Samyak" "Arial Unicode MS"))
+  ("Osmanya"
+   ("MPH 2B Damase" "Code2001"))
+  ("Phags-pa"
+   ("Microsoft PhagsPa" "BabelStone Phags-pa Book" "BabelStone Phags-pa Book:style=Regular" "Code2000"))
+  ("Phaistos Disc"
+   ("Aegean" "Code2001"))
+  ("Phoenician"
+   ("Aegean" "Quivira" "Code2001"))
+  ("Phonetic Extensions Supplement"
+   ("Consolas" "Calibri" "Courier New" "Quivira" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Code2000"))
+  ("Phonetic Extensions"
+   ("Monaco" "Consolas" "Calibri" "Quivira" "Courier New" "DejaVu Sans:width=condensed"))
+  ("Playing Cards"
+   ("DejaVu Sans:width=condensed" "Symbola" "Quivira"))
+  ("Rejang"
+   ("Code2000"))
+  ("Runic"
+   ("Quivira"))
+  ("Samaritan"
+   ("Quivira"))
+  ("Saurashtra"
+   ("Code2000" "Sourashtra"))
+  ("Shavian"
+   ("Apple Symbols" "MPH 2B Damase" "Code2001"))
+  ("Sinhala"
+   ("Sinhala Sangam MN" "Iskoola Pota" "Akshar Unicode"))
+  ("Small Form Variants"
+   ("Apple Symbols" "Arial Unicode MS" "WenQuanYi Zen Hei Mono" "Code2000"))
+  ("Specials"
+   ("Apple Symbols" "Arial Unicode MS" "DejaVu Sans Mono" "DejaVu Sans:width=condensed" "Symbola" "Quivira" "BabelStone Han"))
+  ("Sundanese"
+   ("Sundanese Unicode" "Hacen Sudan"))
+  ("Superscripts and Subscripts"
+   ("Cambria Math" "Consolas" "Symbola" "Quivira"))
+  ("Supplemental Arrows-A"
+   ("Apple Symbols" "Cambria Math" "DejaVu Sans:width=condensed" "Symbola" "Quivira"))
+  ("Supplemental Arrows-B"
+   ("Apple Symbols" "Cambria Math" "Symbola" "Quivira"))
+  ("Supplemental Mathematical Operators"
+   ("Apple Symbols" "Cambria Math" "Symbola" "Quivira"))
+  ("Supplemental Punctuation"
+   ("Symbola" "Quivira" "Code2000"))
+  ("Syloti Nagri"
+   ("MPH 2B Damase"))
+  ("Syriac"
+   ("Estrangelo Edessa" "Estrangelo Nisibin" "Code2000"))
+  ("Tagalog"
+   ("Quivira"))
+  ("Tagbanwa"
+   ("Quivira"))
+  ("Tags"
+   ("BabelStone Han"))
+  ("Tai Le"
+   ("Microsoft Tai Le" "MPH 2B Damase"))
+  ("Tai Tham"
+   ("Lanna Alif"))
+  ("Tai Viet"
+   ("Tai Heritage Pro"))
+  ("Tai Xuan Jing Symbols"
+   ("Apple Symbols" "WenQuanYi Zen Hei Mono" "BabelStone Han" "DejaVu Sans:width=condensed" "Symbola" "Quivira" "Code2001"))
+  ("Tamil"
+   ("Tamil Sangam MN" "InaiMathi" "Latha" "Maduram" "Akshar Unicode" "Samyak Tamil" "Samyak" "Arial Unicode MS"))
+  ("Telugu"
+   ("Telugu Sangam MN" "Gautami" "Akshar Unicode" "Code2000" "Arial Unicode MS"))
+  ("Thaana"
+   ("MV Boli" "MPH 2B Damase"))
+  ("Thai"
+   ("Ayuthaya" "Silom" "Krungthep" "Sathu" "Thonburi" "DokChampa" "Angsana New" "Tahoma" "Arial Unicode MS" "Quivira"))
+  ("Tibetan"
+   ("Kailasa" "Kokonor" "Microsoft Himalaya" "Jomolhari" "Monlam Uni Sans Serif" "Arial Unicode MS"))
+  ("Tifinagh"
+   ("DejaVu Sans:width=condensed" "Quivira"))
+  ("Transport and Map Symbols"
+   ("Symbola"))
+  ("Ugaritic"
+   ("Aegean" "Code2001"))
+  ("Unified Canadian Aboriginal Syllabics Extended"
+   ("Euphemia UCAS" "Euphemia" "Quivira"))
+  ("Unified Canadian Aboriginal Syllabics"
+   ("Euphemia UCAS" "Euphemia" "Quivira"))
+  ("Vai"
+   ("Quivira"))
+  ("Variation Selectors Supplement"
+   ("BabelStone Han"))
+  ("Variation Selectors"
+   ("BabelStone Han"))
+  ("Vedic Extensions"
+   ("Siddhanta"))
+  ("Vertical Forms"
+   ("Symbola"))
+  ("Yi Radicals"
+   ("ST Fangsong" "PC Myungjo" "Microsoft Yi Baiti" "Nuosu SIL"))
+  ("Yi Syllables"
+   ("ST Fangsong" "Apple Myungjo" "Microsoft Yi Baiti" "Nuosu SIL"))
+  ("Yijing Hexagram Symbols"
+   ("Apple Symbols" "DejaVu Sans:width=condensed" "WenQuanYi Zen Hei Mono" "BabelStone Han" "Symbola" "Quivira")))))
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(url-queue-timeout 30)
  '(user-mail-address "di7979.kim@hanwha.com")
  '(vc-annotate-background "#2B2B2B")
- '(vc-annotate-color-map
-   (quote
-    ((20 . "#BC8383")
-     (40 . "#CC9393")
-     (60 . "#DFAF8F")
-     (80 . "#D0BF8F")
-     (100 . "#E0CF9F")
-     (120 . "#F0DFAF")
-     (140 . "#5F7F5F")
-     (160 . "#7F9F7F")
-     (180 . "#8FB28F")
-     (200 . "#9FC59F")
-     (220 . "#AFD8AF")
-     (240 . "#BFEBBF")
-     (260 . "#93E0E3")
-     (280 . "#6CA0A3")
-     (300 . "#7CB8BB")
-     (320 . "#8CD0D3")
-     (340 . "#94BFF3")
-     (360 . "#DC8CC3"))))
+'(vc-annotate-color-map
+(quote
+ ((20 . "#BC8383")
+  (40 . "#CC9393")
+  (60 . "#DFAF8F")
+  (80 . "#D0BF8F")
+  (100 . "#E0CF9F")
+  (120 . "#F0DFAF")
+  (140 . "#5F7F5F")
+  (160 . "#7F9F7F")
+  (180 . "#8FB28F")
+  (200 . "#9FC59F")
+  (220 . "#AFD8AF")
+  (240 . "#BFEBBF")
+  (260 . "#93E0E3")
+  (280 . "#6CA0A3")
+  (300 . "#7CB8BB")
+  (320 . "#8CD0D3")
+  (340 . "#94BFF3")
+  (360 . "#DC8CC3"))))
  '(vc-annotate-very-old-color "#DC8CC3")
  '(vc-handled-backends (quote (RCS CVS SVN SCCS SRC Bzr Hg Mtn)))
- '(weechat-color-list
-   (quote
-    (unspecified "#002b36" "#073642" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#839496" "#657b83")))
+'(weechat-color-list
+(quote
+ (unspecified "#002b36" "#073642" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#839496" "#657b83")))
  '(which-func-maxout 1000)
  '(which-func-modes t)
  '(which-func-non-auto-modes (quote (python-mode)))
  '(which-function-mode nil)
  '(xah-find-file-background-color "tomato")
- '(xah-find-file-separator
-   "══════════════════════════════════════════════════════════════════════
+'(xah-find-file-separator
+"══════════════════════════════════════════════════════════════════════
 ")
  '(xah-find-match-background-color "blue1")
  '(xah-find-occur-postfix "》")
