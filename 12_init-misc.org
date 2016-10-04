@@ -496,7 +496,7 @@ is run).
 * encrypt
 
 
-  #+BEGIN_SRC 
+  #+BEGIN_SRC emacs-lisp
 
 ;;암호화 기능을 사용할 수 있습니다. 
 (require 'epg-config)
@@ -638,6 +638,9 @@ is run).
 
 
   #+END_SRC
+
+  #+RESULTS:
+  : epg--start
 
 * personal
   #+BEGIN_SRC emacs-lisp
