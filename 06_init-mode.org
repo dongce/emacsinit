@@ -515,7 +515,8 @@
 #+END_SRC
 
 * input completion
-#+BEGIN_SRC emacs-lisp
+  ivy 에 의해 deprecated
+#+BEGIN_SRC emacs-lisp :tangle no
 ;; interactive name completion for describe-function, describe-variable, etc.
 (icomplete-mode 1)
 #+END_SRC
