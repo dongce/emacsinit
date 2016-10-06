@@ -177,6 +177,7 @@
   ;;
   ;;deprecatedbynext;;(setq file-coding-system-alist (append '(("\\.js$" . utf-8)) file-coding-system-alist ) ) ;; 자바 스크립트의 인코딩을 UTF-8 로 합니다. 
   (add-to-list 'file-coding-system-alist '("itsalltext" . utf-8))
+  (add-to-list 'file-coding-system-alist '("\\.rb\\'" . utf-8))
   (add-to-list 'file-coding-system-alist '("\\.py\\'" . utf-8))
   (add-to-list 'file-coding-system-alist '("\\.org\\'" . utf-8))
   (add-to-list 'file-coding-system-alist '("\\.json\\'" . utf-8))
