@@ -235,12 +235,12 @@
        "D" #'toggle-current-window-dedication
        "kb" 'kill-buffer
        ;; projectile -----------------------------------------------------------------
-       "p"  (cdar (cddr  (cadr  projectile-mode-map)))
-       "pw"  'purpose-load-window-layout
-       "pW"  'purpose-save-window-layout
-       "pE"  'project-explorer-open
-       "pC"  'project-explorer-close
-       "p/"  'projectile-grep
+       "op"  (cdar (cddr  (cadr  projectile-mode-map)))
+       "opw"  'purpose-load-window-layout
+       "opW"  'purpose-save-window-layout
+       "opE"  'project-explorer-open
+       "opC"  'project-explorer-close
+       "op/"  'projectile-grep
        ;;deprecated;; "pb" 'projectile-switch-to-buffer
        ;;deprecated;; "pC" 'projectile-invalidate-cache
        ;;deprecated;; "pd" 'projectile-dired
@@ -256,21 +256,21 @@
        ;; helm
        ;; "h" #'smex ;; "h" help-map
        ;; "h" help-map
-       "hz" 'zeal-at-point
-       "hh"      'helm-mini
-       "ha"      'helm-apropos
-       "hB"      'helm-buffers-list
-       "hb"      'helm-descbindings
-       "hy"      'helm-show-kill-ring
-       "hx"      'helm-M-x
-       "ho"     'helm-occur
-       "hs"     'helm-swoop
-       "hy"     'helm-yas-complete
-       "hY"     'helm-yas-create-snippet-on-region
+       "ohz" 'zeal-at-point
+       "ohh"      'helm-mini
+       "oha"      'helm-apropos
+       "ohB"      'helm-buffers-list
+       "ohb"      'helm-descbindings
+       "ohy"      'helm-show-kill-ring
+       "ohx"      'helm-M-x
+       "oho"     'helm-occur
+       "ohs"     'helm-swoop
+       "ohy"     'helm-yas-complete
+       "ohY"     'helm-yas-create-snippet-on-region
        ;; "hcb"     'my/helm-do-grep-book-notes
-       "hr" 'helm-all-mark-rings
-       "hm" 'helm-smex
-       "hM" 'helm-smex-major-mode-commands
+       "ohr" 'helm-all-mark-rings
+       "ohm" 'helm-smex
+       "ohM" 'helm-smex-major-mode-commands
 
        ;; org
        "om" 'orgmail
