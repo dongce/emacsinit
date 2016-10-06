@@ -184,8 +184,8 @@
 ;;WHATCHAR;;better is just to assign a key to “describe-char”. I use 【Ctrl+h c】.
 
 ;; 윈도우 숫자를 부여 
-(require 'window-numbering)
-(window-numbering-mode 1)
+;;spacemacs-deprecated;;(require 'window-numbering)
+;;spacemacs-deprecated;;(window-numbering-mode 1)
 
 
 (defun next-user-buffer ()

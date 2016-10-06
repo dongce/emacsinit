@@ -356,7 +356,8 @@
     (require 'xterm-color)
 
     (xterm-mouse-mode)
-    (put 'downcase-region 'disabled nil))
+    (put 'downcase-region 'disabled nil)
+    (define-key key-translation-map (kbd "<cancel>") "\C-c"))
    nil
    )
 #+END_SRC
