@@ -79,21 +79,21 @@
        "/" 'evil-replace-word-selection
 
        ;; search
-       ;;"s"  search-map ;;'save-buffer
-       ;;"st" 'sr-speedbar-toggle              ;
-       "sL" 'loccur
-       "so" 'occur
-       "sn" 'smartscan-symbol-go-forward
-       "sp" 'smartscan-symbol-go-backward
-       "sc" 'xah-lookup-cppreference
-       "s." 'gtags-find-tag
-       "s," 'gtags-pop-stack
-       "s_" 'isearch-forward-symbol
-       "s-" 'isearch-forward-at-point
-       ;;"ss" 'isearch-forward
-       "sm" 'grep-word
-       "st" 'xah-find-text
-       "sT" 'xah-find-text-regex
+       ;;"os"  search-map ;;'save-buffer
+       ;;"ost" 'sr-speedbar-toggle              ;
+       "osL" 'loccur
+       "oso" 'occur
+       "osn" 'smartscan-symbol-go-forward
+       "osp" 'smartscan-symbol-go-backward
+       "osc" 'xah-lookup-cppreference
+       "os." 'gtags-find-tag
+       "os," 'gtags-pop-stack
+       "os_" 'isearch-forward-symbol
+       "os-" 'isearch-forward-at-point
+       ;;"oss" 'isearch-forward
+       "osm" 'grep-word
+       "ost" 'xah-find-text
+       "osT" 'xah-find-text-regex
 
        ;; smerge
        "S" smerge-basic-map
