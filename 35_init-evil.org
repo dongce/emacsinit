@@ -84,6 +84,9 @@
        "ost" 'xah-find-text
        "osT" 'xah-find-text-regex
 
+
+       "op" 'evil-paste-after-from-0
+
        "S" smerge-basic-map
 
        "u" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
@@ -160,7 +163,6 @@
        ;;deprecattion;;")" #'kmacro-end-macro
        ;;deprecattion;;"xx"  #'kmacro-end-and-call-macro
        ;;deprecattion;;"xi"  #'string-inflection-all-cycle
-       ;;deprecattion;;"d" 'dired
        ;;deprecattion;;"D" #'toggle-current-window-dedication
        ;;deprecattion;;"kb" 'kill-buffer
        ;;deprecattion;;"op"  (cdar (cddr  (cadr  projectile-mode-map)))
@@ -185,6 +187,7 @@
        "ohr" 'helm-all-mark-rings
        "ohm" 'helm-smex
        "ohM" 'helm-smex-major-mode-commands
+       "od"  'counsel-goto-recent-directory
 
        "om" 'orgmail
        "oS" 'tmpscratch
@@ -635,8 +638,8 @@
    #+END_SRC
 
 ** mode specific 
-*** ibuffer
-    #+BEGIN_SRC emacs-lisp
+*** ibuffer                                                      :deprecated:
+    #+BEGIN_SRC emacs-lisp :tangle no
  ;; https://github.com/emacsmirror/evil/blob/master/evil-integration.el
  ;; Ibuffer
  (define-key ibuffer-mode-map (kbd  "<SPC>") nil)
