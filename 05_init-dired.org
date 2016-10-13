@@ -325,8 +325,8 @@ open and unsaved."
           (dired-get-marked-files))))
 #+END_SRC
 
-* dired buffer setting
-#+BEGIN_SRC emacs-lisp
+* dired buffer setting                                          :deprecated:
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package dired+
     :config
     (toggle-diredp-find-file-reuse-dir 1)
@@ -367,3 +367,23 @@ open and unsaved."
     :config
     (add-hook 'image-mode-hook 'eimp-mode))
 #+END_SRC
+* counsel
+
+#+BEGIN_SRC emacs-lisp
+  (defun counsel-goto-recent-directory ()
+    "Open recent directory with dired"
+    (interactive)
+    (unless recentf-mode (recentf-mode 1))
+    (let ((collection
+           (delete-dups
+            (append (mapcar 'file-name-directory recentf-list)
+                    ;; fasd history
+                    ;;(if (executable-find "fasd")
+                    ;;    (split-string (shell-command-to-string "fasd -ld") "\n" t))
+                    ))))
+      (ivy-read "directories:" collection :action 'dired)))
+#+END_SRC
+
+#+RESULTS:
+: counsel-goto-recent-directory
+

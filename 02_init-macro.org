@@ -3222,6 +3222,16 @@ of FILE in the current directory, suitable for creation"
 
 #+END_SRC
 
+* flush-empty-lines
+#+BEGIN_SRC emacs-lisp
+  (defun flush-empty-lines ()
+    (interactive)
+    (flush-lines "^ *$"))
+#+END_SRC
+
+#+RESULTS:
+: flush-empty-lines
+
 * deprecated
 #+BEGIN_SRC emacs-lisp
 

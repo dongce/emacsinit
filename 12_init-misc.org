@@ -1541,68 +1541,91 @@ See also `multi-occur'."
 ** unify region
 
    #+BEGIN_SRC emacs-lisp
- (defun uniq-region ()
-   "remove duplicate adjacent lines in the given region"
-   (interactive)
-   (save-excursion
-     (save-restriction
-       (narrow-to-region (region-beginning) (region-end))
-       (strip-trailing-whitespace (point-min) (point-max))
-       (let (( contents (s-split "\n" (buffer-substring-no-properties (point-min) (point-max))))
-             ( unified nil)
-             )
-         (dolist (it contents (setf unified  (reverse  unified)))
-           (if (not  (member it unified))
-               (setf unified (cons it unified) )))
-         (delete-region (point-min) (point-max))
-         (insert (s-join "\n" unified))))))
+     (defun uniq-region ()
+       "remove duplicate adjacent lines in the given region"
+       (interactive)
+       (save-excursion
+         (save-restriction
+           (narrow-to-region (region-beginning) (region-end))
+           (strip-trailing-whitespace (point-min) (point-max))
+           (let (( contents (s-split "\n" (buffer-substring-no-properties (point-min) (point-max))))
+                 ( unified nil)
+                 )
+             (dolist (it contents (setf unified  (reverse  unified)))
+               (if (not  (member it unified))
+                   (setf unified (cons it unified) )))
+             (delete-region (point-min) (point-max))
+             (insert (s-join "\n" unified))))))
 
 
-          
- (defun uniquify-region ()
-   "remove duplicate adjacent lines in the given region"
-   (interactive)
-   (save-excursion
-     (save-restriction
-       (narrow-to-region (region-beginning) (region-end))
-       (sort-lines nil (point-min) (point-max))
-       (beginning-of-buffer)
-       (while (re-search-forward "\\(.*\n\\)\\1+" nil t)
-         (replace-match "\\1" nil nil))
-       (widen) 
-       nil)))
 
- (defun find-duplicate-lines (&optional insertp interp)
-   (interactive "i\np")
-   (let ((max-pon (line-number-at-pos (point-max)))
-         (gather-dups))
-     (while (< (line-number-at-pos) max-pon) (= (forward-line) 0)
-            (let ((this-line (buffer-substring-no-properties (line-beginning-position 1) (line-end-position 1)))
-                  (next-line (buffer-substring-no-properties (line-beginning-position 2) (line-end-position 2))))
-              (when  (equal this-line next-line)  (setq gather-dups (cons this-line gather-dups)))))
-     (if (or insertp interp)
-         (save-excursion  (princ gather-dups (current-buffer)))
-       gather-dups)))
+     (defun uniquify-region ()
+       "remove duplicate adjacent lines in the given region"
+       (interactive)
+       (save-excursion
+         (save-restriction
+           (narrow-to-region (region-beginning) (region-end))
+           (sort-lines nil (point-min) (point-max))
+           (beginning-of-buffer)
+           (while (re-search-forward "\\(.*\n\\)\\1+" nil t)
+             (replace-match "\\1" nil nil))
+           (widen) 
+           nil)))
 
- (defun occur-duplicate-lines ()
-   (interactive)
-   (occur "\\(.*\n\\)\\1+"))
+     (defun find-duplicate-lines (&optional insertp interp)
+       (interactive "i\np")
+       (let ((max-pon (line-number-at-pos (point-max)))
+             (gather-dups))
+         (while (< (line-number-at-pos) max-pon) (= (forward-line) 0)
+                (let ((this-line (buffer-substring-no-properties (line-beginning-position 1) (line-end-position 1)))
+                      (next-line (buffer-substring-no-properties (line-beginning-position 2) (line-end-position 2))))
+                  (when  (equal this-line next-line)  (setq gather-dups (cons this-line gather-dups)))))
+         (if (or insertp interp)
+             (save-excursion  (princ gather-dups (current-buffer)))
+           gather-dups)))
+
+     (defun occur-duplicate-lines ()
+       (interactive)
+       (occur "\\(.*\n\\)\\1+"))
 
 
-;; 중복 라인을 제거한다. 
-(defun uniquify-all-lines-region (start end)
-  "Find duplicate lines in region START to END keeping first occurrence."
-  (interactive "*r")
-  (save-excursion
-    (let ((end (copy-marker end)))
-      (while
-          (progn
-            (goto-char start)
-            (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
-        (replace-match "\\1\n\\2")))))
+     ;; 중복 라인을 제거한다. 
+     (defun uniquify-all-lines-region (start end)
+       "Find duplicate lines in region START to END keeping first occurrence."
+       (interactive "*r")
+       (save-excursion
+         (let ((end (copy-marker end)))
+           (while
+               (progn
+                 (goto-char start)
+                 (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
+             (replace-match "\\1\n\\2")))))
 
    #+END_SRC
 
+   #+RESULTS:
+   : uniquify-all-lines-region
+
+
+** sorting
+#+BEGIN_SRC emacs-lisp
+
+  (defun csortregion ()
+    "remove duplicate adjacent lines in the given region"
+    (interactive)
+    (save-excursion
+      (save-restriction
+        (narrow-to-region (region-beginning) (region-end))
+        (strip-trailing-whitespace (point-min) (point-max))
+        (let (( contents 
+                (sort  (s-split "\n" (buffer-substring-no-properties (point-min) (point-max))) #'string-collate-lessp)))
+
+          (delete-region (point-min) (point-max))
+          (insert (s-join "\n" contents))))))
+
+
+  (require 'sort-group-lines)
+#+END_SRC
 ** eol marker 
    #+BEGIN_SRC emacs-lisp
 ;; Useful function:

@@ -8,7 +8,7 @@
 * alias
 #+BEGIN_SRC emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p) ; y or n is enough
-  (defalias 'list-buffers 'ibuffer) ; always use ibuffer
+  ;;deprecated;;(defalias 'list-buffers 'ibuffer) ; always use ibuffer
   (defalias 'perl-mode 'cperl-mode) ; always use cperl-mode
 
 
@@ -625,6 +625,7 @@
       ( "8passed"         "❯")
       ( "8replied"        "❮")
       ( "8seen"           "✔")
+      ( "8sn"           "✔")
       ( "8ground"          "⏚")
       ( "8trashed"        "🚮")
       ( "8attach"         "⚓")

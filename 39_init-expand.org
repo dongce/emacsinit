@@ -2,7 +2,12 @@
 
 
 * yas
+
 #+BEGIN_SRC emacs-lisp
+(add-to-list 'yas-snippet-dirs (concat emacsw32-home "YASnippet"))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle no
 
 
 (use-package yasnippet
@@ -62,9 +67,8 @@
 
 #+END_SRC
 
-
-* company
-#+BEGIN_SRC emacs-lisp
+* company                                             :deprecated:spacemacs:
+#+BEGIN_SRC emacs-lisp :tangle no
 
 (require  'company)
 (setq company-backends (delete 'company-semantic company-backends))
