@@ -1899,7 +1899,7 @@ See also: `copy-to-register-1', `insert-register'."
 	(end-of-line) )
 
 
-(defun insert-string() 
+(defun insertstring() 
   (interactive)
   (insert " : \"\"" ) (backward-char 1 ))
 
