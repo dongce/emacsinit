@@ -1193,6 +1193,7 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
 
 * search
 
+** origin
   #+BEGIN_SRC emacs-lisp
 
 (defun link11-grep (word &optional case-senstive )
@@ -1363,9 +1364,75 @@ See also `multi-occur'."
 (append-path (fullpath "../../global/bin/"))
 (append-path (fullpath "../../cscope-15.8a/"))
 
-(require 'gtags)
 (require 'xcscope) 
 
+;; I-search with initial contents.
+;; original source: http://platypope.org/blog/2007/8/5/a-compendium-of-awesomeness
+(defvar isearch-initial-string nil)
+
+(defun isearch-set-initial-string ()
+  (remove-hook 'isearch-mode-hook 'isearch-set-initial-string)
+  (setq isearch-string isearch-initial-string)
+  (isearch-search-and-update))
+
+(defun isearch-forward-at-point (&optional regexp-p no-recursive-edit)
+  "Interactive search forward for the symbol at point."
+  (interactive "P\np")
+  (if regexp-p (isearch-forward regexp-p no-recursive-edit)
+    (let* ((end (progn (skip-syntax-forward "w_") (point)))
+           (begin (progn (skip-syntax-backward "w_") (point))))
+      (if (eq begin end)
+          (isearch-forward regexp-p no-recursive-edit)
+        (setq isearch-initial-string (buffer-substring begin end))
+        (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
+        (isearch-forward regexp-p no-recursive-edit)))))
+
+;; (use-package company
+;;   :config
+;;   (add-hook 'after-init-hook (lambda () (global-company-mode '(not gud-mode))))
+;;   (delete 'company-semantic company-backends)
+;;   (define-key c-mode-map    (kbd "<backtab>"  ) 'company-complete)
+;;   (define-key c++-mode-map  (kbd "<backtab>"  ) 'company-complete))
+
+
+(helm-flx-mode +1)
+
+(use-package smartscan
+  :defer t
+  :config (global-smartscan-mode t)
+  (unbind-key "M-n" smartscan-map)
+  (unbind-key "M-p" smartscan-map)
+  )
+
+
+
+;; Uncomment the below line to use eww (Emacs Web Wowser)
+;; (setq xah-lookup-browser-function 'eww)
+
+(req-package xah-lookup
+  :force t
+  :config 
+  (defun xah-lookup-cppreference (&optional word)
+    "Lookup definition of current word or text selection in URL."
+    (interactive)
+    (xah-lookup-word-on-internet
+     word
+     ;; Use � as a placeholder in the query URL.
+     "http://en.cppreference.com/mwiki/index.php?search=�"
+     xah-lookup-browser-function)))
+  #+END_SRC
+
+  #+RESULTS:
+  : t
+
+** gtag
+ #+BEGIN_SRC emacs-lisp :tangle  no
+ (remove-hook 'c++-mode-hook 'semantic-default-c-setup)
+ (add-hook 'c++-mode-hook '(lambda () (gtags-mode 1)))
+ (setq gtags-mode-hook '(lambda () (setq gtags-pop-delete t) (setq gtags-path-style 'relative)))
+ (setq gtags-select-mode-hook '(lambda () (setq hl-line-face 'underline) (hl-line-mode 1)))
+
+(require 'gtags)
 (w32-unix-eval
  ((setq gtags-global-command (file-truename (fullpath "../../global/bin/global.exe"))))
  ((setq gtags-global-command  "/usr/local/misctools/default/bin/global")))
@@ -1477,64 +1544,10 @@ See also `multi-occur'."
 ;;deprecatedby-gtag.el gtag-mode;;;;(add-hook 'after-save-hook 'gtags-update-hook)
 
 
+ #+END_SRC
 
-
-
-;; I-search with initial contents.
-;; original source: http://platypope.org/blog/2007/8/5/a-compendium-of-awesomeness
-(defvar isearch-initial-string nil)
-
-(defun isearch-set-initial-string ()
-  (remove-hook 'isearch-mode-hook 'isearch-set-initial-string)
-  (setq isearch-string isearch-initial-string)
-  (isearch-search-and-update))
-
-(defun isearch-forward-at-point (&optional regexp-p no-recursive-edit)
-  "Interactive search forward for the symbol at point."
-  (interactive "P\np")
-  (if regexp-p (isearch-forward regexp-p no-recursive-edit)
-    (let* ((end (progn (skip-syntax-forward "w_") (point)))
-           (begin (progn (skip-syntax-backward "w_") (point))))
-      (if (eq begin end)
-          (isearch-forward regexp-p no-recursive-edit)
-        (setq isearch-initial-string (buffer-substring begin end))
-        (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
-        (isearch-forward regexp-p no-recursive-edit)))))
-
-;; (use-package company
-;;   :config
-;;   (add-hook 'after-init-hook (lambda () (global-company-mode '(not gud-mode))))
-;;   (delete 'company-semantic company-backends)
-;;   (define-key c-mode-map    (kbd "<backtab>"  ) 'company-complete)
-;;   (define-key c++-mode-map  (kbd "<backtab>"  ) 'company-complete))
-
-
-(helm-flx-mode +1)
-
-(use-package smartscan
-  :defer t
-  :config (global-smartscan-mode t)
-  (unbind-key "M-n" smartscan-map)
-  (unbind-key "M-p" smartscan-map)
-  )
-
-
-
-;; Uncomment the below line to use eww (Emacs Web Wowser)
-;; (setq xah-lookup-browser-function 'eww)
-
-(req-package xah-lookup
-  :force t
-  :config 
-  (defun xah-lookup-cppreference (&optional word)
-    "Lookup definition of current word or text selection in URL."
-    (interactive)
-    (xah-lookup-word-on-internet
-     word
-     ;; Use � as a placeholder in the query URL.
-     "http://en.cppreference.com/mwiki/index.php?search=�"
-     xah-lookup-browser-function)))
-  #+END_SRC
+ #+RESULTS:
+ | lambda | (&optional prefix) | (interactive P) | (call-interactively (if prefix (quote gtags-find-symbol) (quote gtags-find-rtag))) |
 
 * edit
 
