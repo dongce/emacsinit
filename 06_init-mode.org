@@ -252,11 +252,6 @@
     ))
 
 
-(add-hook 'c++-mode-hook '(lambda () (gtags-mode 1)))
-(remove-hook 'c++-mode-hook 'semantic-default-c-setup)
-
-(setq gtags-mode-hook '(lambda () (setq gtags-pop-delete t) (setq gtags-path-style 'relative)))
-(setq gtags-select-mode-hook '(lambda () (setq hl-line-face 'underline) (hl-line-mode 1)))
 
 (add-hook 
  'ibuffer-mode-hook
