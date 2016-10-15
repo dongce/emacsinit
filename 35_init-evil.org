@@ -72,7 +72,7 @@
        "/" 'evil-replace-word-selection
 
        "osL" 'loccur
-       "oso" 'occur
+       "oo" 'occur
        "osn" 'smartscan-symbol-go-forward
        "osp" 'smartscan-symbol-go-backward
        "osc" 'xah-lookup-cppreference
@@ -89,8 +89,8 @@
 
        "S" smerge-basic-map
 
-       "u" 'ido-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
-       "U" 'helm-choose-from-recentf ;;'string-rectangle ;;'recentf-open-most-recent-file
+       "u" 'helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
+       "U" 'helm-goto-recent-directory ;;counsel-goto-recent-directory ;;;;'string-rectangle ;;'recentf-open-most-recent-file
        ";" 'evilnc-comment-or-uncomment-lines
 
        "oCw" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
