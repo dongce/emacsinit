@@ -368,22 +368,85 @@ open and unsaved."
     (add-hook 'image-mode-hook 'eimp-mode))
 #+END_SRC
 * counsel
+** helm, ido              
+   #+BEGIN_SRC emacs-lisp 
+     (defun ido-choose-from-recentf ()
+       "Use ido to select a recently opened file from the `recentf-list'"
+       (interactive)
+       (let ((home (expand-file-name (getenv "HOME"))))
+         (find-file
+          (ido-completing-read "Recentf open: "
+                               (mapcar (lambda (path)
+                                         (replace-regexp-in-string home "~/" path))
+                                       recentf-list)
+                               nil t))))
 
-#+BEGIN_SRC emacs-lisp
-  (defun counsel-goto-recent-directory ()
-    "Open recent directory with dired"
-    (interactive)
-    (unless recentf-mode (recentf-mode 1))
-    (let ((collection
-           (delete-dups
-            (append (mapcar 'file-name-directory recentf-list)
-                    ;; fasd history
-                    ;;(if (executable-find "fasd")
-                    ;;    (split-string (shell-command-to-string "fasd -ld") "\n" t))
-                    ))))
-      (ivy-read "directories:" collection :action 'dired)))
-#+END_SRC
+     (defun helm-choose-from-recentf ()
+       "Use helm to select a recently opened file from the `recentf-list'"
+       (interactive)
+       (let ((home (expand-file-name (getenv "HOME"))))
+         (find-file
+          (helm-comp-read 
+           "파일명을 입력하세요 : "
+           (mapcar (lambda (path)
+                     (replace-regexp-in-string home "~/" path))
+                   recentf-list)
+           ))))
 
-#+RESULTS:
-: counsel-goto-recent-directory
+     (defun helm-goto-recent-directory ()
+       "Open recent directory with dired"
+       (interactive)
+       (let ((home (expand-file-name (getenv "HOME"))))
+         (find-file
+          (helm-comp-read 
+           "폴더명을 입력하세요 : "
+
+           (mapcar (lambda (path)
+                     (replace-regexp-in-string home "~/" path))
+                     (append (mapcar 'file-name-directory recentf-list)
+                       ;; fasd history
+                       ;;(if (executable-find "fasd")
+                       ;;    (split-string (shell-command-to-string "fasd -ld") "\n" t))
+                       ))))))
+
+   #+END_SRC
+
+   #+RESULTS:
+   : helm-goto-recent-directory
+
+** ivy
+ #+BEGIN_SRC emacs-lisp
+     (defun counsel-goto-recent-directory ()
+       "Open recent directory with dired"
+       (interactive)
+       (unless recentf-mode (recentf-mode 1))
+       (let ((collection
+              (delete-dups
+               (append (mapcar 'file-name-directory recentf-list)
+                       ;; fasd history
+                       ;;(if (executable-find "fasd")
+                       ;;    (split-string (shell-command-to-string "fasd -ld") "\n" t))
+                       ))))
+         (ivy-read "directories:" collection :action 'dired)))
+
+
+
+   (defun counsel-choose-from-recentf ()
+     "Use helm to select a recently opened file from the `recentf-list'"
+     (interactive)
+       (interactive)
+       (unless recentf-mode (recentf-mode 1))
+       (let* ((home (expand-file-name (getenv "HOME")))
+             (collection
+              (delete-dups
+               (mapcar (lambda (path)
+                         (replace-regexp-in-string home "~/" path))
+                       recentf-list))))
+         (ivy-read "최근 파일:" collection :action 'find-file)))
+
+
+ #+END_SRC
+
+ #+RESULTS:
+ : counsel-choose-from-recentf
 

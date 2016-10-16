@@ -1,5 +1,4 @@
 # -*- coding: utf-8; -*-
-
 * header
   #+BEGIN_SRC emacs-lisp
     ;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
@@ -115,6 +114,7 @@
     'global-abbrev-table
     `(
       ;; math/unicode symbols
+      ("8dead" "☭")
       ("8man" "卍")
       ("8만" "卍")
       ("8warn"         "⚠")
@@ -253,9 +253,9 @@
       ("8prevsong"  "⏮")
       ("8nextsong"  "⏭")
       ("8fbackward" "⏪")
-      ("8fforward"  "⏩")
-      ("8fupward"   "⏫")
-      ("8fdownward" "⏬")
+      ("8forward"  "⏩")
+      ("8upward"   "⏫")
+      ("8downward" "⏬")
       ("8in" "∈")
       ("8nin" "∉")
       ("8inf" "∞")
