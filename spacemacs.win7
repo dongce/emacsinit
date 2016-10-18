@@ -328,6 +328,9 @@ you should place your code here."
   ;; (define-key evil-visual-state-map "p" 'evil-paste-after-from-0)
   ;; (define-key evil-normal-state-map "p" 'evil-paste-after-from-0)
   
+  (remove-hook 'find-file-hook #'vc-refresh-state)
+  (remove-hook 'find-file-hook #'git-gutter+-turn-on)
+  (remove-hook 'find-file-hook #'git-commit-setup-check-buffer)
 
   (require 'cl)
 
@@ -338,12 +341,13 @@ you should place your code here."
   (init-loader-load (concat emacsw32-home "/site-lisp/init"))
   (recentf-load-list)
   (global-hl-line-mode 0)
+
+  (define-key ivy-minibuffer-map (kbd "S-SPC") 'toggle-korean-input-method)
+  (define-key ivy-minibuffer-map (kbd "C-\\") 'ivy-restrict-to-matches)
+
+
   ;;(add-to-list 'load-path (file-truename (concat emacsw32-home "/exp-site-lisp/")))
   (server-start)
-
-  (remove-hook 'find-file-hook #'vc-refresh-state)
-  (remove-hook 'find-file-hook #'git-gutter+-turn-on)
-  (remove-hook 'find-file-hook #'git-commit-setup-check-buffer)
 
   )
 
