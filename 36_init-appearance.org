@@ -1,12 +1,12 @@
 # -*- coding: utf-8; -*-
 
 * header
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
 ;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
 
-#+END_SRC
+  #+END_SRC
 * theme
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
 
 ;;(require 'color-theme)
 ;;(color-theme-initialize )
@@ -255,211 +255,265 @@ Assumes that the frame is only split into two."
 ;;; http://www.reddit.com/r/emacs/comments/1huhsg/i_need_help_with_adding_keywords_for_syntax/
 ;; font lock 설정 
 (global-font-lock-mode 1)                     ; for all buffers
-#+END_SRC
+  #+END_SRC
 * font
-#+BEGIN_SRC emacs-lisp
-(defun* cycle-font (num &optional (hangul nil))
-  "Change font in current frame.
-Each time this is called, font cycles thru a predefined set of fonts.
-If NUM is 1, cycle forward.
-If NUM is -1, cycle backward.
-Warning: tested on Windows Vista only."
-  (interactive "p")
-  ;; this function sets a property “state”. It is a integer. Possible values are any index to the fontList.
-  (let (fontList hanFontList fontToUse currentState nextState )
-    (setq fontList (list
-                    "Courier New-10" 
-                    "DejaVu Sans Mono-9" 
-                    "Lucida Console-10"
-                    "DejaVu Sans-10" 
-                    "Lucida Sans Unicode-10" 
-                    "Arial Unicode MS-10" 
-                    "Consolas-10"
-                    "Inconsolata-10"
-                    "Monaco-9"
-                    ))
-    (setq hanFontList (list
-                       '("돋움체" . "unicode-bmp")
-                       '("새굴림" . "unicode-bmp")
-                       '("나눔고딕_코딩" . "unicode-bmp")
-                       '("맑은 고딕" . "unicode-bmp")
-                       '("나눔고딕코딩" . "unicode-bmp")
-                    ))
-    ;; fixed-width "Courier New" "Unifont"  "FixedsysTTF" "Miriam Fixed" "Lucida Console" "Lucida Sans Typewriter"
-    ;; variable-width "Code2000"
+** cycle font 
+   #+BEGIN_SRC emacs-lisp
+   (defun* cycle-font (num &optional (hangul nil))
+     "Change font in current frame.
+   Each time this is called, font cycles thru a predefined set of fonts.
+   If NUM is 1, cycle forward.
+   If NUM is -1, cycle backward.
+   Warning: tested on Windows Vista only."
+     (interactive "p")
+     ;; this function sets a property “state”. It is a integer. Possible values are any index to the fontList.
+     (let (fontList hanFontList fontToUse currentState nextState )
+       (setq fontList (list
+                       "Courier New-10" 
+                       "DejaVu Sans Mono-9" 
+                       "Lucida Console-10"
+                       "DejaVu Sans-10" 
+                       "Lucida Sans Unicode-10" 
+                       "Arial Unicode MS-10" 
+                       "Consolas-10"
+                       "Inconsolata-10"
+                       "Monaco-9"
+                       ))
+       (setq hanFontList (list
+                          '("돋움체" . "unicode-bmp")
+                          '("새굴림" . "unicode-bmp")
+                          '("나눔고딕_코딩" . "unicode-bmp")
+                          '("맑은 고딕" . "unicode-bmp")
+                          '("나눔고딕코딩" . "unicode-bmp")
+                       ))
+       ;; fixed-width "Courier New" "Unifont"  "FixedsysTTF" "Miriam Fixed" "Lucida Console" "Lucida Sans Typewriter"
+       ;; variable-width "Code2000"
     
-    (if hangul
+       (if hangul
+           (progn
+             (setq currentState (if (get 'cycle-font 'hanstate) (get 'cycle-font 'hanstate) 0))
+             (setq nextState (% (+ currentState (length hanFontList) num) (length hanFontList)))
+             (setq fontToUse (nth nextState hanFontList))
+             (set-fontset-font "fontset-default" 'hangul fontToUse)
+             (redraw-frame (selected-frame))
+             (message "Current font is: %s" (car fontToUse ))
+             (put 'cycle-font 'hanstate nextState)
+             )
+         (progn
+           (setq currentState (if (get 'cycle-font 'state) (get 'cycle-font 'state) 0))
+           (setq nextState (% (+ currentState (length fontList) num) (length fontList)))
+           (setq fontToUse (nth nextState fontList))
+           ;;(set-frame-parameter nil 'font fontToUse)
+           (set-face-font 'default fontToUse)
+           (redraw-frame (selected-frame))
+           (message "Current font is: %s" fontToUse )
+           (put 'cycle-font 'state nextState)
+           )
+         )))
+
+   (defun cycle-font-forward (&optional hangul)
+     "Switch to the next font, in the current frame.
+   See `cycle-font'."
+     (interactive "P")
+     (if hangul
+         (cycle-font 1 t)
+       (cycle-font 1 nil)
+     ))
+
+   (defun cycle-font-backward(&optional hangul)
+     "Switch to the previous font, in the current frame.
+   See `cycle-font'."
+     (interactive "P")
+     (if hangul
+         (cycle-font -1 t)
+       (cycle-font -1 nil)
+     ))
+
+   ;; https://github.com/rolandwalker/unicode-fonts
+   ;; (with-package* (unicode-fonts)
+   ;;   (unicode-fonts-setup))
+
+   ;; (with-package* (dynamic-fonts)
+   ;;   (dynamic-fonts-setup))
+
+   #+END_SRC
+
+
+** font setup
+
+*** font size
+    #+BEGIN_SRC emacs-lisp
+
+    (defvar dongil/efontsize  17)
+    (defvar dongil/hfontsize  16)
+    (defvar dongil/symbolsize 20)
+    #+END_SRC
+
+    #+RESULTS:
+    : dongil/symbolsize
+
+*** 기본 영문 폰트 
+    #+BEGIN_SRC emacs-lisp
+
+    (let ((defaultfont (find-if 
+                        (lambda (x) (font-utils-exists-p x)) 
+                        '(
+                          "Ubuntu Mono"
+                          ;; "Bitstream Vera Sans Mono"
+                          ;; "DejaVu Sans Mono"
+                          ;; "Consolas"
+                          ;; "Inconsolata"
+                          ;; "Source Code Pro"
+                          ;; "Menlo"
+                          ))))
+      (if (stringp  defaultfont)
+          (set-fontset-font "fontset-default" 'latin (font-spec :name defaultfont :size dongil/efontsize) )))
+
+
+    #+END_SRC
+
+    #+RESULTS:
+
+*** 심볼 폰트
+
+    #+BEGIN_SRC emacs-lisp
+    (let ((symbolfont (find-if 
+                        (lambda (x) (font-utils-exists-p x)) 
+                        '( "StixGeneral"))))
+      (if (stringp  symbolfont) 
+          (dolist (x '( greek mathematical (9089 . 9090)))
+           (set-fontset-font "fontset-default" x (font-spec :name symbolfont :size dongil/symbolsize ))))) 
+
+
+
+    (let ((emojifont (find-if 
+                        (lambda (x) (font-utils-exists-p x)) 
+                        '( "Noto Emoji"))))
+      (if (stringp  emojifont) 
+          (progn
+            (set-fontset-font "fontset-default" '(1041637 . 1041646) (font-spec :name "Noto Emoji"  )  ) 
+            (set-fontset-font "fontset-default" '(9000 . 9999) (font-spec :name "Noto Emoji"  )  ) 
+            (set-fontset-font "fontset-default" '(9000 . 9999) (font-spec :name "Noto Emoji"  )  ) 
+            (set-fontset-font "fontset-default" '(2400 . 2700) (font-spec :name "Noto Emoji"  )  ) 
+
+            (set-fontset-font "fontset-default" (cons #x1f004 #xfe837) (font-spec :name "Noto Emoji"  )  ) 
+            (set-fontset-font "fontset-default" 'symbol (font-spec :name "Noto Emoji"  )  ) 
+            )))
+
+
+
+    #+END_SRC
+
+    #+RESULTS:
+
+*** 한글 폰트
+    #+BEGIN_SRC emacs-lisp
+  ;; 글자 크기가 고정이 되어 버림 
+  ;; (let ((hangulfont (find-if 
+  ;;                     (lambda (x) (font-utils-exists-p x)) 
+  ;;                     '( "맑은 고딕" "돋움체" "나눔고딕코딩"))))
+  ;;   (if (stringp  hangulfont) 
+  ;;       (progn 
+  ;;         (set-fontset-font "fontset-default" 'hangul          (font-spec :name  hangulfont  :size dongil/efontsize) )
+  ;;         (set-fontset-font "fontset-default" '(8251 . 8252)   (font-spec :name  hangulfont  :size dongil/efontsize) )
+  ;;         (set-fontset-font "fontset-default" '(61548 . 61549) (font-spec :name  hangulfont  :size dongil/efontsize) ))))
+
+  (let ((hangulfont (find-if
+                      (lambda (x) (font-utils-exists-p x))
+                      '( "맑은 고딕" "돋움체" "나눔고딕코딩"))))
+    (if (stringp  hangulfont)
         (progn
-          (setq currentState (if (get 'cycle-font 'hanstate) (get 'cycle-font 'hanstate) 0))
-          (setq nextState (% (+ currentState (length hanFontList) num) (length hanFontList)))
-          (setq fontToUse (nth nextState hanFontList))
-          (set-fontset-font "fontset-default" 'hangul fontToUse)
-          (redraw-frame (selected-frame))
-          (message "Current font is: %s" (car fontToUse ))
-          (put 'cycle-font 'hanstate nextState)
-          )
-      (progn
-        (setq currentState (if (get 'cycle-font 'state) (get 'cycle-font 'state) 0))
-        (setq nextState (% (+ currentState (length fontList) num) (length fontList)))
-        (setq fontToUse (nth nextState fontList))
-        ;;(set-frame-parameter nil 'font fontToUse)
-        (set-face-font 'default fontToUse)
-        (redraw-frame (selected-frame))
-        (message "Current font is: %s" fontToUse )
-        (put 'cycle-font 'state nextState)
-        )
-      )))
+          (set-fontset-font "fontset-default" 'hangul          (cons hangulfont  "unicode-bmp") )
+          (set-fontset-font "fontset-default" '(8251 . 8252)   (cons hangulfont  "unicode-bmp") )
+          (set-fontset-font "fontset-default" '(61548 . 61549) (cons hangulfont  "unicode-bmp") ))))
+    #+END_SRC
 
-(defun cycle-font-forward (&optional hangul)
-  "Switch to the next font, in the current frame.
-See `cycle-font'."
-  (interactive "P")
-  (if hangul
-      (cycle-font 1 t)
-    (cycle-font 1 nil)
-  ))
+*** fallback font 
+    #+BEGIN_SRC emacs-lisp
+    (let ((fallbackfont (find-if 
+                        (lambda (x) (font-utils-exists-p x)) 
+                        '(  "Symbola"  "StixGeneral"  ))))
+      (if (stringp  fallbackfont) 
+          (set-fontset-font "fontset-default" nil (font-spec :name fallbackfont :size dongil/efontsize))))
 
-(defun cycle-font-backward(&optional hangul)
-  "Switch to the previous font, in the current frame.
-See `cycle-font'."
-  (interactive "P")
-  (if hangul
-      (cycle-font -1 t)
-    (cycle-font -1 nil)
-  ))
+    #+END_SRC
 
-;; https://github.com/rolandwalker/unicode-fonts
-;; (with-package* (unicode-fonts)
-;;   (unicode-fonts-setup))
+*** set font face 
 
-;; (with-package* (dynamic-fonts)
-;;   (dynamic-fonts-setup))
-
-
-(defvar fontsize 16)
-(defvar symbolsize 20)
-
-
-(let ((defaultfont (find-if 
-                    (lambda (x) (font-utils-exists-p x)) 
-                    '(
-                      "Ubuntu Mono"
-                      ;; "Bitstream Vera Sans Mono"
-                      ;; "DejaVu Sans Mono"
-                      ;; "Consolas"
-                      ;; "Inconsolata"
-                      ;; "Source Code Pro"
-                      ;; "Menlo"
-                      ))))
-  (if (stringp  defaultfont)
-      (set-fontset-font "fontset-default" 'latin (font-spec :name defaultfont :size 17) )))
-
-
-(let ((symbolfont (find-if 
-                    (lambda (x) (font-utils-exists-p x)) 
-                    '( "StixGeneral"))))
-  (if (stringp  symbolfont) 
-      (dolist (x '(symbol greek mathematical (9089 . 9090)))
-       (set-fontset-font "fontset-default" x (font-spec :name symbolfont :size symbolsize ))))) 
-
-
-
-(let ((emojifont (find-if 
-                    (lambda (x) (font-utils-exists-p x)) 
-                    '( "Noto Emoji"))))
-  (if (stringp  emojifont) 
-      (progn 
-        (set-fontset-font "fontset-default" (cons #x1F004 #xFE4EE) (font-spec :name "Noto Emoji"  :size symbolsize)  ) 
-        )))
-
-
-(let ((hangulfont (find-if 
-                    (lambda (x) (font-utils-exists-p x)) 
-                    '( "맑은 고딕" "돋움체" "나눔고딕코딩"))))
-  (if (stringp  hangulfont) 
-      (progn 
-        (set-fontset-font "fontset-default" 'hangul          (font-spec :name  hangulfont  :size fontsize) )
-        (set-fontset-font "fontset-default" '(8251 . 8252)   (font-spec :name  hangulfont  :size fontsize) )
-        (set-fontset-font "fontset-default" '(61548 . 61549) (font-spec :name  hangulfont  :size fontsize) ))))
-
-
-(let ((fallbackfont (find-if 
-                    (lambda (x) (font-utils-exists-p x)) 
-                    '(  "Symbola"  "StixGeneral"  ))))
-  (if (stringp  fallbackfont) 
-      (set-fontset-font "fontset-default" nil (font-spec :name fallbackfont :size fontsize))))
-
-
+    #+BEGIN_SRC emacs-lisp
 ;; https://www.emacswiki.org/emacs/FontSets
 (set-face-font 'default "fontset-default")
+    #+END_SRC
+*** fontlock 설정 
+    #+BEGIN_SRC emacs-lisp
+    (setq 
+     font-lock-maximum-decoration 
+     '(
+       (c-mode . t)
+       ;;(c++-mode . 1)
+       (c++-mode . 2)
+       (t . t)
+       ))
+
+    ;; (use-package unicode-fonts
+    ;;   :config
+    ;;   (unicode-fonts-setup))
+
+    ;;(setq font-lock-support-mode 'fast-lock-mode ; lazy-lock-mode jit-lock-mode
+    ;;      fast-lock-cache-directories '("~/.emacs-flc"))
+
+    ;; 모드별로 키워드 추가가 가능하다. 
+    ;; http://www.emacswiki.org/emacs/AddKeywords
+    ;;FONT-LOCK;;(defvar font-lock-comment-face   'font-lock-comment-face
+    ;;FONT-LOCK;;  "Face name to use for comments.")
+
+    ;;customize;;(font-lock-add-keywords 'python-mode
+    ;;customize;;  '(("\\btry\\b" . font-lock-keyword-face)
+    ;;customize;;    ("\\bfinally\\b" . font-lock-keyword-face)
+    ;;customize;;    ("\\bwith\\b" . font-lock-keyword-face)
+    ;;customize;;    ("\\bas\\b" . font-lock-keyword-face)
+    ;;customize;;    ))
 
 
 
-(setq 
- font-lock-maximum-decoration 
- '(
-   (c-mode . t)
-   ;;(c++-mode . 1)
-   (c++-mode . 2)
-   (t . t)
-   ))
 
-;; (use-package unicode-fonts
-;;   :config
-;;   (unicode-fonts-setup))
-
-;;(setq font-lock-support-mode 'fast-lock-mode ; lazy-lock-mode jit-lock-mode
-;;      fast-lock-cache-directories '("~/.emacs-flc"))
-
-;; 모드별로 키워드 추가가 가능하다. 
-;; http://www.emacswiki.org/emacs/AddKeywords
-;;FONT-LOCK;;(defvar font-lock-comment-face		'font-lock-comment-face
-;;FONT-LOCK;;  "Face name to use for comments.")
-
-;;customize;;(font-lock-add-keywords 'python-mode
-;;customize;;  '(("\\btry\\b" . font-lock-keyword-face)
-;;customize;;    ("\\bfinally\\b" . font-lock-keyword-face)
-;;customize;;    ("\\bwith\\b" . font-lock-keyword-face)
-;;customize;;    ("\\bas\\b" . font-lock-keyword-face)
-;;customize;;    ))
+    ;; https://en.wikipedia.org/wiki/Unicode_block
+    ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Modifying-Fontsets.html
 
 
+    ;;; 22.15 Modifying Fontsets
+    ;;; 
+    ;;; Fontsets do not always have to be created from scratch. If only minor changes are required it may be easier to modify an existing fontset. Modifying ‘fontset-default’ will also affect other fontsets that use it as a fallback, so can be an effective way of fixing problems with the fonts that Emacs chooses for a particular script.
+    ;;; 
+    ;;; Fontsets can be modified using the function set-fontset-font, specifying a character, a charset, a script, or a range of characters to modify the font for, and a font specification for the font to be used. Some examples are:
+    ;;; 
+    ;;; ;; Use Liberation Mono for latin-3 charset.
+    ;;; (set-fontset-font "fontset-default" 'iso-8859-3
+    ;;;                   "Liberation Mono")
+    ;;; 
+    ;;; ;; Prefer a big5 font for han characters
+    ;;; (set-fontset-font "fontset-default"
+    ;;;                   'han (font-spec :registry "big5")
+    ;;;                   nil 'prepend)
+    ;;; 
+    ;;; ;; Use DejaVu Sans Mono as a fallback in fontset-startup
+    ;;; ;; before resorting to fontset-default.
+    ;;; (set-fontset-font "fontset-startup" nil "DejaVu Sans Mono"
+    ;;;                   nil 'append)
+    ;;; 
+    ;;; ;; Use MyPrivateFont for the Unicode private use area.
+    ;;; (set-fontset-font "fontset-default"  '(#xe000 . #xf8ff)
+    ;;;                   "MyPrivateFont")
+
+    #+END_SRC
+
+    #+RESULTS:
+    : ((c-mode . t) (c++-mode . 2) (t . t))
 
 
-;; https://en.wikipedia.org/wiki/Unicode_block
-;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Modifying-Fontsets.html
 
-
-;;; 22.15 Modifying Fontsets
-;;; 
-;;; Fontsets do not always have to be created from scratch. If only minor changes are required it may be easier to modify an existing fontset. Modifying ‘fontset-default’ will also affect other fontsets that use it as a fallback, so can be an effective way of fixing problems with the fonts that Emacs chooses for a particular script.
-;;; 
-;;; Fontsets can be modified using the function set-fontset-font, specifying a character, a charset, a script, or a range of characters to modify the font for, and a font specification for the font to be used. Some examples are:
-;;; 
-;;; ;; Use Liberation Mono for latin-3 charset.
-;;; (set-fontset-font "fontset-default" 'iso-8859-3
-;;;                   "Liberation Mono")
-;;; 
-;;; ;; Prefer a big5 font for han characters
-;;; (set-fontset-font "fontset-default"
-;;;                   'han (font-spec :registry "big5")
-;;;                   nil 'prepend)
-;;; 
-;;; ;; Use DejaVu Sans Mono as a fallback in fontset-startup
-;;; ;; before resorting to fontset-default.
-;;; (set-fontset-font "fontset-startup" nil "DejaVu Sans Mono"
-;;;                   nil 'append)
-;;; 
-;;; ;; Use MyPrivateFont for the Unicode private use area.
-;;; (set-fontset-font "fontset-default"  '(#xe000 . #xf8ff)
-;;;                   "MyPrivateFont")
-
-#+END_SRC
-
-#+RESULTS:
-: ((c-mode . t) (c++-mode . 2) (t . t))
-
-
+* unicode characters                                              :document:
+  [[https://en.wikibooks.org/wiki/Unicode/List_of_useful_symbols][Unicode/List of useful symbols - Wikibooks, open books for an open world]]
 ** check
    #+BEGIN_SRC emacs-lisp :tangle no
      (dolist (x
@@ -1208,5 +1262,1523 @@ See `cycle-font'."
      (insert "\n")
      (insert-char x)
      )
+🀄
+🃏
+🅰
+🅱
+🅾
+🅿
+🆎
+🆑
+🆒
+🆓
+🆔
+🆕
+🆖
+🆗
+🆘
+🆙
+🆚
+🇦
+🇧
+🇨
+🇩
+🇪
+🇫
+🇬
+🇭
+🇮
+🇯
+🇰
+🇱
+🇲
+🇳
+🇴
+🇵
+🇶
+🇷
+🇸
+🇹
+🇺
+🇻
+🇼
+🇽
+🇾
+🇿
+🈁
+🈂
+🈚
+🈯
+🈲
+🈳
+🈴
+🈵
+🈶
+🈷
+🈸
+🈹
+🈺
+🉐
+🉑
+🌀
+🌁
+🌂
+🌃
+🌄
+🌅
+🌆
+🌇
+🌈
+🌉
+🌊
+🌋
+🌌
+🌍
+🌎
+🌏
+🌐
+🌑
+🌒
+🌓
+🌔
+🌕
+🌖
+🌗
+🌘
+🌙
+🌚
+🌛
+🌜
+🌝
+🌞
+🌟
+🌠
+🌰
+🌱
+🌲
+🌳
+🌴
+🌵
+🌷
+🌸
+🌹
+🌺
+🌻
+🌼
+🌽
+🌾
+🌿
+🍀
+🍁
+🍂
+🍃
+🍄
+🍅
+🍆
+🍇
+🍈
+🍉
+🍊
+🍋
+🍌
+🍍
+🍎
+🍏
+🍐
+🍑
+🍒
+🍓
+🍔
+🍕
+🍖
+🍗
+🍘
+🍙
+🍚
+🍛
+🍜
+🍝
+🍞
+🍟
+🍠
+🍡
+🍢
+🍣
+🍤
+🍥
+🍦
+🍧
+🍨
+🍩
+🍪
+🍫
+🍬
+🍭
+🍮
+🍯
+🍰
+🍱
+🍲
+🍳
+🍴
+🍵
+🍶
+🍷
+🍸
+🍹
+🍺
+🍻
+🍼
+🎀
+🎁
+🎂
+🎃
+🎄
+🎅
+🎆
+🎇
+🎈
+🎉
+🎊
+🎋
+🎌
+🎍
+🎎
+🎏
+🎐
+🎑
+🎒
+🎓
+🎠
+🎡
+🎢
+🎣
+🎤
+🎥
+🎦
+🎧
+🎨
+🎩
+🎪
+🎫
+🎬
+🎭
+🎮
+🎯
+🎰
+🎱
+🎲
+🎳
+🎴
+🎵
+🎶
+🎷
+🎸
+🎹
+🎺
+🎻
+🎼
+🎽
+🎾
+🎿
+🏀
+🏁
+🏂
+🏃
+🏄
+🏆
+🏇
+🏈
+🏉
+🏊
+🏠
+🏡
+🏢
+🏣
+🏤
+🏥
+🏦
+🏧
+🏨
+🏩
+🏪
+🏫
+🏬
+🏭
+🏮
+🏯
+🏰
+🐀
+🐁
+🐂
+🐃
+🐄
+🐅
+🐆
+🐇
+🐈
+🐉
+🐊
+🐋
+🐌
+🐍
+🐎
+🐏
+🐐
+🐑
+🐒
+🐓
+🐔
+🐕
+🐖
+🐗
+🐘
+🐙
+🐚
+🐛
+🐜
+🐝
+🐞
+🐟
+🐠
+🐡
+🐢
+🐣
+🐤
+🐥
+🐦
+🐧
+🐨
+🐩
+🐫
+🐬
+🐭
+🐮
+🐯
+🐰
+🐱
+🐲
+🐳
+🐴
+🐵
+🐶
+🐷
+🐸
+🐹
+🐺
+🐻
+🐼
+🐽
+🐾
+👀
+👂
+👃
+👄
+👅
+👆
+👇
+👈
+👉
+👊
+👋
+👌
+👍
+👎
+👏
+👐
+👑
+👒
+👓
+👔
+👕
+👖
+👗
+👘
+👙
+👚
+👛
+👜
+👝
+👞
+👟
+👠
+👡
+👢
+👣
+👤
+👥
+👦
+👧
+👨
+👩
+👪
+👫
+👬
+👭
+👮
+👯
+👰
+👱
+👲
+👳
+👴
+👵
+👶
+👷
+👸
+👹
+👺
+👻
+👼
+👽
+👾
+👿
+💀
+💁
+💂
+💃
+💄
+💅
+💆
+💇
+💈
+💉
+💊
+💋
+💌
+💍
+💎
+💏
+💐
+💑
+💒
+💓
+💔
+💕
+💖
+💗
+💘
+💙
+💚
+💛
+💜
+💝
+💞
+💟
+💠
+💡
+💢
+💣
+💤
+💥
+💦
+💧
+💨
+💩
+💪
+💫
+💬
+💭
+💮
+💯
+💰
+💱
+💲
+💳
+💴
+💵
+💶
+💷
+💸
+💹
+💺
+💻
+💼
+💽
+💾
+💿
+📀
+📁
+📂
+📃
+📄
+📅
+📆
+📇
+📈
+📉
+📊
+📋
+📌
+📍
+📎
+📏
+📐
+📑
+📒
+📓
+📔
+📕
+📖
+📗
+📘
+📙
+📚
+📛
+📜
+📝
+📞
+📟
+📠
+📡
+📢
+📣
+📤
+📥
+📦
+📧
+📨
+📩
+📪
+📫
+📬
+📭
+📮
+📯
+📰
+📱
+📲
+📳
+📴
+📵
+📶
+📷
+📹
+📺
+📻
+📼
+🔀
+🔁
+🔂
+🔃
+🔄
+🔅
+🔆
+🔇
+🔈
+🔉
+🔊
+🔋
+🔌
+🔍
+🔎
+🔏
+🔐
+🔑
+🔒
+🔓
+🔔
+🔕
+🔖
+🔗
+🔘
+🔙
+🔚
+🔛
+🔜
+🔝
+🔞
+🔟
+🔠
+🔡
+🔢
+🔣
+🔤
+🔥
+🔦
+🔧
+🔨
+🔩
+🔪
+🔫
+🔬
+🔭
+🔮
+🔯
+🔰
+🔱
+🔲
+🔳
+🔴
+🔵
+🔶
+🔷
+🔸
+🔹
+🔺
+🔻
+🔼
+🔽
+🕐
+🕑
+🕒
+🕓
+🕔
+🕕
+🕖
+🕗
+🕘
+🕙
+🕚
+🕛
+🕜
+🕝
+🕞
+🕟
+🕠
+🕡
+🕢
+🕣
+🕤
+🕥
+🕦
+🕧
+🗻
+🗼
+🗽
+🗾
+🗿
+😀
+😁
+😂
+😃
+😄
+😅
+😆
+😇
+😈
+😉
+😊
+😋
+😌
+😍
+😎
+😏
+😐
+😑
+😒
+😓
+😔
+😕
+😖
+😗
+😘
+😙
+😚
+😛
+😜
+😝
+😞
+😟
+😠
+😡
+😢
+😣
+😤
+😥
+😦
+😧
+😨
+😩
+😪
+😫
+😬
+😭
+😮
+😯
+😰
+😱
+😲
+😳
+😴
+😵
+😶
+😷
+😸
+😹
+😺
+😻
+😼
+😽
+😾
+😿
+🙀
+🙅
+🙆
+🙇
+🙈
+🙉
+🙊
+🙋
+🙌
+🙍
+🙎
+🙏
+🚀
+🚁
+🚂
+🚃
+🚄
+🚅
+🚆
+🚇
+🚈
+🚉
+🚊
+🚋
+🚌
+🚍
+🚎
+🚏
+🚐
+🚑
+🚒
+🚓
+🚔
+🚕
+🚖
+🚗
+🚙
+🚚
+🚛
+🚜
+🚝
+🚞
+🚟
+🚠
+🚡
+🚢
+🚣
+🚤
+🚥
+🚦
+🚧
+🚨
+🚩
+🚪
+🚫
+🚬
+🚭
+🚮
+🚯
+🚰
+🚱
+🚲
+🚳
+🚴
+🚵
+🚶
+🚷
+🚸
+🚹
+🚺
+🚻
+🚼
+🚽
+🚾
+🚿
+🛀
+🛁
+🛂
+🛃
+🛄
+🛅
+󾓥
+󾓦
+󾓧
+󾓨
+󾓩
+󾓪
+󾓫
+󾓬
+󾓭
+󾓮
 
    #+END_SRC
+
+   #+RESULTS:
+
+
+** http://jrgraphix.net/r/Unicode/2B00-2BFF
+   ☀
+   2600
+   ☁
+   2601
+   ☂
+   2602
+   ☃
+   2603
+   ☄
+   2604
+   ★
+   2605
+   ☆
+   2606
+   ☇
+   2607
+   ☈
+   2608
+   ☉
+   2609
+   ☊
+   260a
+   ☋
+   260b
+   ☌
+   260c
+   ☍
+   260d
+   ☎
+   260e
+   ☏
+   260f
+   ☐
+   2610
+   ☑
+   2611
+   ☒
+   2612
+   ☓
+   2613
+   ☔
+   2614
+   ☕
+   2615
+   ☖
+   2616
+   ☗
+   2617
+   ☘
+   2618
+   ☙
+   2619
+   ☚
+   261a
+   ☛
+   261b
+   ☜
+   261c
+   ☝
+   261d
+   ☞
+   261e
+   ☟
+   261f
+   ☠
+   2620
+   ☡
+   2621
+   ☢
+   2622
+   ☣
+   2623
+   ☤
+   2624
+   ☥
+   2625
+   ☦
+   2626
+   ☧
+   2627
+   ☨
+   2628
+   ☩
+   2629
+   ☪
+   262a
+   ☫
+   262b
+   ☬
+   262c
+   ☭
+   262d
+   ☮
+   262e
+   ☯
+   262f
+   ☰
+   2630
+   ☱
+   2631
+   ☲
+   2632
+   ☳
+   2633
+   ☴
+   2634
+   ☵
+   2635
+   ☶
+   2636
+   ☷
+   2637
+   ☸
+   2638
+   ☹
+   2639
+   ☺
+   263a
+   ☻
+   263b
+   ☼
+   263c
+   ☽
+   263d
+   ☾
+   263e
+   ☿
+   263f
+   ♀
+   2640
+   ♁
+   2641
+   ♂
+   2642
+   ♃
+   2643
+   ♄
+   2644
+   ♅
+   2645
+   ♆
+   2646
+   ♇
+   2647
+   ♈
+   2648
+   ♉
+   2649
+   ♊
+   264a
+   ♋
+   264b
+   ♌
+   264c
+   ♍
+   264d
+   ♎
+   264e
+   ♏
+   264f
+   ♐
+   2650
+   ♑
+   2651
+   ♒
+   2652
+   ♓
+   2653
+   ♔
+   2654
+   ♕
+   2655
+   ♖
+   2656
+   ♗
+   2657
+   ♘
+   2658
+   ♙
+   2659
+   ♚
+   265a
+   ♛
+   265b
+   ♜
+   265c
+   ♝
+   265d
+   ♞
+   265e
+   ♟
+   265f
+   ♠
+   2660
+   ♡
+   2661
+   ♢
+   2662
+   ♣
+   2663
+   ♤
+   2664
+   ♥
+   2665
+   ♦
+   2666
+   ♧
+   2667
+   ♨
+   2668
+   ♩
+   2669
+   ♪
+   266a
+   ♫
+   266b
+   ♬
+   266c
+   ♭
+   266d
+   ♮
+   266e
+   ♯
+   266f
+   ♰
+   2670
+   ♱
+   2671
+   ♲
+   2672
+   ♳
+   2673
+   ♴
+   2674
+   ♵
+   2675
+   ♶
+   2676
+   ♷
+   2677
+   ♸
+   2678
+   ♹
+   2679
+   ♺
+   267a
+   ♻
+   267b
+   ♼
+   267c
+   ♽
+   267d
+   ♾
+   267e
+   ♿
+   267f
+   ⚀
+   2680
+   ⚁
+   2681
+   ⚂
+   2682
+   ⚃
+   2683
+   ⚄
+   2684
+   ⚅
+   2685
+   ⚆
+   2686
+   ⚇
+   2687
+   ⚈
+   2688
+   ⚉
+   2689
+   ⚊
+   268a
+   ⚋
+   268b
+   ⚌
+   268c
+   ⚍
+   268d
+   ⚎
+   268e
+   ⚏
+   268f
+   ⚐
+   2690
+   ⚑
+   2691
+   ⚒
+   2692
+   ⚓
+   2693
+   ⚔
+   2694
+   ⚕
+   2695
+   ⚖
+   2696
+   ⚗
+   2697
+   ⚘
+   2698
+   ⚙
+   2699
+   ⚚
+   269a
+   ⚛
+   269b
+   ⚜
+   269c
+   ⚝
+   269d
+   ⚞
+   269e
+   ⚟
+   269f
+   ⚠
+   26a0
+   ⚡
+   26a1
+   ⚢
+   26a2
+   ⚣
+   26a3
+   ⚤
+   26a4
+   ⚥
+   26a5
+   ⚦
+   26a6
+   ⚧
+   26a7
+   ⚨
+   26a8
+   ⚩
+   26a9
+   ⚪
+   26aa
+   ⚫
+   26ab
+   ⚬
+   26ac
+   ⚭
+   26ad
+   ⚮
+   26ae
+   ⚯
+   26af
+   ⚰
+   26b0
+   ⚱
+   26b1
+   ⚲
+   26b2
+   ⚳
+   26b3
+   ⚴
+   26b4
+   ⚵
+   26b5
+   ⚶
+   26b6
+   ⚷
+   26b7
+   ⚸
+   26b8
+   ⚹
+   26b9
+   ⚺
+   26ba
+   ⚻
+   26bb
+   ⚼
+   26bc
+   ⚽
+   26bd
+   ⚾
+   26be
+   ⚿
+   26bf
+   ⛀
+   26c0
+   ⛁
+   26c1
+   ⛂
+   26c2
+   ⛃
+   26c3
+   ⛄
+   26c4
+   ⛅
+   26c5
+   ⛆
+   26c6
+   ⛇
+   26c7
+   ⛈
+   26c8
+   ⛉
+   26c9
+   ⛊
+   26ca
+   ⛋
+   26cb
+   ⛌
+   26cc
+   ⛍
+   26cd
+   ⛎
+   26ce
+   ⛏
+   26cf
+   ⛐
+   26d0
+   ⛑
+   26d1
+   ⛒
+   26d2
+   ⛓
+   26d3
+   ⛔
+   26d4
+   ⛕
+   26d5
+   ⛖
+   26d6
+   ⛗
+   26d7
+   ⛘
+   26d8
+   ⛙
+   26d9
+   ⛚
+   26da
+   ⛛
+   26db
+   ⛜
+   26dc
+   ⛝
+   26dd
+   ⛞
+   26de
+   ⛟
+   26df
+   ⛠
+   26e0
+   ⛡
+   26e1
+   ⛢
+   26e2
+   ⛣
+   26e3
+   ⛤
+   26e4
+   ⛥
+   26e5
+   ⛦
+   26e6
+   ⛧
+   26e7
+   ⛨
+   26e8
+   ⛩
+   26e9
+   ⛪
+   26ea
+   ⛫
+   26eb
+   ⛬
+   26ec
+   ⛭
+   26ed
+   ⛮
+   26ee
+   ⛯
+   26ef
+   ⛰
+   26f0
+   ⛱
+   26f1
+   ⛲
+   26f2
+   ⛳
+   26f3
+   ⛴
+   26f4
+   ⛵
+   26f5
+   ⛶
+   26f6
+   ⛷
+   26f7
+   ⛸
+   26f8
+   ⛹
+   26f9
+   ⛺
+   26fa
+   ⛻
+   26fb
+   ⛼
+   26fc
+   ⛽
+   26fd
+   ⛾
+   26fe
+   ⛿
+   26ff
+   2600-26FF  
+ 
+** several files
+
+   lack sun with rays 	☀ 	U+2600 	&#9728; 	Clear weather
+   Cloud 	☁ 	U+2601 	&#9729; 	Cloud, cloudy weather
+   Umbrella 	☂ 	U+2602 	&#9730; 	Umbrella, rainy weather
+   Snowman 	☃ 	U+2603 	&#9731; 	Snowman, snowy weather
+   Comet 	☄ 	U+2604 	&#9732; 	
+   Black star 	★ 	U+2605 	&#9733; 	
+   White star 	☆ 	U+2606 	&#9734; 	
+   Lightning 	☇ 	U+2607 	&#9735; 	Lightning
+   Thunderstorm 	☈ 	U+2608 	&#9736; 	Thunderstorm
+   Sun 	☉ 	U+2609 	&#9737; 	Sun, gold
+   Ascending node 	☊ 	U+260A 	&#9738; 	
+   Descending node 	☋ 	U+260B 	&#9739; 	
+   Conjunction 	☌ 	U+260C 	&#9740; 	Open Circuit
+   Opposition 	☍ 	U+260D 	&#9741; 	Closed Circuit
+   Black telephone 	☎ 	U+260E 	&#9742; 	
+   White telephone 	☏ 	U+260F 	&#9743; 	
+   Ballot box 	☐ 	U+2610 	&#9744; 	
+   Ballot box with check 	☑ 	U+2611 	&#9745; 	
+   Ballot box with X 	☒ 	U+2612 	&#9746; 	
+   Saltire 	☓ 	U+2613 	&#9747; 	
+   Umbrella with raindrops 	☔ 	U+2614 	&#9748; 	showery weather
+   Hot beverage 	☕ 	U+2615 	&#9749; 	Tea, coffee
+   White shogi piece 	☖ 	U+2616 	&#9750; 	
+   Black shogi piece 	☗ 	U+2617 	&#9751; 	
+   Shamrock 	☘ 	U+2618 	&#9752; 	
+   Reversed rotated floral heart bullet 	☙ 	U+2619 	&#9753; 	Binding signature mark
+   Black left pointing index 	☚ 	U+261A 	&#9754; 	
+   Black right pointing index 	☛ 	U+261B 	&#9755; 	
+   White left pointing index 	☜ 	U+261C 	&#9756; 	
+   White up pointing index 	☝ 	U+261D 	&#9757; 	
+   White right pointing index 	☞ 	U+261E 	&#9758; 	
+   White down pointing index 	☟ 	U+261F 	&#9759; 	
+   Skull and crossbones 	☠ 	U+2620 	&#9760; 	Poison
+   Caution sign 	☡ 	U+2621 	&#9761; 	
+   Radioactive sign 	☢ 	U+2622 	&#9762; 	
+   Biohazard sign 	☣ 	U+2623 	&#9763; 	
+   Caduceus 	☤ 	U+2624 	&#9764; 	
+   Ankh 	☥ 	U+2625 	&#9765; 	
+   Orthodox cross 	☦ 	U+2626 	&#9766; 	Patriarchal cross
+   Chi Rho 	☧ 	U+2627 	&#9767; 	Labarum
+   Cross of Lorraine 	☨ 	U+2628 	&#9768; 	Patriarchal cross
+   Cross of Jerusalem 	☩ 	U+2629 	&#9769; 	Cross potent
+   Star and crescent 	☪ 	U+262A 	&#9770; 	emblem of Turkey; Islam
+   Farsi symbol 	☫ 	U+262B 	&#9771; 	Coat of arms of Iran
+   Adi shakti 	☬ 	U+262C 	&#9772; 	Khanda
+   Hammer and sickle 	☭ 	U+262D 	&#9773; 	Communism
+   Peace symbol 	☮ 	U+262E 	&#9774; 	
+   Yin yang 	☯ 	U+262F 	&#9775; 	Taoism, Balance
+   Trigram for Heaven 	☰ 	U+2630 	&#9776; 	
+   Trigram for Lake 	☱ 	U+2631 	&#9777; 	
+   Trigram for Fire 	☲ 	U+2632 	&#9778; 	
+   Trigram for Thunder 	☳ 	U+2633 	&#9779; 	
+   Trigram for Wind 	☴ 	U+2634 	&#9780; 	
+   Trigram for Water 	☵ 	U+2635 	&#9781; 	
+   Trigram for Mountain 	☶ 	U+2636 	&#9782; 	
+   Trigram for Earth 	☷ 	U+2637 	&#9783; 	
+   Wheel of Dharma 	☸ 	U+2638 	&#9784; 	
+   White frowning face 	☹ 	U+2639 	&#9785; 	
+   White smiling face 	☺ 	U+263A 	&#9786; 	
+   Black smiling face 	☻ 	U+263B 	&#9787; 	
+   White sun with rays 	☼ 	U+263C 	&#9788; 	Compass
+   First quarter moon 	☽ 	U+263D 	&#9789; 	Silver
+   Last quarter moon 	☾ 	U+263E 	&#9790; 	
+   Mercury 	☿ 	U+263F 	&#9791; 	Mercury (planet), Mercury (element)
+   Venus 	♀ 	U+2640 	&#9792; 	Venus (planet), copper, feminism
+   Earth 	♁ 	U+2641 	&#9793; 	Antimony
+   Mars 	♂ 	U+2642 	&#9794; 	Mars (planet), iron, masculinity
+   Jupiter 	♃ 	U+2643 	&#9795; 	Jupiter (planet), Tin
+   Saturn 	♄ 	U+2644 	&#9796; 	Saturn (planet), Lead
+   Uranus 	♅ 	U+2645 	&#9797; 	For the astronomical symbol see U+26E2
+   Neptune 	♆ 	U+2646 	&#9798; 	Neptune (planet)
+   Pluto 	♇ 	U+2647 	&#9799; 	Pluto
+   Aries 	♈ 	U+2648 	&#9800; 	Aries (constellation)
+   Taurus 	♉ 	U+2649 	&#9801; 	Taurus (constellation)
+   Gemini 	♊ 	U+264A 	&#9802; 	Gemini (constellation)
+   Cancer 	♋ 	U+264B 	&#9803; 	Cancer (constellation)
+   Leo 	♌ 	U+264C 	&#9804; 	Leo (constellation)
+   Virgo 	♍ 	U+264D 	&#9805; 	Virgo (constellation)
+   Libra 	♎ 	U+264E 	&#9806; 	Libra (constellation)
+   Scorpius 	♏ 	U+264F 	&#9807; 	Scorpius (constellation), minim
+   Sagittarius 	♐ 	U+2650 	&#9808; 	Sagittarius (constellation)
+   Capricorn 	♑ 	U+2651 	&#9809; 	Capricornus (constellation)
+   Aquarius 	♒ 	U+2652 	&#9810; 	Aquarius (constellation)
+   Pisces 	♓ 	U+2653 	&#9811; 	Pisces (constellation)
+   White chess king 	♔ 	U+2654 	&#9812; 	
+   White chess queen 	♕ 	U+2655 	&#9813; 	
+   White chess rook 	♖ 	U+2656 	&#9814; 	
+   White chess bishop 	♗ 	U+2657 	&#9815; 	
+   White chess knight 	♘ 	U+2658 	&#9816; 	
+   White chess pawn 	♙ 	U+2659 	&#9817; 	
+   Black chess king 	♚ 	U+265A 	&#9818; 	
+   Black chess queen 	♛ 	U+265B 	&#9819; 	
+   Black chess rook 	♜ 	U+265C 	&#9820; 	
+   Black chess bishop 	♝ 	U+265D 	&#9821; 	
+   Black chess knight 	♞ 	U+265E 	&#9822; 	
+   Black chess pawn 	♟ 	U+265F 	&#9823; 	
+   Black spade suit 	♠ 	U+2660 	&spades; 	
+   White heart suit 	♡ 	U+2661 	&#9825; 	
+   White diamond suit 	♢ 	U+2662 	&#9826; 	
+   Black club suit 	♣ 	U+2663 	&clubs; 	
+   White spade suit 	♤ 	U+2664 	&#9828; 	
+   Black heart suit 	♥ 	U+2665 	&hearts; 	
+   Black diamond suit 	♦ 	U+2666 	&diams; 	
+   White club suit 	♧ 	U+2667 	&#9831; 	
+   Hot springs 	♨ 	U+2668 	&#9832; 	Onsen
+   Quarter note 	♩ 	U+2669 	&#9833; 	crotchet
+   Eighth note 	♪ 	U+266A 	&#9834; 	quaver
+   Beamed eighth notes 	♫ 	U+266B 	&#9835; 	linked quavers
+   Beamed sixteenth notes 	♬ 	U+266C 	&#9836; 	linked semi-quavers
+   Music flat sign 	♭ 	U+266D 	&#9837; 	
+   Music natural sign 	♮ 	U+266E 	&#9838; 	
+   Music sharp sign 	♯ 	U+266F 	&#9839; 	
+   West Syriac cross 	♰ 	U+2670 	&#9840; 	
+   East Syriac cross 	♱ 	U+2671 	&#9841; 	
+   Universal recycling symbol 	♲ 	U+2672 	&#9842; 	
+   Recycling symbol for type-1 plastics 	♳ 	U+2673 	&#9843; 	
+   Recycling symbol for type-2 plastics 	♴ 	U+2674 	&#9844; 	
+   Recycling symbol for type-3 plastics 	♵ 	U+2675 	&#9845; 	
+   Recycling symbol for type-4 plastics 	♶ 	U+2676 	&#9846; 	
+   Recycling symbol for type-5 plastics 	♷ 	U+2677 	&#9847; 	
+   Recycling symbol for type-6 plastics 	♸ 	U+2678 	&#9848; 	
+   Recycling symbol for type-7 plastics 	♹ 	U+2679 	&#9849; 	
+   Recycling symbol for generic materials 	♺ 	U+267A 	&#9850; 	
+   Black universal recycling symbol 	♻ 	U+267B 	&#9851; 	
+   Recycled paper symbol 	♼ 	U+267C 	&#9852; 	
+   Partially-recycled paper symbol 	♽ 	U+267D 	&#9853; 	
+   Permanent paper sign 	♾ 	U+267E 	&#9854; 	
+   Wheelchair symbol 	♿ 	U+267F 	&#9855; 	
+   Die face-1 	⚀ 	U+2680 	&#9856; 	
+   Die face-2 	⚁ 	U+2681 	&#9857; 	
+   Die face-3 	⚂ 	U+2682 	&#9858; 	
+   Die face-4 	⚃ 	U+2683 	&#9859; 	
+   Die face-5 	⚄ 	U+2684 	&#9860; 	
+   Die face-6 	⚅ 	U+2685 	&#9861; 	
+   White circle with dot right 	⚆ 	U+2686 	&#9862; 	
+   White circle with two dots 	⚇ 	U+2687 	&#9863; 	
+   Black circle with white dot right 	⚈ 	U+2688 	&#9864; 	
+   Black circle with two white dots 	⚉ 	U+2689 	&#9865; 	
+   Monogram for yang 	⚊ 	U+268A 	&#9866; 	
+   Monogram for yin 	⚋ 	U+268B 	&#9867; 	
+   Digram for greater yang 	⚌ 	U+268C 	&#9868; 	
+   Digram for lesser yin 	⚍ 	U+268D 	&#9869; 	
+   Digram for lesser yang 	⚎ 	U+268E 	&#9870; 	
+   Digram for greater yin 	⚏ 	U+268F 	&#9871; 	
+   White flag 	⚐ 	U+2690 	&#9872; 	
+   Black flag 	⚑ 	U+2691 	&#9873; 	
+   Hammer and pick 	⚒ 	U+2692 	&#9874; 	Mining, working day
+   Anchor 	⚓ 	U+2693 	&#9875; 	Nautical term, harbor
+   Crossed swords 	⚔ 	U+2694 	&#9876; 	Military term, battleground, killed in action
+   Staff of Aesculapius 	⚕ 	U+2695 	&#9877; 	Medical term
+   Scales 	⚖ 	U+2696 	&#9878; 	Legal term, jurisprudence
+   Alembic 	⚗ 	U+2697 	&#9879; 	Chemical term, chemistry
+   Flower 	⚘ 	U+2698 	&#9880; 	Botanical term
+   Gear 	⚙ 	U+2699 	&#9881; 	Technology, tools
+   Staff of Hermes 	⚚ 	U+269A 	&#9882; 	Caduceus, commercial term, commerce
+   Atom symbol 	⚛ 	U+269B 	&#9883; 	Nuclear installation
+   Fleur-de-lis 	⚜ 	U+269C 	&#9884; 	France, Quebec, The Trinity, Scouting
+   Outlined white star 	⚝ 	U+269D 	&#9885; 	Coat of arms of Morocco
+   Three lines converging right 	⚞ 	U+269E 	&#9886; 	Someone speaking closed captioning symbol. From ARIB STD B24.
+   Three lines converging left 	⚟ 	U+269F 	&#9886; 	Background speaking closed captioning symbol. From ARIB STD B24.
+   Warning sign 	⚠ 	U+26A0 	&#9888; 	
+   High voltage sign 	⚡ 	U+26A1 	&#9889; 	
+   Doubled female sign 	⚢ 	U+26A2 	&#9890; 	Lesbianism
+   Doubled male sign 	⚣ 	U+26A3 	&#9891; 	Male homosexuality
+   Interlocked female and male sign 	⚤ 	U+26A4 	&#9892; 	Heterosexuality
+   Male and female sign 	⚥ 	U+26A5 	&#9893; 	Transgender, hermaphrodite (in entomology)
+   Male with stroke sign 	⚦ 	U+26A6 	&#9894; 	Transgender
+   Male with stroke and male and female sign 	⚧ 	U+26A7 	&#9895; 	Transgender
+   Vertical male with stroke sign 	⚨ 	U+26A8 	&#9896; 	Iron (II) sulfate
+   Horizontal male with stroke sign 	⚩ 	U+26A9 	&#9897; 	Magnesium
+   Medium white circle 	⚪ 	U+26AA 	&#9898; 	Asexuality, sexless, genderless, engaged, betrothed
+   Medium black circle 	⚫ 	U+26AB 	&#9899; 	Symbol for record function
+   Medium small white circle 	⚬ 	U+26AC 	&#9900; 	Engaged, betrothed
+   Marriage symbol 	⚭ 	U+26AD 	&#9901; 	
+   Divorce symbol 	⚮ 	U+26AE 	&#9902; 	
+   Unmarried partnership symbol 	⚯ 	U+26AF 	&#9903; 	
+   Coffin 	⚰ 	U+26B0 	&#9904; 	Buried (genealogy)
+   Funeral urn 	⚱ 	U+26B1 	&#9905; 	Cremated (genealogy)
+   Neuter 	⚲ 	U+26B2 	&#9906; 	
+   Ceres 	⚳ 	U+26B3 	&#9907; 	1 Ceres (dwarf planet)
+   Pallas 	⚴ 	U+26B4 	&#9908; 	2 Pallas
+   Juno 	⚵ 	U+26B5 	&#9909; 	3 Juno
+   Vesta 	⚶ 	U+26B6 	&#9910; 	4 Vesta
+   Chiron 	⚷ 	U+26B7 	&#9911; 	2060 Chiron
+   Black moon Lilith 	⚸ 	U+26B8 	&#9912; 	
+   Sextile 	⚹ 	U+26B9 	&#9913; 	Sal ammoniac
+   Semisextile 	⚺ 	U+26BA 	&#9914; 	
+   Quincunx 	⚻ 	U+26BB 	&#9915; 	
+   Sesquiquadrate 	⚼ 	U+26BC 	&#9916; 	
+   Soccer ball 	⚽ 	U+26BD 	&#9917; 	
+   Baseball 	⚾ 	U+26BE 	&#9918; 	
+   Squared key 	⚿ 	U+26BF 	&#9919; 	Parental lock. From ARIB STD B24.
+   White draughts man 	⛀ 	U+26C0 	&#9920; 	
+   White draughts king 	⛁ 	U+26C1 	&#9921; 	
+   Black draughts man 	⛂ 	U+26C2 	&#9922; 	
+   Black draughts king 	⛃ 	U+26C3 	&#9923; 	
+   Snowman without snow 	⛄ 	U+26C4 	&#9924; 	Light snow. From ARIB STD B24.
+   Sun behind cloud 	⛅ 	U+26C5 	&#9925; 	Partly cloudy. From ARIB STD B24.
+   Rain 	⛆ 	U+26C6 	&#9926; 	Rainy weather. From ARIB STD B24.
+   Black snowman 	⛇ 	U+26C7 	&#9927; 	Heavy snow. From ARIB STD B24.
+   Thunder cloud and rain 	⛈ 	U+26C8 	&#9928; 	Thunderstorm. From ARIB STD B24.
+   Turned white shogi piece 	⛉ 	U+26C9 	&#9929; 	From ARIB STD B24.
+   Turned black shogi piece 	⛊ 	U+26CA 	&#9930; 	From ARIB STD B24.
+   White diamond in square 	⛋ 	U+26CB 	&#9931; 	From ARIB STD B24.
+   Crossing lanes 	⛌ 	U+26CC 	&#9932; 	Accident. From ARIB STD B24.
+   Disabled car 	⛍ 	U+26CD 	&#9933; 	From ARIB STD B24.
+   Ophiuchus 	⛎ 	U+26CE 	&#9934; 	Ophiuchus (astrology), new in Unicode 6.
+   Pick 	⛏ 	U+26CF 	&#9935; 	Under construction. From ARIB STD B24.
+   Car sliding 	⛐ 	U+26D0 	&#9936; 	Icy road. From ARIB STD B24.
+   Helmet with white cross 	⛑ 	U+26D1 	&#9937; 	Maintenance. From ARIB STD B24.
+   Circled crossing lanes 	⛒ 	U+26D2 	&#9938; 	Road closed. From ARIB STD B24.
+   Chains 	⛓ 	U+26D3 	&#9939; 	Tyre chains required. From ARIB STD B24.
+   No entry 	⛔ 	U+26D4 	&#9940; 	From ARIB STD B24.
+   Alternate one-way left way traffic 	⛕ 	U+26D5 	&#9941; 	From ARIB STD B24.
+   Black two-way left way traffic 	⛖ 	U+26D6 	&#9942; 	From ARIB STD B24.
+   White two-way left way traffic 	⛗ 	U+26D7 	&#9943; 	From ARIB STD B24.
+   Black left lane merge 	⛘ 	U+26D8 	&#9944; 	From ARIB STD B24.
+   White left lane merge 	⛙ 	U+26D9 	&#9945; 	From ARIB STD B24.
+   Drive slow sign 	⛚ 	U+26DA 	&#9946; 	From ARIB STD B24.
+   Heavy white down-pointing triangle 	⛛ 	U+26DB 	&#9947; 	Drive slow. From ARIB STD B24.
+   Left closed entry 	⛜ 	U+26DC 	&#9948; 	From ARIB STD B24.
+   Squared saltire 	⛝ 	U+26DD 	&#9949; 	Closed entry. From ARIB STD B24.
+   Falling diagonal in white circle in black square 	⛞ 	U+26DE 	&#9950; 	Closed to large vehicles. From ARIB STD B24.
+   Black truck 	⛟ 	U+26DF 	&#9951; 	Closed to large vehicles, alternate. From ARIB STD B24.
+   Restricted left entry-1 	⛠ 	U+26E0 	&#9952; 	From ARIB STD B24.
+   Restricted left entry-2 	⛡ 	U+26E1 	&#9953; 	From ARIB STD B24.
+   Astronomical symbol for Uranus 	⛢ 	U+26E2 	&#9954; 	New in Unicode 6.
+   Heavy circle with stroke and two dots above 	⛣ 	U+26E3 	&#9955; 	Public office. From ARIB STD B24.
+   Pentagram 	⛤ 	U+26E4 	&#9956; 	New in Unicode 6
+   Right-handed interlaced pentagram 	⛥ 	U+26E5 	&#9957; 	New in Unicode 6
+   Left-handed interlaced pentagram 	⛦ 	U+26E6 	&#9958; 	New in Unicode 6
+   Inverted pentagram 	⛧ 	U+26E7 	&#9959; 	New in Unicode 6
+   Black cross on shield 	⛨ 	U+26E8 	&#9960; 	Hospital. From ARIB STD B24.
+   Shinto shrine 	⛩ 	U+26E9 	&#9961; 	Torii. From ARIB STD B24.
+   Church 	⛪ 	U+26EA 	&#9962; 	From ARIB STD B24.
+   Castle 	⛫ 	U+26EB 	&#9963; 	From ARIB STD B24.
+   Historic site 	⛬ 	U+26EC 	&#9964; 	From ARIB STD B24.
+   Gear without hub 	⛭ 	U+26ED 	&#9965; 	Factory. From ARIB STD B24.
+   Gear with handles 	⛮ 	U+26EE 	&#9966; 	Power plant, power substation. From ARIB STD B24.
+   Map symbol for lighthouse 	⛯ 	U+26EF 	&#9967; 	From ARIB STD B24.
+   Mountain 	⛰ 	U+26F0 	&#9968; 	From ARIB STD B24.
+   Umbrella on ground 	⛱ 	U+26F1 	&#9969; 	Bathing beach. From ARIB STD B24.
+   Fountain 	⛲ 	U+26F2 	&#9970; 	Park. From ARIB STD B24.
+   Flag in hole 	⛳ 	U+26F3 	&#9971; 	Golf course. From ARIB STD B24.
+   Ferry 	⛴ 	U+26F4 	&#9972; 	Ferry boat terminal. From ARIB STD B24.
+   Sailboat 	⛵ 	U+26F5 	&#9973; 	Marina or yacht harbour. From ARIB STD B24.
+   Square four corners 	⛶ 	U+26F6 	&#9974; 	Intersection. From ARIB STD B24.
+   Skier 	⛷ 	U+26F7 	&#9975; 	Ski resort. From ARIB STD B24.
+   Ice skate 	⛸ 	U+26F8 	&#9976; 	Ice skating rink. From ARIB STD B24.
+   Person with ball 	⛹ 	U+26F9 	&#9977; 	Track and field, gymnasium. From ARIB STD B24.
+   Tent 	⛺ 	U+26FA 	&#9978; 	Camping site. From ARIB STD B24.
+   Japanese bank symbol 	⛻ 	U+26FB 	&#9979; 	From ARIB STD B24.
+   Headstone graveyard symbol 	⛼ 	U+26FC 	&#9980; 	Graveyard, memorial park, cemetery. From ARIB STD B24.
+   Fuel pump 	⛽ 	U+26FD 	&#9981; 	Petrol station, gas station. From ARIB STD B24.
+   Cup on black square 	⛾ 	U+26FE 	&#9982; 	Drive-in restaurant. From ARIB STD B24.
+   White flag with horizontal middle black stripe 	⛿ 	U+26FF 	&#9983; 	Japanese self-defence force site. From ARIB STD B24.

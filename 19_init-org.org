@@ -807,3 +807,9 @@
   ;;
   ;;
 #+END_SRC
+* org-bullets
+
+#+BEGIN_SRC emacs :tangle no
+ '(org-bullets-bullet-list (quote ("🔯" "☀" "✱" "❖" "✦" "✢" "★" "≣")))
+
+#+END_SRC

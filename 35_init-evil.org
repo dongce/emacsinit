@@ -89,8 +89,8 @@
 
        "S" smerge-basic-map
 
-       "u" 'helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
-       "U" 'helm-goto-recent-directory ;;counsel-goto-recent-directory ;;;;'string-rectangle ;;'recentf-open-most-recent-file
+       "u" 'counsel-recentf;;helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
+       "U" 'counsel-recentf-directory ;;helm-goto-recent-directory ;;counsel-goto-recent-directory ;;;;'string-rectangle ;;'recentf-open-most-recent-file
        ";" 'evilnc-comment-or-uncomment-lines
 
        "oCw" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines

@@ -2272,11 +2272,11 @@ or a marker."
 ;;; 영역이 있으면 KILL, 아니면 라인카피 
 (defun kill-region-dwim (beg end )
   (interactive (list (point) (mark)))
-  (if mark-active (kill-region beg end) (copy-line)))
+  (if mark-active (kill-region beg end) (dongil/copy-line)))
 
 (defun copy-region-dwim (beg end )
   (interactive (list (point) (mark)))
-  (if mark-active (kill-ring-region beg end) (copy-line)))
+  (if mark-active (kill-ring-region beg end) (dongil/copy-line)))
 
 (global-set-key [remap kill-region] 'kill-region-dwim)
    #+END_SRC

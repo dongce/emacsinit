@@ -2135,12 +2135,17 @@ This works on the current region."
   (let ((bounds (bounds-of-thing-at-point 'word)))
     (copy-region-as-kill (car bounds) (cdr bounds))))
 
-(defun copy-line (&optional arg)
+(defvar-local dongil/copy-line-at-bol t)
+
+
+(defun dongil/copy-line ()
   "Save current line into Kill-Ring without marking the line "
-  (interactive "P")
-  (let ((beg (line-beginning-position))
+  (interactive )
+  (let ((beg (if dongil/copy-line-at-bol (line-beginning-position) (point)))
        (end (line-end-position)))
-    (copy-region-as-kill beg end)))
+    (kill-new (s-trim (buffer-substring-no-properties beg end)))
+    ;;(copy-region-as-kill beg end)
+))
 
 
 
@@ -2203,6 +2208,9 @@ Version 2015-12-08"
       (message "Copied buffer file name '%s' to the clipboard." filename))))
 
 #+END_SRC
+
+#+RESULTS:
+: prelude-copy-file-name-to-clipboard
 
 * external
 
