@@ -368,8 +368,8 @@ open and unsaved."
     (add-hook 'image-mode-hook 'eimp-mode))
 #+END_SRC
 * counsel
-** helm, ido              
-   #+BEGIN_SRC emacs-lisp 
+** helm, ido                                                    :deprecated:
+   #+BEGIN_SRC emacs-lisp :tangle no
      (defun ido-choose-from-recentf ()
        "Use ido to select a recently opened file from the `recentf-list'"
        (interactive)
@@ -415,7 +415,7 @@ open and unsaved."
    : helm-goto-recent-directory
 
 ** ivy
- #+BEGIN_SRC emacs-lisp
+ #+BEGIN_SRC emacs-lisp :tangle no
      (defun counsel-goto-recent-directory ()
        "Open recent directory with dired"
        (interactive)
@@ -447,6 +447,29 @@ open and unsaved."
 
  #+END_SRC
 
+ #+BEGIN_SRC emacs-lisp
+ 
+   (defun counsel-recentf-directory ()
+     "Find a file on `recentf-list'."
+     (interactive)
+     (require 'recentf)
+     (recentf-mode)
+     (ivy-read "Recentf: "
+               (delete-dups
+                (append (mapcar 'file-name-directory recentf-list)
+                        ;; fasd history
+                        ;;(if (executable-find "fasd")
+                        ;;    (split-string (shell-command-to-string "fasd -ld") "\n" t))
+                        ))
+               :action (lambda (f)
+                         (with-ivy-window
+                          (find-file f)))
+               :caller 'counsel-recentf))
+   (ivy-set-actions
+    'counsel-recentf-directory
+    '(("j" find-file-other-window "other-window")
+      ("x" counsel-find-file-extern "open externally")))
+ #+END_SRC
  #+RESULTS:
- : counsel-choose-from-recentf
+ | ivy-switch-buffer | ((k (lambda (x) (kill-buffer x) (ivy--reset-state ivy-last)) kill) (j ivy--switch-buffer-other-window-action other window) (r ivy--rename-buffer-action rename)) | counsel-describe-variable | ((i counsel-info-lookup-symbol info) (d counsel--find-symbol definition)) | counsel-describe-function | ((i counsel-info-lookup-symbol info) (d counsel--find-symbol definition)) | counsel-M-x | ((d counsel--find-symbol definition) (h (lambda (x) (describe-function (intern x))) help)) | counsel-descbinds | ((d counsel-descbinds-action-find definition) (i counsel-descbinds-action-info info)) | counsel-git | ((j find-file-other-window other)) | counsel-find-file | ((f find-file-other-frame other frame) (w find-file-other-window other window) (v spacemacs/find-file-vsplit in vertical split) (s spacemacs/find-file-split in horizontal split) (l find-file-literally literally) (d spacemacs/delete-file delete file) (r spacemacs/rename-file rename file)) | counsel-recentf | ((j find-file-other-window other-window) (x counsel-find-file-extern open externally)) | counsel-locate | ((x counsel-locate-action-extern xdg-open) (d counsel-locate-action-dired dired)) | counsel-linux-app | ((f counsel-linux-app-action-file run on a file)) | spacemacs/ivy-spacemacs-layouts | ((c persp-kill-without-buffers Close layout(s)) (k persp-kill Kill layout(s))) | counsel-recentf-directory | ((j find-file-other-window other-window) (x counsel-find-file-extern open externally)) |
 
