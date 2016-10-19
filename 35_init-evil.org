@@ -948,10 +948,10 @@
       "gu"    'outline-up-heading
       "gt"    'org-goto
     
-      "gj"    'outline-next-visible-heading
-      "gk"    'outline-previous-visible-heading
-      "gl"    'org-forward-heading-same-level
-      "gh"    'org-backward-heading-same-level
+     ;;deprecatedby-evil-org;;"gj"    'outline-next-visible-heading
+     ;;deprecatedby-evil-org;;"gk"    'outline-previous-visible-heading
+     ;;deprecatedby-evil-org;;"gl"    'org-forward-heading-same-level
+     ;;deprecatedby-evil-org;;"gh"    'org-backward-heading-same-level
     
       (kbd "<kp-multiply>") 'org-insert-star
       (kbd "M-j") 'org-shiftleft
@@ -969,10 +969,10 @@
       "gu"    'outline-up-heading
       "gt"    'org-goto
     
-      "gj"    'outline-next-visible-heading
-      "gk"    'outline-previous-visible-heading
-      "gl"    'org-forward-heading-same-level
-      "gh"    'org-backward-heading-same-level
+      ;;deprecatedby-evil-org;;"gj"    'outline-next-visible-heading
+      ;;deprecatedby-evil-org;;"gk"    'outline-previous-visible-heading
+      ;;deprecatedby-evil-org;;"gl"    'org-forward-heading-same-level
+      ;;deprecatedby-evil-org;;"gh"    'org-backward-heading-same-level
     
       )
 
