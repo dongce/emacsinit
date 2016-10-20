@@ -624,8 +624,8 @@
            (message url ))))
    #+END_SRC
 
-* latex
-#+BEGIN_SRC emacs-lisp
+* latex                                                         :deprecated:
+#+BEGIN_SRC emacs-lisp :tangle no
   ;;;_ attach-file 
 
   ;;; http://jkitchin.github.io/blog/2013/09/30/Attaching-code-blocks-to-a-pdf-file-during-export/
@@ -807,6 +807,85 @@
   ;;
   ;;
 #+END_SRC
+
+* org-evil 
+
+
+ #+BEGIN_SRC emacs-lisp
+   (use-package org-evil)
+ #+END_SRC
+ 
+  different evil-org 
+  [[https://github.com/GuiltyDolphin/org-evil][GitHub - GuiltyDolphin/org-evil: Evil extensions for Org-mode.]]
+
+** org-evil
+
+ Evil extensions for Org-mode.
+
+** Getting Started
+
+*** Moving Around
+
+ =org-evil= aims to make motion in Org intuitive for Evil users,
+ so you can expect motions such as ~$~ to be similar to ~evil-end-of-line~,
+ ~^~ to ~evil-first-non-blank~, and so on and so forth.
+
+**** General Motions
+
+ The following are the default motion bindings for =org-evil-motion=, use
+ ~M-x describe-function BINDING~ for more information on each motion.
+
+ - ~gH~ :: ~org-evil-motion-up-heading-top~
+ - ~gh~ :: ~org-evil-motion-up-heading~
+ - ~{~  :: ~org-evil-motion-backward-heading~
+ - ~}~  :: ~org-evil-motion-forward-heading~
+
+**** Block Motions
+
+ The following bindings apply when inside an Org block:
+
+ - ~(~ :: ~org-evil-block-beginning-of-block~
+ - ~)~ :: ~org-evil-block-end-of-block~
+
+**** Table Motions
+
+ The following bindings apply when inside an Org table:
+
+ - ~gR~ :: ~org-evil-table-goto-line-from-bottom~
+ - ~gc~ :: ~org-evil-table-goto-column~
+ - ~gr~ :: ~org-evil-table-goto-line~
+ - ~|~  :: ~org-evil-table-goto-column~
+
+*** Operators
+
+**** Heading Operators
+
+ The following bindings apply when at a heading:
+
+ - ~<~ :: ~org-evil-promote~
+ - ~>~ :: ~org-evil-demote~
+
+**** Table Operators
+
+ The following bindings apply when inside an Org table:
+
+ - ~<~ :: ~org-evil-table-move-column-left~
+ - ~>~ :: ~org-evil-table-move-column-right~
+ - ~D~ :: ~org-evil-table-kill-row-to-end~
+ - ~O~ :: ~org-evil-table-insert-row-above~
+ - ~o~ :: ~org-evil-table-insert-row-below~
+
+*** Text Objects
+
+**** Block Text Objects
+
+ The following text objects are enabled within an Org block:
+
+ - ~ab~ :: ~org-evil-block-a-block~
+ - ~ib~ :: ~org-evil-block-inner-block~
+
+
+
 * org-bullets
 
 #+BEGIN_SRC emacs :tangle no
