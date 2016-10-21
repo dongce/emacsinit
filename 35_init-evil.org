@@ -404,8 +404,8 @@
   (define-key evil-normal-state-map [kp-5] 'helm-mini)
   (define-key evil-normal-state-map [kp-6] 'evil-next-buffer)
   (define-key evil-normal-state-map [kp-8] 'split-window-below)
-  (define-key evil-normal-state-map [kp-add] 'evil-yank)
-  (define-key evil-normal-state-map [kp-enter] 'evil-paste-after)
+  (define-key evil-normal-state-map [kp-add] 'evil-paste-after)
+  (define-key evil-normal-state-map [kp-enter] 'kmacro-end-and-call-macro)
   (define-key evil-normal-state-map [kp-decimal] 'winexe)
   (define-key evil-normal-state-map [kp-divide] 'twin)
   (define-key evil-normal-state-map [kp-subtract] 'recenter-top-bottom)
@@ -430,6 +430,9 @@
 
 
    #+END_SRC
+
+   #+RESULTS:
+   : paste-from-register-1
 
 ** evil surround
    #+BEGIN_SRC emacs-lisp
