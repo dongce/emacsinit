@@ -6,15 +6,18 @@
   #+END_SRC
 
 * org 
+** require                                          :deprecatedby:spacemacs:
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (require 'org)
+     (require 'calendar)
+     (require 'org-agenda)
+     (require 'evil-org)
+   #+END_SRC
 ** setting
    #+BEGIN_SRC emacs-lisp
 
      ;; babel 에서 C-c' (org-edit-src-code 를 사용할 수 있다)
 
-     (require 'org)
-     (require 'calendar)
-     (require 'org-agenda)
-     (require 'evil-org)
      ;;     #+STARTUP: overview
      ;;     #+STARTUP: content
      ;;     #+STARTUP: showall
@@ -885,6 +888,26 @@
  - ~ib~ :: ~org-evil-block-inner-block~
 
 
+
+ 
+
+* helm-org
+
+#+BEGIN_SRC emacs-lisp
+  ;;(defcustom helm-org-headings-max-depth 8)
+
+  (defun helm-org-headings (&optional n)
+    (interactive "p")
+    (if (> n  1)
+        (progn
+          (make-local-variable 'helm-org-headings-max-depth)
+          (setf helm-org-headings-max-depth n)))
+    (helm-org-in-buffer-headings))
+
+#+END_SRC
+
+#+RESULTS:
+: helm-org-headings
 
 * org-bullets
 

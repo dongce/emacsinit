@@ -895,9 +895,9 @@
 
   (evil-leader/set-key-for-mode 'org-mode
     "ha" 'helm-org-agenda-files-headings
-    "hH" 'helm-org-headlines
+    "hH" 'helm-org-headings
     "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
-    ;; "hh" 'helm-org-in-buffer-headings
+    "hh" 'helm-org-in-buffer-headings
 
     "u"    'outline-up-heading
     "q"    'org-todo
@@ -905,6 +905,8 @@
     "<up>"    'outline-previous-visible-heading
     "<right>"    'org-forward-heading-same-level
     "<left>"    'org-backward-heading-same-level
+
+    "r"         'org-mark-ring-goto
 
 
     "or" 'org-capture
@@ -1018,6 +1020,10 @@
 
 
     #+END_SRC
+
+    #+RESULTS:
+    : t
+
 *** mu4e
     #+BEGIN_SRC emacs-lisp
   (use-package evil-mu4e
@@ -1062,33 +1068,42 @@
 
     #+END_SRC
 
-*** dired                                                        :DEPRECATED:
-    #+BEGIN_SRC emacs-lisp
-;;  (use-package dired
-;;    :config
-;;;;; Dired
-;;    (define-key dired-mode-map (kbd "SPC") nil)
-;;    (define-key dired-mode-map (kbd "/") nil)
-;;    (define-key dired-mode-map (kbd "n") nil)
-;;    (define-key dired-mode-map (kbd "N") nil)
-;;    
-;;    ;; use the standard Dired bindings as a base
-;;    (evil-make-overriding-map dired-mode-map 'normal t)
-;;    (evil-add-hjkl-bindings dired-mode-map 'normal
-;;      "J" 'dired-goto-file     ; "j"
-;;      "K" 'dired-do-kill-lines ; "k"
-;;      ;; "r" 'dired-do-redisplay  ; "l"
-;;      "r" 'revert-buffer
-;;      ;; "g" 'revert-buffer
-;;      (kbd  "RET") 'diredp-find-file-reuse-dir-buffer
-;;      ";" (lookup-key dired-mode-map ":")) ; ":d", ":v", ":s", ":e"
-;;    (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
-;;    ;;evil-extra-operator;;(evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
-;;    ;;evil-extra-operator;;(evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
-;;    (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first))
+*** dired                 
+    
 
+**** helm-dired-history 
+     #+BEGIN_SRC emacs-lisp 
+       (evil-define-key 'normal dired-mode-map ",h" #'helm-dired-history-view)
+     #+END_SRC
 
-    #+END_SRC
+     #+RESULTS:
+
+**** dired mapping                                              :deprecated:
+#+BEGIN_SRC emacs-lisp
+       ;;  (use-package dired
+       ;;    :config
+       ;;;;; Dired
+       ;;    (define-key dired-mode-map (kbd "SPC") nil)
+       ;;    (define-key dired-mode-map (kbd "/") nil)
+       ;;    (define-key dired-mode-map (kbd "n") nil)
+       ;;    (define-key dired-mode-map (kbd "N") nil)
+       ;;    
+       ;;    ;; use the standard Dired bindings as a base
+       ;;    (evil-make-overriding-map dired-mode-map 'normal t)
+       ;;    (evil-add-hjkl-bindings dired-mode-map 'normal
+       ;;      "J" 'dired-goto-file     ; "j"
+       ;;      "K" 'dired-do-kill-lines ; "k"
+       ;;      ;; "r" 'dired-do-redisplay  ; "l"
+       ;;      "r" 'revert-buffer
+       ;;      ;; "g" 'revert-buffer
+       ;;      (kbd  "RET") 'diredp-find-file-reuse-dir-buffer
+       ;;      ";" (lookup-key dired-mode-map ":")) ; ":d", ":v", ":s", ":e"
+       ;;    (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
+       ;;    ;;evil-extra-operator;;(evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
+       ;;    ;;evil-extra-operator;;(evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
+       ;;    (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first))
+#+END_SRC
+
 *** key combo
 
     #+BEGIN_SRC emacs-lisp

@@ -1,4 +1,188 @@
 # -*-mode: org; coding: utf-8; buffer-read-only: t;-*-
+
+* header
+  #+BEGIN_SRC emacs-lisp
+    ;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
+  #+END_SRC
+* dired
+** serveral macro 
+ #+BEGIN_SRC emacs-lisp
+   (defun 2zip ()
+     "Zip the current file/dir in `dired'.
+     If multiple files are marked, only zip the first one.
+     Require unix zip commandline tool."
+     (interactive)
+     (require 'dired)
+     (let ( (fileName (elt (dired-get-marked-files) 0))  )
+       (shell-command (format "zip -r '%s.zip' '%s'" (file-relative-name fileName) (file-relative-name fileName)))
+       ))
+
+
+   (defun upward-find-file (filename &optional startdir)
+     "Move up directories until we find a certain filename. If we
+       manage to find it, return the containing directory. Else if we
+       get to the toplevel directory and still can't find it, return
+       nil. Start at startdir or . if startdir not given"
+
+     (let ((dirname (expand-file-name
+                     (if startdir startdir ".")))
+           (found nil) ; found is set as a flag to leave loop if we find it
+           (top nil))  ; top is set when we get
+                                           ; to / so that we only check it once
+
+                                           ; While we've neither been at the top last time nor have we found
+                                           ; the file.
+       (while (not (or found top))
+                                           ; If we're at / set top flag.
+         (if (string= (expand-file-name dirname) "/")
+             (setq top t))
+      
+                                           ; Check for the file
+         (if (file-exists-p (expand-file-name filename dirname))
+             (setq found t)
+                                           ; If not, move up a directory
+           (setq dirname (expand-file-name ".." dirname))))
+                                           ; return statement
+       (if found dirname nil)))
+
+   (use-package dired
+     :config
+     (define-key dired-mode-map ":c" 'clip-file)
+     (define-key dired-mode-map ":i" 'clip-image))
+
+   (defun 2-zip ()
+     "Zip the current file/dir in `dired'.
+     If multiple files are marked, only zip the first one.
+     Require unix zip commandline tool."
+     (interactive)
+     (require 'dired)
+     (let ( (fileName (elt (dired-get-marked-files) 0))  )
+       (shell-command (format "zip -r '%s.zip' '%s'" (file-relative-name fileName) (file-relative-name fileName)))
+       ))
+
+
+
+   (defun unzip(fileList)
+     "Zip the current file/dir in `dired'.
+     If multiple files are marked, only zip the first one.
+     Require unix zip commandline tool."
+     (interactive (list (dired-get-marked-files) ))
+     (require 'dired)
+     (mapc
+      (lambda (ξf)
+        (let ( newName cmdStr )
+          (setq newName (file-name-sans-extension ξf))
+          (while (file-exists-p newName)
+            (setq newName (concat (file-name-sans-extension newName) "-2" (file-name-extension newName t))) )
+
+          ;; (async-shell-command cmdStr)
+          ;;deprecated;;(async-shell-command 
+          ;;deprecated;; (format "convert -rotate 180 \"%s\" \"%s\""   (file-relative-name ξf) (file-relative-name newName)) )
+          (message (format "7z x  \"%s\"  -o\"%s\"  "  ξf newName))
+          (async-shell-command
+           (format "7z x  \"%s\"  -o\"%s\"  "  ξf newName))))
+      fileList ))
+
+   (defun unzipcur(fileList)
+     "Zip the current file/dir in `dired'.
+     If multiple files are marked, only zip the first one.
+     Require unix zip commandline tool."
+     (interactive (list (dired-get-marked-files) ))
+     (require 'dired)
+     (mapc
+      (lambda (ξf)
+        (let ( newName cmdStr )
+          (setq newName (file-name-sans-extension ξf))
+          (while (file-exists-p newName)
+            (setq newName (concat (file-name-sans-extension newName) "-2" (file-name-extension newName t))) )
+
+          ;; (async-shell-command cmdStr)
+          ;;deprecated;;(async-shell-command 
+          ;;deprecated;; (format "convert -rotate 180 \"%s\" \"%s\""   (file-relative-name ξf) (file-relative-name newName)) )
+          (message (format "7z x  \"%s\"  -o\"%s\"  "  ξf (file-name-directory newName)))
+          (async-shell-command
+           (format "7z x  \"%s\"  -o\"%s\"  "  ξf (file-name-directory newName)))))
+      fileList ))
+
+
+   (defun 2-7zip ()
+     "Zip the current file/dir in `dired'.
+     If multiple files are marked, only zip the first one.
+     Require unix zip commandline tool."
+     (interactive)
+     (require 'dired)
+     (let ( (fileName (elt (dired-get-marked-files) 0))  )
+       (async-shell-command (format "7z a \"%s.7z\" \"%s\"" (file-relative-name fileName) (file-relative-name fileName)))
+       ))
+
+
+
+   (defcustom pyclip (fullpath "../misc/pyclip3.py") "python clip")
+
+
+
+   (defun copy-image-file (file)
+     "Display Windows context menu on selected files"
+     (interactive)
+
+     (if (eq system-type 'windows-nt)
+      
+         ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
+         (async-start-process ;;impossible;;-reuse-buffer 
+          "clip-image" 
+          "python.exe"
+          (lambda (p) (message "이미지 복사 완료"))
+          pyclip
+          "--image"
+          file)))
+
+   (defun copy-files (&rest files)
+     "Display Windows context menu on selected files"
+     (interactive)
+     (if (eq system-type 'windows-nt)
+      
+         (apply
+          #'async-start-process  ;;impossible;;-reuse-buffer 
+          "clip-file" 
+          "c:/usr/local/python35/python.exe"
+          (lambda (p) (message "파일복사 완료"))
+          pyclip
+          files)))
+
+
+   (defun clip-file ()
+     "Display Windows context menu on selected files"
+     (interactive)
+
+     (if (eq system-type 'windows-nt)
+         (let* ((files (dired-get-marked-files))
+                (files (if (null files)
+                           (list (dired-current-directory) )
+                         files)))
+           ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
+           (apply #'copy-files files))))
+
+   (defun clip-image ()
+     "Display Windows context menu on selected files"
+     (interactive)
+
+     (if (eq system-type 'windows-nt)
+         (let* ((files (dired-get-marked-files))
+                (files (if (null files)
+                           (list (dired-current-directory) )
+                         files)))
+           ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
+           (copy-image-file (car files)))))
+
+ #+END_SRC
+
+** helm-dired-history                                           :deprecated:
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package helm-dired-history
+    :config
+    (add-to-list 'savehist-additional-variables 'helm-dired-history-variable))
+#+END_SRC
+
 * WINDOW dired
 #+BEGIN_SRC emacs-lisp
   (when-os 'windows-nt

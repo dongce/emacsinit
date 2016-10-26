@@ -284,3 +284,55 @@ Version 2016-06-15"
 #+RESULTS:
 : xah-backward-block
 
+
+** pairedit
+
+   #+BEGIN_SRC  emacs-lisp
+
+     (use-package xah-replace-pairs
+       :config
+       (defun xah-css-compact-css-region (φbegin φend)
+         "Remove unnecessary whitespaces of CSS source code in region.
+     WARNING: not robust.
+     URL `http://ergoemacs.org/emacs/elisp_css_compressor.html'
+     Version 2015-04-29"
+         (interactive "r")
+         (save-restriction
+           (narrow-to-region φbegin φend)
+           (xah-replace-regexp-pairs-region
+            (point-min)
+            (point-max)
+            '(["  +" " "]))
+           (xah-replace-pairs-region
+            (point-min)
+            (point-max)
+            '(
+              ["\n" ""]
+              [" /* " "/*"]
+              [" */ " "*/"]
+              [" {" "{"]
+              ["{ " "{"]
+              ["; " ";"]
+              [": " ":"]
+              [";}" "}"]
+              ["}" "}\n"]
+              ))))
+       (defun xah-css-compact-css-string (φstr)
+         "Remove unnecessary whitespaces of CSS source code in region.
+     WARNING: not robust.
+     URL `http://ergoemacs.org/emacs/elisp_css_compressor.html'
+     Version 2015-04-29"
+         (xah-replace-pairs-region
+          (xah-replace-regexp-pairs-in-string φstr '(["  +" " "]))
+          '(
+            ["\n" ""]
+            [" /* " "/*"]
+            [" */ " "*/"]
+            [" {" "{"]
+            ["{ " "{"]
+            ["; " ";"]
+            [": " ":"]
+            [";}" "}"]
+            ["}" "}\n"]
+            ))))
+   #+END_SRC
