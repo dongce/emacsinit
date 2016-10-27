@@ -3219,3 +3219,22 @@ of FILE in the current directory, suitable for creation"
         (t
          "t:/usr/local/editor/emacsW32/iview441_x64/i_view64.exe /capture=4 /convert=%f"))))
   #+END_SRC
+
+* word 2 org 
+#+BEGIN_SRC emacs-lisp
+  (defun doc2org (begin end )
+    (interactive "r")
+    (save-excursion
+      (save-restriction
+        (narrow-to-region begin end)
+
+        (replace-regexp  "" "-" nil (point-min) (point-max))
+        (replace-regexp  "" "-" nil (point-min) (point-max))
+        (replace-regexp (regexp-quote "^(\*)+")  " \1" nil (point-min) (point-max) )
+        (replace-regexp "^\[0-9]\+.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"  "****** " nil (point-min) (point-max) )
+        (replace-regexp "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"           "***** " nil (point-min) (point-max) )
+        (replace-regexp "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                     "**** " nil (point-min) (point-max) )
+        (replace-regexp "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                               "*** " nil (point-min) (point-max) )
+        (replace-regexp "^\[0-9]\+\.\[0-9]\+"                                         "** " nil (point-min) (point-max) )
+        )))
+#+END_SRC
