@@ -115,6 +115,13 @@
    #+BEGIN_SRC emacs-lisp
      (defvar global-abbrev-table-assoc
        `(
+
+("8dia" "💎" )
+("8elec"    "⌁")
+("8ss"    "🌠")
+("8rcheck"    "☑")
+("8hun"    "💯")
+("8shit"    "💩")
              ;; math/unicode symbols
              ("8dead" "📆")
              ("8skull" "💀")
@@ -666,7 +673,7 @@
              ( "8seen"           "✔")
              ( "8sn"           "✔")
              ( "8ground"          "⏚")
-             ( "8trashed"        "🚮")
+             ( "8trash"        "🚮")
              ( "8attach"         "⚓")
              ( "8encrypted"      "⚴")
              ( "8signed"         "☡")
@@ -763,6 +770,10 @@
              ("8rsync3" "rsync -r -v -t --delete --exclude=\"**/My *\" --rsh=\"ssh -l xah\" ~/Documents/ xah@example.com:~/Documents/")
              ))
    #+END_SRC
+
+   #+RESULTS:
+   : global-abbrev-table-assoc
+
 ** define abbrev table 
  #+BEGIN_SRC emacs-lisp
 

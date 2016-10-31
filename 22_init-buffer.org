@@ -530,9 +530,9 @@
 : projectile-load-files
 
 
-* purpose
+* purpose                                                       :deprecated:
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 
 ;; (with-package*
 ;;   (perspective)
