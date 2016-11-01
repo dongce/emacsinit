@@ -473,6 +473,9 @@
 
    #+END_SRC
 
+   #+RESULTS:
+   : t
+
 ** search override                                               :DEPRECATED:
 
    #+BEGIN_SRC emacs-lisp
