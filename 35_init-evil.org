@@ -910,6 +910,7 @@
     "<left>"    'org-backward-heading-same-level
 
     "r"         'org-mark-ring-goto
+    "&"         'org-mark-ring-goto
 
 
     "or" 'org-capture

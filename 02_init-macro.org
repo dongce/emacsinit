@@ -2964,7 +2964,9 @@ buffer being killed."
 
 ;; (loop for num from 0 
 ;; for name = (format "blah-%03i" num) while (get-buffer name) finally return name))) 
-#+END_SRC* folding
+#+END_SRC
+
+* folding
 #+BEGIN_SRC emacs-lisp
 (defun vimish-fold-dwim ()
   (interactive)
@@ -3238,3 +3240,18 @@ of FILE in the current directory, suitable for creation"
         (replace-regexp "^\[0-9]\+\.\[0-9]\+"                                         "** " nil (point-min) (point-max) )
         )))
 #+END_SRC
+
+* xah-macro
+#+BEGIN_SRC emacs-lisp
+  (defun xah-some (*list)
+    "return t if at least one element is true"
+    (eval `(or ,@ *list)))
+
+  (defun xah-every (*list)
+    "return t if at least one element is true"
+    (eval `(and ,@ *list)))
+#+END_SRC
+
+#+RESULTS:
+: xah-every
+

@@ -1572,18 +1572,18 @@ See also `multi-occur'."
 
 
 
-     (defun uniquify-region ()
-       "remove duplicate adjacent lines in the given region"
-       (interactive)
-       (save-excursion
-         (save-restriction
-           (narrow-to-region (region-beginning) (region-end))
-           (sort-lines nil (point-min) (point-max))
-           (beginning-of-buffer)
-           (while (re-search-forward "\\(.*\n\\)\\1+" nil t)
-             (replace-match "\\1" nil nil))
-           (widen) 
-           nil)))
+     ;; (defun uniquify-region ()
+     ;;   "remove duplicate adjacent lines in the given region"
+     ;;   (interactive)
+     ;;   (save-excursion
+     ;;     (save-restriction
+     ;;       (narrow-to-region (region-beginning) (region-end))
+     ;;       (sort-lines nil (point-min) (point-max))
+     ;;       (beginning-of-buffer)
+     ;;       (while (re-search-forward "\\(.*\n\\)\\1+" nil t)
+     ;;         (replace-match "\\1" nil nil))
+     ;;       (widen) 
+     ;;       nil)))
 
      (defun find-duplicate-lines (&optional insertp interp)
        (interactive "i\np")
