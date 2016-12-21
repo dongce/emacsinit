@@ -78,9 +78,9 @@
           ;; (async-shell-command cmdStr)
           ;;deprecated;;(async-shell-command 
           ;;deprecated;; (format "convert -rotate 180 \"%s\" \"%s\""   (file-relative-name ξf) (file-relative-name newName)) )
-          (message (format "7z x  \"%s\"  -o\"%s\"  "  ξf newName))
+          (message (format "7za x  \"%s\"  -o\"%s\"  "  ξf newName))
           (async-shell-command
-           (format "7z x  \"%s\"  -o\"%s\"  "  ξf newName))))
+           (format "7za x  \"%s\"  -o\"%s\"  "  ξf newName))))
       fileList ))
 
    (defun unzipcur(fileList)
@@ -99,9 +99,9 @@
           ;; (async-shell-command cmdStr)
           ;;deprecated;;(async-shell-command 
           ;;deprecated;; (format "convert -rotate 180 \"%s\" \"%s\""   (file-relative-name ξf) (file-relative-name newName)) )
-          (message (format "7z x  \"%s\"  -o\"%s\"  "  ξf (file-name-directory newName)))
+          (message (format "7za x  \"%s\"  -o\"%s\"  "  ξf (file-name-directory newName)))
           (async-shell-command
-           (format "7z x  \"%s\"  -o\"%s\"  "  ξf (file-name-directory newName)))))
+           (format "7za x  \"%s\"  -o\"%s\"  "  ξf (file-name-directory newName)))))
       fileList ))
 
 
@@ -112,7 +112,7 @@
      (interactive)
      (require 'dired)
      (let ( (fileName (elt (dired-get-marked-files) 0))  )
-       (async-shell-command (format "7z a \"%s.7z\" \"%s\"" (file-relative-name fileName) (file-relative-name fileName)))
+       (async-shell-command (format "7za a \"%s.7z\" \"%s\"" (file-relative-name fileName) (file-relative-name fileName)))
        ))
 
 
@@ -175,6 +175,9 @@
            (copy-image-file (car files)))))
 
  #+END_SRC
+
+ #+RESULTS:
+ : clip-image
 
 ** helm-dired-history                                           :deprecated:
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -659,7 +662,7 @@ open and unsaved."
 
 * dired-x omit files
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
   (use-package dired-x
     :config
     (progn
@@ -669,3 +672,16 @@ open and unsaved."
       (setq dired-omit-files
             (concat dired-omit-files "\\|^.~$\\|^.projectile$"))))
 #+END_SRC
+
+#+RESULTS:
+: t
+
+* sorting
+  #+BEGIN_SRC emacs-lisp
+    (use-package dired-quick-sort
+      :config
+      (dired-quick-sort-setup)) 
+  #+END_SRC
+
+  #+RESULTS:
+  : t

@@ -89,11 +89,15 @@
                (docid (mu4e-message-field mu4e~view-msg :docid)))
           (kill-new (format "%s %s (lambda () (mu4e~proc-view %d nil nil))" subject path docid))))
 
-      (defun open-mu4e-view (&optional findfile)
-        (interactive "P")
-        (if findfile
-            (find-file (mu4e-message-field mu4e~view-msg :path))
-            (w32-shell-execute nil (mu4e-message-field mu4e~view-msg :path) nil 1)))
+
+  (defun open-mu4e-view (&optional findfile)
+    (interactive "P")
+    (let ( (file (mu4e-message-field mu4e~view-msg :path))) 
+    (message file )
+      (if findfile
+          (find-file file )
+        (w32-shell-execute nil file nil 1))))
+
 
       (setf mu4e-field-list '(:path :docid :from :to :cc :subject :date :size :message-id  :maildir :priority :flags :attachments :references )) ;:parts
 
@@ -474,3 +478,22 @@
 
     ;;mu index -m f:/single-repo & mu index -m f:/MYSINGLE & mu index -m g:/MYSINGLE & mu index -m g:/MYSINGLE2013 & mu index -m f:/MYSINGLE20130318 & mu index -m f:/MYSINGLE20130416
   #+END_SRC
+
+  #+RESULTS:
+  : mu
+
+
+* keybinding
+
+  #+BEGIN_SRC emacs-lisp
+    (defun my/mu4e-inbox ()
+      "jump to mu4e inbox"
+      (interactive)
+      (mu4e~headers-jump-to-maildir "INBOX"))
+
+    (spacemacs/set-leader-keys "oi" 'mu4e)
+    (spacemacs/set-leader-keys "oI" 'mu)
+
+  #+END_SRC
+
+  #+RESULTS:

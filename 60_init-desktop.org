@@ -83,9 +83,12 @@
   ;; 테스트 하는 경우 universal-coding-system-argument 함수를 참고 
   ;; ENCODING 설정방법 
   ;; (modify-coding-system-alist 'process ".*" 'cp949)
-  (when-os 'window-nt
+  (when-os 'windows-nt
            (modify-coding-system-alist 'process "git\.exe" '(utf-8 . cp949))
            (modify-coding-system-alist 'process "ls\.exe" 'utf-8 )
+           (if (and dired-use-ls-dired ls-lisp-use-insert-directory-program)
+               (setq-default file-name-coding-system 'utf-8)
+             (setq-default file-name-coding-system 'cp949))
            (modify-coding-system-alist 'process "curl\.exe" 'utf-8 ))
   ;;(require 'unicad ) ;;CP949 를 우선 하는 방법을 찾을 것 
 
@@ -310,3 +313,6 @@
 
   ;; (set-default-coding-systems 'utf-8)
 #+END_SRC
+
+#+RESULTS:
+: ((COMMIT_EDITMSG . utf-8) (\.latex\' . utf-8) (\.sql$ . utf-8) (\.tex\' . utf-8) (\.json\' . utf-8) (\.org\' . utf-8) (\.py\' . utf-8) (\.rb\' . utf-8) (itsalltext . utf-8) (\.dz\' no-conversion . no-conversion) (\.txz\' no-conversion . no-conversion) (\.xz\' no-conversion . no-conversion) (\.lzma\' no-conversion . no-conversion) (\.lz\' no-conversion . no-conversion) (\.g?z\' no-conversion . no-conversion) (\.\(?:tgz\|svgz\|sifz\)\' no-conversion . no-conversion) (\.tbz2?\' no-conversion . no-conversion) (\.bz2\' no-conversion . no-conversion) (\.Z\' no-conversion . no-conversion) (\.elc\' . utf-8-emacs) (\.el\' . prefer-utf-8) (\.utf\(-8\)?\' . utf-8) (\.xml\' . xml-find-file-coding-system) (\(\`\|/\)loaddefs.el\' raw-text . raw-text-unix) (\.tar\' no-conversion . no-conversion) (\.po[tx]?\'\|\.po\. . po-find-file-coding-system) (\.\(tex\|ltx\|dtx\|drv\)\' . latexenc-find-file-coding-system) ( undecided))

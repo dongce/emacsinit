@@ -40,6 +40,7 @@
        "ye" 'yankpad-edit
        "ym" 'yankpad-map
        "yc" 'yankpad-set-category
+       "oj" 'open-junk-file
        "obi" 'ido-switch-buffer-other-frame
        "oba" 'ivy-push-view
        "obA" 'ivy-pop-view
@@ -1255,12 +1256,26 @@
 * bind map                                                       :DEPRECATED:
 #+BEGIN_SRC emacs-lisp :tangle no
 
-;; (use-package bind-map
-;;   :config
-;;   (bind-map my-org-map
-;;             :evil-keys (",")
-;;             :major-modes (org-mode))
-;;   (bind-map-set-keys my-org-map
-;;                      "t" 'ido-choose-from-recentf)) 
-  
+  ;; (use-package bind-map
+  ;;   :config
+  ;;   (bind-map my-org-map
+  ;;             :evil-keys (",")
+  ;;             :major-modes (org-mode))
+  ;;   (bind-map-set-keys my-org-map
+  ;;                      "t" 'ido-choose-from-recentf)) 
+
+
+  (use-package bind-map
+    :config
+    (bind-map-set-keys helm-ag-map
+      (kbd "<f2>") 'helm-ag-edit
+      (kbd "<f3>") 'helm-ag--run-save-buffer)
+    (bind-map-set-keys helm-grep-map
+      (kbd "<f3>") 'helm-grep-run-save-buffer))
+
 #+END_SRC
+
+#+RESULTS:
+: t
+
+

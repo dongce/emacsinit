@@ -87,7 +87,8 @@
    ;; (global-set-key [(control ?\')]     'recentf-open-most-recent-file)
    ;; (global-set-key [(control ?\")]     'recentf-open-files)
 
-   (require 'recentf-ext)
+   (use-package recentf-ext)
+   (use-package open-junk-file)
 
    ;; (define-key dired-mode-map "V" 
    ;;   (aif (mapcar (lambda (x) (find-file-other-frame x )) (dired-get-marked-files))))

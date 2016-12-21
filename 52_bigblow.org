@@ -1532,3 +1532,25 @@ Version 2015-06-12"
 
 
 #+END_SRC
+
+* org babel
+
+** python
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package scimax-org-babel-python
+       :config
+       (add-to-list 'org-ctrl-c-ctrl-c-hook 'org-babel-async-execute:python))
+   #+END_SRC
+
+   #+BEGIN_SRC python :tangle no
+
+     import time
+
+     for i in range(5):
+         print(i)
+         time.sleep(2)
+
+   #+END_SRC
+
+
