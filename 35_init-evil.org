@@ -11,7 +11,8 @@
 
  (require 'smerge-mode)
    #+END_SRC 
-** leader
+
+** excommand
    #+BEGIN_SRC emacs-lisp
 
      ;; http://d.hatena.ne.jp/tarao/20130304/evil_config
@@ -30,192 +31,196 @@
          (evil-ex (concat "%s/" (thing-at-point 'word) "/"))))
 
      (evil-ex-define-cmd "[sc]ratch" #'tmpscratch)
-
-     (spacemacs/set-leader-keys 
-       "<tab>" #'back-to-indentation
-       "<backspace>" #'twin
-       "%" 'evil-virep-replace-regexp
-       "ak" 'kproc
-       "yi" 'yankpad-insert
-       "ye" 'yankpad-edit
-       "ym" 'yankpad-map
-       "yc" 'yankpad-set-category
-       "oj" 'open-junk-file
-       "obi" 'ido-switch-buffer-other-frame
-       "oba" 'ivy-push-view
-       "obA" 'ivy-pop-view
-       "obb" 'ivy-switch-buffer-other-window
-       "obB" 'ivy-switch-buffer
-       "ob[" 'evil-prev-buffer
-       "obk" 'kill-this-buffer
-       "ob]" 'evil-next-buffer
-       "obn" 'narrow-to-region
-       "obN" 'narrow-to-defun
-       "obw" 'widen
-       "obs" 'save-buffer
-       "obS" 'save-some-buffers
-       "obm" 'boomark-set
-       "obj" 'boomark-jump
-       "obM"      'bookmark-bmenu-list
-       "obl"      'xah-open-last-closed
-       "obf"      'prelude-copy-file-name-to-clipboard
-       "obh"      'mark-whole-buffer
-       "obr"      'revert-buffer
-       "obc"      'xah-close-current-buffer
-       "<home>" 'ibuffer
-       "<end>" 'tmpscratch
-
-       "<prior>" 'beginning-of-defun
-       "<next>" 'end-of-defun
-
-       "," 'smex
-       "." 'embrace-commander
-       "/" 'evil-replace-word-selection
-
-       "osL" 'loccur
-       "oo" 'occur
-       "osn" 'smartscan-symbol-go-forward
-       "osp" 'smartscan-symbol-go-backward
-       "osc" 'xah-lookup-cppreference
-       "os." 'gtags-find-tag
-       "os," 'gtags-pop-stack
-       "os_" 'isearch-forward-symbol
-       "os-" 'isearch-forward-at-point
-       "osm" 'grep-word
-       "ost" 'xah-find-text
-       "osT" 'xah-find-text-regex
-
-
-       "op" 'evil-paste-after-from-0
-
-       "S" smerge-basic-map
-
-       "u" 'counsel-recentf;;helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
-       "U" 'counsel-recentf-directory ;;helm-goto-recent-directory ;;counsel-goto-recent-directory ;;;;'string-rectangle ;;'recentf-open-most-recent-file
-       ";" 'evilnc-comment-or-uncomment-lines
-
-       "oCw" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
-       "oCx" #'crux-open-with
-       "oCO" #'crux-smart-open-line-above
-       "oCo" #'crux-smart-open-line
-       "oCs" #'crux-cleanup-buffer-or-region
-       "oCr" #'crux-recentf-ido-find-file
-       "oCv" #'crux-view-url
-       "oCe" #'crux-eval-and-replace
-       "oCt" #'crux-transpose-windows
-       "oCD" #'crux-delete-file-and-buffer
-       "oCl" #'crux-duplicate-current-line-or-region
-       "oCL" #'crux-duplicate-and-comment-current-line-or-region
-       "oCR" #'crux-rename-file-and-buffer
-       "oCn" #'crux-visit-term-buffer
-       "oC1" #'crux-kill-other-buffers
-       "oCi" #'crux-indent-defun
-       "oCI" #'crux-indent-rigidly-and-copy-to-clipboard
-       "oC." #'crux-find-user-init-file
-       "oCs" #'crux-find-shell-init-file
-       "oCj" #'crux-top-join-lines
-       "oCk" #'crux-kill-whole-line
-       "oCK" #'crux-kill-line-backwards
-       "oCa" #'crux-ispell-word-then-abbrev
-
-
-
-
-       "O" 'win-switch-next-window
-       "o]" 'exit-recursive-edit
-       "ov" 'evil-scroll-down
-       "oV" 'evil-scroll-up
-
-       "G" 'keyboard-quit
-       "ee" 'eval-last-sexp
-       "E"  mu4e-main-mode-map
-       "Eu" 'mu4e-update-mail-and-index
-
-
-       "W" 'read-only-mode
-       "oww" 'read-only-mode
-       "owk" 'win-switch-up
-       "owj" 'win-switch-down
-       "owh" 'win-switch-left
-       "owl" 'win-switch-right
-       "ow1" 'delete-other-windows
-       "ow2" 'split-window-below
-       "ow3" 'split-window-right
-       "ow0" 'delete-window
-       "owo" 'win-switch-dispatch
-       "owd" 'delete-blank-lines
-       "ows" 'resize-window
-       "owj"      'winner-undo
-       "owk"      'winner-redo
-
-       "as" 'twin
-       "aw" 'winexe
-       ;;deprecattion;;"+" #'evil-numbers/inc-at-pt
-       ;;deprecattion;;"-" #'evil-numbers/dec-at-pt
-       ;;deprecattion;;"M" #'pop-to-mark-command ;;'evil-scroll-down
-       ;;deprecattion;;"m" #'er/expand-region ;;#'extend-selection
-       ;;deprecattion;;"S-m" #'mark-line ;;#'extend-selection
-       ;;deprecattion;;"<" #'loccur
-       ;;deprecattion;;"0" #'delete-window
-       ;;deprecattion;;"1" #'delete-other-windows
-       ;;deprecattion;;"2" #'split-window-below
-       ;;deprecattion;;"3" #'split-window-right
-       ;;deprecattion;;"(" #'kmacro-start-macro
-       ;;deprecattion;;")" #'kmacro-end-macro
-       ;;deprecattion;;"xx"  #'kmacro-end-and-call-macro
-       ;;deprecattion;;"xi"  #'string-inflection-all-cycle
-       ;;deprecattion;;"D" #'toggle-current-window-dedication
-       ;;deprecattion;;"kb" 'kill-buffer
-       ;;deprecattion;;"op"  (cdar (cddr  (cadr  projectile-mode-map)))
-       ;;deprecattion;;"opw"  'purpose-load-window-layout
-       ;;deprecattion;;"opW"  'purpose-save-window-layout
-       ;;deprecattion;;"opE"  'project-explorer-open
-       ;;deprecattion;;"opC"  'project-explorer-close
-       ;;deprecattion;;"op/"  'projectile-grep
-       ;;deprecattion;;"<SPC>" #'smex
-
-       "ohz" 'zeal-at-point
-       "ohh"      'helm-mini
-       "oha"      'helm-apropos
-       "ohB"      'helm-buffers-list
-       "ohb"      'helm-descbindings
-       "ohy"      'helm-show-kill-ring
-       "ohx"      'helm-M-x
-       "oho"     'helm-occur
-       "ohs"     'helm-swoop
-       "ohy"     'helm-yas-complete
-       "ohY"     'helm-yas-create-snippet-on-region
-       "ohr" 'helm-all-mark-rings
-       "ohm" 'helm-smex
-       "ohM" 'helm-smex-major-mode-commands
-       "od"  'counsel-goto-recent-directory
-
-       "om" 'orgmail
-       "oS" 'tmpscratch
-       "oI" 'ibuffer
-       "ox" 'winexe
-       "or" 'org-capture
-       "oa" 'org-agenda
-       "ol" 'org-store-link
-       "oc" 'org-cliplink
-       )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    #+END_SRC
+** leader
 
-   #+RESULTS:
+*** myown
+    #+BEGIN_SRC emacs-lisp
+    
+      (spacemacs/set-leader-keys 
+        "<backtab>" #'back-to-indentation
+        "<backspace>" #'twin
+        "%" 'evil-virep-replace-regexp
+        "ak" 'kproc
+        "yi" 'yankpad-insert
+        "ye" 'yankpad-edit
+        "ym" 'yankpad-map
+        "yc" 'yankpad-set-category
+        "oj" 'open-junk-file
+        "obi" 'ido-switch-buffer-other-frame
+        "oba" 'ivy-push-view
+        "obA" 'ivy-pop-view
+        "obb" 'ivy-switch-buffer-other-window
+        "obB" 'ivy-switch-buffer
+        "ob[" 'evil-prev-buffer
+        "obk" 'kill-this-buffer
+        "ob]" 'evil-next-buffer
+        "obn" 'narrow-to-region
+        "obN" 'narrow-to-defun
+        "obw" 'widen
+        "obs" 'save-buffer
+        "obS" 'save-some-buffers
+        "obm" 'boomark-set
+        "obj" 'boomark-jump
+        "obM"      'bookmark-bmenu-list
+        "obl"      'xah-open-last-closed
+        "obf"      'prelude-copy-file-name-to-clipboard
+        "obh"      'mark-whole-buffer
+        "obr"      'revert-buffer
+        "obc"      'xah-close-current-buffer
+        "<home>" 'ibuffer
+        "<end>" 'tmpscratch
+
+        "<prior>" 'beginning-of-defun
+        "<next>" 'end-of-defun
+
+        "," 'smex
+        "." 'embrace-commander
+        "/" 'evil-replace-word-selection
+        "\\" 'xah-copy-file-path
+        "osL" 'loccur
+        "oo" 'occur
+        "osn" 'smartscan-symbol-go-forward
+        "osp" 'smartscan-symbol-go-backward
+        "osc" 'xah-lookup-cppreference
+        "os." 'gtags-find-tag
+        "os," 'gtags-pop-stack
+        "os_" 'isearch-forward-symbol
+        "os-" 'isearch-forward-at-point
+        "osm" 'grep-word
+        "ost" 'xah-find-text
+        "osT" 'xah-find-text-regex
+
+
+        "op" 'evil-paste-after-from-0
+
+        "S" smerge-basic-map
+
+        "u" 'counsel-recentf;;helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
+        "U" 'counsel-recentf-directory ;;helm-goto-recent-directory ;;counsel-goto-recent-directory ;;;;'string-rectangle ;;'recentf-open-most-recent-file
+        ";" 'evilnc-comment-or-uncomment-lines
+
+        "oCw" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
+        "oCx" #'crux-open-with
+        "oCO" #'crux-smart-open-line-above
+        "oCo" #'crux-smart-open-line
+        "oCs" #'crux-cleanup-buffer-or-region
+        "oCr" #'crux-recentf-ido-find-file
+        "oCv" #'crux-view-url
+        "oCe" #'crux-eval-and-replace
+        "oCt" #'crux-transpose-windows
+        "oCD" #'crux-delete-file-and-buffer
+        "oCl" #'crux-duplicate-current-line-or-region
+        "oCL" #'crux-duplicate-and-comment-current-line-or-region
+        "oCR" #'crux-rename-file-and-buffer
+        "oCn" #'crux-visit-term-buffer
+        "oC1" #'crux-kill-other-buffers
+        "oCi" #'crux-indent-defun
+        "oCI" #'crux-indent-rigidly-and-copy-to-clipboard
+        "oC." #'crux-find-user-init-file
+        "oCs" #'crux-find-shell-init-file
+        "oCj" #'crux-top-join-lines
+        "oCk" #'crux-kill-whole-line
+        "oCK" #'crux-kill-line-backwards
+        "oCa" #'crux-ispell-word-then-abbrev
+
+
+
+
+        "O" 'win-switch-next-window
+        "o]" 'exit-recursive-edit
+        "ov" 'evil-scroll-down
+        "oV" 'evil-scroll-up
+
+        "G" 'keyboard-quit
+        "ee" 'eval-last-sexp
+        "E"  mu4e-main-mode-map
+        "Eu" 'mu4e-update-mail-and-index
+
+
+        "W" 'read-only-mode
+        "oww" 'read-only-mode
+        "owk" 'win-switch-up
+        "owj" 'win-switch-down
+        "owh" 'win-switch-left
+        "owl" 'win-switch-right
+        "ow1" 'delete-other-windows
+        "ow2" 'split-window-below
+        "ow3" 'split-window-right
+        "ow0" 'delete-window
+        "owo" 'win-switch-dispatch
+        "owd" 'delete-blank-lines
+        "ows" 'resize-window
+        "owj"      'winner-undo
+        "owk"      'winner-redo
+
+        "as" 'twin
+        "aw" 'winexe
+        ;;deprecattion;;"+" #'evil-numbers/inc-at-pt
+        ;;deprecattion;;"-" #'evil-numbers/dec-at-pt
+        ;;deprecattion;;"M" #'pop-to-mark-command ;;'evil-scroll-down
+        ;;deprecattion;;"m" #'er/expand-region ;;#'extend-selection
+        ;;deprecattion;;"S-m" #'mark-line ;;#'extend-selection
+        ;;deprecattion;;"<" #'loccur
+        ;;deprecattion;;"0" #'delete-window
+        ;;deprecattion;;"1" #'delete-other-windows
+        ;;deprecattion;;"2" #'split-window-below
+        ;;deprecattion;;"3" #'split-window-right
+        ;;deprecattion;;"(" #'kmacro-start-macro
+        ;;deprecattion;;")" #'kmacro-end-macro
+        ;;deprecattion;;"xx"  #'kmacro-end-and-call-macro
+        ;;deprecattion;;"xi"  #'string-inflection-all-cycle
+        ;;deprecattion;;"D" #'toggle-current-window-dedication
+        ;;deprecattion;;"kb" 'kill-buffer
+        ;;deprecattion;;"op"  (cdar (cddr  (cadr  projectile-mode-map)))
+        ;;deprecattion;;"opw"  'purpose-load-window-layout
+        ;;deprecattion;;"opW"  'purpose-save-window-layout
+        ;;deprecattion;;"opE"  'project-explorer-open
+        ;;deprecattion;;"opC"  'project-explorer-close
+        ;;deprecattion;;"op/"  'projectile-grep
+        ;;deprecattion;;"<SPC>" #'smex
+
+        "ohz" 'zeal-at-point
+        "ohh"      'helm-mini
+        "oha"      'helm-apropos
+        "ohB"      'helm-buffers-list
+        "ohb"      'helm-descbindings
+        "ohy"      'helm-show-kill-ring
+        "ohx"      'helm-M-x
+        "oho"     'helm-occur
+        "ohs"     'helm-swoop
+        "ohy"     'helm-yas-complete
+        "ohY"     'helm-yas-create-snippet-on-region
+        "ohr" 'helm-all-mark-rings
+        "ohm" 'helm-smex
+        "ohM" 'helm-smex-major-mode-commands
+        "od"  'counsel-goto-recent-directory
+
+        "om" 'orgmail
+        "oS" 'tmpscratch
+        "oI" 'ibuffer
+        "ox" 'winexe
+        "or" 'org-capture
+        "oa" 'org-agenda
+        "ol" 'org-store-link
+        "oc" 'org-cliplink
+        )
+    #+END_SRC
+
+    #+RESULTS:
+
+*** expand spacemacs
+    #+BEGIN_SRC emacs-lisp
+
+      (spacemacs/set-leader-keys
+        ;; xl from spacemacs 
+        "xll" 'sort-lines-length
+        "xlU" 'uniq-region
+        "xlS" 'sort-lines
+        )
+    #+END_SRC
+
+    #+RESULTS:
 
 ** evil mode line 
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -1253,6 +1258,17 @@
    #+BEGIN_SRC emacs-lisp
  (evil-mode 1)
    #+END_SRC
+
+** unimpaired
+   #+BEGIN_SRC emacs-lisp
+   (define-key evil-normal-state-map (kbd "[ B") 'iflipb-previous-buffer)
+   (define-key evil-normal-state-map (kbd "] B") 'iflipb-next-buffer)
+
+   #+END_SRC
+
+   #+RESULTS:
+   : iflipb-next-buffer
+
 * bind map                                                       :DEPRECATED:
 #+BEGIN_SRC emacs-lisp :tangle no
 
@@ -1279,3 +1295,33 @@
 : t
 
 
+
+
+* evil visual selection - evil 과 org mode 간에 상충 발생
+
+  #+BEGIN_SRC emacs-lisp :tangle no
+    (define-key evil-normal-state-map (kbd "S-<left>")
+      (lambda ()
+        (interactive)
+        (evil-visual-char)
+        (backward-char)))
+    (define-key evil-normal-state-map (kbd "S-<right>") 
+      (lambda ()
+        (interactive)
+        (evil-visual-char)
+        (forward-char)))
+    (define-key evil-normal-state-map (kbd "S-<up>")
+      (lambda ()
+        (interactive)
+        (evil-visual-char)
+        (previous-line)))
+    (define-key evil-normal-state-map (kbd "S-<down>") 
+      (lambda ()
+        (interactive)
+        (evil-visual-char)
+        (next-line)))
+
+  #+END_SRC
+
+  #+RESULTS:
+  | lambda | nil | (interactive) | (evil-visual-char) | (next-line) |

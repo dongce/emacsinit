@@ -193,6 +193,9 @@
 
    #+END_SRC
 
+   #+RESULTS:
+   : t
+
 ** outline
 
    #+BEGIN_SRC emacs-lisp

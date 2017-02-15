@@ -291,7 +291,7 @@
 (defvar find-file-path-match-hook
   '( ("기간별정리" . '(org-mode))
      ("rej" . '(read-only-mode 1 ))
-     ("usr" . '(read-only-mode 1 ))
+     ("site-lisp" . '(read-only-mode 1 ))
      ("tests" . '(read-only-mode 0 ))
      ("elpa" . '(read-only-mode 0 ))))
 

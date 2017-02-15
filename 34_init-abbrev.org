@@ -132,12 +132,53 @@
              ("8dead" "📆")
              ("8skull" "💀")
              ("8haddr" "구미시 금오산금호어울림1단지 금오산금호어울림 102동 401호" )
-     ("8null"  "␀" ) ;; 2400 symbol for null
-     ("8ack"   "␆" ) ;; 2406 symbol for acknowledge
-     ("8bs"    "␈" ) ;; 2408 symbol for backspace
-     ("8ht"    "␉" ) ;; 2409 symbol for horizontal tabulation
-     ("8lf"    "␊" ) ;; 240A symbol for line feed
-     ("8cr"    "␍" ) ;; 240D symbol for carriage return
+             ("8haddr2" "구미시 선기로 3길 51 (금오산금호어울림1단지) 102동 401호" )
+
+
+("8cnul"   "␀")
+("8csoh"   "␁")
+("8cstx"   "␂")
+("8cetx"   "␃")
+("8ceot"   "␄")
+("8cenq"   "␅")
+("8cack"   "␆")
+("8cbel"   "␇")
+("8cbs"    "␈")
+("8cht"    "␉")
+("8clf"    "␊")
+("8cvt"    "␋")
+("8cff"    "␌")
+("8ccr"    "␍")
+("8cso"    "␎")
+("8csi"    "␏")
+("8cdle"   "␐")
+("8cdc1"   "␑")
+("8cdc2"   "␒")
+("8cdc3"   "␓")
+("8cdc4"   "␔")
+("8cnak"   "␕")
+("8csyn"   "␖")
+("8cetb"   "␗")
+("8ccan"   "␘")
+("8cem"    "␙")
+("8csub"   "␚")
+("8cesc"   "␛")
+("8cfs"    "␜")
+("8cgs"    "␝")
+("8crs"    "␞")
+("8cus"    "␟")
+("8cdel"   "␡")
+("8cspc"   "˽")
+("8tab1"   "↹")
+("8tab2"   "⇄")
+("8tab3"   "⇤")
+("8tab4"   "⇥")
+("8tab5"   "↤")
+("8tab6"   "↦")
+("8triol"   "◁")
+("8trior"   "▷")
+("8triou"   "△")
+("8frame"    "🜂")
      ("8rhazard"     "☢") ;;2622 radioactive sign (trefoil)
      ("8bhazard"     "☣") ;;2623 biohazard sign
      ("8cadu"        "☤") ;;2624 caduceus
@@ -147,6 +188,39 @@
      ("8hospital"    "⛨") ;;26e8 hospital
      ("8syringe"     "💉") ;;1f489 syringe
      ("8pill"        "💊") ;;1F48A pill 
+("8aair"   "🜁")
+("8aearth" "🜃")
+("8awater" "🜄")
+("8afire"   "🜂")
+("8aking"  "🜲")
+("8asal"   "🜹")
+("8atag"   "🜸")
+("8asilver" "🜛")
+("8afilter" "🝪")
+
+("8^0" "⁰")
+("8^1" "¹")
+("8^2" "²")
+("8^3" "³")
+("8^4" "⁴")
+("8^5" "⁵")
+("8^6" "⁶")
+("8^7" "⁷")
+("8^8" "⁸")
+("8^9" "⁹")
+("8_0" "₀")
+("8_1" "₁")
+("8_2" "₂")
+("8_3" "₃")
+("8_4" "₄")
+("8_5" "₅")
+("8_6" "₆")
+("8_7" "₇")
+("8_8" "₈")
+("8_9" "₉")
+("81quarter" "¼")
+("82quarter" "½")
+("83quarter" "¾")
 
 
              ("8man" "卍")
@@ -796,12 +870,51 @@
    | 8dead          | 📆                                                                                                                                                                                                                                                       |                                  |                                                     |
    | 8skull         | 💀                                                                                                                                                                                                                                                       |                                  |                                                     |
    | 8haddr         | 구미시 금오산금호어울림1단지 금오산금호어울림 102동 401호                                                                                                                                                                                                |                                  |                                                     |
-   | 8null          | ␀                                                                                                                                                                                                                                                        |                                  |                                                     |
-   | 8ack           | ␆                                                                                                                                                                                                                                                        |                                  |                                                     |
-   | 8bs            | ␈                                                                                                                                                                                                                                                        |                                  |                                                     |
-   | 8ht            | ␉                                                                                                                                                                                                                                                        |                                  |                                                     |
-   | 8lf            | ␊                                                                                                                                                                                                                                                        |                                  |                                                     |
-   | 8cr            | ␍                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8haddr2        | 구미시 선기로 3길 51 (금오산금호어울림1단지) 102동 401호                                                                                                                                                                                                 |                                  |                                                     |
+   | 8cnul          | ␀                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8csoh          | ␁                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cstx          | ␂                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cetx          | ␃                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8ceot          | ␄                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cenq          | ␅                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cack          | ␆                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cbel          | ␇                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cbs           | ␈                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cht           | ␉                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8clf           | ␊                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cvt           | ␋                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cff           | ␌                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8ccr           | ␍                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cso           | ␎                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8csi           | ␏                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cdle          | ␐                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cdc1          | ␑                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cdc2          | ␒                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cdc3          | ␓                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cdc4          | ␔                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cnak          | ␕                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8csyn          | ␖                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cetb          | ␗                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8ccan          | ␘                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cem           | ␙                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8csub          | ␚                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cesc          | ␛                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cfs           | ␜                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cgs           | ␝                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8crs           | ␞                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cus           | ␟                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cdel          | ␡                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8cspc          | ˽                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8tab1          | ↹                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8tab2          | ⇄                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8tab3          | ⇤                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8tab4          | ⇥                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8tab5          | ↤                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8tab6          | ↦                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8triol         | ◁                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8trior         | ▷                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8triou         | △                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8frame         | 🜂                                                                                                                                                                                                                                                        |                                  |                                                     |
    | 8rhazard       | ☢                                                                                                                                                                                                                                                        |                                  |                                                     |
    | 8bhazard       | ☣                                                                                                                                                                                                                                                        |                                  |                                                     |
    | 8cadu          | ☤                                                                                                                                                                                                                                                        |                                  |                                                     |
@@ -811,6 +924,38 @@
    | 8hospital      | ⛨                                                                                                                                                                                                                                                        |                                  |                                                     |
    | 8syringe       | 💉                                                                                                                                                                                                                                                       |                                  |                                                     |
    | 8pill          | 💊                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8aair          | 🜁                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8aearth        | 🜃                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8awater        | 🜄                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8afire         | 🜂                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8aking         | 🜲                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8asal          | 🜹                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8atag          | 🜸                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8asilver       | 🜛                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8afilter       | 🝪                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8^0            | ⁰                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8^1            | ¹                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8^2            | ²                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8^3            | ³                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8^4            | ⁴                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8^5            | ⁵                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8^6            | ⁶                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8^7            | ⁷                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8^8            | ⁸                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8^9            | ⁹                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8_0            | ₀                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8_1            | ₁                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8_2            | ₂                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8_3            | ₃                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8_4            | ₄                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 8_5            | ₅                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8_6            | ₆                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8_7            | ₇                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8_8            | ₈                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 8_9            | ₉                                                                                                                                                                                                                                                        |                                  |                                                     |
+   | 81quarter      | ¼                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 82quarter      | ½                                                                                                                                                                                                                                                       |                                  |                                                     |
+   | 83quarter      | ¾                                                                                                                                                                                                                                                       |                                  |                                                     |
    | 8man           | 卍                                                                                                                                                                                                                                                       |                                  |                                                     |
    | 8만            | 卍                                                                                                                                                                                                                                                       |                                  |                                                     |
    | 8warn          | ⚠                                                                                                                                                                                                                                                        |                                  |                                                     |
@@ -1306,6 +1451,15 @@
    | 8rsync         | rsync -z -r -v -t --exclude="*~" --exclude=".DS_Store" --exclude=".bash_history" --exclude="**/xx_xahlee_info/*"  --exclude="*/_curves_robert_yates/*.png" --exclude="logs/*"  --exclude="xlogs/*" --delete --rsh="ssh -l xah" ~/web/ xah@example.com:~/ |                                  |                                                     |
    | 8rsync2        | rsync -r -v -t --delete --rsh="ssh -l xah" ~/web/ xah@example.com:~/web/                                                                                                                                                                                 |                                  |                                                     |
    | 8rsync3        | rsync -r -v -t --delete --exclude="**/My *" --rsh="ssh -l xah" ~/Documents/ xah@example.com:~/Documents/                                                                                                                                                 |                                  |                                                     |
+
+
+** filename 
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list
+      'global-abbrev-table-assoc
+      '("8wh" "t:/usr/local/wordhacks/wordhack.py"))
+
+   #+END_SRC
 
 ** define abbrev table 
  #+BEGIN_SRC emacs-lisp

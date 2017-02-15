@@ -1554,3 +1554,24 @@ Version 2015-06-12"
    #+END_SRC
 
 
+*** cancel it 
+#+BEGIN_SRC emacs-lisp
+(remove-from-list  'org-ctrl-c-ctrl-c-hook 'org-babel-async-execute:python)
+#+END_SRC
+
+#+RESULTS:
+
+
+
+* evil conflict
+#+BEGIN_SRC emacs-lisp
+  (evil-define-key
+  '(normal insert visual replace operator motion emacs)
+      org-mode-map
+  [(shift up)]          'org-shiftup
+  [(shift down)]        'org-shiftdown
+  [(shift left)]        'org-shiftleft
+  [(shift right)]       'org-shiftright)
+#+END_SRC
+
+#+RESULTS:

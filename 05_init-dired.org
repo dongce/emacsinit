@@ -144,7 +144,7 @@
          (apply
           #'async-start-process  ;;impossible;;-reuse-buffer 
           "clip-file" 
-          "c:/usr/local/python35/python.exe"
+          "c:/anaconda43/python.exe"
           (lambda (p) (message "파일복사 완료"))
           pyclip
           files)))
@@ -308,7 +308,7 @@
             (snipp "c:/windows/system32/SnippingTool.exe")
             (squid ,(fullpath  "../../conemul/conemu64.exe") "-reuse -dir \"c:\\squid\\sbin\" -cmd .\\squid.exe -D")
             (tscproxy ,(fullpath  "../../conemul/conemu64.exe")
-                      "-reuse -dir \"t:\\misc\\pytcpproxy\" -cmd c:\\usr\\local\\python35\\python.exe tscproxy.py")
+                      "-reuse -dir \"t:\\misc\\pytcpproxy\" -cmd c:\\anaconda43\\python.exe tscproxy.py")
             (msys2conemul ,(fullpath  "../../conemul/conemu64.exe")
                           "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\sh --login -i")
 
@@ -316,6 +316,9 @@
                        "-reuse -dir \"%home%\" -run set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\conemu-msys2-64.exe")
 
             (conemul ,(fullpath  "../../conemul/conemu64.exe") "-reuse")
+            (conemul2 ( ,(fullpath  "../../conemul/conemu64.exe") "-reuse")
+                     (,(fullpath  "../../conemul/conemu64.exe")
+                      "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\sh --login -i"))
             (filezilla  "t:/usr/local/FileZilla-3.7.1.1/filezilla.exe") 
             (processhacker ,(fullpath  "../../processhacker/x64/ProcessHacker.exe"))
             (processexplorer ,(fullpath  "../../processhacker/procexp.exe"))
@@ -373,7 +376,7 @@
             (putty "t:/usr/local/editor/emacsW32/iputty/putty.exe")
             (eclipsejee "t:/usr/local/eclipsejee/eclipse.exe")
             (vs2005 "C:/usr/microsoft/vs2005/IDE/Common7/IDE/devenv.exe")
-          
+
             (filesplit   "t:/usr/local/filesplitter/Free-File-Splitter-v5.0.1189.exe")))
     (defun winexe ()
       (interactive)
@@ -384,10 +387,19 @@
                ;;completing-read;;(mapcar (function (lambda (x) (list (car x) t))) winexe-cmdlist)
                (mapcar (lambda (x) (symbol-name (car x))) winexe-cmdlist)
                nil t nil nil 'qdir)))
-        (apply 
-         'w32-shell-execute 
-         (cons nil (cdr (assoc (intern cmd) winexe-cmdlist))  ))))
-
+        (let ((args (cdr (assoc (intern cmd) winexe-cmdlist))))
+          (if (stringp (car args))
+              (apply 
+               'w32-shell-execute 
+               (cons nil args  ))
+            (mapcar
+             (lambda (x)
+               (apply 
+                'w32-shell-execute 
+                (cons nil x  )
+                )
+                (sleep-for 5)
+               ) args))))) 
 
     (global-set-key "\C-cx" 'winexe)
 
@@ -483,12 +495,15 @@
 
     (defun assocemacs ( ext) 
       (interactive "M확장자 :")
-    
+
       ;;(shell-command "ftype EmacsFile=emacsclientw.exe -na runemacs.exe \"\%1\"" )
       (shell-command (format "assoc %s=EmacsFile" ext)))
- 
+
    )
 #+END_SRC
+
+#+RESULTS:
+: assocemacs
 
 * linux dired
 

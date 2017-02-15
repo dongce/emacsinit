@@ -8,7 +8,7 @@
 * buffer 
 ** util-function
  #+BEGIN_SRC emacs-lisp
-   (require 'dired+)
+   ;;(require 'dired+)
    (require 'filecache)
 
    ;;(setq bookmark-default-file "~/bookmarks")
@@ -251,6 +251,7 @@
 
 * project
 #+BEGIN_SRC emacs-lisp
+  (use-package fuzzy)
   (use-package project-buffer-mode
     :config
     (require 'project-buffer-mode+)
@@ -353,10 +354,14 @@
 
 
   ;; check following
-  (with-package* (projectile project-explorer grep )
-    ;;conflict-pscp-tramp;; (projectile-global-mode)
-    (setq projectile-enable-caching t)
 
+  (use-package projectile
+    :config
+    ;;conflict-pscp-tramp;; (projectile-global-mode)
+    (setq projectile-enable-caching t))
+
+  (use-package projectile-explorer
+    :config
     (defun project-explorer-close ()
       (interactive)
       (save-excursion
@@ -366,7 +371,10 @@
             (with-current-buffer buf
               (if (eq 'project-explorer-mode major-mode)
                   (kill-buffer))))
-          (kill-buffer  "*project-explorer*"))))
+          (kill-buffer  "*project-explorer*")))))
+
+  (use-package  grep 
+    :config
     (defun projectile-grep ()
       "Perform rgrep in the project."
       (interactive)
@@ -558,5 +566,18 @@
 
   (purpose-x-kill-setup)
   )
+
+#+END_SRC
+
+
+
+* perspeen
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package perspeen
+    :ensure t
+    :init
+    (setq perspeen-use-tab t)
+    :config
+    (perspeen-mode))
 
 #+END_SRC

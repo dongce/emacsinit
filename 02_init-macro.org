@@ -2909,6 +2909,10 @@ Version 2015-03-03"
 * patch edit 
 
 #+BEGIN_SRC emacs-lisp
+(defun diff-hunk-refine-next ()
+  (interactive)
+  (diff-hunk-next)
+  (diff-refine-hunk))
 
 (defun refine-all ()
   (interactive)
@@ -2916,9 +2920,14 @@ Version 2015-03-03"
     (save-restriction
       (goto-char (point-min))
       (while (>  (point-max) (point))
-        (diff-hunk-next)
-        (diff-refine-hunk)))))
+        (diff-hunk-refine-next)))))
+
+
 #+END_SRC
+
+#+RESULTS:
+: refine-all
+
 * scratch
 #+BEGIN_SRC emacs-lisp
 ;; 재미있는 함수 

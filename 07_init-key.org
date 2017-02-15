@@ -529,44 +529,48 @@
 #+BEGIN_SRC emacs-lisp
 
 
-   ;; (global-set-key [f12] 'ibuffer)
-   (global-set-key [f12] 'revert-buffer )
-   ;; (global-set-key (kbd "C-z") 'ibuffer)
-   ;deprecated;;(global-set-key ( kbd "H-m") 'smex)
-   ;;(define-key function-key-map (vector ?\H-m) (vector 'return))
-   ;;(global-set-key (kbd "H-m") 'newline) ; was kill-sentence
+  ;; (global-set-key [f12] 'ibuffer)
+  (global-set-key [f12] 'revert-buffer )
+  ;; (global-set-key (kbd "C-z") 'ibuffer)
+  ;deprecated;;(global-set-key ( kbd "H-m") 'smex)
+  ;;(define-key function-key-map (vector ?\H-m) (vector 'return))
+  ;;(global-set-key (kbd "H-m") 'newline) ; was kill-sentence
 
-   ;;deprecated;;(global-set-key [H-left] 'previous-buffer)
-   ;;deprecated;;(global-set-key [H-right] 'next-buffer)
+  ;;deprecated;;(global-set-key [H-left] 'previous-buffer)
+  ;;deprecated;;(global-set-key [H-right] 'next-buffer)
 
-   ;; (global-set-key [H-right] 'iflipb-next-buffer)
-   ;; (global-set-key [H-left] 'iflipb-previous-buffer)
-   ;; (require 'cycle-buffer)
-   ;; (global-set-key [H-right] 'cycle-buffer)
-   ;; (global-set-key [H-left]  'cycle-buffer-backward)
-   ;;deprecated;;(require 'swbuff)
-   ;;deprecated;;(global-set-key [H-right] 'swbuff-switch-to-next-buffer)
-   ;;deprecated;;(global-set-key [H-left]  'swbuff-switch-to-previous-buffer)
-
-
-
-   (global-set-key "\C-cd" 'insert-date )
-   (global-set-key [f6] 'ff-find-other-file )
-   (global-set-key [f7] 'isearch-forward-regexp ) 
-   (global-set-key [f8] 'isearch-backward-regexp )
-   (global-set-key [S-f7] 'isearch-forward )
-   (global-set-key [S-f8] 'isearch-backward ) 
-   (define-key isearch-mode-map [f7] 'isearch-repeat-forward ) 
-   (define-key isearch-mode-map [f8] 'isearch-repeat-backward )
-   (global-set-key [f5] 'repeat )
-   ;;VERY LITTILE USED;;(global-set-key [f11] 'cscope-find-global-definition )
-   ;;VERY LITTILE USED;;(global-set-key [f12] 'cscope-pop-mark ) 
-   (global-set-key (kbd "<M-return>") 'imenu )
-
-   (global-set-key [remap toggle-input-method]
-                   #'toggle-korean-input-method)
+  ;; (global-set-key [H-right] 'iflipb-next-buffer)
+  ;; (global-set-key [H-left] 'iflipb-previous-buffer)
+  ;; (require 'cycle-buffer)
+  ;; (global-set-key [H-right] 'cycle-buffer)
+  ;; (global-set-key [H-left]  'cycle-buffer-backward)
+  ;;deprecated;;(require 'swbuff)
+  ;;deprecated;;(global-set-key [H-right] 'swbuff-switch-to-next-buffer)
+  ;;deprecated;;(global-set-key [H-left]  'swbuff-switch-to-previous-buffer)
 
 
+
+  (global-set-key "\C-cd" 'insert-date )
+  (global-set-key [f6] 'ff-find-other-file )
+  (global-set-key [f7] 'isearch-forward-regexp ) 
+  (global-set-key [f8] 'isearch-backward-regexp )
+  (global-set-key [S-f7] 'isearch-forward )
+  (global-set-key [S-f8] 'isearch-backward ) 
+  (define-key isearch-mode-map [f7] 'isearch-repeat-forward ) 
+  (define-key isearch-mode-map [f8] 'isearch-repeat-backward )
+  (global-set-key [f5] 'repeat )
+  ;;VERY LITTILE USED;;(global-set-key [f11] 'cscope-find-global-definition )
+  ;;VERY LITTILE USED;;(global-set-key [f12] 'cscope-pop-mark ) 
+  (global-set-key (kbd "<M-return>") 'imenu )
+
+  (global-set-key [remap toggle-input-method]
+                  #'toggle-korean-input-method)
+
+
+  (global-set-key [f10] 'xah-copy-to-register)
+  (global-set-key [f11] 'xah-paste-from-register)
+  (global-set-key [S-f10] 'xah-append-to-register)
+  (global-set-key [S-f11] 'xah-clear-register)
 #+END_SRC
 
 ** package gdb/helm etc

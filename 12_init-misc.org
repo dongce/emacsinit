@@ -1143,11 +1143,12 @@ The value of DEFAULT is inserted into PROMPT."
 (defun next-error-buffer-hl-line ()
   "Turn on `hl-line-mode' in buffer `next-error-last-buffer'.
 To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
+ (ignore-errors 
   (when (and next-error-last-buffer  (buffer-live-p next-error-last-buffer))
     (with-current-buffer next-error-last-buffer
       (hl-line-mode 1)
       (recenter-top-bottom)
-      )))
+      ))))
 
 (add-hook 'next-error-hook 'next-error-buffer-hl-line)
 
@@ -1679,53 +1680,12 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
 
 
    #+BEGIN_SRC emacs-lisp
-;; REGISTER 관련 
-(defun copy-to-register-1 ()
-  "Copy current line or text selection to register 1.
-See also: `paste-from-register-1', `copy-to-register'."
-  (interactive)
-  (let* (
-         (bds (xah-get-thing-or-selection 'line ))
-         (inputStr (elt bds 0) )
-         (p1 (elt bds 1) )
-         (p2 (elt bds 2) )
-         )
-    (copy-to-register ?1 p1 p2)
-    (message "copied to register 1: 「%s」." inputStr)
-))
+     ;; REGISTER 관련
 
-(defun paste-from-register-1 ()
-  "Paste text from register 1.
-See also: `copy-to-register-1', `insert-register'."
-  (interactive)
-  (insert-register ?1))
-
-(defun copy-to-register-2 ()
-  "Copy current line or text selection to register 2.
-See also: `paste-from-register-2', `copy-to-register'."
-  (interactive)
-  (let* (
-         (bds (xah-get-thing-or-selection 'line ))
-         (inputStr (elt bds 0) )
-         (p1 (elt bds 1) )
-         (p2 (elt bds 2) )
-         )
-    (copy-to-register ?2 p1 p2)
-    (message "copied to register 2: 「%s」." inputStr)
-))
-
-(defun paste-from-register-2 ()
-  "Paste text from register 2.
-See also: `copy-to-register-2', `insert-register'."
-  (interactive)
-  (insert-register ?2))
-
-
-
-(defun insert-a ()
-  (interactive)
-  (save-excursion  (yank))
-  (insert-register ?a))
+     (defun insert-a ()
+       (interactive)
+       (save-excursion  (yank))
+       (insert-register ?a))
    #+END_SRC
 
    #+RESULTS:

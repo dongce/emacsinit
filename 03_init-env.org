@@ -13,8 +13,8 @@
  (append-path  "t:/usr/texlive2013/bin/win32")
  ;; (append-path  (fullpath "../../../../python27/scripts"))
  ;; (append-path  (fullpath "../../../../python27/"))
- (append-path  "c:/usr/local/python35/scripts")
- (append-path  "c:/usr/local/python35/")
+ (append-path  "c:/anaconda43/scripts")
+ (append-path  "c:/anaconda43/")
  (append-path  "e:/msys264/usr/bin")
  (append-path  "e:/msys264/mingw64/bin")
  (append-path  (fullpath "../../EmacsW32/bin"))
@@ -36,3 +36,5 @@
  (append-path "c:/usr/local/7zip")
  (append-path  "c:/usr/local/gpg4win"))
 #+END_SRC
+
+#+RESULTS:
