@@ -3465,3 +3465,29 @@ be pasted into a RTF-enabled application.
 (if (not (fboundp 'read-only-mode))
     (defalias 'read-only-mode 'toggle-read-only))
   #+END_SRC
+
+* CSV
+#+BEGIN_SRC emacs-lisp
+(defun csv-sort-date-fields (field beg end)
+  "Sort lines in region numerically by the ARGth field of each line.
+If not set, the region defaults to the CSV records around point.
+Fields are separated by `csv-separators'.
+Null fields are allowed anywhere and sort as zeros.
+Field indices increase from 1 on the left or decrease from -1 on the right.
+A prefix argument specifies a single field, otherwise prompt for field index.
+Specified non-null field must contain a number in each line of the region,
+which may begin with \"0x\" or \"0\" for hexadecimal and octal values.
+Otherwise, the number is interpreted according to sort-numeric-base.
+Ignore blank and comment lines.
+When called non-interactively, FIELD is a single field index\;
+BEG and END specify the region to sort."
+  ;; (interactive "*P\nr")
+  (interactive (csv-interactive-args 'single))
+  (barf-if-buffer-read-only)
+  (csv-sort-fields-1 field beg end
+		 (lambda ()
+		   (csv-sort-skip-fields field)
+       (float-time (date-to-time (buffer-substring-no-properties (point) (progn (csv-end-of-field) (point))))))
+		 nil))
+
+#+END_SRC

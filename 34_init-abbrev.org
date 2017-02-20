@@ -1464,45 +1464,53 @@
 ** define abbrev table 
  #+BEGIN_SRC emacs-lisp
 
-       (define-abbrev-table
-         'global-abbrev-table
-         global-abbrev-table-assoc
-         )
+   (define-abbrev-table
+     'global-abbrev-table
+     global-abbrev-table-assoc
+     )
 
-       ;; Stop asking whether to save newly added abbrev when quitting emacs
-       ;;(setq save-abbrevs nil)
-
-
+   ;; Stop asking whether to save newly added abbrev when quitting emacs
+   ;;(setq save-abbrevs nil)
 
 
 
-       ;; https://www.emacswiki.org/emacs/AbbrevMode
-       (defun define-abbrev-function (table abbrev func)
-         (put func 'no-self-insert t)
-         (define-abbrev table abbrev "" `(lambda () (call-interactively ',func)))
-         )
-
-       (defmacro defun-abbrev (funcname abbrev &rest body)
-         "Defun a function and define an abbrev.
-       Note that `table' is abbrev table to use."
-         `(progn
-            (defun ,funcname () ,@body)
-            (define-abbrev-function global-abbrev-table ,abbrev ',funcname)))
-
-       (defun-abbrev
-         timestamp-with-name1
-         "8ts1"
-         (interactive)
-         (insert
-          (with-temp-buffer 
-            (org-insert-time-stamp (org-read-date nil t "+0d"))
-            (insert " 김동일")
-            (buffer-string))))
 
 
+   ;; https://www.emacswiki.org/emacs/AbbrevMode
+   (defun define-abbrev-function (table abbrev func)
+     (put func 'no-self-insert t)
+     (define-abbrev table abbrev "" `(lambda () (call-interactively ',func)))
+     )
 
-       ;; turn on abbrev mode globally
-       (setq-default abbrev-mode t)
+   (defmacro defun-abbrev (funcname abbrev &rest body)
+     "Defun a function and define an abbrev.
+   Note that `table' is abbrev table to use."
+     `(progn
+        (defun ,funcname () ,@body)
+        (define-abbrev-function global-abbrev-table ,abbrev ',funcname)))
+
+   (defun-abbrev
+     timestamp-with-name1
+     "8ts1"
+     (interactive)
+     (insert
+      (with-temp-buffer 
+        (org-insert-time-stamp (org-read-date nil t "+0d"))
+        (insert " 김동일")
+        (buffer-string))))
+
+   (defun-abbrev
+     timestamp-with-name1
+     "8ts2"
+     (interactive)
+     (insert
+      (with-temp-buffer 
+        (insert  (format-time-string "%Y%m%d"))
+        (buffer-string))))
+
+
+   ;; turn on abbrev mode globally
+   (setq-default abbrev-mode t)
 
  #+END_SRC
 
