@@ -676,3 +676,42 @@
      (define-key minibuffer-local-isearch-map (kbd "<left>") 'isearch-reverse-exit-minibuffer)
      (define-key minibuffer-local-isearch-map (kbd "<right>") 'isearch-forward-exit-minibuffer))
  #+END_SRC
+** repeat-complex command
+#+BEGIN_SRC emacs-lisp
+  (defun repeat-complex-command-noprompt (arg)
+    "Edit and re-evaluate last complex command, or ARGth from last.
+  A complex command is one which used the minibuffer.
+  The command is placed in the minibuffer as a Lisp form for editing.
+  The result is executed, repeating the command as changed.
+  If the command has been changed or is not the most recent previous
+  command it is added to the front of the command history.
+  You can use the minibuffer history commands \
+  \\<minibuffer-local-map>\\[next-history-element] and \\[previous-history-element]
+  to get different commands to edit and resubmit."
+    (interactive "p")
+    (let ((elt (nth (1- arg) command-history))
+          newcmd)
+      (if elt
+          (progn
+            (setq newcmd elt)
+
+            ;; If command to be redone does not match front of history,
+            ;; add it to the history.
+            (or (equal newcmd (car command-history))
+                (setq command-history (cons newcmd command-history)))
+            (apply #'funcall-interactively
+                   (car newcmd)
+                   (mapcar (lambda (e) (eval e t)) (cdr newcmd))))
+        (if command-history
+            (error "Argument %d is beyond length of command history" arg)
+          (error "There are no previous complex commands to repeat")))))
+
+
+
+
+  (global-set-key [(meta f5)] #'repeat-complex-command) 
+  (global-set-key [(shift f5)] #'repeat-complex-command-noprompt) 
+#+END_SRC
+
+#+RESULTS:
+: repeat-complex-command-noprompt

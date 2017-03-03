@@ -1054,7 +1054,7 @@ The value of DEFAULT is inserted into PROMPT."
 
 (global-set-key [(f3)] 'switch-to-devenv)
 (global-set-key [(shift f3)] (lambda () (interactive) (switch-to-devenv) (devenv-cmd "Build.Compile")))
-(global-set-key [(shift f5)] (lambda () (interactive) (devenv-cmd "Debug.AttachtoProcess")))
+;;(global-set-key [(shift f5)] (lambda () (interactive) (devenv-cmd "Debug.AttachtoProcess")))
 (global-set-key [(M f4)] (lambda () (interactive) (devenv-cmd "Window.CloseAllDocuments")))
 
 
