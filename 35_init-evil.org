@@ -210,17 +210,34 @@
     #+RESULTS:
 
 *** expand spacemacs
-    #+BEGIN_SRC emacs-lisp
+**** global
+     #+BEGIN_SRC emacs-lisp
 
-      (spacemacs/set-leader-keys
-        ;; xl from spacemacs 
-        "xll" 'sort-lines-length
-        "xlU" 'uniq-region
-        "xlS" 'sort-lines
-        )
-    #+END_SRC
+       (spacemacs/set-leader-keys
+         ;; xl from spacemacs 
+         "xll" 'sort-lines-length
+         "xlU" 'uniq-region
+         "xlS" 'sort-lines
+         "&"   'org-mark-ring-goto
+         )
+     #+END_SRC
 
-    #+RESULTS:
+     #+RESULTS:
+
+**** for major mode
+     #+BEGIN_SRC emacs-lisp
+       (spacemacs/set-leader-keys-for-major-mode 'org-mode
+         "v" 'org-copy-visible)
+
+       (spacemacs/set-leader-keys-for-major-mode 'mu4e-view-mode
+         "&" 'org-mark-ring-goto)
+
+       (spacemacs/set-leader-keys-for-major-mode 'mu4e-headers-mode
+         "&" 'org-mark-ring-goto)
+
+     #+END_SRC
+
+     #+RESULTS:
 
 ** evil mode line 
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -1263,6 +1280,11 @@
    #+BEGIN_SRC emacs-lisp
    (define-key evil-normal-state-map (kbd "[ B") 'iflipb-previous-buffer)
    (define-key evil-normal-state-map (kbd "] B") 'iflipb-next-buffer)
+
+
+   (define-key evil-visual-state-map (kbd "[ c") 'copy-heading-striped)
+   (define-key evil-normal-state-map (kbd "[ c") 'copy-kill-ring-top-heading-striped) 
+
 
    #+END_SRC
 

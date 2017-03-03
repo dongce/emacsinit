@@ -1934,110 +1934,259 @@ This works on the current region."
 #+END_SRC
 
 * copy
+
+** etc copy
+ #+BEGIN_SRC emacs-lisp
+ (defun bfname ()
+   (interactive)
+   (kill-new
+    (ff-basename
+     (buffer-file-name) ) )) 
+
+
+
+
+ (defun copy-file-name ()
+   "Returns the extention of the buffer file"
+   (interactive)
+   (kill-new (buffer-file-name)))
+
+
+ (defun copy-thing-at-point (thing)
+   "Copy thing at point"
+   (interactive "P")
+   (let ((bounds (bounds-of-thing-at-point thing)))
+     (copy-region-as-kill (car bounds) (cdr bounds))))
+
+ (defun copy-word-at-point ()
+   "Copy word at point"
+   (interactive)
+   (let ((bounds (bounds-of-thing-at-point 'word)))
+     (copy-region-as-kill (car bounds) (cdr bounds))))
+
+ (defvar-local dongil/copy-line-at-bol t)
+
+
+ (defun dongil/copy-line ()
+   "Save current line into Kill-Ring without marking the line "
+   (interactive )
+   (let ((beg (if dongil/copy-line-at-bol (line-beginning-position) (point)))
+        (end (line-end-position)))
+     (kill-new (s-trim (buffer-substring-no-properties beg end)))
+     ;;(copy-region-as-kill beg end)
+ ))
+
+
+
+
+ (defun copy-paragraph (&optional arg)
+   "Copy paragraph at point"
+   (interactive "P")
+   (let ((beg (progn (backward-paragraph 1) (point)))
+        (end (progn (forward-paragraph arg) (point))))
+     (copy-region-as-kill beg end)))
+
+ (defun wcopy ()
+   (interactive)
+   (kill-new (current-word)))
+
+
+ ;;_ http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/ https://github.com/bbatsov/prelude 
+ (defun prelude-copy-file-name-to-clipboard ()
+   "Copy the current buffer file name to the clipboard."
+   (interactive)
+   (let ((filename (if (equal major-mode 'dired-mode)
+                       default-directory
+                     (buffer-file-name))))
+     (when filename
+       (kill-new filename)
+       (message "Copied buffer file name '%s' to the clipboard." filename))))
+
+ #+END_SRC
+
+ #+RESULTS:
+ : prelude-copy-file-name-to-clipboard
+
+** dpaste
 #+BEGIN_SRC emacs-lisp
-(defun bfname ()
-  (interactive)
-  (kill-new
-   (ff-basename
-    (buffer-file-name) ) )) 
-
-
-
-
-(defun copy-file-name ()
-  "Returns the extention of the buffer file"
-  (interactive)
-  (kill-new (buffer-file-name)))
-
-
-(defun copy-thing-at-point (thing)
-  "Copy thing at point"
-  (interactive "P")
-  (let ((bounds (bounds-of-thing-at-point thing)))
-    (copy-region-as-kill (car bounds) (cdr bounds))))
-
-(defun copy-word-at-point ()
-  "Copy word at point"
-  (interactive)
-  (let ((bounds (bounds-of-thing-at-point 'word)))
-    (copy-region-as-kill (car bounds) (cdr bounds))))
-
-(defvar-local dongil/copy-line-at-bol t)
-
-
-(defun dongil/copy-line ()
-  "Save current line into Kill-Ring without marking the line "
-  (interactive )
-  (let ((beg (if dongil/copy-line-at-bol (line-beginning-position) (point)))
-       (end (line-end-position)))
-    (kill-new (s-trim (buffer-substring-no-properties beg end)))
-    ;;(copy-region-as-kill beg end)
-))
-
-
-
-
-(defun copy-paragraph (&optional arg)
-  "Copy paragraph at point"
-  (interactive "P")
-  (let ((beg (progn (backward-paragraph 1) (point)))
-       (end (progn (forward-paragraph arg) (point))))
-    (copy-region-as-kill beg end)))
-
-(defun wcopy ()
-  (interactive)
-  (kill-new (current-word)))
-
-(use-package dpaste_de
- :config
-(defun vdpaste (name)
-  (interactive "Spaste 이름을 입력해 주세요 :")  ; ask for the name of the macro
-  (eww (format "http://10.239.12.181:8000/dpaste/%s/raw" name))))
-
-(defun xah-copy-to-register-1 ()
-  "Copy current line or text selection to register 1.
-See also: `xah-paste-from-register-1', `copy-to-register'.
-
-URL `http://ergoemacs.org/emacs/elisp_copy-paste_register_1.html'
-Version 2015-12-08"
-  (interactive)
-  (let (ξp1 ξp2)
-    (if (region-active-p)
-        (progn (setq ξp1 (region-beginning))
-               (setq ξp2 (region-end)))
-      (progn (setq ξp1 (line-beginning-position))
-             (setq ξp2 (line-end-position))))
-    (copy-to-register ?1 ξp1 ξp2)
-    (message "copied to register 1: 「%s」." (buffer-substring-no-properties ξp1 ξp2))))
-
-
-
-(defun xah-paste-from-register-1 ()
-  "Paste text from register 1.
-See also: `xah-copy-to-register-1', `insert-register'.
-URL `http://ergoemacs.org/emacs/elisp_copy-paste_register_1.html'
-Version 2015-12-08"
-  (interactive)
-  (when (use-region-p)
-    (delete-region (region-beginning) (region-end)))
-  (insert-register ?1 t))
-
-
-;;_ http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/ https://github.com/bbatsov/prelude 
-(defun prelude-copy-file-name-to-clipboard ()
-  "Copy the current buffer file name to the clipboard."
-  (interactive)
-  (let ((filename (if (equal major-mode 'dired-mode)
-                      default-directory
-                    (buffer-file-name))))
-    (when filename
-      (kill-new filename)
-      (message "Copied buffer file name '%s' to the clipboard." filename))))
+ (use-package dpaste_de
+  :config
+ (defun vdpaste (name)
+   (interactive "Spaste 이름을 입력해 주세요 :")  ; ask for the name of the macro
+   (eww (format "http://10.239.12.181:8000/dpaste/%s/raw" name))))
 
 #+END_SRC
 
+** modern paste
+#+BEGIN_SRC emacs-lisp
+  (defcustom mpaste-host "10.239.12.200:8090" "mpaste hostname")
+
+  (setf mpaste-languages
+        '(
+          apl
+          asciiarmor
+          asn.1
+          asterisk
+          brainfuck
+          clike
+          clojure
+          cmake
+          cobol
+          coffeescript
+          commonlisp
+          crystal
+          css
+          cypher
+          d
+          dart
+          diff
+          django
+          dockerfile
+          dtd
+          dylan
+          ebnf
+          ecl
+          eiffel
+          elm
+          erlang
+          factor
+          fcl
+          forth
+          fortran
+          gas
+          gfm
+          gherkin
+          go
+          groovy
+          haml
+          handlebars
+          haskell-literate
+          haskell
+          haxe
+          htmlembedded
+          htmlmixed
+          http
+          idl
+          javascript
+          jinja2
+          jsx
+          julia
+          livescript
+          lua
+          markdown
+          mathematica
+          mbox
+          mirc
+          mllike
+          modelica
+          mscgen
+          mumps
+          nginx
+          nsis
+          ntriples
+          octave
+          oz
+          pascal
+          pegjs
+          perl
+          php
+          pig
+          powershell
+          properties
+          protobuf
+          pug
+          puppet
+          python
+          q
+          r
+          rpm
+          rst
+          ruby
+          rust
+          sas
+          sass
+          scheme
+          shell
+          sieve
+          slim
+          smalltalk
+          smarty
+          solr
+          soy
+          sparql
+          spreadsheet
+          sql
+          stex
+          stylus
+          swift
+          tcl
+          textile
+          tiddlywiki
+          tiki
+          toml
+          tornado
+          troff
+          ttcn-cfg
+          ttcn
+          turtle
+          twig
+          vb
+          vbscript
+          velocity
+          verilog
+          vhdl
+          vue
+          webidl
+          xml
+          xquery
+          yacas
+          yaml-frontmatter
+          yaml
+          z80
+          ))
+
+
+
+  (defun get-mpaste-language (mode)
+    (let ((it (intern  (s-replace "-mode" "" (symbol-name mode)))))
+      (cond
+       ((member it mpaste-languages) it)
+       ;; ((member mode '(python-mode             ))  'python)
+       ((member mode '(c++-mode c-mode         ))  'clike)
+       ;; ((member mode '(scheme-mode             ))  'scheme)
+       ((member mode '(emacs-lisp-mode         ))  'commonlisp)
+       ((member mode '(xah-css-mode    ))  'css)
+       ((member mode '(xah-html-mode html-mode ))  'htmlmixed)
+       ((member mode '(js-mode ))  'javascript)
+       (t 'Text))))
+
+  (defun mpaste-region (start end)
+    (interactive "r")
+    (let ((rdata (buffer-substring-no-properties start end)))
+      (setq deactivate-mark t)
+      (web-json-post
+       (lambda (data con hdr)
+         (with-temp-buffer 
+           (insert (s-replace  "example.com" mpaste-host (cdr  (assoc 'url data))))
+           (message (buffer-substring-no-properties (point-min) (point-max)))
+           (kill-ring-save (point-min) (point-max))
+           (clipboard-kill-region (point-min) (point-max))))
+       :url (concat "http://" mpaste-host "/api/paste/submit") 
+       :mime-type "application/json"
+       :logging nil
+       :data (json-encode `((contents . ,rdata)
+                            (expiry_time . nil)
+                            (language . ,(get-mpaste-language major-mode))
+                            (api_key . hzKbbq2fPecKrWvMN6bK3uvC6ZKe79u7iinnBqhVdycaCbzBCpvZIMdQZ7FkZvNv))))))
+
+
+  (defun vmpaste (name)
+    (interactive "Spaste 이름을 입력해 주세요 :")  ; ask for the name of the macro
+    (eww (format (concat "http://" mpaste-host "/paste/%s/raw")  name)))
+#+END_SRC
+
 #+RESULTS:
-: prelude-copy-file-name-to-clipboard
+: mpaste-region
 
 * external
 
@@ -3264,3 +3413,69 @@ of FILE in the current directory, suitable for creation"
 #+RESULTS:
 : xah-every
 
+* strip-copy
+#+BEGIN_SRC emacs-lisp
+  (defun strip-heading-whitespace-rectangle (b e &optional arg)
+    (interactive "r\nP")
+    (save-excursion
+      (save-restriction
+        (narrow-to-region b e)
+        (untabify (point-min) (point-max))
+        (goto-char (point-min))
+        (let ((endcol  (progn (skip-syntax-forward " " (point-at-eol)) (point))))
+          (message (format  "공백 컬럼 %d" endcol))
+          (delete-region (point-at-bol) (progn (skip-syntax-forward " " (+ (point-at-bol) endcol)) (point)))
+          (while (and  (= (forward-line) 0)  (>  (point-max) (point) ))
+            (delete-region (point) (progn (skip-syntax-forward " " (+ (point) endcol)) (point))))))))
+
+  (defun copy-heading-striped (b e &optional arg)
+    (interactive "r\nP")
+    (save-excursion
+      (save-restriction 
+        (narrow-to-region b e)
+        (let ((content (buffer-substring b e )))
+          (with-temp-buffer
+            (insert content)
+            ;;(untabify (point-min) (point-max))
+            ;;(strip-trailing-whitespace (point-min) (point-max))
+            (strip-heading-whitespace-rectangle (point-min) (point-max) arg)
+            ;;(w32-set-clipboard-data (buffer-string))
+            (kill-ring-save (point-min) (point-max))))))
+    (keyboard-quit)
+    (w32-set-clipboard-data (car kill-ring))
+    )
+
+  (defun copy-kill-ring-top-heading-striped (&optional arg)
+    (interactive "P")
+    (with-temp-buffer
+      (insert (car kill-ring))
+      ;;(untabify (point-min) (point-max))
+      ;;(strip-trailing-whitespace (point-min) (point-max))
+      (strip-heading-whitespace-rectangle (point-min) (point-max) arg)
+      ;;(w32-set-clipboard-data (buffer-string))
+      (kill-ring-save (point-min) (point-max)))
+    (w32-set-clipboard-data (car kill-ring)))
+
+
+#+END_SRC
+
+#+RESULTS:
+: copy-kill-ring-top-heading-striped
+* list
+** append-to-list
+   #+BEGIN_SRC emacs-lisp
+   (defun append-to-list (list-var elements)
+   "Append ELEMENTS to the end of LIST-VAR.
+
+ The return value is the new value of LIST-VAR."
+   (unless (consp elements)
+     (error "ELEMENTS must be a list"))
+   (let ((list (symbol-value list-var)))
+     (if list
+         (setcdr (last list) elements)
+       (set list-var elements)))
+   (symbol-value list-var))
+   #+END_SRC
+
+   #+RESULTS:
+   : append-to-list

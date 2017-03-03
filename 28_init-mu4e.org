@@ -457,6 +457,7 @@
       (defun mucontacts ()
           "Search for contacts."
           (interactive)
+          (mu4e~request-contacts)
           (helm :sources 'mucontacts-source
                 :buffer "*helm mu contacts*")))
 
