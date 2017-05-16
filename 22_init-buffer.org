@@ -118,9 +118,10 @@
    ;;WHATCHAR;;Or call “what-cursor-position” with a universal argument. e.g. type: 【ctrl+u ctrl+x =】.
    ;;WHATCHAR;;better is just to assign a key to “describe-char”. I use 【Ctrl+h c】.
 
-   ;; 윈도우 숫자를 부여 
-   (require 'window-numbering)
-   (window-numbering-mode 1)
+   ;;deprecateby-spacemacs;;;; 윈도우 숫자를 부여 
+   ;;deprecateby-spacemacs;;(use-package window-numbering
+   ;;deprecateby-spacemacs;;  :init
+   ;;deprecateby-spacemacs;;  (window-numbering-mode 1))
 
 
    (defun next-user-buffer ()

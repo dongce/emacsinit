@@ -627,6 +627,25 @@
            (message url ))))
    #+END_SRC
 
+
+* narrow
+  #+BEGIN_SRC emacs-lisp
+    (use-package zones
+      :config
+
+      (defun zone-activate (orig-fun &rest args)
+        (setf zz-add-zone-anyway-p t)
+        (apply orig-fun args)
+        (setf zz-add-zone-anyway-p nil))
+
+      ;;(advice-add 'org-narrow-to-subtree :before #'(lambda (&rest args) (setf zz-add-zone-anyway-p 1)))
+      ;;(advice-add 'org-narrow-to-subtree :after  #'(lambda (&rest args) (setf zz-add-zone-anyway-p nil)))
+      (advice-add 'org-narrow-to-subtree :around #'zone-activate))
+  #+END_SRC
+
+  #+RESULTS:
+  : t
+
 * latex                                                         :deprecated:
 #+BEGIN_SRC emacs-lisp :tangle no
   ;;;_ attach-file 
@@ -915,3 +934,10 @@
  '(org-bullets-bullet-list (quote ("🔯" "☀" "✱" "❖" "✦" "✢" "★" "≣")))
 
 #+END_SRC
+* pandoc
+#+BEGIN_SRC emacs-lisp
+  (use-package pandoc-mode
+    :commands  pandoc-main-hydra/body)
+#+END_SRC
+
+#+RESULTS:

@@ -4,7 +4,7 @@
 * header
 
   #+BEGIN_SRC emacs-lisp
-;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
+;; -*-modc: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
   #+END_SRC
 
 
@@ -646,8 +646,8 @@ is run).
   #+BEGIN_SRC emacs-lisp
     (defun tjcode (code1 code2 securitycard )
       (let ((table (eval (read (epg-decrypt-file (epg-make-context) securitycard nil)))))
-        (message "코드: %d %d"  (car (cadr (assoc code1 table))) (cadr (cadr (assoc code2 table))))
-        (kill-buffer "*Messages*")))
+        (kill-buffer "*Messages*")
+        (message "코드: %d %d"  (car (cadr (assoc code1 table))) (cadr (cadr (assoc code2 table))))))
 
     (defun tjcodeall (code1 code2 securitycard )
       (let ((table (eval (read (epg-decrypt-file (epg-make-context) securitycard nil)))))
@@ -656,29 +656,29 @@ is run).
 
     (defun dgbcode( code1 code2 ) 
       (interactive "n대구은행 첫번째 코드: \nn대구은행 두번째 코드 : ")
-      (tjcode code1 code2 "f:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/대구은행.gpg" ))
+      (tjcode code1 code2 "u:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/대구은행.gpg" ))
 
     (defun mtjcode( code1 code2 ) 
       (interactive "n새마을 첫번째 코드: \nn새마을 두번째 코드 : ")
-      (tjcode code1 code2 "f:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/새마을.gpg" ))
+      (tjcode code1 code2 "u:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/새마을.gpg" ))
 
     (defun dtjcode (code1 code2 )
       (interactive "n동양증권 첫번째 코드: \nn동양증권 두번째 코드 : ")
-      (tjcode code1 code2 "f:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/동양종금보안카드.gpg" ))
+      (tjcode code1 code2 "u:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/동양종금보안카드.gpg" ))
 
     (defun stjcode (code1 code2 )
       (interactive "n삼성증권 첫번째 코드: \nn삼성증권 두번째 코드 : ")
-      (tjcode code1 code2 "f:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/삼성증권대구은행보안카드.gpg" ))
+      (tjcode code1 code2 "u:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/삼성증권대구은행보안카드.gpg" ))
 
     (defun  htjcode(code1 code2 )
       (interactive "n하나은행 첫번째 코드: \nn하나은행 두번째 코드 : ")
-      (tjcodeall code1 code2 "f:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/하나은행.gpg" ))
+      (tjcodeall code1 code2 "u:/svndir/cipher-folder-암호가필요한것말고는사용하지말것/개인정보/각종번호/하나은행.gpg" ))
 
 
 
     (defun hpnum (names)
       (interactive "s성명을 입력하세요: \n")
-      (let* ((hpassoc (eval (read (with-temp-buffer (insert-file-contents "f:/svndir/스크랩/mobile.el" ) (buffer-string)))))
+      (let* ((hpassoc (eval (read (with-temp-buffer (insert-file-contents "u:/svndir/스크랩/mobile.el" ) (buffer-string)))))
              (result  (mapcar
                        (lambda (x)
                          (assoc (intern x ) hpassoc ))
@@ -724,7 +724,7 @@ is run).
     (defun singleid()
       (interactive)
       (let ((ntag (helm-comp-read "성명을 입력하세요 : " (single-name))))
-    
+
         ;; (insert (format "%s" (single-content ntag )))
         (mapcar 
          (lambda (x)
@@ -738,7 +738,7 @@ is run).
     (defun hanwhaid()
       (interactive)
       (let ((ntag (helm-comp-read "성명을 입력하세요 : " (single-name))))
-    
+
         ;; (insert (format "%s" (single-content ntag )))
         (mapcar 
          (lambda (x)
@@ -1371,7 +1371,7 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
     ;;; GNU GLOBAL incremental update It’s possible to use GNU GLOBAL
     ;;; incremental update feature in after-save-hook in order to keep
     ;;; synchronized the changes you made in source code and gtags
-    ;;; database:
+    ;;; databasc:
 
     (append-path (fullpath "../../global/bin/"))
     (append-path (fullpath "../../cscope-15.8a/"))
@@ -1379,7 +1379,7 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
     (require 'xcscope) 
 
     ;; I-search with initial contents.
-    ;; original source: http://platypope.org/blog/2007/8/5/a-compendium-of-awesomeness
+    ;; original sourcc: http://platypope.org/blog/2007/8/5/a-compendium-of-awesomeness
     (defvar isearch-initial-string nil)
 
     (defun isearch-set-initial-string ()
@@ -1730,7 +1730,7 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
 ;;deprecated;; 
 ;;deprecated;;         (back-to-indentation)
 ;;deprecated;;         ;; consecutive declarations in a var statement are nice if
-;;deprecated;;         ;; properly aligned, i.e:
+;;deprecated;;         ;; properly aligned, i.c:
 ;;deprecated;;         ;;
 ;;deprecated;;         ;; var foo = "bar",
 ;;deprecated;;         ;;     bar = "foo";
@@ -1912,7 +1912,7 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
 (defun emacs-header ()
   (interactive)
   (narrow-to-region 1 1 )
-  (insert "-*-mode: C; coding: utf-8; buffer-read-only: t;-*-")
+  (insert "-*-modc: C; coding: utf-8; buffer-read-only: t;-*-")
   (comment-region (point-min) (point-max))
   (newline-and-indent)
   (widen)
@@ -1970,7 +1970,7 @@ to the symbol at point."
    #+BEGIN_SRC emacs-lisp 
 (defun copy-rectangle-to-clipboard (p1 p2)
   "Copy region as column (rectangle) to operating system's clipboard.
-This command will also put the text in register 0. (see: `copy-to-register')"
+This command will also put the text in register 0. (sec: `copy-to-register')"
   (interactive "r")
   (let ((x-select-enable-clipboard t))
     (copy-rectangle-to-register ?0 p1 p2)
@@ -1985,106 +1985,109 @@ This command will also put the text in register 0. (see: `copy-to-register')"
 
    #+BEGIN_SRC emacs-lisp
 
-(defun upcase-symbol (syms)
-  (interactive)
-  (mapcar 
-   (lambda (x)
-     (replace-string 
-      (symbol-name x )
-      (upcase (symbol-name x )) t (point-min) (point-max )))
-   syms ))
+     (defun upcase-symbol (syms)
+       (interactive)
+       (mapcar
+        (lambda (x)
+          (replace-string
+           (symbol-name x )
+           (upcase (symbol-name x )) t (point-min) (point-max )))
+        syms ))
 
 
+     (defun strip-trailing-whitespace (b e )
+       "strips whitespace from the end of all the lines in the buffer;
+     equivalent to (`replace-regexp' \" \\t+$\" \"\")"
+       (save-excursion
+         (save-restriction
+           (narrow-to-region b e)
+           (goto-char (point-min))
+           (while (re-search-forward "[ \t]+$" nil t) (replace-match "" nil t))
+           nil)))
 
-(defun strip-trailing-whitespace (b e )
-  "strips whitespace from the end of all the lines in the buffer;
-equivalent to (`replace-regexp' \" \\t+$\" \"\")"
-  (interactive "r")
-  (save-excursion
-    (save-restriction
-      (narrow-to-region b e)
-      (goto-char (point-min))
-      (while (re-search-forward "[ \t]+$" nil t) (replace-match "" nil t)) 
-      nil)))
+     (defun stw ()
+       (interactive)
+       (if (region-active-p)
+           (strip-trailing-whitespace (region-beginning) (region-end))
+         (strip-trailing-whitespace (point-min) (point-max))))
+     ;; 다음을 이용하여 한 단어를 capitalize 할 수 있다.
+     (defun ucap ( )
+       (interactive)
+       (let ((start (point))
+             (end (progn (forward-sexp) (point))))
+         (replace-string "_" " " nil start end )
+         (capitalize-region start end )
+         (replace-string " " "" nil start end )))
 
-;; 다음을 이용하여 한 단어를 capitalize 할 수 있다. 
-(defun ucap ( )
-  (interactive)
-  (let ((start (point))
-        (end (progn (forward-sexp) (point))))
-    (replace-string "_" " " nil start end )
-    (capitalize-region start end )
-    (replace-string " " "" nil start end )))
+     (defun swap-regions (beg1 end1 beg2 end2)
+       "Swap region between BEG1 and END1 with region BEG2 and END2.
 
-(defun swap-regions (beg1 end1 beg2 end2)
-  "Swap region between BEG1 and END1 with region BEG2 and END2.
+     For the first region, mark the first region and set mark at
+     point.  The second region only needs to be marked normally.
+     Again, set the mark at the beginning and end of the first region,
+     then mark the second region with mark and point.
 
-For the first region, mark the first region and set mark at
-point.  The second region only needs to be marked normally.
-Again, set the mark at the beginning and end of the first region,
-then mark the second region with mark and point.
+     The order of the two regions in the buffer doesn't matter.
+     Either one can precede the other.  However, the regions can not
+     be swapped if they overlap.
 
-The order of the two regions in the buffer doesn't matter.
-Either one can precede the other.  However, the regions can not
-be swapped if they overlap.
+     All arguments can either be a number for a position in the buffer
+     or a marker."
+       (interactive
+        (if (< (length mark-ring) 2)
+            (error "Not enough in mark-ring to swap a region")
+          (let ((region (list (region-beginning) (region-end)))
+                (marks (sort (list (marker-position (car mark-ring))
+                                   (marker-position (cadr mark-ring)))
+                             '<)))
+            (if (< (car region) (car marks))
+                (append region marks)
+              (append marks region)))))
+       (if (or (and (< beg2 beg1) (< beg1 end2))
+               (and (< beg1 beg2) (< beg2 end1)))
+           (error "Unable to swap overlapping regions")
+         (save-excursion
+           (insert
+            (prog1 (delete-and-extract-region beg2 end2)
+              (goto-char beg2)
+              (insert
+               (delete-and-extract-region beg1 end1))
+              (goto-char beg1))))))
 
-All arguments can either be a number for a position in the buffer
-or a marker."
-  (interactive
-   (if (< (length mark-ring) 2)
-       (error "Not enough in mark-ring to swap a region")
-     (let ((region (list (region-beginning) (region-end)))
-           (marks (sort (list (marker-position (car mark-ring))
-                              (marker-position (cadr mark-ring)))
-                        '<)))
-       (if (< (car region) (car marks))
-           (append region marks)
-         (append marks region)))))
-  (if (or (and (< beg2 beg1) (< beg1 end2))
-          (and (< beg1 beg2) (< beg2 end1)))
-      (error "Unable to swap overlapping regions")
-    (save-excursion
-      (insert 
-       (prog1 (delete-and-extract-region beg2 end2)
-         (goto-char beg2)
-         (insert 
-          (delete-and-extract-region beg1 end1))
-         (goto-char beg1))))))
+     (defun swap-text (str1 str2 beg end)
+       "Changes all STR1 to STR2 and all STR2 to STR1 in beg/end region."
+       (interactive "sString A: \nsString B: \nr")
+       (if mark-active
+           (setq deactivate-mark t)
+         (setq beg (point-min) end (point-max)))
+       (goto-char beg)
+       (while (re-search-forward
+   	    (concat "\\(?:\\b\\(" (regexp-quote str1) "\\)\\|\\("
+   		    (regexp-quote str2) "\\)\\b\\)") end t)
+         (if (match-string 1)
+   	  (replace-match str2 t t)
+           (replace-match str1 t t))))
 
-(defun swap-text (str1 str2 beg end)
-  "Changes all STR1 to STR2 and all STR2 to STR1 in beg/end region."
-  (interactive "sString A: \nsString B: \nr")
-  (if mark-active
-      (setq deactivate-mark t)
-    (setq beg (point-min) end (point-max))) 
-  (goto-char beg)
-  (while (re-search-forward
-	  (concat "\\(?:\\b\\(" (regexp-quote str1) "\\)\\|\\("
-		  (regexp-quote str2) "\\)\\b\\)") end t)
-    (if (match-string 1)
-	(replace-match str2 t t)
-      (replace-match str1 t t))))
-
-(defun forward-delete ( &optional x)
-  (interactive "p")
-  (or x (setf x 1 ))
-  (forward-sexp x )
-  (kill-line)
-  (next-line)
-  (move-beginning-of-line nil))
+     (defun forward-delete ( &optional x)
+       (interactive "p")
+       (or x (setf x 1 ))
+       (forward-sexp x )
+       (kill-line)
+       (next-line)
+       (move-beginning-of-line nil))
 
 
-(defun switch-equal (begin end )
-  (interactive "r" )
-  (replace-regexp " *\\(.*\\) *= *\\(.*\\) *;" "\\2 = \\1 ;" nil begin end ))
+     (defun switch-equal (begin end )
+       (interactive "r" )
+       (replace-regexp " *\\(.*\\) *= *\\(.*\\) *;" "\\2 = \\1 ;" nil begin end ))
 
-(defun dongif (beg end)
-  "Changes all STR1 to STR2 and all STR2 to STR1 in beg/end region."
-  (interactive "r")
-  (if mark-active
-      (setq deactivate-mark t)
-    (setq beg (point-min) end (point-max))) 
-  (replace-regexp " *\\([0-9a-zA-Z_]+\\) * \\([=!]\\)= *\\([0-9a-zA-Z_]+\\) *" "\\3 \\2=\\1" nil beg end ))
+     (defun dongif (beg end)
+       "Changes all STR1 to STR2 and all STR2 to STR1 in beg/end region."
+       (interactive "r")
+       (if mark-active
+           (setq deactivate-mark t)
+         (setq beg (point-min) end (point-max)))
+       (replace-regexp " *\\([0-9a-zA-Z_]+\\) * \\([=!]\\)= *\\([0-9a-zA-Z_]+\\) *" "\\3 \\2=\\1" nil beg end ))
 
 
    #+END_SRC
@@ -2316,7 +2319,7 @@ Requirements:
  * wscript.exe must be installed and enabled
  * Microsoft Word must be installed
 
-Usage:
+Usagc:
 
 Mark a region of fontified text, run this function and in a number of
 seconds you have the whole colorful text on your clipboard, ready to
@@ -2727,7 +2730,7 @@ be pasted into a RTF-enabled application.
          (args (cadr (s-split "(" str )))
          (rtn "")
          (fname "")
-         (keywords '("struct" "enum" "class" "File" "Author:" "E-mail:" "$Rev:" "Limitation" "마지막" "Description:" "Limitation:" "Caution:" "Usage:" "Copyright" "All"))
+         (keywords '("struct" "enum" "class" "File" "Author:" "E-mail:" "$Rev:" "Limitation" "마지막" "Description:" "Limitation:" "Caution:" "Usagc:" "Copyright" "All"))
          (tstamp (format-time-string  "%Y년 %m월 %d일 %V주 %a 요일 %p %I시 %M분 %S초"))
          ;;(tstamp (current-time-stamp))
          )
@@ -2822,7 +2825,7 @@ be pasted into a RTF-enabled application.
 ;;deprecated;;     
 ;;deprecated;;     (insert (format 
 ;;deprecated;;              "/*****************************************************************************
-;;deprecated;;    File name:    %s
+;;deprecated;;    File namc:    %s
 ;;deprecated;;    Author:       김동일
 ;;deprecated;;    E-mail:       di7979.kim@samsung.com
 ;;deprecated;;
@@ -2839,7 +2842,7 @@ be pasted into a RTF-enabled application.
 ;;deprecated;;- None
 ;;deprecated;;
 ;;deprecated;;------------------------------------------------------------------------------
-;;deprecated;;Usage:
+;;deprecated;;Usagc:
 ;;deprecated;;
 ;;deprecated;;------------------------------------------------------------------------------
 ;;deprecated;;Update History:
@@ -3265,7 +3268,7 @@ be pasted into a RTF-enabled application.
   (url-get-url-at-point))))))
   current-prefix-arg
   (if current-prefix-arg
-  (read-string "Prefix for bookmark name: ")
+  (read-string "Prefix for bookmark namc: ")
   (bmkp-completing-read-lax "Bookmark name"))
   nil
   'MSG))
@@ -3321,7 +3324,7 @@ be pasted into a RTF-enabled application.
 
 
   (setq common-lisp-hyperspec-root
-        "file:F:/usr/local/clisp-2.37/hyperspec/HyperSpec/" )
+        "filc:U:/usr/local/clisp-2.37/hyperspec/HyperSpec/" )
 
 
   (setq 
@@ -3343,6 +3346,7 @@ be pasted into a RTF-enabled application.
       c:/usr/local/ruby/man
       c:/usr/local/swipl/xpce/man
       c:/usr/local/swipl/xpce/prolog/lib/man
+      E:/msys264/usr/share/man
       ,(intern ( fullpath "../../global/share/man/"))
       ,(intern ( fullpath "../../man-pages/"))
   /usr/local/misctools/default/share/man
@@ -3364,6 +3368,7 @@ be pasted into a RTF-enabled application.
     (fullpath "../../mumailindexer/share/info")
     (fullpath "../../global/share/info")
     (format "%s/%s" (getenv "GUILE_HOME") "/share/info" )
+    "E:/msys264/usr/share/info"
     "/usr/local/misctools/default/share/info"
   "/usr/local/emacs/default/share/info"
   "/usr/local/guile/default/share/info"

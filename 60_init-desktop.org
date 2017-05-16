@@ -502,10 +502,14 @@
 
 *** 오늘의 카타카나 
     #+BEGIN_SRC emacs-lisp
-     (setf today-katakana
-           (s-join ";" (-map #'symbol-name (nth  (%  (time-to-day-in-year (current-time)) (length  katakana) ) katakana)) ))
-     (spacemacs-buffer/warning
-      (today-message "오늘의 카타카나 %s" today-katakana))
+      (setf today-katakana
+            (s-join ";" (-map #'symbol-name (nth  (%  (time-to-day-in-year (current-time)) (length  katakana) ) katakana)) ))
+      (spacemacs-buffer/warning
+       (today-message
+        "어제의 카타카나 %s"
+        (s-join ";" (-map #'symbol-name (nth    (%  (-  (time-to-day-in-year (current-time)) 1) (length  katakana) )  katakana)) )))
+       (spacemacs-buffer/warning
+        (today-message "오늘의 카타카나 %s" today-katakana))
     #+END_SRC
 
     #+RESULTS:
@@ -3356,7 +3360,8 @@
     #+BEGIN_SRC emacs-lisp
       (let* ((days (time-to-day-in-year (current-time)))
              (mod (/ (length hanja-grade3) 3))
-             (hit (% days  mod)))
+             (hit (% days  mod))
+             (hit-1 (% (- days 1)  mod)))
 
         (setf today-hanja3
               (s-join ";  "
@@ -3371,7 +3376,31 @@
                        (nth hit hanja-grade4)
                        (nth (+ mod hit) hanja-grade4)
                        (nth (+ mod mod hit) hanja-grade4)
-                       (nth (+ mod mod mod hit) hanja-grade4)))))
+                       (nth (+ mod mod mod hit) hanja-grade4))))
+
+        (setf yesterday-hanja3
+              (s-join ";  "
+                      (list  (nth hit-1 hanja-grade3)
+                             (nth (+ mod hit-1) hanja-grade3)
+                             (nth (+ mod mod hit-1) hanja-grade3))
+                      ))
+
+        (setf yesterday-hanja4
+              (s-join ";  "
+                      (list
+                       (nth hit-1 hanja-grade4)
+                       (nth (+ mod hit-1) hanja-grade4)
+                       (nth (+ mod mod hit-1) hanja-grade4)
+                       (nth (+ mod mod mod hit-1) hanja-grade4))))
+
+        )
+
+      (spacemacs-buffer/warning
+       (today-message "어제의 한자 3급 %s" yesterday-hanja3))
+
+      (spacemacs-buffer/warning
+       (today-message "어제의 한자 4급 %s" yesterday-hanja4))
+
 
       (spacemacs-buffer/warning
        (today-message "오늘의 한자 3급 %s" today-hanja3))
@@ -3380,6 +3409,9 @@
        (today-message "오늘의 한자 4급 %s" today-hanja4))
 
     #+END_SRC
+
+    #+RESULTS:
+    | Cannot find any of the specified fonts (Source Code Pro)! Font settings may not be correct. | More than one init function found for package helm-make. Previous owner was helm, replacing it with layer ivy. | Auto-evilication could not remap these functions in map `elfeed-search-mode-map': |
  
 
 * alarm
