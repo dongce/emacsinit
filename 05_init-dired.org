@@ -1,8 +1,8 @@
-# -*-mode: org; coding: utf-8; buffer-read-only: t;-*-
+# -*-modc: org; coding: utf-8; buffer-read-only: t;-*-
 
 * header
   #+BEGIN_SRC emacs-lisp
-    ;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
+    ;; -*-modc: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
   #+END_SRC
 * dired
 ** serveral macro 
@@ -310,15 +310,15 @@
             (tscproxy ,(fullpath  "../../conemul/conemu64.exe")
                       "-reuse -dir \"t:\\misc\\pytcpproxy\" -cmd c:\\anaconda43\\python.exe tscproxy.py")
             (msys2conemul ,(fullpath  "../../conemul/conemu64.exe")
-                          "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\sh --login -i")
+                          "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&c:\\msys264\\usr\\bin\\sh --login -i")
 
             (msys2term ,(fullpath  "../../conemul/conemu64.exe")
-                       "-reuse -dir \"%home%\" -run set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\conemu-msys2-64.exe")
+                       "-reuse -dir \"%home%\" -run set MSYSTEM=MINGW64&&c:\\msys264\\usr\\bin\\conemu-msys2-64.exe")
 
             (conemul ,(fullpath  "../../conemul/conemu64.exe") "-reuse")
             (conemul2 ( ,(fullpath  "../../conemul/conemu64.exe") "-reuse")
                      (,(fullpath  "../../conemul/conemu64.exe")
-                      "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&e:\\msys264\\usr\\bin\\sh --login -i"))
+                      "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&c:\\msys264\\usr\\bin\\sh --login -i"))
             (filezilla  "t:/usr/local/FileZilla-3.7.1.1/filezilla.exe") 
             (processhacker ,(fullpath  "../../processhacker/x64/ProcessHacker.exe"))
             (processexplorer ,(fullpath  "../../processhacker/procexp.exe"))
@@ -327,10 +327,10 @@
             (opencapture "d:/usr/local/opencapture/pOpenCapture.exe")
             (qdir        "t:/usr/local/qdir/Q-Dir.exe")
             (explorer    "c:/WINDOWS/explorer.exe")
-            (msys2       "e:/msys264/mingw64_shell.bat")
+            (msys2       "c:/msys264/mingw64_shell.bat")
             ;;(mingw       "t:/usr/local/mingwDevKit/msys.bat")
-            ;;(mingw          "e:/mingw/msys/1.0/bin/mintty.exe"                      "/bin/bash -l"                           )
-            (mingw          "e:/mingw/msys/1.0/msys.bat"                           )
+            ;;(mingw          "c:/mingw/msys/1.0/bin/mintty.exe"                      "/bin/bash -l"                           )
+            (mingw          "c:/mingw/msys/1.0/msys.bat"                           )
             (ComponentServices     "c:/windows/system32/comexp.msc"                                                          )
             (ComputerManagement    "c:/windows/system32/compmgmt.msc"                "/s"                                    )
             (DataSources           "c:/windows/system32/odbcad32.exe"                                                        )
