@@ -3346,7 +3346,7 @@ be pasted into a RTF-enabled application.
       c:/usr/local/ruby/man
       c:/usr/local/swipl/xpce/man
       c:/usr/local/swipl/xpce/prolog/lib/man
-      E:/msys264/usr/share/man
+      c:/msys264/usr/share/man
       ,(intern ( fullpath "../../global/share/man/"))
       ,(intern ( fullpath "../../man-pages/"))
   /usr/local/misctools/default/share/man
@@ -3368,7 +3368,7 @@ be pasted into a RTF-enabled application.
     (fullpath "../../mumailindexer/share/info")
     (fullpath "../../global/share/info")
     (format "%s/%s" (getenv "GUILE_HOME") "/share/info" )
-    "E:/msys264/usr/share/info"
+    "c:/msys264/usr/share/info"
     "/usr/local/misctools/default/share/info"
   "/usr/local/emacs/default/share/info"
   "/usr/local/guile/default/share/info"
