@@ -71,16 +71,13 @@
 
 #+BEGIN_SRC emacs-lisp :tangle no
 
-(require  'company)
+(use-package  company
+ :init 
 (setq company-backends (delete 'company-semantic company-backends))
 (add-hook 'after-init-hook 'global-company-mode)
 (define-key c-mode-map  [(backtab)] 'company-complete)
 (define-key c++-mode-map  [(backtab)] 'company-complete)
 
-#+END_SRC
-
-* company cancel key 
-#+BEGIN_SRC emacs-lisp
     ;;; Prevent suggestions from being triggered automatically. In particular,
     ;;; this makes it so that:
     ;;; - TAB will always complete the current selection.
@@ -117,8 +114,7 @@
     (setq company-auto-complete-chars nil)
 
 
-  (define-key  company-active-map [escape] 'company-abort)
+  (define-key  company-active-map [escape] 'company-abort))
 #+END_SRC
 
 #+RESULTS:
-: company-abort

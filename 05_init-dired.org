@@ -4,6 +4,10 @@
   #+BEGIN_SRC emacs-lisp
     ;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
   #+END_SRC
+* ivy
+#+BEGIN_SRC emacs-lisp
+(require 'ivy)
+#+END_SRC
 * dired
 ** serveral macro 
  #+BEGIN_SRC emacs-lisp
@@ -616,6 +620,7 @@ open and unsaved."
    #+RESULTS:
    : helm-goto-recent-directory
 
+
 ** ivy
  #+BEGIN_SRC emacs-lisp :tangle no
      (defun counsel-goto-recent-directory ()
@@ -673,7 +678,6 @@ open and unsaved."
       ("x" counsel-find-file-extern "open externally")))
  #+END_SRC
  #+RESULTS:
- | ivy-switch-buffer | ((k (lambda (x) (kill-buffer x) (ivy--reset-state ivy-last)) kill) (j ivy--switch-buffer-other-window-action other window) (r ivy--rename-buffer-action rename)) | counsel-describe-variable | ((i counsel-info-lookup-symbol info) (d counsel--find-symbol definition)) | counsel-describe-function | ((i counsel-info-lookup-symbol info) (d counsel--find-symbol definition)) | counsel-M-x | ((d counsel--find-symbol definition) (h (lambda (x) (describe-function (intern x))) help)) | counsel-descbinds | ((d counsel-descbinds-action-find definition) (i counsel-descbinds-action-info info)) | counsel-git | ((j find-file-other-window other)) | counsel-find-file | ((f find-file-other-frame other frame) (w find-file-other-window other window) (v spacemacs/find-file-vsplit in vertical split) (s spacemacs/find-file-split in horizontal split) (l find-file-literally literally) (d spacemacs/delete-file delete file) (r spacemacs/rename-file rename file)) | counsel-recentf | ((j find-file-other-window other-window) (x counsel-find-file-extern open externally)) | counsel-locate | ((x counsel-locate-action-extern xdg-open) (d counsel-locate-action-dired dired)) | counsel-linux-app | ((f counsel-linux-app-action-file run on a file)) | spacemacs/ivy-spacemacs-layouts | ((c persp-kill-without-buffers Close layout(s)) (k persp-kill Kill layout(s))) | counsel-recentf-directory | ((j find-file-other-window other-window) (x counsel-find-file-extern open externally)) |
 
 ** exclude
 #+BEGIN_SRC emacs-lisp
