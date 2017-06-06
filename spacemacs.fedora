@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     html
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -324,7 +325,7 @@ you should place your code here."
   (add-to-list 'load-path (concat emacsw32-home "/ergoemacs/packages"))
   ;;(require 'evil-mode-line)
 
-  ;; (shell-command "xmodmap /etc/X11/Xmodmap")
+  (shell-command "xmodmap ~/Xmodmap")
 
 
   (defun evil-paste-after-from-0 ()
@@ -345,6 +346,7 @@ you should place your code here."
   (package-initialize)
   (require 's)
   (require 'init-loader)
+  ;;(setq debug-on-error t)
   (init-loader-load (concat emacsw32-home "/site-lisp/init"))
   (recentf-load-list)
   (global-hl-line-mode 0)
@@ -369,7 +371,7 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Info-fit-frame-flag nil)
- '(ac-auto-start nil t)
+ '(ac-auto-start nil)
  '(ac-trigger-key "C-o")
  '(ack-arguments nil)
  '(ack-executable (executable-find "ack.bat"))
@@ -645,7 +647,6 @@ you should place your code here."
  '(magit-use-overlays nil)
  '(max-specpdl-size 134000)
  '(message-send-mail-function (quote message-send-mail-with-sendmail))
- '(message-sendmail-extra-arguments (quote ("--read-envelope-from" "-a" "dongil")))
  '(message-sendmail-f-is-evil t)
  '(modelinepos-column-limit 100)
  '(mouse-drag-copy-region t)
@@ -786,7 +787,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
  '(org-latex-pdf-process
    (quote
     ("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f" "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
- '(org-log-done (quote time) t)
+ '(org-log-done (quote time))
  '(org-mu4e-link-desc-func
    (lambda
      (msg)
@@ -931,7 +932,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
             (list)
             (proced-filter-children list 1632))))))
  '(projectile-buffers-filter-function (quote projectile-buffers-with-file))
- '(projectile-completion-system (quote grizzl) t)
+ '(projectile-completion-system (quote grizzl))
  '(projectile-enable-caching t)
  '(projectile-indexing-method (quote native))
  '(ps-lpr-switches (quote ("-query")))
@@ -941,8 +942,8 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
 '(puml-plantuml-jar-path
 "T:\\usr\\local\\editor\\emacsW32\\site-lisp\\thirdparty\\plantuml\\plantuml.jar")
  '(python-check-command "pyflakes")
- '(python-shell-interpreter "ipython.exe" t)
- '(python-shell-interpreter-args "--colors=NoColor" t)
+ '(python-shell-interpreter "ipython.exe")
+ '(python-shell-interpreter-args "--colors=NoColor")
  '(python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: ")
  '(python-shell-prompt-regexp "In \\[[0-9]+\\]: ")
 '(quack-programs
@@ -1014,7 +1015,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
  '(savehist-mode t)
  '(scheme-compile-exp-command "%s")
  '(scheme-program-name "winprojcd")
- '(sendmail-program "/opt/emacs/mumailindexer/bin/msmtp.exe")
+ '(send-mail-function (quote sendmail-send-it))
  '(server-name "server")
  '(setq ecb-tip-of-the-day)
  '(show-paren-mode t nil (paren))
