@@ -545,7 +545,7 @@
 
 ** org babel
 *** calc
-    #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp :tangle no
 
       ;; [[file:t:/usr/local/editor/emacsW32/site-lisp/elpa/org-20151123/ob-calc.el::(defun%20org-babel-execute:calc%20(body%20params)][src from]]
 
@@ -1291,8 +1291,7 @@
       (async-shell-command
        (if linum
            (format
-
-            "%s -O full,style=colorful,linenos=inline,linenostart=1 -o %s -f html -l cpp %s " pygmentize outname (buffer-file-name))
+           "%s -O full,style=colorful,linenos=inline,linenostart=1 -o %s -f html -l cpp %s " pygmentize outname (buffer-file-name))
          (format  "%s -O full,style=colorful -o %s -f html -l cpp %s " pygmentize outname (buffer-file-name))))))
 
 

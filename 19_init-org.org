@@ -542,9 +542,9 @@
 
 ** org babel
 *** calc
-    #+BEGIN_SRC emacs-lisp
+    [[file:t:/usr/local/editor/emacsW32/site-lisp/elpa/org-20151123/ob-calc.el::(defun%20org-babel-execute:calc%20(body%20params)][src from]]
+    #+BEGIN_SRC emacs-lisp :tangle no
 
-      ;; [[file:t:/usr/local/editor/emacsW32/site-lisp/elpa/org-20151123/ob-calc.el::(defun%20org-babel-execute:calc%20(body%20params)][src from]]
 
       (defun org-babel-execute:calc (body params)
         "Execute a block of calc code with Babel."
@@ -626,6 +626,25 @@
            (kill-new url)
            (message url ))))
    #+END_SRC
+
+
+* narrow
+  #+BEGIN_SRC emacs-lisp
+    (use-package zones
+      :config
+
+      (defun zone-activate (orig-fun &rest args)
+        (setf zz-add-zone-anyway-p t)
+        (apply orig-fun args)
+        (setf zz-add-zone-anyway-p nil))
+
+      ;;(advice-add 'org-narrow-to-subtree :before #'(lambda (&rest args) (setf zz-add-zone-anyway-p 1)))
+      ;;(advice-add 'org-narrow-to-subtree :after  #'(lambda (&rest args) (setf zz-add-zone-anyway-p nil)))
+      (advice-add 'org-narrow-to-subtree :around #'zone-activate))
+  #+END_SRC
+
+  #+RESULTS:
+  : t
 
 * latex                                                         :deprecated:
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -915,3 +934,10 @@
  '(org-bullets-bullet-list (quote ("🔯" "☀" "✱" "❖" "✦" "✢" "★" "≣")))
 
 #+END_SRC
+* pandoc
+#+BEGIN_SRC emacs-lisp
+  (use-package pandoc-mode
+    :commands  pandoc-main-hydra/body)
+#+END_SRC
+
+#+RESULTS:

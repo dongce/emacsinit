@@ -3339,7 +3339,8 @@ of FILE in the current directory, suitable for creation"
     (let ((buf (get-buffer-create " *alarm notify* ")))
     (async-shell-command (format "notify-send -t 5000 \"%s\" \"%s\" " text text) buf) ;
     ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe --g-fatal-warnings --warning --text=\"%s\"  " text) buf)
-    (async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe  --info --text=\"%s\"  " text) buf)
+    (async-shell-command (format "c:\\anaconda43\\python.exe t:/usr/local/editor/emacsw32/cmdutils/pymessage.py \"%s\"  " text) buf) 
+    ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe  --info --text=\"%s\"  " text) buf)
     ;;(message-box text)
     )) 
   (defun alarm-clock ()
@@ -3382,21 +3383,77 @@ of FILE in the current directory, suitable for creation"
 
 * word 2 org 
 #+BEGIN_SRC emacs-lisp
-  (defun doc2org (begin end )
-    (interactive "r")
+  (defun doc2org (&optional chapter)
+    (interactive "p")
     (save-excursion
       (save-restriction
-        (narrow-to-region begin end)
-
-        (replace-regexp  "" "-" nil (point-min) (point-max))
-        (replace-regexp  "" "-" nil (point-min) (point-max))
+        (if (region-active-p)
+            (narrow-to-region (region-beginning) (region-end))
+          (narrow-to-region (point-min) (point-max)))
+        (replace-regexp  "-" "-" nil (point-min) (point-max))
+        (replace-regexp  "-" "-" nil (point-min) (point-max))
         (replace-regexp (regexp-quote "^(\*)+")  " \1" nil (point-min) (point-max) )
-        (replace-regexp "^\[0-9]\+.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"  "****** " nil (point-min) (point-max) )
-        (replace-regexp "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"           "***** " nil (point-min) (point-max) )
-        (replace-regexp "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                     "**** " nil (point-min) (point-max) )
-        (replace-regexp "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                               "*** " nil (point-min) (point-max) )
-        (replace-regexp "^\[0-9]\+\.\[0-9]\+"                                         "** " nil (point-min) (point-max) )
-        )))
+
+        (if chapter
+            (progn
+              (replace-regexp
+               "^\[0-9]\+.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"  "****** \\&" nil (point-min) (point-max) )
+              (replace-regexp
+               "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"           "***** \\&" nil (point-min) (point-max) )
+              (replace-regexp
+               "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                     "**** \\&" nil (point-min) (point-max) )
+              (replace-regexp
+               "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                               "*** \\&" nil (point-min) (point-max) )
+              (replace-regexp
+               "^\[0-9]\+\.\[0-9]\+"                                         "** \\&" nil (point-min) (point-max) )
+              )
+          (progn
+            (replace-regexp
+             "^\[0-9]\+.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"  "****** " nil (point-min) (point-max) )
+            (replace-regexp
+             "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"           "***** " nil (point-min) (point-max) )
+            (replace-regexp
+             "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                     "**** " nil (point-min) (point-max) )
+            (replace-regexp
+             "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                               "*** " nil (point-min) (point-max) )
+            (replace-regexp
+             "^\[0-9]\+\.\[0-9]\+"                                         "** " nil (point-min) (point-max) )
+            )))))
+
+
+  (defun doc2org-region (&optional chapter)
+    (interactive "p")
+    (save-excursion
+      (save-restriction
+        (replace-regexp  "-" "-" )
+        (replace-regexp  "-" "-" )
+        (replace-regexp (regexp-quote "^(\*)+")  " \1"  )
+
+        (if chapter
+            (progn
+              (replace-regexp
+               "^\[0-9]\+.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"  "****** \\&"  )
+              (replace-regexp
+               "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"           "***** \\&"  )
+              (replace-regexp
+               "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                     "**** \\&"  )
+              (replace-regexp
+               "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                               "*** \\&"  )
+              (replace-regexp
+               "^\[0-9]\+\.\[0-9]\+"                                         "** \\&"  )
+              )
+          (progn
+            (replace-regexp
+             "^\[0-9]\+.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"  "****** "  )
+            (replace-regexp
+             "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"           "***** "  )
+            (replace-regexp
+             "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                     "**** "  )
+            (replace-regexp
+             "^\[0-9]\+\.\[0-9]\+\.\[0-9]\+"                               "*** "  )
+            (replace-regexp
+             "^\[0-9]\+\.\[0-9]\+"                                         "** "  )
+            )))))
 #+END_SRC
 
 * xah-macro
@@ -3479,3 +3536,35 @@ of FILE in the current directory, suitable for creation"
 
    #+RESULTS:
    : append-to-list
+* debug line 
+#+BEGIN_SRC emacs-lisp
+  (defun kill-new-and-set-clipboard (data)
+    (kill-new data)
+    (w32-set-clipboard-data (car kill-ring)))
+
+  (defun gdb-break-line ()
+    "Print the current buffer line number and narrowed line number of point."
+    (interactive)
+    (let ((start (point-min))
+          (filename (file-name-nondirectory (buffer-file-name)))
+          (n (line-number-at-pos)))
+      (if (= start 1)
+          (kill-new-and-set-clipboard (format  "break %s:%d" filename n))
+        (save-excursion
+          (save-restriction
+            (widen)
+            (kill-new-and-set-clipboard (format  "break %s:%d" filename (+ n (line-number-at-pos start) -1))))))))
+
+  (defun gdb-print-at-point (arg)
+    "Print the current buffer line number and narrowed line number of point."
+    (interactive "P")
+    (let ((varname (thing-at-point 'word)))
+      (kill-new-and-set-clipboard
+       (if arg
+           (kill-new-and-set-clipboard (format  "print *%s" varname ))
+         (kill-new-and-set-clipboard (format  "print %s" varname ))))))
+
+#+END_SRC
+
+#+RESULTS:
+: gdb-print-at-point

@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp; coding: utf-8; -*-
+;; -*- modc: emacs-lisp; coding: utf-8; -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
@@ -31,14 +31,18 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     graphviz
+     sql
+     html
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     better-defaults
      gtags
-     ivy
      helm
+     ivy
      (auto-completion :variables
                       auto-completion-return-key-behavior 'complete
                       auto-completion-tab-key-behavior    'complete
@@ -46,12 +50,12 @@ values."
                       ;;auto-completion-private-snippets-directory nil
                       )
      ;; ranger
-     better-defaults
      ibuffer
      emacs-lisp
       git
      ;; markdown
       org
+      csv
       python
      ;; (shell :variables
      ;;        shell-default-height 30
@@ -70,7 +74,7 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(ido ivy ivy-hydra winum-mode)
+   ;; dotspacemacs-excluded-packages '(ido )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -125,7 +129,7 @@ values."
    dotspacemacs-startup-banner 'random
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
-   ;; Possible values for list-type are:
+   ;; Possible values for list-type arc:
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
@@ -352,8 +356,8 @@ you should place your code here."
   ;; spacemacs patch
   (define-key ivy-minibuffer-map (kbd "S-SPC") 'toggle-korean-input-method)
   (define-key ivy-minibuffer-map (kbd "C-\\") 'ivy-restrict-to-matches)
-
-  ;;(define-key  company-active-map [escape] 'company-abort)
+  (spacemacs/set-leader-keys "hh"   'helm-mini)
+  (helm/init-helm-swoop)
 
   ;;(add-to-list 'load-path (file-truename (concat emacsw32-home "/exp-site-lisp/")))
   (server-start)
@@ -374,20 +378,23 @@ you should place your code here."
  '(ack-arguments nil)
  '(ack-executable (executable-find "ack.bat"))
  '(ansi-color-names-vector
-   ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
+   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
  '(async-shell-command-buffer (quote new-buffer))
  '(autofit-frames-flag nil)
  '(better-registers-use-C-r nil)
  '(bmkp-last-as-first-bookmark-file "t:/usr/local/editor/emacsW32/spacemacs/.cache/bookmarks")
  '(bookmark-version-control t)
- '(browse-url-firefox-program "C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")
+ '(browse-url-firefox-program "C:\\Program Files\\Firefox Developer Edition\\firefox.exe")
  '(c-default-style "gnu")
  '(calendar-month-name-array
    ["1월 January" "2월 February" "3월 March" "4월 April" "5월 May" "6월 June" "7월 July" "8월 August" "9월 September" "10월 October" "11월 November" "12월 December"])
  '(case-fold-search t)
  '(column-number-mode t)
+ '(company-dabbrev-downcase nil)
+ '(company-dabbrev-ignore-case nil)
  '(company-global-modes (quote (not gdb-mode)))
  '(compilation-message-face (quote default))
+ '(csv-separators (quote ("," "	")))
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-mode nil nil (cua-base))
  '(cua-normal-cursor-color "#839496")
@@ -411,6 +418,7 @@ you should place your code here."
     ((dired-actual-switches . "-alt")
      (ls-lisp-ignore-case)
      (ls-lisp-dirs-first))))
+ '(dired-use-ls-dired nil)
  '(diredp-hide-details-initially-flag t)
  '(diredp-w32-local-drives
    (quote
@@ -489,7 +497,7 @@ you should place your code here."
  '(evil-cross-lines t)
  '(evil-emacs-state-modes
    (quote
-    (archive-mode bbdb-mode bookmark-bmenu-mode bookmark-edit-annotation-mode browse-kill-ring-mode bzr-annotate-mode calc-mode cfw:calendar-mode completion-list-mode Custom-mode debugger-mode delicious-search-mode desktop-menu-blist-mode desktop-menu-mode dvc-bookmarks-mode dvc-diff-mode dvc-info-buffer-mode dvc-log-buffer-mode dvc-revlist-mode dvc-revlog-mode dvc-status-mode dvc-tips-mode ediff-meta-mode efs-mode Electric-buffer-menu-mode emms-browser-mode emms-mark-mode emms-metaplaylist-mode emms-playlist-mode etags-select-mode fj-mode gc-issues-mode gdb-breakpoints-mode gdb-disassembly-mode gdb-frames-mode gdb-locals-mode gdb-memory-mode gdb-registers-mode gdb-threads-mode gist-list-mode gnus-article-mode gnus-browse-mode gnus-group-mode gnus-server-mode gnus-summary-mode google-maps-static-mode jde-javadoc-checker-report-mode magit-commit-mode magit-key-mode magit-show-branches-mode magit-branch-manager-mode magit-wazzup-mode mh-folder-mode monky-mode notmuch-hello-mode notmuch-search-mode notmuch-show-mode proced-mode rcirc-mode rebase-mode reftex-select-bib-mode reftex-toc-mode sldb-mode slime-inspector-mode slime-thread-control-mode slime-xref-mode sr-buttons-mode sr-mode sr-tree-mode sr-virtual-mode tetris-mode tla-annotate-mode tla-archive-list-mode tla-bconfig-mode tla-bookmarks-mode tla-branch-list-mode tla-browse-mode tla-category-list-mode tla-changelog-mode tla-follow-symlinks-mode tla-inventory-file-mode tla-inventory-mode tla-lint-mode tla-logs-mode tla-revision-list-mode tla-revlog-mode tla-tree-lint-mode tla-version-list-mode twittering-mode urlview-mode vc-annotate-mode vc-dir-mode vc-git-log-view-mode vc-svn-log-view-mode vm-mode vm-summary-mode w3m-mode wab-compilation-mode xgit-annotate-mode xgit-changelog-mode xgit-diff-mode xgit-revlog-mode xhg-annotate-mode xhg-log-mode xhg-mode xhg-mq-mode xhg-mq-sub-mode xhg-status-extra-mode svn-status-mode dvc-log-edit-mode project-buffer-mode gtags-selection-mode speedbar-mode elfeed-mode)))
+    (archive-mode bbdb-mode bookmark-bmenu-mode bookmark-edit-annotation-mode browse-kill-ring-mode bzr-annotate-mode calc-mode cfw:calendar-mode completion-list-mode Custom-mode delicious-search-mode desktop-menu-blist-mode desktop-menu-mode dvc-bookmarks-mode dvc-diff-mode dvc-info-buffer-mode dvc-log-buffer-mode dvc-revlist-mode dvc-revlog-mode dvc-status-mode dvc-tips-mode ediff-meta-mode efs-mode Electric-buffer-menu-mode emms-browser-mode emms-mark-mode emms-metaplaylist-mode emms-playlist-mode etags-select-mode fj-mode gc-issues-mode gdb-breakpoints-mode gdb-disassembly-mode gdb-frames-mode gdb-locals-mode gdb-memory-mode gdb-registers-mode gdb-threads-mode gist-list-mode gnus-article-mode gnus-browse-mode gnus-group-mode gnus-server-mode gnus-summary-mode google-maps-static-mode jde-javadoc-checker-report-mode magit-commit-mode magit-key-mode magit-show-branches-mode magit-branch-manager-mode magit-wazzup-mode mh-folder-mode monky-mode notmuch-hello-mode notmuch-search-mode notmuch-show-mode proced-mode rcirc-mode rebase-mode reftex-select-bib-mode reftex-toc-mode sldb-mode slime-inspector-mode slime-thread-control-mode slime-xref-mode sr-buttons-mode sr-mode sr-tree-mode sr-virtual-mode tetris-mode tla-annotate-mode tla-archive-list-mode tla-bconfig-mode tla-bookmarks-mode tla-branch-list-mode tla-browse-mode tla-category-list-mode tla-changelog-mode tla-follow-symlinks-mode tla-inventory-file-mode tla-inventory-mode tla-lint-mode tla-logs-mode tla-revision-list-mode tla-revlog-mode tla-tree-lint-mode tla-version-list-mode twittering-mode urlview-mode vc-annotate-mode vc-dir-mode vc-git-log-view-mode vc-svn-log-view-mode vm-mode vm-summary-mode w3m-mode wab-compilation-mode xgit-annotate-mode xgit-changelog-mode xgit-diff-mode xgit-revlog-mode xhg-annotate-mode xhg-log-mode xhg-mode xhg-mq-mode xhg-mq-sub-mode xhg-status-extra-mode svn-status-mode dvc-log-edit-mode project-buffer-mode gtags-selection-mode speedbar-mode elfeed-mode)))
  '(evil-emacs-state-msg "이멕스")
  '(evil-extra-operator-eval-key [(shift 103) 114])
  '(evil-extra-operator-eval-modes-alist
@@ -505,6 +513,8 @@ you should place your code here."
  '(evil-extra-operator-remember-key [(shift 103) (shift 114)])
  '(evil-insert-state-msg "입력")
  '(evil-leader/leader "SPC")
+ '(evil-lion-left-align-key [103 92])
+ '(evil-lion-right-align-key [103 124])
  '(evil-lisp-state-global t)
  '(evil-lisp-state-leader-prefix "q")
  '(evil-mode-line-color
@@ -548,7 +558,7 @@ you should place your code here."
  '(fic-highlighted-words (quote ("FIXME" "TODO" "BUG" "KLUDGE" "ticket")))
  '(gc-cons-threshold 100000000)
  '(geiser-active-implementations (quote (guile racket winprojcd)))
- '(geiser-default-implementation nil)
+ '(geiser-default-implementation (quote guile))
  '(global-evil-search-highlight-persist t)
  '(global-font-lock-mode t nil (font-lock))
  '(global-hl-line-sticky-flag t)
@@ -556,6 +566,7 @@ you should place your code here."
  '(global-smartscan-mode t)
  '(global-undo-tree-mode t)
  '(gnutls-min-prime-bits 512)
+ '(google-translate-default-target-language "ko" t)
  '(grep-command "grep -arni ")
  '(grep-use-null-device nil)
  '(guide-key-mode t)
@@ -595,7 +606,8 @@ you should place your code here."
      ("ko.wiktionary.org" . "http://ko.wiktionary.org/wiki/%s"))))
  '(helm-github-stars-username "dongce@gmail.com")
  '(helm-grep-default-command "grep -a -d skip %e -rn%cH -e %p %f")
- '(helm-mu-default-search-string "date:14d..now")
+ '(helm-mu-default-search-string "datc:14d..now")
+ '(helm-org-headings-max-depth 2)
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(highlight-symbol-colors
    (--map
@@ -622,6 +634,7 @@ you should place your code here."
  '(hl-sexp-background-color "blue4")
  '(ido-enable-flex-matching t)
  '(ido-mode (quote buffer) nil (ido))
+ '(iflipb-ignore-buffers "^[*][^m]")
  '(iflipb-wrap-around t)
  '(indicate-buffer-boundaries (quote left))
  '(indicate-empty-lines t)
@@ -638,7 +651,7 @@ you should place your code here."
  '(magit-diff-options (quote ("--ignore-space-at-eol")))
  '(magit-diff-refine-hunk (quote all))
  '(magit-diff-use-overlays nil)
- '(magit-git-executable "e:/msys264/usr/bin/git.exe")
+ '(magit-git-executable "c:/msys264/usr/bin/git.exe")
  '(magit-git-global-arguments nil)
  '(magit-git-standard-options nil)
  '(magit-process-connection-type t)
@@ -650,7 +663,7 @@ you should place your code here."
  '(modelinepos-column-limit 100)
  '(mouse-drag-copy-region t)
  '(mu4e-headers-results-limit -1)
- '(mu4e-maildir "f:/MYSINGLE20130416")
+ '(mu4e-maildir "f:/EAGLEOFFICE")
  '(mu4e-my-email-addresses (quote ("di7979.kim@samsung.com" "dongce@gmail.com")))
  '(mu4e-use-fancy-chars t)
  '(mu4e-view-show-images t)
@@ -672,19 +685,22 @@ you should place your code here."
  '(org-attach-screenshot-relative-links nil)
  '(org-babel-load-languages
    (quote
-    ((python . t)
+    ((dot . t)
+     (python . t)
      (scheme . t)
      (emacs-lisp . t)
      (C . t)
      (calc . t)
      (shell . t)
      (js . t)
-     (plantuml . t))))
+     (plantuml . t)
+     (calc . t)
+     (ditaa . t))))
  '(org-babel-scheme-cmd "winprojcd")
  '(org-babel-shell-names
    (quote
     ("sh" "bash" "csh" "ash" "dash" "ksh" "mksh" "posh" "bc" "cmdproxy")))
- '(org-bullets-bullet-list (quote ("⭐ " "👉" "🔥" "📌" "☀" "⛋" "⟁" "✦" "≡")))
+ '(org-bullets-bullet-list (quote ("⭐ " "🔥" "👉" "📌" "📎" "🔎" "⛋" "⟁" "✦" "≡")))
  '(org-capture-templates
    (quote
     (("t" "할 일" entry
@@ -817,7 +833,6 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
      ("elisp" . emacs-lisp)
      ("ditaa" . artist)
      ("asymptote" . asy)
-     ("dot" . fundamental)
      ("sqlite" . sql)
      ("calc" . fundamental)
      ("C" . c)
@@ -830,7 +845,13 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
  '(org-startup-indented nil)
  '(org-structure-template-alist
    (quote
-    (("s" "#+BEGIN_SRC ?
+    (("n" "#+BEGIN_NOTES
+?
+#+END_NOTES")
+     ("N" "#+BEGIN_NOTES
+?
+#+END_NOTES")
+     ("s" "#+BEGIN_SRC ?
 
 #+END_SRC")
      ("e" "#+BEGIN_EXAMPLE
@@ -883,7 +904,9 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
 #+END_MATH")
      ("m" "#+BEGIN_SRC emacs-lisp
 (myalarm \"?\" \" \")
-#+END_SRC"))))
+#+END_SRC")
+     ("nm" "#+NAME: ?"))))
+ '(org-support-shift-select t)
  '(org-todo-keyword-faces
 (quote
  (("TODO" :foreground "DarkGoldenRod3" :weight bold)
@@ -965,7 +988,17 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
                (run-scheme scheme-program-name)))))
 '(safe-local-variable-values
 (quote
- ((dongil/copy-line-at-bol . t)
+ ((modc . emacs-lisp)
+  (modc . org)
+  (page-break-lines-mode . t)
+  (eval set-variable
+        (quote geiser-guile-binary)
+        "/home/buildadmin/gitdir/dlpisdl/proj/testgen/testgen.out")
+  (read-only-mode . 0)
+  (read-only-mode)
+  (encoding . utf-8)
+  (helm-org-headings-max-depth . 1)
+  (dongil/copy-line-at-bol . t)
   (dongil/copy-line-at-bol)
   (eval org-display-inline-images nil t)
   (eval when
@@ -1009,6 +1042,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
         (allout-hide-bodies))
   (Eval allout-hide-bodies)
   (buffer-file-coding-system . utf-8))))
+ '(save-abbrevs (quote silently))
  '(save-place-mode t)
  '(savehist-additional-variables (quote (kill-ring)))
  '(savehist-mode t)
@@ -1018,7 +1052,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
  '(sendmail-program "/opt/emacs/mumailindexer/bin/msmtp.exe")
  '(server-name "server")
  '(setq ecb-tip-of-the-day)
- '(show-paren-mode t nil (paren))
+ '(show-paren-mode nil nil (paren))
  '(shr-width nil)
  '(simpleclip-mode t)
  '(smartparens-global-mode nil)
@@ -1028,6 +1062,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
  '(smtpmail-smtp-server "127.0.0.1")
  '(smtpmail-smtp-service 587)
  '(solarized-scale-org-headlines nil)
+ '(sort-fold-case t)
  '(sp-base-key-bindings (quote paredit))
  '(speedbar-use-images nil)
  '(sql-mysql-options (quote ("-C" "-t" "-f" "-n")))
@@ -1474,6 +1509,7 @@ DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))")
   (340 . "#94BFF3")
   (360 . "#DC8CC3"))))
  '(vc-annotate-very-old-color "#DC8CC3")
+ '(vc-handled-backends (quote (RCS CVS SVN SCCS SRC Bzr Hg Mtn)))
 '(weechat-color-list
 (quote
  (unspecified "#002b36" "#073642" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#839496" "#657b83")))

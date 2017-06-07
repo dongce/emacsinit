@@ -114,11 +114,10 @@
           (interactive)
           (mu4e-field-helper mu4e~view-msg (cons ':parts mu4e-field-list)))
 
-        (defun find-file-mu4e()
+        (defun mu4e-find-file()
           (interactive)
           (let* ((msg (mu4e-message-at-point))
-                 (path    (mu4e-message-field msg :path))
-                 )
+                 (path    (mu4e-message-field msg :path)))
             (find-file path)))
 
         (defun copy-file-mu4e()
@@ -487,6 +486,32 @@
   #+RESULTS:
   : mu
 
+
+* mu4e-org
+** follow link 
+#+BEGIN_SRC emacs-lisp
+  (defadvice org-mu4e-open (before save-view-ivy activate)
+    (let* ((view (cl-labels
+                     ((ft (tr)
+                          (if (consp tr)
+                              (if (eq (car tr) t)
+                                  (cons 'vert
+                                        (mapcar #'ft (cddr tr)))
+                                (cons 'horz
+                                      (mapcar #'ft (cddr tr))))
+                            (with-current-buffer (window-buffer tr)
+                              (cond ((buffer-file-name)
+                                     (list 'file (buffer-file-name) (point)))
+                                    ((eq major-mode 'dired-mode)
+                                     (list 'file default-directory (point)))
+                                    (t
+                                     (list 'buffer (buffer-name) (point))))))))
+                   (ft (car (window-tree))))))
+      (setf  (alist-get "{} view-mu4e-from" ivy-views) (list  view) )))
+#+END_SRC
+
+#+RESULTS:
+: org-mu4e-open
 
 * keybinding
 

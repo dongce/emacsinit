@@ -7,76 +7,38 @@
 (add-to-list 'yas-snippet-dirs (concat emacsw32-home "YASnippet"))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp :tangle no
 
+
+* yas
+
+#+BEGIN_SRC emacs-lisp
+
+  ;; yas mode 
+  ;; yas repo http://coderepos.org/share/browser/config/yasnippet
+  ;; https://github.com/capitaomorte/yasnippet
+  ;; git://github.com/capitaomorte/yasnippet.git
 
 (use-package yasnippet
   :config 
 
+    (add-to-list 'yas-snippet-dirs (concat emacsw32-home "YASnippet"))
+    (define-key yas-minor-mode-map (kbd "M-i") yas-maybe-expand)
+    (yas-reload-all)
+
+    (yas-global-mode)
+    (add-hook 'prog-mode-hook '(lambda () (yas-minor-mode))) 
 
   ;; http://capitaomorte.github.io/yasnippet/snippet-development.html
 
-;;; http://capitaomorte.github.io/yasnippet/snippet-expansion.html
-  (defun shk-yas/helm-prompt (prompt choices &optional display-fn)
-    "Use helm to select a snippet. Put this into `yas/prompt-functions.'"
-    (interactive)
-    (setq display-fn (or display-fn 'identity))
-    (if (require 'helm-config)
-        (let (tmpsource cands result rmap)
-          (setq cands (mapcar (lambda (x) (funcall display-fn x)) choices))
-          (setq rmap (mapcar (lambda (x) (cons (funcall display-fn x) x)) choices))
-          (setq tmpsource
-                (list
-                 (cons 'name prompt)
-                 (cons 'candidates cands)
-                 '(action . (("Expand" . (lambda (selection) selection))))
-                 ))
-          (setq result (helm-other-buffer '(tmpsource) "*helm-select-yasnippet"))
-          (if (null result)
-              (signal 'quit "user quit!")
-            (cdr (assoc result rmap))))
-      nil))
-
-
-
-  ;; Completing point by some yasnippet key
-  (defun yas-ido-expand ()
-    "Lets you select (and expand) a yasnippet key"
-    (interactive)
-    (let ((original-point (point)))
-      (while (and
-              (not (= (point) (point-min) ))
-              (not
-               (string-match "[[:space:]\n]" (char-to-string (char-before)))))
-        (backward-word 1))
-      (let* ((init-word (point))
-             (word (buffer-substring init-word original-point))
-             (list (yas-active-keys)))
-        (goto-char original-point)
-        (let ((key (remove-if-not
-                    (lambda (s) (string-match (concat "^" word) s)) list)))
-          (if (= (length key) 1)
-              (setq key (pop key))
-            (setq key (ido-completing-read "key: " list nil nil word)))
-          (delete-char (- init-word original-point))
-          (insert key)
-          (yas-expand)))))
-
-  (add-to-list 'yas-prompt-functions #'shk-yas/helm-prompt)
-  (add-to-list 'yas-snippet-dirs (concat emacsw32-home "YASnippet")))
+    ;; http://capitaomorte.github.io/yasnippet/snippet-expansion.html
+    )
 
 #+END_SRC
 
 * company                                             :deprecated:spacemacs:
 
+** deprecated 
 #+BEGIN_SRC emacs-lisp :tangle no
-
-(use-package  company
- :init 
-(setq company-backends (delete 'company-semantic company-backends))
-(add-hook 'after-init-hook 'global-company-mode)
-(define-key c-mode-map  [(backtab)] 'company-complete)
-(define-key c++-mode-map  [(backtab)] 'company-complete)
 
     ;;; Prevent suggestions from being triggered automatically. In particular,
     ;;; this makes it so that:
@@ -95,6 +57,15 @@
     ;;; - http://emacs.stackexchange.com/q/27459/12534
 
     ;; <return> is for windowed Emacs; RET is for terminal Emacs
+   (use-package  company
+     :demand
+     :init
+     (setq company-backends (delete 'company-semantic company-backends))
+     (add-hook 'after-init-hook 'global-company-mode)
+     (define-key c-mode-map  [(backtab)] 'company-complete)
+     (define-key c++-mode-map  [(backtab)] 'company-complete)
+
+
     (dolist (key '("<return>" "RET"))
       ;; Here we are using an advanced feature of define-key that lets
       ;; us pass an "extended menu item" instead of an interactive
@@ -112,9 +83,23 @@
     ;; Company appears to override the above keymap based on company-auto-complete-chars.
     ;; Turning it off ensures we have full control.
     (setq company-auto-complete-chars nil)
+     (define-key  company-active-map [escape] '(lambda () (interactive) (company-abort) (evil-normal-state)))
+     (define-key  company-active-map [end] 'company-abort))
 
+ #+END_SRC
 
-  (define-key  company-active-map [escape] 'company-abort))
+ #+END_SRC
+
+ #+RESULTS:
+
+** changed
+#+BEGIN_SRC emacs-lisp
+  (use-package  company
+    :demand
+    :init
+    (define-key  company-active-map [escape] '(lambda () (interactive) (company-abort) (evil-normal-state)))
+    (define-key  company-active-map [end] 'company-abort))
 #+END_SRC
 
 #+RESULTS:
+| lambda | nil | (interactive) | (company-abort) | (evil-normal-state) |
