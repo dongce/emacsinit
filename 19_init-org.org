@@ -542,9 +542,9 @@
 
 ** org babel
 *** calc
-    #+BEGIN_SRC emacs-lisp
+    [[file:t:/usr/local/editor/emacsW32/site-lisp/elpa/org-20151123/ob-calc.el::(defun%20org-babel-execute:calc%20(body%20params)][src from]]
+    #+BEGIN_SRC emacs-lisp :tangle no
 
-      ;; [[file:t:/usr/local/editor/emacsW32/site-lisp/elpa/org-20151123/ob-calc.el::(defun%20org-babel-execute:calc%20(body%20params)][src from]]
 
       (defun org-babel-execute:calc (body params)
         "Execute a block of calc code with Babel."

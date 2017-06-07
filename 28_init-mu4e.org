@@ -485,6 +485,32 @@
   : mu
 
 
+* mu4e-org
+** follow link 
+#+BEGIN_SRC emacs-lisp
+  (defadvice org-mu4e-open (before save-view-ivy activate)
+    (let* ((view (cl-labels
+                     ((ft (tr)
+                          (if (consp tr)
+                              (if (eq (car tr) t)
+                                  (cons 'vert
+                                        (mapcar #'ft (cddr tr)))
+                                (cons 'horz
+                                      (mapcar #'ft (cddr tr))))
+                            (with-current-buffer (window-buffer tr)
+                              (cond ((buffer-file-name)
+                                     (list 'file (buffer-file-name) (point)))
+                                    ((eq major-mode 'dired-mode)
+                                     (list 'file default-directory (point)))
+                                    (t
+                                     (list 'buffer (buffer-name) (point))))))))
+                   (ft (car (window-tree))))))
+      (setf  (alist-get "{} view-mu4e-from" ivy-views) (list  view) )))
+#+END_SRC
+
+#+RESULTS:
+: org-mu4e-open
+
 * keybinding
 
   #+BEGIN_SRC emacs-lisp

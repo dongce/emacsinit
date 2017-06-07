@@ -545,7 +545,7 @@
 
 ** org babel
 *** calc
-    #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp :tangle no
 
       ;; [[file:t:/usr/local/editor/emacsW32/site-lisp/elpa/org-20151123/ob-calc.el::(defun%20org-babel-execute:calc%20(body%20params)][src from]]
 
@@ -1001,10 +1001,10 @@
           (insert-line "#+HTML_HEAD_EXTRA: <script type=\"text/javascript\"> var HS_SHOW_ALL_OPEN_DONE_TREES = false; </script> ")
           (if content
               (progn
-              
+
                 (insert-line content)
                 (insert-line "#+end_src")))
-        
+
           ))))
 
   (defun orgmail ()
@@ -1064,7 +1064,7 @@
       ,(intern (fullpath "../thirdparty/orghtmltheme/styles/bigblow/js/hideshow.js"))
       "$(document).ready(function() {hsInit();});"
       "</script>"
-    
+
       "<style type=\"text/css\">"
       ;; /usr/local/emacs/site-lisp/orghtmltheme/styles/bigblow/css/bigblow.min.css
       ;; /usr/local/emacs/site-lisp/orghtmltheme/styles/bigblow/css/hideshow.min.css
@@ -1265,13 +1265,14 @@
   ;; https://github.com/jwiegley/org-mode/issues/14
 
   ;; Use pygments highlighting for code
+  (defvar pygmentize (w32-unix-eval ( "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe" ) ("pygmentize") ))
   (defun pygmentize (lang code)
     "Use Pygments to highlight the given code and return the output"
     (with-temp-buffer
       (insert code)
       (let ((lang (or (cdr (assoc lang org-pygments-language-alist)) "text")))
         (shell-command-on-region (point-min) (point-max)
-                                 (format "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe -f html -l %s" lang)
+                                 (format "%s -f html -l %s" pygmentize lang)
                                  (buffer-name)
                                  t
                                  ))
@@ -1290,10 +1291,8 @@
       (async-shell-command
        (if linum
            (format
-          
-            "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe -O full,style=colorful,linenos=inline,linenostart=1 -o %s -f html -l cpp %s "
-            outname (buffer-file-name))
-         (format  "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe -O full,style=colorful -o %s -f html -l cpp %s " outname (buffer-file-name))))))
+            "%s -O full,style=colorful,linenos=inline,linenostart=1 -o %s -f html -l cpp %s " pygmentize outname (buffer-file-name))
+         (format  "%s -O full,style=colorful -o %s -f html -l cpp %s " pygmentize outname (buffer-file-name))))))
 
 
 
@@ -1424,8 +1423,8 @@
         (let ((lang (or (cdr (assoc lang org-pygments-language-alist)) "text")))
           (shell-command-on-region (point-min) (point-max)
                                    (if (numberp num-start )
-                                       (format "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe -f html -O linenos=inline,linenostart=%d -l %s" (+ 1  num-start) lang)
-                                     (format "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe -f html -l %s" lang))
+                                       (format "%s -f html -O linenos=inline,linenostart=%d -l %s" pygmentize (+ 1  num-start) lang)
+                                     (format "%s -f html -l %s" pygmentize lang))
                                    (buffer-name)
                                    t
                                    ))
@@ -1443,7 +1442,7 @@
   (defun oh ()
     (interactive)
     (let* ((fs (or (org-agenda-files t)
-		   (user-error "No agenda files")))
+       (user-error "No agenda files")))
         (ntag (helm-comp-read "성명을 입력하세요 : " fs)))
         (find-file ntag)
         (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
@@ -1490,7 +1489,7 @@
                ("dm" "월 마감" 'month)
                ("dy" "년 마감" 'year)))
 
-        
+
 
           ("h" . "예약작업")
           ,@(mapcar 
@@ -1509,10 +1508,10 @@
                ("hm" "월간 예약작업" 'month nil)
                ("hy" "년간 예약작업" 'year nil)))
 
-        
+
 
           ;; ...other commands here
-        
+
 
           ("p" . "우선순위")
           ("pa" "우선순위 A" tags-todo "+PRIORITY=\"A\"")

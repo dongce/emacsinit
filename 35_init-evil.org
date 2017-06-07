@@ -206,8 +206,8 @@
         "ol" 'org-store-link
         "oc" 'org-cliplink
 
-        "o[" 'ivy-push-view 
-        "o]" 'ivy-pop-view 
+        "[" 'ivy-push-view 
+        "]" 'ivy-pop-view 
         )
     #+END_SRC
 
