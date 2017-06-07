@@ -680,7 +680,8 @@ you should place your code here."
      (calc . t)
      (shell . t)
      (js . t)
-     (plantuml . t))))
+     (plantuml . t)
+     (dot . t))))
  '(org-babel-scheme-cmd "winprojcd")
  '(org-babel-shell-names
    (quote
