@@ -355,6 +355,7 @@
             (mstsc     "C:/Windows/System32/mstsc.exe")
             (msconfig     "C:/Windows/System32/msconfig.exe")
             (dkw2005   ,(fullpath "../../cmdutils/dkwVS2005.vbs"))
+            (nulmacs   ,(fullpath "../../cmdutils/nulmacs.vbs"))
             (dkw2008   ,(fullpath "../../cmdutils/dkwVS2008.vbs"))
             (dkwGUILE   ,(fullpath "../../cmdutils/dkwguile.vbs"))
             (dkwtor    ,(fullpath "../../cmdutils/dkwTORARDO.vbs"))
@@ -382,7 +383,6 @@
             (putty "t:/usr/local/editor/emacsW32/iputty/putty.exe")
             (eclipsejee "t:/usr/local/eclipsejee/eclipse.exe")
             (vs2005 "C:/usr/microsoft/vs2005/IDE/Common7/IDE/devenv.exe")
-
             (filesplit   "t:/usr/local/filesplitter/Free-File-Splitter-v5.0.1189.exe")))
     (defun winexe ()
       (interactive)
