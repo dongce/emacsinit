@@ -1268,180 +1268,191 @@
 ** pygmentize 
    #+BEGIN_SRC emacs-lisp
 
-   ;; https://github.com/jwiegley/org-mode/issues/14
+     ;; https://github.com/jwiegley/org-mode/issues/14
 
-   ;; Use pygments highlighting for code
-   (defvar pygmentize (w32-unix-eval ( "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe" ) ("pygmentize") ))
-   (defun pygmentize (lang code)
-     "Use Pygments to highlight the given code and return the output"
-     (with-temp-buffer
-       (insert code)
-       (let ((lang (or (cdr (assoc lang org-pygments-language-alist)) "text")))
-         (shell-command-on-region (point-min) (point-max)
-                                  (format "%s -f html -l %s" pygmentize lang)
-                                  (buffer-name)
-                                  t
-                                  ))
-       (message (buffer-name))                               
-       (goto-char 0 )
-       (search-forward "<pre>")
-       (save-excursion
-         (save-restriction 
-           (narrow-to-region (point) (point-max))
-           (goto-char (point-max))
-           (buffer-substring-no-properties (point-min) (line-end-position -1))))))
-
-   (defun pyg (linum)
-     (interactive "P")
-     (let* ((outname (concat  (file-name-sans-extension (buffer-file-name)) ".html")))
-       (async-shell-command
-        (if linum
-            (format
-             "%s -O full,style=colorful,linenos=inline,linenostart=1 -o %s -f html -l cpp %s " pygmentize outname (buffer-file-name))
-          (format  "%s -O full,style=colorful -o %s -f html -l cpp %s " pygmentize outname (buffer-file-name))))))
-
-
-
-
-     ;add whatever you want
-   (defconst org-pygments-language-alist
-     '(
-       ("asymptote" . "asymptote")
-       ("awk" . "awk")
-       ("C" . "c")
-       ("cpp" . "cpp")
-       ("clojure" . "clojure")
-       ("css" . "css")
-       ("D" . "d")
-       ("emacs-lisp" . "scheme")
-       ("F90" . "fortran")
-       ("gnuplot" . "gnuplot")
-       ("groovy" . "groovy")
-       ("html" . "html")
-       ("haskell" . "haskell")
-       ("java" . "java")
-       ("js" . "js")
-       ("julia" . "julia")
-       ("latex" . "latex")
-       ("lisp" . "newlisp")
-       ("makefile" . "makefile")
-       ("matlab" . "matlab")
-       ("mscgen" . "mscgen")
-       ("ocaml" . "ocaml")
-       ("octave" . "octave")
-       ("perl" . "perl")
-       ("picolisp" . "scheme")
-       ("python" . "python")
-       ("R" . "r")
-       ("ruby" . "ruby")
-       ("sass" . "sass")
-       ("scala" . "scala")
-       ("scheme" . "scheme")
-       ("sh" . "sh")
-       ("sql" . "sql")
-       ("sqlite" . "sqlite3")
-       ("tcl" . "tcl")
-       ("diff" . "diff")
-       ("patch" . "diff")
-       )
-     "Alist between org-babel languages and Pygments lexers.
-   See: http://orgmode.org/worg/org-contrib/babel/languages.html and
-   http://pygments.org/docs/lexers/ for adding new languages to the
-   mapping. ")
-
-   ;; Override the html export function to use pygments
-
-   (defun org-html-src-block (src-block contents info)
-     "Transcode a SRC-BLOCK element from Org to HTML.
-   CONTENTS holds the contents of the item.  INFO is a plist holding
-   contextual information."
-     (if (org-export-read-attribute :attr_html src-block :textarea)
-         (org-html--textarea-block src-block)
-       (let ((lang (org-element-property :language src-block))
-             (caption (org-export-get-caption src-block))
-             ;; (code (org-html-format-code src-block info))
-             (label (let ((lbl (and (org-element-property :name src-block)
-                                    (org-export-get-reference src-block info))))
-                      (if lbl (format " id=\"%s\"" lbl) ""))))
-         (if (not lang) (format "<pre class=\"example\"%s>\n%s</pre>" label (org-html-format-code src-block info))
-           (format
-            "<div class=\"org-src-container\">\n%s%s\n</div>"
-            (if (not caption) ""
-              (format "<label class=\"org-src-name\">%s</label>"
-                      (org-export-data caption info)))
-            (format "\n<pre class=\"src src-%s\"%s>%s</pre>" lang label (org-html-src-format-code src-block info)))))))
-
-
-
-   (defun org-html-do-src-format-code
-       (code &optional lang refs retain-labels num-start)
-     "Format CODE string as source code.
-   Optional arguments LANG, REFS, RETAIN-LABELS and NUM-START are,
-   respectively, the language of the source code, as a string, an
-   alist between line numbers and references (as returned by
-   `org-export-unravel-code'), a boolean specifying if labels should
-   appear in the source code, and the number associated to the first
-   line of code."
-     (let* ((code-lines (org-split-string code "\n"))
-            (code-length (length code-lines))
-            (num-fmt
-             (and num-start
-                  (format "%%%ds: "
-                          (length (number-to-string (+ code-length num-start))))))
-            (code code));;;
-       (org-export-format-code
-        code
-        (lambda (loc line-num ref)
-          (setq loc
-                (concat
-                 ;; Add line number, if needed.
-                 (when num-start
-                   (format "%s"
-                           (format num-fmt line-num)))
-                 ;; Transcoded src line.
-                 loc
-                 ;; Add label, if needed.
-                 (when (and ref retain-labels) (format " (%s)" ref))))
-          ;; Mark transcoded line as an anchor, if needed.
-          (if (not ref) loc
-            (format "%s"
-                    ref loc)))
-        num-start refs)))
-
-   (defun org-html-src-format-code (element info)
-     "Format contents of ELEMENT as source code.
-   ELEMENT is either an example block or a src block.  INFO is
-   a plist used as a communication channel."
-     (let* ((lang (org-element-property :language element))
-            ;; Extract code and references.
-            (code-info (org-export-unravel-code element))
-            (code (car code-info))
-            (refs (cdr code-info))
-            ;; Does the src block contain labels?
-            (retain-labels (org-element-property :retain-labels element))
-            ;; Does it have line numbers?
-            (num-start (case (org-element-property :number-lines element)
-                         (continued (org-export-get-loc element info))
-                         (new 0))))
-
+     ;; Use pygments highlighting for code
+     (defvar pygmentize (w32-unix-eval ( "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe" ) ("pygmentize") ))
+     (defun pygmentize (lang code)
+       "Use Pygments to highlight the given code and return the output"
        (with-temp-buffer
-         (insert  (org-html-do-src-format-code code lang refs retain-labels nil))
+         (insert code)
          (let ((lang (or (cdr (assoc lang org-pygments-language-alist)) "text")))
            (shell-command-on-region (point-min) (point-max)
-                                    (if (numberp num-start )
-                                        (format "%s -f html -O linenos=inline,linenostart=%d -l %s" pygmentize (+ 1  num-start) lang)
-                                      (format "%s -f html -l %s" pygmentize lang))
+                                    (format "%s -f html -l %s" pygmentize lang)
                                     (buffer-name)
                                     t
                                     ))
+         (message (buffer-name))                               
          (goto-char 0 )
-         (progn
-           (search-forward "<pre>")
-           (save-excursion
-             (save-restriction 
-               (narrow-to-region (point) (point-max))
-               (goto-char (point-max))
-               (buffer-substring-no-properties (point-min) (line-end-position -1))))))))
+         (search-forward "<pre>")
+         (save-excursion
+           (save-restriction 
+             (narrow-to-region (point) (point-max))
+             (goto-char (point-max))
+             (buffer-substring-no-properties (point-min) (line-end-position -1))))))
+
+     (defun pyg (linum)
+       (interactive "P")
+       (let* ((outname (concat  (file-name-sans-extension (buffer-file-name)) ".html")))
+         (async-shell-command
+          (if linum
+              (format
+               "%s -O full,style=colorful,linenos=inline,linenostart=1 -o %s -f html -l cpp %s " pygmentize outname (buffer-file-name))
+            (format  "%s -O full,style=colorful -o %s -f html -l cpp %s " pygmentize outname (buffer-file-name))))))
+
+
+
+
+                                             ;add whatever you want
+     (defconst org-pygments-language-alist
+       '(
+         ("asymptote" . "asymptote")
+         ("awk" . "awk")
+         ("C" . "c")
+         ("cpp" . "cpp")
+         ("clojure" . "clojure")
+         ("css" . "css")
+         ("D" . "d")
+         ("emacs-lisp" . "scheme")
+         ("F90" . "fortran")
+         ("gnuplot" . "gnuplot")
+         ("groovy" . "groovy")
+         ("html" . "html")
+         ("haskell" . "haskell")
+         ("java" . "java")
+         ("js" . "js")
+         ("julia" . "julia")
+         ("latex" . "latex")
+         ("lisp" . "newlisp")
+         ("makefile" . "makefile")
+         ("matlab" . "matlab")
+         ("mscgen" . "mscgen")
+         ("ocaml" . "ocaml")
+         ("octave" . "octave")
+         ("perl" . "perl")
+         ("picolisp" . "scheme")
+         ("python" . "python")
+         ("R" . "r")
+         ("ruby" . "ruby")
+         ("sass" . "sass")
+         ("scala" . "scala")
+         ("scheme" . "scheme")
+         ("sh" . "sh")
+         ("sql" . "sql")
+         ("sqlite" . "sqlite3")
+         ("tcl" . "tcl")
+         ("diff" . "diff")
+         ("patch" . "diff")
+         )
+       "Alist between org-babel languages and Pygments lexers.
+        See: http://orgmode.org/worg/org-contrib/babel/languages.html and
+        http://pygments.org/docs/lexers/ for adding new languages to the
+        mapping. ")
+
+     ;; Override the html export function to use pygments
+
+     (defun org-html-src-block (src-block contents info)
+       "Transcode a SRC-BLOCK element from Org to HTML.
+        CONTENTS holds the contents of the item.  INFO is a plist holding
+        contextual information."
+       (if (org-export-read-attribute :attr_html src-block :textarea)
+           (org-html--textarea-block src-block)
+         (let ((lang (org-element-property :language src-block))
+               (caption (org-export-get-caption src-block))
+               ;; (code (org-html-format-code src-block info))
+               (label (let ((lbl (and (org-element-property :name src-block)
+                                      (org-export-get-reference src-block info))))
+                        (if lbl (format " id=\"%s\"" lbl) ""))))
+           (if (not lang) (format "<pre class=\"example\"%s>\n%s</pre>" label (org-html-format-code src-block info))
+             (format
+              "<div class=\"org-src-container\">\n%s%s\n</div>"
+              (if (not caption) ""
+                (format "<label class=\"org-src-name\">%s</label>"
+                        (org-export-data caption info)))
+              (format "\n<pre class=\"src src-%s\"%s>%s</pre>" lang label (org-html-src-format-code src-block info)))))))
+
+     (defun org-html-inline-src-block (inline-src-block _contents info)
+       "Transcode an INLINE-SRC-BLOCK element from Org to HTML.
+     CONTENTS holds the contents of the item.  INFO is a plist holding
+     contextual information."
+       (let ((lang (org-element-property :language inline-src-block))
+             (code (org-element-property :value inline-src-block))
+             (label
+              (let ((lbl (and (org-element-property :name inline-src-block)
+                              (org-export-get-reference inline-src-block info))))
+                (if (not lbl) "" (format " id=\"%s\"" lbl)))))
+         (format "<code class=\"src src-%s\"%s>%s</code>" lang label (org-html-src-format-code inline-src-block info))))
+
+
+     (defun org-html-do-src-format-code
+         (code &optional lang refs retain-labels num-start)
+       "Format CODE string as source code.
+        Optional arguments LANG, REFS, RETAIN-LABELS and NUM-START are,
+        respectively, the language of the source code, as a string, an
+        alist between line numbers and references (as returned by
+        `org-export-unravel-code'), a boolean specifying if labels should
+        appear in the source code, and the number associated to the first
+        line of code."
+       (let* ((code-lines (org-split-string code "\n"))
+              (code-length (length code-lines))
+              (num-fmt
+               (and num-start
+                    (format "%%%ds: "
+                            (length (number-to-string (+ code-length num-start))))))
+              (code code));;;
+         (org-export-format-code
+          code
+          (lambda (loc line-num ref)
+            (setq loc
+                  (concat
+                   ;; Add line number, if needed.
+                   (when num-start
+                     (format "%s"
+                             (format num-fmt line-num)))
+                   ;; Transcoded src line.
+                   loc
+                   ;; Add label, if needed.
+                   (when (and ref retain-labels) (format " (%s)" ref))))
+            ;; Mark transcoded line as an anchor, if needed.
+            (if (not ref) loc
+              (format "%s"
+                      ref loc)))
+          num-start refs)))
+
+     (defun org-html-src-format-code (element info)
+       "Format contents of ELEMENT as source code.
+        ELEMENT is either an example block or a src block.  INFO is
+        a plist used as a communication channel."
+       (let* ((lang (org-element-property :language element))
+              ;; Extract code and references.
+              (code-info (org-export-unravel-code element))
+              (code (car code-info))
+              (refs (cdr code-info))
+              ;; Does the src block contain labels?
+              (retain-labels (org-element-property :retain-labels element))
+              ;; Does it have line numbers?
+              (num-start (case (org-element-property :number-lines element)
+                           (continued (org-export-get-loc element info))
+                           (new 0))))
+
+         (with-temp-buffer
+           (insert  (org-html-do-src-format-code code lang refs retain-labels nil))
+           (let ((lang (or (cdr (assoc lang org-pygments-language-alist)) "text")))
+             (shell-command-on-region (point-min) (point-max)
+                                      (if (numberp num-start )
+                                          (format "%s -f html -O linenos=inline,linenostart=%d -l %s" pygmentize (+ 1  num-start) lang)
+                                        (format "%s -f html -l %s" pygmentize lang))
+                                      (buffer-name)
+                                      t
+                                      ))
+           (goto-char 0 )
+           (progn
+             (search-forward "<pre>")
+             (save-excursion
+               (save-restriction 
+                 (narrow-to-region (point) (point-max))
+                 (goto-char (point-max))
+                 (buffer-substring-no-properties (point-min) (line-end-position -1))))))))
 
    #+END_SRC
 
