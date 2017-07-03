@@ -63,12 +63,13 @@
         "obS" 'save-some-buffers
         "obm" 'boomark-set
         "obj" 'boomark-jump
-        "obM"      'bookmark-bmenu-list
-        "obl"      'xah-open-last-closed
-        "obf"      'prelude-copy-file-name-to-clipboard
-        "obh"      'mark-whole-buffer
-        "obr"      'revert-buffer
-        "obc"      'xah-close-current-buffer
+        "obM" 'bookmark-bmenu-list
+        "obl" 'xah-open-last-closed
+        "obf" 'prelude-copy-file-name-to-clipboard
+        "obh" 'mark-whole-buffer
+        "obr" 'revert-buffer
+        "obc" 'xah-close-current-buffer
+        "of"   'helm-resume
         "<home>" 'ibuffer
         "<end>" 'tmpscratch
 

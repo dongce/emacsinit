@@ -166,6 +166,11 @@
 
 #+END_SRC
 
+* backward compatibility
+  #+BEGIN_SRC emacs-lisp
+    (if ( > emacs-major-version 25 )
+       (defvaralias 'default-tab-width 'tab-width))
+  #+END_SRC
 * auto hot key                                                   :DEPRECATED:
 
 

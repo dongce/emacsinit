@@ -1484,7 +1484,7 @@
            ("8hdung" "🝖"   )
            ("8poo"   "💩"  )
            ("8idea"  "💡"	)
-
+           ("8tumb" "👍")
           ("8target"  "⌖")
           ("8shuffle" "🔀")
           ("8loop"    "🔁")
@@ -1501,6 +1501,7 @@
            
            )))
 #+END_SRC
+
 
 
 ** define abbrev table 

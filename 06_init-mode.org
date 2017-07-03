@@ -555,6 +555,13 @@
   (require 'whattf-dt)
 
 #+END_SRC
+* dot
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package graphviz-dot-mode
+      :config
+      )
+  #+END_SRC
 * which-function-mode
   #+BEGIN_SRC emacs-lisp
     (defun enable-wfm ()

@@ -10,7 +10,7 @@
 
 
 * yas
-
+    
 #+BEGIN_SRC emacs-lisp
 
   ;; yas mode 
@@ -22,7 +22,7 @@
     :config 
 
     (add-to-list 'yas-snippet-dirs (concat emacsw32-home "YASnippet"))
-    (define-key yas-minor-mode-map (kbd "M-i") yas-maybe-expand)
+    (define-key yas-minor-mode-map (kbd "M-i") yas-maybe-expand)    
     (yas-reload-all)
 
     (yas-global-mode)

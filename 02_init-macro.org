@@ -14,46 +14,48 @@
      ,@body))
 
 
+
 (w32-unix-eval
  (
   (defun append-path (p)
     (let (( path (file-truename p)))
-      (if (not  (member path exec-path))
-          (progn 
-            (setq exec-path (append  exec-path (list path) ))
-            (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path)))))))
+      (progn 
+        (setq exec-path (remove-duplicates (append  exec-path (list path) )))
+        (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path))))))
 
 
   (defun prepend-path (p)
     (let (( path (file-truename p)))
-      (if (not  (member path exec-path))
-          (progn 
-            (setq exec-path (append   (list path) exec-path))
-            (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path)))))))
+      (progn 
+        (setq exec-path (remove-duplicates (append   (list path) exec-path)))
+        (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path))))))
   )
 
  (
   (defun append-path (p)
     (let (( path (file-truename p)))
-      (if (not  (member path exec-path))
-          (progn 
-            (setq exec-path (append  exec-path (list path) ))
-            (setenv "PATH" (s-join ":" exec-path))))))
+      (progn 
+        (setq exec-path (remove-duplicates (append  exec-path (list path) )))
+        (setenv "PATH" (s-join ":" exec-path)))))
 
 
   (defun prepend-path (p)
     (let (( path (file-truename p)))
-      (if (not  (member path exec-path))
-          (progn 
-            (setq exec-path (append   (list path) exec-path))
-            (setenv "PATH" (s-join ";"  exec-path))))))
+      (progn 
+        (setq exec-path (remove-duplicates (append   (list path) exec-path)))
+        (setenv "PATH" (s-join ";"  exec-path)))))
 
 
   )
 
  )
 
+
+
 #+END_SRC
+
+#+RESULTS:
+: prepend-path
 
 * file header/trailer
 #+BEGIN_SRC emacs-lisp
