@@ -25,6 +25,17 @@
 
 #+END_SRC
 
+* ELPA server 
+ 인터넷 열결 될 때 다음 사용 
+#+BEGIN_SRC emacs-lisp :tangle no
+'(package-archives
+(quote
+ (("DELPA" . "t:/usr/local/editor/emacsW32/delpa/")
+  ("org" . "http://orgmode.org/elpa/")
+  ("ELPA" . "http://tromey.com/elpa/")
+  ("gnu" . "http://elpa.gnu.org/packages/")
+  ("MELPA" . "http://melpa.org/packages/"))))
+#+END_SRC
 * fullpath function 
 #+BEGIN_SRC emacs-lisp
 

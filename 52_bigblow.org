@@ -1065,7 +1065,7 @@
          x
          ))
      `(
-       "<script type=\"text/javascript\" src=\"http://code.jquery.com/jquery-latest.min.js\"></script>"
+       ;;net not supported;;"<script defer type=\"text/javascript\" src=\"http://code.jquery.com/jquery-latest.min.js\"></script>"
        "<script type=\"text/javascript\">"
        ;; /usr/local/emacs/site-lisp/orghtmltheme/styles/bigblow/js/hideshow.min.js
        ,(intern (fullpath "../thirdparty/orghtmltheme/styles/bigblow/js/hideshow.js"))

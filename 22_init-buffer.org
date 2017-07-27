@@ -442,6 +442,7 @@
   ;;; minor-mode-alist -> global  
   (add-hook 'prog-mode-hook 'fic-mode)
   (add-hook 'prog-mode-hook 'yafolding-mode)
+  (add-hook 'prog-mode-hook '(lambda () (setf display-line-numbers t)))
 
   ;;notworks;;(require 'jfold-mode)
   ;;notworks;;(add-hook 'nxml-mode-hook 'jfold-mode)
