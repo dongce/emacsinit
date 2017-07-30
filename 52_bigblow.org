@@ -1578,8 +1578,16 @@
 
 #+RESULTS:
 
-
-
+* davmail
+** calendar
+   #+BEGIN_SRC emacs-lisp
+     (setq
+      org-caldav-url "http://localhost:1080/users"
+      org-caldav-calendar-id "di7979.kim@hanwhasystems.com/calendar"
+      org-caldav-uuid-extension ".EML"
+      org-caldav-inbox "u:/orgdir/caldav.org"
+      )
+   #+END_SRC
 * evil conflict
 #+BEGIN_SRC emacs-lisp
   (evil-define-key

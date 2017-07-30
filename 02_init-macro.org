@@ -3394,6 +3394,8 @@ of FILE in the current directory, suitable for creation"
           (narrow-to-region (point-min) (point-max)))
         (replace-regexp  "-" "-" nil (point-min) (point-max))
         (replace-regexp  "-" "-" nil (point-min) (point-max))
+        (replace-string "\uF06C" "·" nil (point-min) (point-max))
+
         (replace-regexp (regexp-quote "^(\*)+")  " \1" nil (point-min) (point-max) )
 
         (if chapter
@@ -3429,6 +3431,7 @@ of FILE in the current directory, suitable for creation"
       (save-restriction
         (replace-regexp  "-" "-" )
         (replace-regexp  "-" "-" )
+        (replace-string "\uF06C" "·" )
         (replace-regexp (regexp-quote "^(\*)+")  " \1"  )
 
         (if chapter

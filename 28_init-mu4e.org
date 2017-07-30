@@ -463,8 +463,12 @@
 
       (defun mu()
         (interactive)
-        (mu4e)
-        (mu4e-update-mail-and-index t))
+        (async-start-process 
+        "mu" 
+        "mpop.exe"
+        (lambda (p)
+          (mu4e nil)
+          (mu4e-update-mail-and-index t))))
       ;;; mu db 위치
       ;;; %HOME%/.mu
 
