@@ -530,7 +530,8 @@
 
 
   ;; (global-set-key [f12] 'ibuffer)
-  (global-set-key [f12] 'revert-buffer )
+  (global-set-key [S-pause] 'revert-buffer )
+  (global-set-key [C-f12] 'revert-buffer )
   ;; (global-set-key (kbd "C-z") 'ibuffer)
   ;deprecated;;(global-set-key ( kbd "H-m") 'smex)
   ;;(define-key function-key-map (vector ?\H-m) (vector 'return))

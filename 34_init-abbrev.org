@@ -125,6 +125,7 @@
 ("8dia" "💎" )
 ("8elec"    "⌁")
 ("8ss"    "🌠")
+("8check" "✓")
 ("8rcheck"    "☑")
 ("8hun"    "💯")
 ("8shit"    "💩")
@@ -1485,8 +1486,9 @@
            ("8hdung" "🝖"   )
            ("8poo"   "💩"  )
            ("8idea"  "💡"	)
-           ("8tumb" "👍")
-          ("8target"  "⌖")
+           ("8thumb" "👍")
+           ("8ell" "…" )
+         ("8target"  "⌖")
           ("8shuffle" "🔀")
           ("8loop"    "🔁")
           ("8loopone" "🔂")
@@ -1499,11 +1501,23 @@
           ("8unlock"  "🔓")
           ("8eye"     "👁")
           ("8chain"   "🔗")
-           
+          ("8rocket" "🚀")
+          ("8party"  "🎉")
            )))
 #+END_SRC
 
+** number subscript 
 
+#+BEGIN_SRC emacs-lisp
+  (setf
+   global-abbrev-table-assoc
+   (append 
+    global-abbrev-table-assoc
+    '(("8_2" "₂")
+      ("8_8" "₈"))))
+#+END_SRC   
+
+#+RESULTS:
 
 ** define abbrev table 
  #+BEGIN_SRC emacs-lisp

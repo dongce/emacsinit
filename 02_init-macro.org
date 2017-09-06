@@ -3339,12 +3339,12 @@ of FILE in the current directory, suitable for creation"
     "The actual alarm action.
   Argument TEXT alarm message."
     (let ((buf (get-buffer-create " *alarm notify* ")))
-    (async-shell-command (format "notify-send -t 5000 \"%s\" \"%s\" " text text) buf) ;
-    ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe --g-fatal-warnings --warning --text=\"%s\"  " text) buf)
-    (async-shell-command (format "c:\\anaconda43\\python.exe t:/usr/local/editor/emacsw32/cmdutils/pymessage.py \"%s\"  " text) buf) 
-    ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe  --info --text=\"%s\"  " text) buf)
-    ;;(message-box text)
-    )) 
+      (async-shell-command (format "notify-send -t 5000 \"%s\" \"%s\" " text text) buf) ;
+      ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe --g-fatal-warnings --warning --text=\"%s\"  " text) buf)
+      (async-shell-command (format "c:\\anaconda43\\python.exe t:/usr/local/editor/emacsw32/cmdutils/pymessage.py \"%s\"  " text) buf) 
+      ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe  --info --text=\"%s\"  " text) buf)
+      ;;(message-box text)
+      )) 
   (defun alarm-clock ()
     "Set an alarm.
   The time format is the same accepted by `run-at-time'.  For

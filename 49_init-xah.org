@@ -248,7 +248,6 @@ Version 2016-06-19"
           xah-recently-closed-buffers)))
 #+END_SRC
 
-
 ** block movement
 
 #+BEGIN_SRC emacs-lisp
@@ -283,7 +282,6 @@ Version 2016-06-15"
 
 #+RESULTS:
 : xah-backward-block
-
 
 ** pairedit
 
@@ -422,31 +420,68 @@ Version 2016-06-15"
 
 ** copy file path
    #+BEGIN_SRC emacs-lisp
-     (defun xah-copy-file-path (&optional *dir-path-only-p)
-       "Copy the current buffer's file path or dired path to `kill-ring'.
-     Result is full path.
-     If `universal-argument' is called first, copy only the dir path.
-     URL `http://ergoemacs.org/emacs/emacs_copy_file_path.html'
-     Version 2017-01-27"
-       (interactive "p")
-       (let* ((-fpath
-               (if (equal major-mode 'dired-mode)
-                   (expand-file-name default-directory)
-                 (if (buffer-file-name)
-                     (buffer-file-name)
-                   (user-error "Current buffer is not associated with a file.")))))
-         (setf -fpath (if (= 1 (% *dir-path-only-p 2))  -fpath (file-name-directory -fpath)))
-         (setf -fpath (if (> *dir-path-only-p 1 ) (replace-regexp-in-string "/" "\\" -fpath  nil t) -fpath))
-         (kill-new -fpath)
-         (if (= 1 (% *dir-path-only-p 2))
-             (message "File path copied: 「%s」" -fpath)
-           (message "Directory path copied: 「%s」" -fpath)
-           ))) 
+
+(defun xah-copy-file-path (&optional @dir-path-only-p)
+  "Copy the current buffer's file path or dired path to `kill-ring'.
+Result is full path.
+If `universal-argument' is called first, copy only the dir path.
+
+If in dired, copy the file/dir cursor is on, or marked files.
+
+If a buffer is not file and not dired, copy value of `default-directory' (which is usually the “current” dir when that buffer was created)
+
+URL `http://ergoemacs.org/emacs/emacs_copy_file_path.html'
+Version 2017-08-25"
+  (interactive "P")
+  (let (($fpath
+         (if (equal major-mode 'dired-mode)
+             (progn
+               (mapconcat 'identity (dired-get-marked-files) "\n"))
+           (if (buffer-file-name)
+               (buffer-file-name)
+             (expand-file-name default-directory)))))
+    (kill-new
+     (if @dir-path-only-p
+         (progn
+           (message "Directory path copied: 「%s」" (file-name-directory $fpath))
+           (file-name-directory $fpath))
+       (progn
+         (message "File path copied: 「%s」" $fpath)
+         $fpath )))))
+
+
+(defun xah-copy-file-name (&optional @dir-path-only-p)
+  "Copy the current buffer's file path or dired path to `kill-ring'.
+Result is full path.
+If `universal-argument' is called first, copy only the dir path.
+
+If in dired, copy the file/dir cursor is on, or marked files.
+
+If a buffer is not file and not dired, copy value of `default-directory' (which is usually the “current” dir when that buffer was created)
+
+URL `http://ergoemacs.org/emacs/emacs_copy_file_path.html'
+Version 2017-08-25"
+  (interactive "P")
+  (let (($fpath
+         (if (equal major-mode 'dired-mode)
+             (progn
+               (mapconcat 'identity (mapcar #'file-name-nondirectory (dired-get-marked-files)) "\n"))
+           (if (buffer-file-name)
+               (buffer-file-name)
+             (expand-file-name default-directory)))))
+    (kill-new
+     (if @dir-path-only-p
+         (progn
+           (message "Directory path copied: 「%s」" (file-name-directory $fpath))
+           (file-name-directory $fpath))
+       (progn
+         (message "File path copied: 「%s」" $fpath)
+         $fpath )))))
+
    #+END_SRC
 
    #+RESULTS:
-   : xah-copy-file-path
-
+   : xah-copy-file-name
 
 ** syntax color 
 
@@ -649,3 +684,230 @@ Version 2015-12-08"
   (insert-register ?1 t))
 
 #+END_SRC
+
+** Emacs: Convert Image Files in Dired
+By Xah Lee. Date: 2011-12-06. Last updated: 2016-07-19.
+
+Here are commands to:
+
+    Convert image file formats (jpg, png, gif),
+    scale images (for example: 50% of original size)
+    Auto-crop image's white border.
+    Show / Remove image metadata.
+    Zip Current Directory
+
+These command work in dired, on current file or all marked files.
+*** Process Image Core Function
+
+Other commands call this function to do work.
+
+#+BEGIN_SRC emacs-lisp
+(defun xah-process-image (@file-list @args-str @new-name-suffix @new-name-file-suffix )
+  "Wrapper to ImageMagick's “convert” shell command.
+*file-list is a list of image file paths.
+*args-str is argument string passed to ImageMagick's “convert” command.
+*new-name-suffix is the string appended to file. e.g. “_new” gets you “…_new.jpg”
+*new-name-file-suffix is the new file's file extension. e.g. “.png”
+
+URL `http://ergoemacs.org/emacs/emacs_dired_convert_images.html'
+Version 2015-10-19"
+  (require 'dired)
+  (mapc
+   (lambda ($f)
+     (let ( $newName $cmdStr )
+       (setq $newName
+             (concat
+              (file-name-sans-extension $f)
+              @new-name-suffix
+              @new-name-file-suffix))
+       (while (file-exists-p $newName)
+         (setq $newName
+               (concat
+                (file-name-sans-extension $newName)
+                @new-name-suffix
+                (file-name-extension $newName t))))
+       ;; relative paths used to get around Windows/Cygwin path remapping problem
+       (setq $cmdStr
+             (format
+              "convert %s '%s' '%s'"
+              @args-str
+              (file-relative-name $f)
+              (file-relative-name $newName)))
+       (shell-command $cmdStr)))
+   @file-list )
+  (revert-buffer))
+#+END_SRC
+*** Scale Image
+
+#+BEGIN_SRC emacs-lisp
+(defun xah-dired-scale-image (@file-list @scale-percentage @sharpen?)
+  "Create a scaled version of images of marked files in dired.
+The new names have “-s” appended before the file name extension.
+
+If `universal-argument' is called first, output is PNG format. Else, JPG.
+
+When called in lisp code,
+ *file-list is a list.
+ *scale-percentage is a integer.
+ *sharpen? is true or false.
+
+Requires ImageMagick unix shell command.
+URL `http://ergoemacs.org/emacs/emacs_dired_convert_images.html'
+Version 2016-07-19"
+  (interactive
+   (let (
+         ($fileList
+          (cond
+           ((string-equal major-mode "dired-mode") (dired-get-marked-files))
+           ((string-equal major-mode "image-mode") (list (buffer-file-name)))
+           (t (list (read-from-minibuffer "file name:"))))))
+     (list $fileList
+           (read-from-minibuffer "Scale %:")
+           (y-or-n-p "Sharpen"))))
+  (let ( ($outputSuffix (if current-prefix-arg ".png" ".jpg" )))
+    (xah-process-image
+     @file-list
+     (format "-scale %s%% -quality 85%% %s " @scale-percentage (if @sharpen? "-sharpen 1" "" ))
+     "-s" $outputSuffix )))
+#+END_SRC
+*** Auto-Crop Image
+
+#+BEGIN_SRC emacs-lisp
+(defun xah-image-autocrop ()
+  "Create a new auto-cropped version of image.
+If current buffer is jpg or png file, crop it.
+If current buffer is dired, do the file under cursor or marked files.
+
+The created file has “_crop638.” in the name, in the same dir.
+It's in png or jpg, same as the original.
+
+Requires ImageMagick shell command “convert”
+
+If `universal-argument' is called first, output is PNG format. Else, JPG.
+URL `http://ergoemacs.org/emacs/emacs_dired_convert_images.html'
+Version 2017-08-27"
+  (interactive)
+  (let (
+        ($bfName (buffer-file-name))
+        $newName
+        $cmdStr
+        )
+    (if (string-equal major-mode "dired-mode")
+        (progn
+          (let (($flist (dired-get-marked-files)))
+            (mapc
+             (lambda ($f)
+               (setq $newName (concat (file-name-sans-extension $f) "_crop638." (file-name-extension $f)))
+               (setq $cmdStr (format "convert -trim '%s' '%s'" (file-relative-name $f) (file-relative-name $newName)))
+               (shell-command $cmdStr))
+             $flist ))
+          (revert-buffer))
+      (progn
+        (if $bfName
+            (let (($ext (file-name-extension $bfName)))
+              (if (and (not (string-equal $ext "jpg"))
+                       (not (string-equal $ext "png")))
+                  (user-error "not png or jpg at %s" $bfName)
+                (progn
+                  (setq $cmdStr
+                        (format
+                         "convert -trim '%s' '%s'"
+                         $bfName
+                         (concat (file-name-sans-extension $bfName) "_crop638." $ext)))
+                  (shell-command  $cmdStr )
+                  (message  $cmdStr))))
+          (user-error "not img file or dired at %s" $bfName))))))
+#+END_SRC
+*** Convert to PNG
+
+#+BEGIN_SRC emacs-lisp
+(defun xah-dired-2png (@file-list)
+  "Create a png version of images of marked files in dired.
+Requires ImageMagick shell command.
+URL `http://ergoemacs.org/emacs/emacs_dired_convert_images.html'
+Version 2016-07-19"
+  (interactive
+   (let (
+         ($fileList
+          (cond
+           ((string-equal major-mode "dired-mode") (dired-get-marked-files))
+           ((string-equal major-mode "image-mode") (list (buffer-file-name)))
+           (t (list (read-from-minibuffer "file name:"))))))
+     (list $fileList)))
+  (xah-process-image @file-list "" "-2" ".png" ))
+#+END_SRC
+*** Convert to JPG
+
+#+BEGIN_SRC emacs-lisp
+(defun xah-dired-2jpg (@file-list)
+  "Create a JPG version of images of marked files in dired.
+Requires ImageMagick shell command.
+URL `http://ergoemacs.org/emacs/emacs_dired_convert_images.html'
+Version 2016-07-19"
+  (interactive
+   (let (
+         ($fileList
+          (cond
+           ((string-equal major-mode "dired-mode") (dired-get-marked-files))
+           ((string-equal major-mode "image-mode") (list (buffer-file-name)))
+           (t (list (read-from-minibuffer "file name:"))))))
+     (list $fileList)))
+  (xah-process-image @file-list "-quality 90%" "-2" ".jpg" ))
+#+END_SRC
+You can give them a key. 〔►see Emacs: How to Define Keys〕
+
+To convert multiple images, mark them first in dired. 〔►see Emacs: File Manager, dired〕
+
+For latest version, get it at https://github.com/xahlee/xah-fly-keys
+
+see also ImageMagick Command Line Tutorial
+*** Show/Remove Image Metadata
+
+#+BEGIN_SRC emacs-lisp
+(defun xah-dired-remove-all-metadata (@file-list)
+  "Remove all metatata of buffer image file or marked files in dired.
+ (typically image files)
+URL `http://xahlee.info/img/metadata_in_image_files.html'
+Requires exiftool shell command.
+
+URL `http://ergoemacs.org/emacs/emacs_dired_convert_images.html'
+Version 2016-07-19"
+  (interactive
+   (list
+    (cond
+     ((string-equal major-mode "dired-mode") (dired-get-marked-files))
+     ((string-equal major-mode "image-mode") (list (buffer-file-name)))
+     (t (list (read-from-minibuffer "file name:"))))))
+  (if (y-or-n-p "Sure to remove all metadata?")
+      (mapc
+       (lambda ($f)
+         (let ($cmdStr)
+           (setq $cmdStr
+                 (format "exiftool -all= -overwrite_original '%s'" (file-relative-name $f))) ; relative paths used to get around Windows/Cygwin path remapping problem
+           (shell-command $cmdStr)))
+       @file-list )
+    nil
+    ))
+
+(defun xah-dired-show-metadata (@file-list)
+  "Display metatata of buffer image file or marked files in dired.
+ (typically image files)
+URL `http://xahlee.info/img/metadata_in_image_files.html'
+Requires exiftool shell command.
+URL `http://ergoemacs.org/emacs/emacs_dired_convert_images.html'
+Version 2016-07-19"
+  (interactive
+   (list
+    (cond
+     ((string-equal major-mode "dired-mode") (dired-get-marked-files))
+     ((string-equal major-mode "image-mode") (list (buffer-file-name)))
+     (t (list (read-from-minibuffer "file name:"))))))
+  (mapc
+   (lambda ($f)
+     (shell-command
+      (format "exiftool '%s'" (file-relative-name $f))
+      ;; relative paths used to get around Windows/Cygwin path remapping problem
+      ))
+   @file-list ))
+#+END_SRC
+

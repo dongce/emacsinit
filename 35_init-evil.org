@@ -80,6 +80,7 @@
         "." 'embrace-commander
         "/" 'evil-replace-word-selection
         "\\" 'xah-copy-file-path
+        "-" 'xah-copy-file-name
         "osL" 'loccur
         "oo" 'occur
         "osn" 'smartscan-symbol-go-forward
@@ -773,295 +774,353 @@
 
 *** sexp
 
-    #+BEGIN_SRC emacs-lisp
-  ;;; https://github.com/laynor/emacs-conf/blob/master/site-lisp/evil-sexp/evil-sexp.el
+**** paredit
+     #+BEGIN_SRC emacs-lisp :tanble no
+   ;;; https://github.com/laynor/emacs-conf/blob/master/site-lisp/evil-sexp/evil-sexp.el
 
-  (defun beginning-and-end-of-sexp ()
-    (destructuring-bind (b . e)
-        (save-excursion
-          (forward-char)
-          (bounds-of-thing-at-point 'sexp))
-      (cons b e)))
+   (defun beginning-and-end-of-sexp ()
+     (destructuring-bind (b . e)
+         (save-excursion
+           (forward-char)
+           (bounds-of-thing-at-point 'sexp))
+       (cons b e)))
 
-  (evil-define-motion evil-forward-sexp (count)
-    :type inclusive
-    (dotimes (i (or count 1))
-      (let ((lookahead-1 (char-syntax (char-after (point))))
-            (lookahead-2 (char-syntax (char-after (1+ (point)))))
-            (new-point (point)))
-        (condition-case nil
-            (progn (save-excursion
-                     (message "lookahead1 = %S, lookahead-2 = %S"
-                              (string lookahead-1) (string lookahead-2))
-                     (cond ((or (memq lookahead-2 '(?\ ?>))
-                                (member lookahead-1 '(?\ ?>)))
-                            (forward-char)
-                            (skip-syntax-forward "->")
-                            (setq new-point (point)))
-                           (t (unless (memq lookahead-1 '(?\" ?\())
-                                (forward-char))
-                              (sp-forward-sexp)
-                              (backward-char)
-                              (setq new-point (point)))))
-                   (goto-char new-point))
-          (error (error "End of sexp"))))))
+   (evil-define-motion evil-forward-sexp (count)
+     :type inclusive
+     (dotimes (i (or count 1))
+       (let ((lookahead-1 (char-syntax (char-after (point))))
+             (lookahead-2 (char-syntax (char-after (1+ (point)))))
+             (new-point (point)))
+         (condition-case nil
+             (progn (save-excursion
+                      (message "lookahead1 = %S, lookahead-2 = %S"
+                               (string lookahead-1) (string lookahead-2))
+                      (cond ((or (memq lookahead-2 '(?\ ?>))
+                                 (member lookahead-1 '(?\ ?>)))
+                             (forward-char)
+                             (skip-syntax-forward "->")
+                             (setq new-point (point)))
+                            (t (unless (memq lookahead-1 '(?\" ?\())
+                                 (forward-char))
+                               (sp-forward-sexp)
+                               (backward-char)
+                               (setq new-point (point)))))
+                    (goto-char new-point))
+           (error (error "End of sexp"))))))
 
-  (evil-define-motion evil-backward-sexp (count)
-    :type inclusive
-    (dotimes (i (or count 1))
-      (let ((lookahead (char-syntax (char-after (point))))
-            (new-point (point)))
-        (condition-case nil
-            (progn (save-excursion
-                     (when (memq lookahead '(?\) ?\"))
-                       (forward-char))
-                     (sp-backward-sexp)
-                     (setq new-point (point)))
-                   (goto-char new-point))
-          (error (error "Beginning of sexp"))))))
+   (evil-define-motion evil-backward-sexp (count)
+     :type inclusive
+     (dotimes (i (or count 1))
+       (let ((lookahead (char-syntax (char-after (point))))
+             (new-point (point)))
+         (condition-case nil
+             (progn (save-excursion
+                      (when (memq lookahead '(?\) ?\"))
+                        (forward-char))
+                      (sp-backward-sexp)
+                      (setq new-point (point)))
+                    (goto-char new-point))
+           (error (error "Beginning of sexp"))))))
 
-  (evil-define-motion evil-enter-sexp (count)
-    :type inclusive
-    (dotimes (i (or count 1))
-      (let ((lookahead-1 (char-syntax (char-after (point))))
-            (lookahead-2 (char-syntax (char-after (1+ (point)))))
-            (lookbehind-1 (char-syntax (char-before (point))))
-            (lookbehind-2 (char-syntax (char-before (1- (point))))))
-        (cond ((and (= lookahead-1 ?\()
-                    (/= lookbehind-1 ?\\)
-                    (= (char-after (1+ (point))) ?\n))
-               (forward-char)
-               (skip-syntax-forward "-"))
-              ((and (= lookahead-1 ?\()
-                    (/= lookbehind-1 ?\\)
-                    (/= lookahead-2 ?\)))
-               ;; do not move the cursor if it's on the opening paren of ()
-               (forward-char)
-               (skip-syntax-forward "-"))
-              ((and (= lookahead-1 ?\))
-                    (or (/= lookbehind-1 ?\( )
-                        (= lookbehind-2 ?\\)))
-               ;; do not move the cursor if it's on the closing paren of ()
-               (skip-syntax-backward "-")
-               (backward-char))
-              (t (error "Already at the deepest level"))))))
-
-
-
-  ;; Does not work correctly when there are spaces after parens
-  ;; does not work correctly when inside a string, check paredit.
-  ;; check when there are spaces before parens
-  ;; When the cursor is on an open paren, go up one level on an open paren
-  (use-package paredit ;  (smartparens)
-    :config
-    (evil-define-motion evil-exit-sexp (count)
-      :type inclusive
-      (dotimes (i (or count 1))
-        (let (op-pos cl-pos)
-          (condition-case nil
-              (progn (save-excursion
-                       (sp-backward-up-sexp)
-                       (setq op-pos (point))
-                       (sp-forward-sexp)
-                       (setq cl-pos (point)))
-                     (let ((lookahead (char-syntax (char-after (point)))))
-                       (case lookahead
-                         (?\( (goto-char op-pos))
-                         (?\) (goto-char cl-pos))
-                         (otherwise (goto-char (if (> (abs (- (point) cl-pos))
-                                                      (abs (- (point) op-pos)))
-                                                   op-pos
-                                                 cl-pos))))))
-            (error (error "Already at top-level."))))) )
-
-    ;; (provide 'evil-sexp)
+   (evil-define-motion evil-enter-sexp (count)
+     :type inclusive
+     (dotimes (i (or count 1))
+       (let ((lookahead-1 (char-syntax (char-after (point))))
+             (lookahead-2 (char-syntax (char-after (1+ (point)))))
+             (lookbehind-1 (char-syntax (char-before (point))))
+             (lookbehind-2 (char-syntax (char-before (1- (point))))))
+         (cond ((and (= lookahead-1 ?\()
+                     (/= lookbehind-1 ?\\)
+                     (= (char-after (1+ (point))) ?\n))
+                (forward-char)
+                (skip-syntax-forward "-"))
+               ((and (= lookahead-1 ?\()
+                     (/= lookbehind-1 ?\\)
+                     (/= lookahead-2 ?\)))
+                ;; do not move the cursor if it's on the opening paren of ()
+                (forward-char)
+                (skip-syntax-forward "-"))
+               ((and (= lookahead-1 ?\))
+                     (or (/= lookbehind-1 ?\( )
+                         (= lookbehind-2 ?\\)))
+                ;; do not move the cursor if it's on the closing paren of ()
+                (skip-syntax-backward "-")
+                (backward-char))
+               (t (error "Already at the deepest level"))))))
 
 
-    (define-key evil-motion-state-map (kbd "H-j") 'evil-enter-sexp)
-    (define-key evil-motion-state-map (kbd "H-k") 'evil-exit-sexp)
-    (define-key evil-motion-state-map (kbd "H-h") 'evil-backward-sexp)
-    (define-key evil-motion-state-map (kbd "H-l") 'evil-forward-sexp)
-    (define-key evil-motion-state-map (kbd "<C-H-up>")     'buf-move-up)
-    (define-key evil-motion-state-map (kbd "<C-H-down>")   'buf-move-down)
-    (define-key evil-motion-state-map (kbd "<C-H-left>")   'buf-move-left)
-    (define-key evil-motion-state-map (kbd "<C-H-right>")  'buf-move-right)
-    (define-key evil-motion-state-map "zl" 'evil-forward-sexp)
-    (define-key evil-motion-state-map "zh" 'evil-backward-sexp)
-    (define-key evil-motion-state-map "zj" 'evil-enter-sexp)
-    (define-key evil-motion-state-map "zk" 'evil-exit-sexp))
+
+   ;; Does not work correctly when there are spaces after parens
+   ;; does not work correctly when inside a string, check paredit.
+   ;; check when there are spaces before parens
+   ;; When the cursor is on an open paren, go up one level on an open paren
+   (use-package paredit ;  (smartparens)
+     :config
+     (evil-define-motion evil-exit-sexp (count)
+       :type inclusive
+       (dotimes (i (or count 1))
+         (let (op-pos cl-pos)
+           (condition-case nil
+               (progn (save-excursion
+                        (sp-backward-up-sexp)
+                        (setq op-pos (point))
+                        (sp-forward-sexp)
+                        (setq cl-pos (point)))
+                      (let ((lookahead (char-syntax (char-after (point)))))
+                        (case lookahead
+                          (?\( (goto-char op-pos))
+                          (?\) (goto-char cl-pos))
+                          (otherwise (goto-char (if (> (abs (- (point) cl-pos))
+                                                       (abs (- (point) op-pos)))
+                                                    op-pos
+                                                  cl-pos))))))
+             (error (error "Already at top-level."))))) )
+
+     ;; (provide 'evil-sexp)
 
 
-  ;;; http://blog.binchen.org/?p=782
-  (eval-after-load "evil" '(setq expand-region-contract-fast-key "z"))
-  (evil-define-key 'normal paredit-mode-map "\C-k" 'paredit-kill)
-  (evil-define-key 'visual paredit-mode-map "\C-k" 'paredit-kill)
-  (evil-define-key 'insert paredit-mode-map "\C-k" 'paredit-kill)
+     (define-key evil-motion-state-map (kbd "H-j") 'evil-enter-sexp)
+     (define-key evil-motion-state-map (kbd "H-k") 'evil-exit-sexp)
+     (define-key evil-motion-state-map (kbd "H-h") 'evil-backward-sexp)
+     (define-key evil-motion-state-map (kbd "H-l") 'evil-forward-sexp)
+     (define-key evil-motion-state-map (kbd "<C-H-up>")     'buf-move-up)
+     (define-key evil-motion-state-map (kbd "<C-H-down>")   'buf-move-down)
+     (define-key evil-motion-state-map (kbd "<C-H-left>")   'buf-move-left)
+     (define-key evil-motion-state-map (kbd "<C-H-right>")  'buf-move-right)
+     (define-key evil-motion-state-map "zl" 'evil-forward-sexp)
+     (define-key evil-motion-state-map "zh" 'evil-backward-sexp)
+     (define-key evil-motion-state-map "zj" 'evil-enter-sexp)
+     (define-key evil-motion-state-map "zk" 'evil-exit-sexp))
 
-    #+END_SRC
+
+   ;;; http://blog.binchen.org/?p=782
+   (eval-after-load "evil" '(setq expand-region-contract-fast-key "z"))
+   (evil-define-key 'normal paredit-mode-map "\C-k" 'paredit-kill)
+   (evil-define-key 'visual paredit-mode-map "\C-k" 'paredit-kill)
+   (evil-define-key 'insert paredit-mode-map "\C-k" 'paredit-kill)
+
+     #+END_SRC
+**** evil-cleverparens
+     #+BEGIN_SRC emacs-lisp
+     (add-hook 'elisp-mode  #'evil-cleverparens-mode)
+     (add-hook 'scheme-mode #'evil-cleverparens-mode)
+     #+END_SRC
+
+     #+RESULTS:
+     | evil-cleverparens-mode |
+
 *** org 
-    #+BEGIN_SRC emacs-lisp
-  (defun org-show-current-heading-tidily ()
-    (interactive)  ;Inteactive
-    "Show next entry, keeping other entries closed."
-    (if (save-excursion (end-of-line) (outline-invisible-p))
-        (progn (org-show-entry) (show-children))
-      (outline-back-to-heading)
-      (unless (and (bolp) (org-on-heading-p))
-        (org-up-heading-safe)
-        (hide-subtree)
-        (error "Boundary reached"))
-      (org-overview)
-      (org-reveal t)
-      (org-show-entry)
-      (show-children)))
-
-  ;;; evil-org 
-
-  (evil-define-key 'normal evil-org-mode-map
-    "=" 'org-show-current-heading-tidily
-    "<" 'org-shiftleft
-    ">" 'org-shiftright
-    )
+**** org-show-current-heading-tidily
+     #+BEGIN_SRC emacs-lisp
+   (defun org-show-current-heading-tidily ()
+     (interactive)  ;Inteactive
+     "Show next entry, keeping other entries closed."
+     (if (save-excursion (end-of-line) (outline-invisible-p))
+         (progn (org-show-entry) (show-children))
+       (outline-back-to-heading)
+       (unless (and (bolp) (org-on-heading-p))
+         (org-up-heading-safe)
+         (hide-subtree)
+         (error "Boundary reached"))
+       (org-overview)
+       (org-reveal t)
+       (org-show-entry)
+       (show-children)))
 
 
 
+   (evil-define-key 'normal evil-org-mode-map
+     "=" 'org-show-current-heading-tidily
+     ;;deprecatedby-evil-org;;"<" 'org-shiftleft
+     ;;deprecatedby-evil-org;;">" 'org-shiftright
+     )
 
-  (evil-leader/set-key-for-mode 'org-mode
-    "ha" 'helm-org-agenda-files-headings
-    "hH" 'helm-org-headings
-    "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
-    "hh" 'helm-org-in-buffer-headings
+   (evil-leader/set-key-for-mode 'org-mode
+     "ha" 'helm-org-agenda-files-headings
+     "hH" 'helm-org-headings
+     "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
+     "hh" 'helm-org-in-buffer-headings
 
-    "u"    'outline-up-heading
-    "q"    'org-todo
-    "<down>"    'outline-next-visible-heading
-    "<up>"    'outline-previous-visible-heading
-    "<right>"    'org-forward-heading-same-level
-    "<left>"    'org-backward-heading-same-level
+     "u"    'outline-up-heading
+     "q"    'org-todo
+     "<down>"    'outline-next-visible-heading
+     "<up>"    'outline-previous-visible-heading
+     "<right>"    'org-forward-heading-same-level
+     "<left>"    'org-backward-heading-same-level
 
-    "r"         'org-mark-ring-goto
-    "&"         'org-mark-ring-goto
-
-
-    "or" 'org-capture
-    "oa" 'org-agenda
-    "os" 'org-store-link
-    "ol" 'org-insert-alllink
-    "oo" 'org-open-at-point-global
-    "oR" 'org-refile
-    "oc" 'org-cliplink
-    "od" 'org-deadline
-    "oh" 'org-schedule
-    "ot" 'org-set-tags
-    "oT" 'org-time-stamp
-    "ov" 'org-attach-screenshot
-    "ob" 'org-iswitchb
-    "ow" 'org-archive-subtree-default
-    "op" 'org-link-copy-image
-    "of" 'org-link-copy-file
-    "oe" 'org-set-effort
-    "oi" 'org-clock-in
-    "oI" 'org-clock-out
-    "w" 'org-archive-subtree-default
-    )
+     "r"         'org-mark-ring-goto
+     "&"         'org-mark-ring-goto
 
 
-  (use-package org
-    :config
-    (evil-define-key 'normal evil-org-mode-map
-      (kbd "RET") 'org-open-at-point
-      "za" 'org-cycle
-      "zA" 'org-shifttab
-      "zm" 'hide-body
-      "zr" 'show-all
-      "zo" 'show-subtree
-      "zO" 'show-all
-      "zc" 'hide-subtree
-      "zC" 'hide-all
-      (kbd "<S-next>") 'evil-forward-paragraph
-      (kbd "<S-prev>") 'evil-backward-paragraph
+     "or" 'org-capture
+     "oa" 'org-agenda
+     "os" 'org-store-link
+     "ol" 'org-insert-alllink
+     "oo" 'org-open-at-point-global
+     "oR" 'org-refile
+     "oc" 'org-cliplink
+     "od" 'org-deadline
+     "oh" 'org-schedule
+     "ot" 'org-set-tags
+     "oT" 'org-time-stamp
+     "ov" 'org-attach-screenshot
+     "ob" 'org-iswitchb
+     "ow" 'org-archive-subtree-default
+     "op" 'org-link-copy-image
+     "of" 'org-link-copy-file
+     "oe" 'org-set-effort
+     "oi" 'org-clock-in
+     "oI" 'org-clock-out
+     "w" 'org-archive-subtree-default
+     )
 
-      "gn"    'outline-next-visible-heading
-      "gp"    'outline-previous-visible-heading
-      "gf"    'org-forward-heading-same-level
-      "gb"    'org-backward-heading-same-level
-      "gu"    'outline-up-heading
-      "gt"    'org-goto
+
+     #+END_SRC
+
+     #+RESULTS:
+
+**** evil-org 
+     deprecated by evil-org
+   #+BEGIN_SRC emacs-lisp :tangle no
+   
+
+   (evil-leader/set-key-for-mode 'org-mode
+     "ha" 'helm-org-agenda-files-headings
+     "hH" 'helm-org-headings
+     "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
+     "hh" 'helm-org-in-buffer-headings
+
+     "u"    'outline-up-heading
+     "q"    'org-todo
+     "<down>"    'outline-next-visible-heading
+     "<up>"    'outline-previous-visible-heading
+     "<right>"    'org-forward-heading-same-level
+     "<left>"    'org-backward-heading-same-level
+
+     "r"         'org-mark-ring-goto
+     "&"         'org-mark-ring-goto
+
+
+     "or" 'org-capture
+     "oa" 'org-agenda
+     "os" 'org-store-link
+     "ol" 'org-insert-alllink
+     "oo" 'org-open-at-point-global
+     "oR" 'org-refile
+     "oc" 'org-cliplink
+     "od" 'org-deadline
+     "oh" 'org-schedule
+     "ot" 'org-set-tags
+     "oT" 'org-time-stamp
+     "ov" 'org-attach-screenshot
+     "ob" 'org-iswitchb
+     "ow" 'org-archive-subtree-default
+     "op" 'org-link-copy-image
+     "of" 'org-link-copy-file
+     "oe" 'org-set-effort
+     "oi" 'org-clock-in
+     "oI" 'org-clock-out
+     "w" 'org-archive-subtree-default
+     )
+
+
+   (use-package org
+     :config
+     (evil-define-key 'normal evil-org-mode-map
+       (kbd "RET") 'org-open-at-point
+       "za" 'org-cycle
+       "zA" 'org-shifttab
+       "zm" 'hide-body
+       "zr" 'show-all
+       "zo" 'show-subtree
+       "zO" 'show-all
+       "zc" 'hide-subtree
+       "zC" 'hide-all
+       (kbd "<S-next>") 'evil-forward-paragraph
+       (kbd "<S-prev>") 'evil-backward-paragraph
+
+       "gn"    'outline-next-visible-heading
+       "gp"    'outline-previous-visible-heading
+       "gf"    'org-forward-heading-same-level
+       "gb"    'org-backward-heading-same-level
+       "gu"    'outline-up-heading
+       "gt"    'org-goto
     
-     ;;deprecatedby-evil-org;;"gj"    'outline-next-visible-heading
-     ;;deprecatedby-evil-org;;"gk"    'outline-previous-visible-heading
-     ;;deprecatedby-evil-org;;"gl"    'org-forward-heading-same-level
-     ;;deprecatedby-evil-org;;"gh"    'org-backward-heading-same-level
-    
-      (kbd "<kp-multiply>") 'org-insert-star
-      (kbd "M-j") 'org-shiftleft
-      (kbd "M-k") 'org-shiftright
-      (kbd "M-H") 'org-metaleft
-      (kbd "M-J") 'org-metadown
-      (kbd "M-K") 'org-metaup
-      (kbd "M-L") 'org-metaright)
-
-    (evil-define-key 'visual evil-org-mode-map
-      "gn"    'outline-next-visible-heading
-      "gp"    'outline-previous-visible-heading
-      "gf"    'org-forward-heading-same-level
-      "gb"    'org-backward-heading-same-level
-      "gu"    'outline-up-heading
-      "gt"    'org-goto
-      (kbd "<S-next>") 'evil-forward-paragraph
-      (kbd "<S-prev>") 'evil-backward-paragraph
-
       ;;deprecatedby-evil-org;;"gj"    'outline-next-visible-heading
       ;;deprecatedby-evil-org;;"gk"    'outline-previous-visible-heading
       ;;deprecatedby-evil-org;;"gl"    'org-forward-heading-same-level
       ;;deprecatedby-evil-org;;"gh"    'org-backward-heading-same-level
     
-      )
+       (kbd "<kp-multiply>") 'org-insert-star
+       (kbd "M-j") 'org-shiftleft
+       (kbd "M-k") 'org-shiftright
+       (kbd "M-H") 'org-metaleft
+       (kbd "M-J") 'org-metadown
+       (kbd "M-K") 'org-metaup
+       (kbd "M-L") 'org-metaright
+       )
+
+     (evil-define-key 'visual evil-org-mode-map
+       "gn"    'outline-next-visible-heading
+       "gp"    'outline-previous-visible-heading
+       "gf"    'org-forward-heading-same-level
+       "gb"    'org-backward-heading-same-level
+       "gu"    'outline-up-heading
+       "gt"    'org-goto
+       (kbd "<S-next>") 'evil-forward-paragraph
+       (kbd "<S-prev>") 'evil-backward-paragraph
+
+       ;;deprecatedby-evil-org;;"gj"    'outline-next-visible-heading
+       ;;deprecatedby-evil-org;;"gk"    'outline-previous-visible-heading
+       ;;deprecatedby-evil-org;;"gl"    'org-forward-heading-same-level
+       ;;deprecatedby-evil-org;;"gh"    'org-backward-heading-same-level
+    
+       )
 
 
-    (evil-define-key 'normal orgstruct-mode-map
-      (kbd "RET") 'org-open-at-point
-      "za" 'org-cycle
-      "zA" 'org-shifttab
-      "zm" 'hide-body
-      "zr" 'show-all
-      "zo" 'show-subtree
-      "zO" 'show-all
-      "zc" 'hide-subtree
-      "zC" 'hide-all
-      (kbd "M-j") 'org-shiftleft
-      (kbd "M-k") 'org-shiftright
-      (kbd "M-H") 'org-metaleft
-      (kbd "M-J") 'org-metadown
-      (kbd "M-K") 'org-metaup
-      (kbd "M-L") 'org-metaright)
+     (evil-define-key 'normal orgstruct-mode-map
+       (kbd "RET") 'org-open-at-point
+       "za" 'org-cycle
+       "zA" 'org-shifttab
+       "zm" 'hide-body
+       "zr" 'show-all
+       "zo" 'show-subtree
+       "zO" 'show-all
+       "zc" 'hide-subtree
+       "zC" 'hide-all
+       (kbd "M-j") 'org-shiftleft
+       (kbd "M-k") 'org-shiftright
+       (kbd "M-H") 'org-metaleft
+       (kbd "M-J") 'org-metadown
+       (kbd "M-K") 'org-metaup
+       (kbd "M-L") 'org-metaright)
 
-    (evil-define-key 'insert evil-org-mode-map
-      (kbd "M-j") 'org-shiftleft
-      (kbd "M-k") 'org-shiftright
-      (kbd "M-H") 'org-metaleft
-      (kbd "M-J") 'org-metadown
-      (kbd "M-K") 'org-metaup
-      (kbd "M-L") 'org-metaright
-      (kbd "<S-next>") 'evil-forward-paragraph
-      (kbd "<S-prev>") 'evil-backward-paragraph)
+     (evil-define-key 'insert evil-org-mode-map
+       (kbd "M-j") 'org-shiftleft
+       (kbd "M-k") 'org-shiftright
+       (kbd "M-H") 'org-metaleft
+       (kbd "M-J") 'org-metadown
+       (kbd "M-K") 'org-metaup
+       (kbd "M-L") 'org-metaright
+       (kbd "<S-next>") 'evil-forward-paragraph
+       (kbd "<S-prev>") 'evil-backward-paragraph)
 
-    (evil-define-key 'insert orgstruct-mode-map
-      (kbd "M-j") 'org-shiftleft
-      (kbd "M-k") 'org-shiftright
-      (kbd "M-H") 'org-metaleft
-      (kbd "M-J") 'org-metadown
-      (kbd "M-K") 'org-metaup
-      (kbd "M-L") 'org-metaright)
+     (evil-define-key 'insert orgstruct-mode-map
+       (kbd "M-j") 'org-shiftleft
+       (kbd "M-k") 'org-shiftright
+       (kbd "M-H") 'org-metaleft
+       (kbd "M-J") 'org-metadown
+       (kbd "M-K") 'org-metaup
+       (kbd "M-L") 'org-metaright)
 
-    )
+     )
 
 
+   #+END_SRC
 
-    #+END_SRC
 
-    #+RESULTS:
-    : t
+     #+RESULTS:
+     : t
 
 *** mu4e
     #+BEGIN_SRC emacs-lisp
@@ -1267,7 +1326,6 @@
 
 
 
-
 ** bind map
    #+BEGIN_SRC emacs-lisp
 (use-package evil-lisp-state
@@ -1288,6 +1346,11 @@
  (evil-mode 1)
    #+END_SRC
 
+** evil-innter-text
+   #+BEGIN_SRC emacs-lisp
+   (define-key evil-inner-text-objects-map "k" 'evil-textobj-column-word)
+   (define-key evil-inner-text-objects-map "K" 'evil-textobj-column-word)
+   #+END_SRC
 ** unimpaired
    #+BEGIN_SRC emacs-lisp
    (define-key evil-normal-state-map (kbd "[ B") 'iflipb-previous-buffer)
@@ -1327,7 +1390,6 @@
 
 #+RESULTS:
 : t
-
 
 
 
