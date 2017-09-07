@@ -716,3 +716,9 @@
 
 #+RESULTS:
 : repeat-complex-command-noprompt
+
+** helm-bookmark-map
+
+   #+BEGIN_SRC emacs-lisp
+   (require 'helm-bookmark)
+   #+END_SRC
