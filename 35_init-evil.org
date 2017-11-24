@@ -94,7 +94,7 @@
         "ost" 'xah-find-text
         "osT" 'xah-find-text-regex
 
-
+        "ou"  'hydra-undo-tree/body
         "op" 'pandoc-main-hydra/body
 
         "S" smerge-basic-map
@@ -207,7 +207,10 @@
         "oa" 'org-agenda
         "ol" 'org-store-link
         "oc" 'org-cliplink
-
+        "oG"  'gxref-set-project-dir
+        "ogd" 'gxref-set-project-dir
+        "ogc" 'gxref-clear-project-dir
+        "ogu" 'gxref-update-db
         "[" 'ivy-push-view 
         "]" 'ivy-pop-view 
         )
@@ -242,6 +245,8 @@
 
        (spacemacs/set-leader-keys-for-major-mode 'mu4e-headers-mode
          "&" 'org-mark-ring-goto)
+
+         (spacemacs/set-leader-keys-for-major-mode 'org-mode "os" ",',sb,c") 
 
      #+END_SRC
 
@@ -394,7 +399,8 @@
   (define-key evil-normal-state-map "g{" 'beginning-of-defun)
   (define-key evil-normal-state-map "g}" 'end-of-defun      )
   (define-key evil-normal-state-map "gg" 'revert-buffer)
-
+  (define-key evil-normal-state-map "gR" 'xref-find-references)
+  (define-key evil-normal-state-map "gr" 'xref-pop-marker-stack)
 
 
   (define-key evil-visual-state-map "gl" 'goto-line)
@@ -403,6 +409,8 @@
   (define-key evil-visual-state-map "g{" 'beginning-of-defun)
   (define-key evil-visual-state-map "g}" 'end-of-defun      )
   (define-key evil-visual-state-map "gg" 'revert-buffer)
+  (define-key evil-visual-state-map "gR" 'xref-find-references)
+  (define-key evil-visual-state-map "gr" 'xref-pop-marker-stack)
 
 
   (define-key evil-normal-state-map "zf" 'vimish-fold-dwim) 
@@ -972,12 +980,22 @@
      "oi" 'org-clock-in
      "oI" 'org-clock-out
      "w" 'org-archive-subtree-default
+     "<f5>" 'org-redisplay-inline-images
      )
 
+
+   (use-package org
+     :config
+     (evil-define-key 'normal evil-org-mode-map
+       (kbd "<kp-multiply>") 'org-insert-star)
+
+     (evil-define-key 'insert evil-org-mode-map
+       (kbd "<M-return>") 'org-meta-return))
 
      #+END_SRC
 
      #+RESULTS:
+     : t
 
 **** evil-org 
      deprecated by evil-org
@@ -1102,6 +1120,7 @@
        (kbd "M-J") 'org-metadown
        (kbd "M-K") 'org-metaup
        (kbd "M-L") 'org-metaright
+       (kbd "<M-return>") 'org-meta-return
        (kbd "<S-next>") 'evil-forward-paragraph
        (kbd "<S-prev>") 'evil-backward-paragraph)
 
@@ -1306,6 +1325,15 @@
 
     #+END_SRC
 
+*** mathinput
+    #+BEGIN_SRC emacs-lisp :tangle on
+      (use-package xah-math-input-mode
+        :config
+        (evil-declare-key 'normal xah-math-input-keymap [f9] 'xah-math-input-change-to-symbol)
+        (evil-declare-key 'insert xah-math-input-keymap [f9] 'xah-math-input-change-to-symbol)
+        (evil-declare-key 'visual xah-math-input-keymap [f9] 'xah-math-input-change-to-symbol))
+    #+END_SRC
+    
 *** deprecated
     #+BEGIN_SRC emacs-lisp
 ;;deprecated;;(defun gf/narrow-grep-buffer ()

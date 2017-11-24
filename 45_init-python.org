@@ -157,38 +157,40 @@
    #+BEGIN_SRC emacs-lisp
 
 
-   ;;;_ PYMACS
-   ;;(require 'pymacs)
-   ;;tempdeprecated(setq pymacs-python-command "python.bat")
-   ;;tempdeprecated(add-to-list 'pymacs-load-path "t:/usr/local/editor/emacsW32/site-lisp/pymacs/")
-   ;;tempdeprecated;;; _환경번수 http://docs.python.org/2/using/cmdline.html
-   ;;tempdeprecated(setenv  "PYTHONPATH" "t:/usr/local/editor/emacsW32/site-lisp/pymacs/")
-   ;;tempdeprecated;;(pymacs-load "pastemacs" "paste-")
-   ;;tempdeprecated;;(pymacs-load "emacsuuid" "uuid-")
-   ;;tempdeprecated;;(pymacs-load "pyutil" "pyutil-") ;;call like this (pyutil-int-to-bin 10 )
-   ;;tempdeprecated;;(pymacs-load "pyclip" "pyclip-")
-    ;; (pymacs-load "ropemacs" "rope-") (rope-show-doc) 
+     ;;;_ PYMACS
+     ;;(require 'pymacs)
+     ;;tempdeprecated(setq pymacs-python-command "python.bat")
+     ;;tempdeprecated(add-to-list 'pymacs-load-path "t:/usr/local/editor/emacsW32/site-lisp/pymacs/")
+     ;;tempdeprecated;;; _환경번수 http://docs.python.org/2/using/cmdline.html
+     ;;tempdeprecated(setenv  "PYTHONPATH" "t:/usr/local/editor/emacsW32/site-lisp/pymacs/")
+     ;;tempdeprecated;;(pymacs-load "pastemacs" "paste-")
+     ;;tempdeprecated;;(pymacs-load "emacsuuid" "uuid-")
+     ;;tempdeprecated;;(pymacs-load "pyutil" "pyutil-") ;;call like this (pyutil-int-to-bin 10 )
+     ;;tempdeprecated;;(pymacs-load "pyclip" "pyclip-")
+      ;; (pymacs-load "ropemacs" "rope-") (rope-show-doc) 
 
 
-   (use-package pymacs
-     ;; :commands pyutil-mozlz4-decompress fbmk
-     :config
-     (setq pymacs-python-command "emacspython.bat")
-     (add-to-list 'pymacs-load-path (fullpath  "../thirdparty/pymacs/"))
-     (setenv  "PYTHONPATH" (fullpath  "../thirdparty/pymacs/"))
-     ;; pyclip use external
-     ;; (pymacs-load "pyclip" "pyclip-")
-     ;; (defun pyclip-clip-file () 
-     ;;   (interactive)
-     ;;   (if (eq system-type 'windows-nt)
-     ;;       (let* ((files (dired-get-marked-files))
-     ;;              (files (if (null files)
-     ;;                         (list (dired-current-directory) )
-     ;;                       files)))
-     ;;         (pyclip-mime files))))
-     ;;(pymacs-load "pastemacs" "paste-")
-     ;;(pymacs-load "emacsuuid" "uuid-")
-     (pymacs-load "pyutil" "pyutil-"))
+     (use-package pymacs
+       ;; :commands pyutil-mozlz4-decompress fbmk
+       :config
+       (setq pymacs-python-command "emacspython.bat")
+       (add-to-list 'pymacs-load-path (fullpath  "../thirdparty/pymacs/"))
+       (setenv  "PYTHONPATH" (fullpath  "../thirdparty/pymacs/"))
+       ;; pyclip use external
+       ;; (pymacs-load "pyclip" "pyclip-")
+       ;; (defun pyclip-clip-file () 
+       ;;   (interactive)
+       ;;   (if (eq system-type 'windows-nt)
+       ;;       (let* ((files (dired-get-marked-files))
+       ;;              (files (if (null files)
+       ;;                         (list (dired-current-directory) )
+       ;;                       files)))
+       ;;         (pyclip-mime files))))
+       ;;(pymacs-load "pastemacs" "paste-")
+       ;;(pymacs-load "emacsuuid" "uuid-")
+       (pymacs-load "pyutil" "pyutil-")
+       (with-current-buffer "*Pymacs*"
+         (emacs-lock-mode 'kill)))
 
 
    #+END_SRC
@@ -430,4 +432,18 @@
 
 
   ;; http://from-the-cloud.com/en/emacs/2013/01/28_emacs-as-a-django-ide-with-python-djangoel.html
+   #+END_SRC
+
+** apparance 
+   #+BEGIN_SRC emacs-lisp
+     (append-to-list 
+      'python-prettify-symbols-alist 
+      '(
+        ;;(" !="   . #Xe10e)
+        ;;(" !=="  . #Xe10f)
+        ;;(" <="   . #Xe141)
+        ;;(" >="   . #Xe145)
+        ;;(" !=="  . #Xe10f)
+        ("map" . 8614)    ; ↦
+        ))
    #+END_SRC

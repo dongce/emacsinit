@@ -911,3 +911,235 @@ Version 2016-07-19"
    @file-list ))
 #+END_SRC
 
+** url encoding 
+
+
+*** Elisp: URL Percent Decode/Encode
+By Xah Lee. Date: 2014-01-11. Last updated: 2015-09-14.
+
+This page shows you how to percent decode/encode URI.
+
+Examples of percent encoded URL:
+
+    http://en.wikipedia.org/wiki/Saint_Jerome_in_His_Study_%28D%C3%BCrer%29
+    http://zh.wikipedia.org/wiki/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8
+
+Examples of decoded URL:
+
+    http://en.wikipedia.org/wiki/Saint_Jerome_in_His_Study_(Dürer)
+    http://zh.wikipedia.org/wiki/文本编辑器
+
+Decode URL
+
+Here's solution.
+
+#+BEGIN_SRC emacs-lisp
+(defun xah-html-decode-percent-encoded-url ()
+  "Decode percent encoded URI of URI under cursor or selection.
+
+Example:
+    http://en.wikipedia.org/wiki/Saint_Jerome_in_His_Study_%28D%C3%BCrer%29
+becomes
+    http://en.wikipedia.org/wiki/Saint_Jerome_in_His_Study_(Dürer)
+
+Example:
+    http://zh.wikipedia.org/wiki/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8
+becomes
+    http://zh.wikipedia.org/wiki/文本编辑器
+
+For string version, see `xah-html-url-percent-decode-string'.
+To encode, see `xah-html-encode-percent-encoded-url'.
+URL `http://ergoemacs.org/emacs/elisp_decode_uri_percent_encoding.html'
+Version 2015-09-14."
+  (interactive)
+  (let ($boundaries $p1 $p2 $input-str)
+    (if (use-region-p)
+        (progn
+          (setq $p1 (region-beginning))
+          (setq $p2 (region-end)))
+      (progn
+        (setq $boundaries (bounds-of-thing-at-point 'url))
+        (setq $p1 (car $boundaries))
+        (setq $p2 (cdr $boundaries))))
+    (setq $input-str (buffer-substring-no-properties $p1 $p2))
+    (require 'url-util)
+    (delete-region $p1 $p2)
+    (insert (decode-coding-string (url-unhex-string $input-str) 'utf-8))))
+#+END_SRC
+2014-04-27 thanks nns for the solution.
+Encode URL
+
+To encode, you can just use this:
+
+(require 'url-util)
+ (url-encode-url $input-str)
+
+Here's a command version:
+
+#+BEGIN_SRC emacs-lisp
+(defun xah-html-encode-percent-encoded-url ()
+  "Percent encode URL under cursor or selection.
+
+Example:
+    http://en.wikipedia.org/wiki/Saint_Jerome_in_His_Study_(Dürer)
+becomes
+    http://en.wikipedia.org/wiki/Saint_Jerome_in_His_Study_(D%C3%BCrer)
+
+Example:
+    http://zh.wikipedia.org/wiki/文本编辑器
+becomes
+    http://zh.wikipedia.org/wiki/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8
+
+URL `http://ergoemacs.org/emacs/elisp_decode_uri_percent_encoding.html'
+Version 2015-09-14."
+  (interactive)
+  (let ($boundaries $p1 $p2 $input-str)
+    (if (use-region-p)
+        (progn
+          (setq $p1 (region-beginning))
+          (setq $p2 (region-end)))
+      (progn
+        (setq $boundaries (bounds-of-thing-at-point 'url))
+        (setq $p1 (car $boundaries))
+        (setq $p2 (cdr $boundaries))))
+    (setq $input-str (buffer-substring-no-properties $p1 $p2))
+    (require 'url-util)
+    (delete-region $p1 $p2)
+    (insert (url-encode-url $input-str))))
+#+END_SRC
+*** Emacs Lisp URL Percent Encode/Decode Functions
+
+Emacs has a bundled library url-util for handling URL.
+
+The main functions for manipulating URL are:
+
+    url-unhex-string → decode URL percent encoded string. For example: %20 ⇒  .
+    url-hexify-string → encode string into URL percent encoded string, for example,  ⇒ %20.
+    url-encode-url → like url-hexify-string, but leave URL's protocol part and domain etc parts intact.
+
+and decode-coding-string from emacs lisp itself.
+
+Here's examples of using them.
+
+url-hexify-string will turn a string into URL percent encoded string, including slash or colon characters used in URL such as http://.
+
+(require 'url-util)
+
+(url-hexify-string "'(),/\"" )
+;; "%27%28%29%2C%2F%22"
+
+(url-hexify-string "文本编辑器") ; Chinese
+;; "%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8"
+
+(url-hexify-string "http://en.wikipedia.org/wiki/Saint_Jerome_in_His_Study_(Dürer)" )
+;; "http%3A%2F%2Fen.wikipedia.org%2Fwiki%2FSaint_Jerome_in_His_Study_%28D%C3%BCrer%29"
+
+To decode a hexified string, use url-unhex-string then decode-coding-string. Example:
+
+(require 'url-util)
+
+(url-hexify-string "http://en.wikipedia.org/wiki/Saint_Jerome_in_His_Study_(Dürer)" )
+;; "http%3A%2F%2Fen.wikipedia.org%2Fwiki%2FSaint_Jerome_in_His_Study_%28D%C3%BCrer%29"
+
+(decode-coding-string
+ (url-unhex-string
+  "http%3A%2F%2Fen.wikipedia.org%2Fwiki%2FSaint_Jerome_in_His_Study_%28D%C3%BCrer%29")
+ 'utf-8)
+;; "http://en.wikipedia.org/wiki/Saint_Jerome_in_His_Study_(Dürer)"
+
+(url-hexify-string "文本编辑器")
+;; "%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8"
+
+(decode-coding-string
+ (url-unhex-string "%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8" ) 'utf-8)
+;; "文本编辑器"
+
+To encode a full URL, use url-unhex-string then decode-coding-string. Example:
+
+(require 'url-util)
+
+(url-encode-url "http://zh.wikipedia.org/wiki/文本编辑器")
+;; "http://zh.wikipedia.org/wiki/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8"
+
+(url-encode-url "http://en.wikipedia.org/wiki/Saint_Jerome_in_His_Study_(Dürer)")
+;; "http://en.wikipedia.org/wiki/Saint_Jerome_in_His_Study_(D%C3%BCrer)"
+
+Elisp + JavaScript Solution
+
+Here's a solution by calling a external node.js script. Elisp: Calling External Command to Decode URL Percent Encoding.
+
+** date insert
+   #+BEGIN_SRC emacs-lisp
+     (require 'ido) ; part of emacs
+
+     (defun xah-insert-date ()
+       "Insert current date and or time.
+     Insert date in this format: yyyy-mm-dd.
+     When called with `universal-argument', prompt for a format to use.
+     If there's text selection, delete it first.
+
+     Do not use this function in lisp code. Call `format-time-string' directly.
+
+     URL `http://ergoemacs.org/emacs/elisp_insert-date-time.html'
+     version 2016-12-18"
+       (interactive)
+       (when (use-region-p) (delete-region (region-beginning) (region-end)))
+       (let (($style
+              (if current-prefix-arg
+                  (string-to-number
+                   (substring
+                    (ido-completing-read
+                     "Style:"
+                     '(
+                       "1 → 2016-10-10 Monday"
+                       "2 → 2016-10-10T19:39:47-07:00"
+                       "3 → 2016-10-10 19:39:58-07:00"
+                       "4 → Monday, October 10, 2016"
+                       "5 → Mon, Oct 10, 2016"
+                       "6 → October 10, 2016"
+                       "7 → Oct 10, 2016"
+                       )) 0 1))
+                0
+                )))
+         (insert
+          (cond
+           ((= $style 0)
+            (format-time-string "%Y-%m-%d") ; "2016-10-10"
+            )
+           ((= $style 1)
+            (format-time-string "%Y-%m-%d %A") ; "2016-10-10 Monday"
+            )
+           ((= $style 2)
+            (concat
+             (format-time-string "%Y-%m-%dT%T")
+             (funcall (lambda ($x) (format "%s:%s" (substring $x 0 3) (substring $x 3 5))) (format-time-string "%z")))
+            ;; eg "2016-10-10T19:02:23-07:00"
+            )
+           ((= $style 3)
+            (concat
+             (format-time-string "%Y-%m-%d %T")
+             (funcall (lambda ($x) (format "%s:%s" (substring $x 0 3) (substring $x 3 5))) (format-time-string "%z")))
+            ;; eg "2016-10-10 19:10:09-07:00"
+            )
+           ((= $style 4)
+            (format-time-string "%A, %B %d, %Y")
+            ;; eg "Monday, October 10, 2016"
+            )
+           ((= $style 5)
+            (format-time-string "%a, %b %d, %Y")
+            ;; eg "Mon, Oct 10, 2016"
+            )
+           ((= $style 6)
+            (format-time-string "%B %d, %Y")
+            ;; eg "October 10, 2016"
+            )
+           ((= $style 7)
+            (format-time-string "%b %d, %Y")
+            ;; eg "Oct 10, 2016"
+            )
+           (t
+            (format-time-string "%Y-%m-%d"))))))
+   #+END_SRC
+
+   #+RESULTS:
+   : xah-insert-date

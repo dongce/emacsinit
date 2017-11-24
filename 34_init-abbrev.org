@@ -115,6 +115,7 @@
    #+BEGIN_SRC emacs-lisp
      (setf global-abbrev-table-assoc
        `(
+       ("8vs" "🆚")
 ("8safety"  "⛑")
 ("8sine"    "∿")
 ("8mul"     "×")

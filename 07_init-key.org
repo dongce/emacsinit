@@ -722,3 +722,8 @@
    #+BEGIN_SRC emacs-lisp
    (require 'helm-bookmark)
    #+END_SRC
+
+** ace-link
+   #+BEGIN_SRC emacs-lisp
+   (ace-link-setup-default)
+   #+END_SRC

@@ -1097,7 +1097,7 @@ Note: the project list is sorted in descending alphabetic order."
 
 (defun desktop()
   (interactive)
-  (dired "c:/Documents and Settings/dongil/바탕 화면"))
+  (dired "c:/Documents and Settings/dongil/Desktop"))
 
 (defun w32-open (x &optional thisbuffer)
   "Open an sln file and create a project buffer using the data in it."
@@ -1191,13 +1191,13 @@ Return:
 ;;;
 (defsubst file-name-dos (file)
   "Convert FILE slashes to dos format."
-  (subst-char file ?/ ?\\))
+  (subst-char-in-string file ?/ ?\\))
 
 ;;; ----------------------------------------------------------------------
 ;;;
 (defsubst file-name-unix (file)
   "Convert FILE slashes to unix format."
-  (subst-char file ?\\ ?/))
+  (subst-char-in-string file ?\\ ?/))
 
 (defun copy-rectangle-to-clipboard (p1 p2)
   "Copy region as column (rectangle) to operating system's clipboard.
@@ -3080,51 +3080,55 @@ Version 2015-03-03"
 : refine-all
 
 * scratch
-#+BEGIN_SRC emacs-lisp
-;; 재미있는 함수 
-(defun create-scratch-buffer nil
-  "create a new scratch buffer to work in. (could be *scratch* - *scratchX*)"
-  (interactive)
-  (let ((n 0)
-	bufname)
-    (while (progn
-	     (setq bufname (concat "*scratch" (if (= n 0) "" (int-to-string n)) "*"))
-	     (setq n (1+ n))
-	     (get-buffer bufname)))
-    (switch-to-buffer (get-buffer-create bufname))
-    (if (= n 1) (lisp-interaction-mode))))  ; 1, because n was incremented))
+** persistent                                                   :deprecated:
+ #+BEGIN_SRC emacs-lisp :tangle no
+ ;; 재미있는 함수 
+ (defun create-scratch-buffer nil
+   "create a new scratch buffer to work in. (could be *scratch* - *scratchX*)"
+   (interactive)
+   (let ((n 0)
+	 bufname)
+     (while (progn
+	      (setq bufname (concat "*scratch" (if (= n 0) "" (int-to-string n)) "*"))
+	      (setq n (1+ n))
+	      (get-buffer bufname)))
+     (switch-to-buffer (get-buffer-create bufname))
+     (if (= n 1) (lisp-interaction-mode))))  ; 1, because n was incremented))
 
-(defun tmpscratch ()
-  (interactive)
-  (let ((b (get-buffer "*scratch*"))) 
-    (if (equal nil b ) (create-scratch-buffer) (switch-to-buffer b ))))
+ (defun bury-scratch ()
+   "Bury scratch buffer and return nil. Intended to be added to
+ kill-buffer-query-functions in order to prevent the scratch
+ buffer being killed."
+   (if (or  (string-match "^\*scratch"  (buffer-name) )
+            (string-match "^\*new" (buffer-name)))
+       (progn (bury-buffer) nil)
+     t))
 
-(global-set-key 
- (kbd  "M-<pause>") 
- #'tmpscratch
- )
+ (add-to-list 'kill-buffer-query-functions 'bury-scratch)
 
+ (defun new-scratch ()
+   "open up a guaranteed new scratch buffer"
+   (interactive)
+   (switch-to-buffer (make-temp-file "kim")))
 
+ ;; (loop for num from 0 
+ ;; for name = (format "blah-%03i" num) while (get-buffer name) finally return name))) 
+ #+END_SRC
+** emacs-lock-mode
+   #+BEGIN_SRC emacs-lisp
+     (defun tmpscratch ()
+       (interactive)
+       (let ((b (get-buffer "*scratch*"))) 
+         (if (equal nil b ) (create-scratch-buffer) (switch-to-buffer b ))))
 
-(defun bury-scratch ()
-  "Bury scratch buffer and return nil. Intended to be added to
-kill-buffer-query-functions in order to prevent the scratch
-buffer being killed."
-  (if (or  (string= (buffer-name) "*scratch*")
-           (string-match "^\*new" (buffer-name)))
-      (progn (bury-buffer) nil)
-    t))
+     (global-set-key (kbd  "M-<pause>") #'tmpscratch)
 
-(add-to-list 'kill-buffer-query-functions 'bury-scratch)
+     (with-current-buffer "*scratch*"
+       (emacs-lock-mode 'kill))
+   #+END_SRC
 
-(defun new-scratch ()
-  "open up a guaranteed new scratch buffer"
-  (interactive)
-  (switch-to-buffer (make-temp-file "kim")))
-
-;; (loop for num from 0 
-;; for name = (format "blah-%03i" num) while (get-buffer name) finally return name))) 
-#+END_SRC
+   #+RESULTS:
+   : kill
 
 * folding
 #+BEGIN_SRC emacs-lisp
@@ -3341,7 +3345,7 @@ of FILE in the current directory, suitable for creation"
     (let ((buf (get-buffer-create " *alarm notify* ")))
       (async-shell-command (format "notify-send -t 5000 \"%s\" \"%s\" " text text) buf) ;
       ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe --g-fatal-warnings --warning --text=\"%s\"  " text) buf)
-      (async-shell-command (format "c:\\anaconda43\\python.exe t:/usr/local/editor/emacsw32/cmdutils/pymessage.py \"%s\"  " text) buf) 
+      (async-shell-command (format "c:\\anaconda43\\python.exe t:/usr/local/editor/emacsw32/cmdutils/pymsgdialog.py \"%s\"  " text) buf) 
       ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe  --info --text=\"%s\"  " text) buf)
       ;;(message-box text)
       )) 
@@ -3378,12 +3382,41 @@ of FILE in the current directory, suitable for creation"
         ((equal 1 arg )
          "t:/usr/local/editor/emacsW32/MiniCap/MiniCap.exe -captureobjselect -noaero -bordershadow -save %f -exit")
         ((equal 2 arg )
-         "t:/usr/local/editor/emacsW32/iview441_x64/i_view64.exe /capture=5 ")
+         "t:/usr/local/editor/emacsW32/iview_x64/i_view64.exe /capture=5 ")
         (t
-         "t:/usr/local/editor/emacsW32/iview441_x64/i_view64.exe /capture=4 /convert=%f"))))
+         "t:/usr/local/editor/emacsW32/iview_x64/i_view64.exe /capture=4 /convert=%f"))))
   #+END_SRC
 
+
+* TODO irfanview
+  DEADLINE: <2017-10-31 화>
+
+  pandoc 모드를 활용하여 만들 수 있도록 한다. 
+  #+BEGIN_SRC emacs-lisp
+    (defvar-local irfan--local-settings nil "A buffer-local variable holding a file's irfan options.")
+
+    (defun irfan--pp-option (option)
+      "Return a pretty-printed representation of OPTION."
+      (or (irfan--get option)
+          ""))
+
+    (defun irfan--get (option &optional buffer)
+      "Return the value of OPTION.
+    Optional argument BUFFER is the buffer from which the value is to
+    be retrieved."
+      (or buffer (setq buffer (current-buffer)))
+      (cdr (assq option (buffer-local-value 'irfan--local-settings buffer))))
+
+    (defun irfan--set (option value)
+      "Set the local value of OPTION to VALUE."
+
+      (if (assq option irfan--local-settings) ; add the option if it's not there
+          (setcdr (assq option irfan--local-settings) value)
+        (push (list option) irfan--local-settings)))
+
+  #+END_SRC
 * word 2 org 
+  http://xahlee.info/comp/unicode_geometric_shapes.html
 #+BEGIN_SRC emacs-lisp
   (defun doc2org (&optional chapter)
     (interactive "p")
@@ -3395,7 +3428,8 @@ of FILE in the current directory, suitable for creation"
         (replace-regexp  "-" "-" nil (point-min) (point-max))
         (replace-regexp  "-" "-" nil (point-min) (point-max))
         (replace-string "\uF06C" "·" nil (point-min) (point-max))
-
+        (replace-string "\uF071" "❏" nil (point-min) (point-max))
+        
         (replace-regexp (regexp-quote "^(\*)+")  " \1" nil (point-min) (point-max) )
 
         (if chapter
@@ -3432,6 +3466,7 @@ of FILE in the current directory, suitable for creation"
         (replace-regexp  "-" "-" )
         (replace-regexp  "-" "-" )
         (replace-string "\uF06C" "·" )
+        (replace-string "\uF071" "❏" )
         (replace-regexp (regexp-quote "^(\*)+")  " \1"  )
 
         (if chapter
@@ -3460,6 +3495,9 @@ of FILE in the current directory, suitable for creation"
              "^\[0-9]\+\.\[0-9]\+"                                         "** "  )
             )))))
 #+END_SRC
+
+#+RESULTS:
+: doc2org-region
 
 * xah-macro
 #+BEGIN_SRC emacs-lisp
@@ -3573,3 +3611,50 @@ of FILE in the current directory, suitable for creation"
 
 #+RESULTS:
 : gdb-print-at-point
+* msys2 path handling
+  #+BEGIN_SRC emacs-lisp
+
+    (defvar windows-path-msys2-prefix "/"
+      "Prefix for the \"/X/\" style of cygwin.
+    A cygwin-user can change the \"\" to whatever he wants to access
+    files at MS-DOS drives. For example many people seem to like to have the
+    drives accessible as a directory so that c: == /c, which means the
+    msys2-prefix is \"/\" instead of \"\". This prefix must end
+    with a '/'!  Do not set this variable because the value of this variable is
+    determined at activation-time of windows-path \(see
+    `windows-path-activate')")
+
+
+    (defconst windows-path-style1-regexp "\\`\\(.*/\\)?\\([a-zA-Z]:\\)\\\\")
+    (defconst windows-path-style2-regexp "\\`\\(.*/\\)?\\([a-zA-Z]:\\)/")
+
+    ;; We cannot assume that NAME matched windows-path-style1-regexp nor
+    ;; windows-path-cygwin-style2-regexp because this function could be called with
+    ;; either argument to `expand-file-name', but only one argument to
+    ;; `expand-file-name' may have matched a regexp.  For example,
+    ;; `(expand-file-name ".." "c:/")' will trigger `(windows-path-convert-file-name
+    ;; "..")' and `(windows-path-convert-file-name "c:/")' to be called.
+    (defun file-name-msys2 (name)
+      "Convert file NAME, to cygwin style.
+    `x:/' to `/x/'.
+    NOTE: \"/\" is only an example for the msys2-prefix \(see
+    `windows-path-msys2-prefix')."
+      (cond ((string-match windows-path-style1-regexp name)
+             (setq filename
+                   (replace-match (concat windows-path-msys2-prefix
+                                          (downcase (substring (match-string 2 name) 0 1)))
+                                  t nil name 2))
+             (while (string-match "\\\\" filename)
+               (setq filename
+                     (replace-match "/" t nil filename)))
+             filename) 
+            ((string-match windows-path-style2-regexp name)
+             (replace-match (concat windows-path-msys2-prefix
+                                    (downcase (substring (match-string 2 name) 0 1)))
+                            t nil name 2))
+
+            (t name)))
+  #+END_SRC
+
+  #+RESULTS:
+  : file-name-msys2

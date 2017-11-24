@@ -1119,6 +1119,8 @@
        "  position: relative;"
        "  overflow: visible;"
        "  padding-top: 1.2em;"
+       "  font-family:'Consolas', 'Malgun Gothic';"
+       "  font-size:0.9em;"
        "}"
        "pre.src:before {"
        "  display: none;"
@@ -1269,7 +1271,6 @@
        ".vi { color: #3333BB }"
        ".il { color: #0000DD; font-weight: bold }"
    ;;; this is my setting
-       "pre * {font-family:'Consolas', \'Malgun Gothic\';font-size:0.9em;}"
        "#content{text-align:left;max-width:70em}"
        "</style>"
        )

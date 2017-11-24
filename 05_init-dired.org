@@ -304,7 +304,7 @@
 
     (setf static-winexe-cmdlist 
           `(
-            (cap ,(fullpath "../../iview441_x64/i_view64.exe") "/capture=5")
+            (cap ,(fullpath "../../iview_x64/i_view64.exe") )
             (wcap "c:/windows/system32/SnippingTool.exe")
             (dev "devmgmt.msc")
             (snipp "c:/windows/system32/SnippingTool.exe")
@@ -706,6 +706,12 @@ open and unsaved."
 #+RESULTS:
 : t
 
+* dired-hacks
+** PKX 분컴
+   [[file:u:/orgdir/misc/2017-09-07%201329_%EC%86%90%EA%B1%B4%EC%9A%A9(Son%20KeonYong)_RE%EC%B2%B4%EA%B3%84%EB%B6%84%EC%84%9D%20%EC%98%A4%EB%A5%98%202%EA%B0%80%EC%A7%80%20%EC%9E%88%EC%8A%B5%EB%8B%88%EB%8B%A4%20%EA%B2%80%ED%86%A0%20%EB%B6%80%ED%83%81%EB%93%9C%EB%A6%BD%EB%8B%88%EB%8B%A4.eml][file:u:/orgdir/misc/2017-09-07 1329_손건용(Son KeonYong)_RE체계분석 오류 2가지 있습니다 검토 부탁드립니다.eml]]
+
+** 유용한 폴더 
+   C:\Users\dongil\AppData\Local\Microsoft\Windows\Temporary Internet Files\Content.Outlook
 * sorting
   #+BEGIN_SRC emacs-lisp
     (use-package dired-quick-sort
