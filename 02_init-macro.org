@@ -1615,21 +1615,10 @@ If the COUNT exeeds string length or is zero, whole string is returned."
 #+END_SRC
 
 * string s- like 
-#+BEGIN_SRC emacs-lisp
-;;; ----------------------------------------------------------------------
-;;; - This old version is equivalent to the new one. The NEW one
-;;;   was needed because Emacs 19.30+ didn't allow integer in
-;;;   'concat function any more.
-;;; - This is interesting macro, but ... Hmm, I think it is
-;;;   too slow to be used regularly. Use with care in places where
-;;;   time is not critical.
-;;;
-;;old (defmacro strcat (var-sym &rest body)
-;;old"Shorthand to (setq VAR-SYM (concat VAR-SYM ...))"
-;;old   (` (setq (, var-sym) (concat (or (, var-sym) "") (,@ body)))))
 
-;;; #todo: Remove strcat
-
+** strcat
+   #+BEGIN_SRC emacs-lisp :tangle no
+   
 (defmacro strcat (var &rest body)
   "Like C strcat. Put results to VAR using BODY forms.
 Integers and variables passed in BODY to VAR
@@ -1648,52 +1637,68 @@ Example call:  (strcat var \"hello \" \"there \" 1234 \" \" 55)"
 	     (quote (, body))
 	     ""
 	     )))))
+   #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+ ;;; ----------------------------------------------------------------------
+ ;;; - This old version is equivalent to the new one. The NEW one
+ ;;;   was needed because Emacs 19.30+ didn't allow integer in
+ ;;;   'concat function any more.
+ ;;; - This is interesting macro, but ... Hmm, I think it is
+ ;;;   too slow to be used regularly. Use with care in places where
+ ;;;   time is not critical.
+ ;;;
+ ;;old (defmacro strcat (var-sym &rest body)
+ ;;old"Shorthand to (setq VAR-SYM (concat VAR-SYM ...))"
+ ;;old   (` (setq (, var-sym) (concat (or (, var-sym) "") (,@ body)))))
 
-(defsubst line-wrap-p ()
-  "Check if line wraps. ie. line is longer that current window."
-  (> (line-length) (nth 2 (window-edges))))
-
-;;; ----------------------------------------------------------------------
-;;; - Ever struggled with peeking the lists..?
-;;; - I have, and printing the contents of auto-mode-alist into
-;;;   the buffer is very easy with this.
-;;; - Should be default emacs function.
-;;;
-(defun list-print (list)
-  "Insert content of LIST into current point."
-  (interactive "XLisp symbol, list name: ")
-  (mapcar
-   (function
-    (lambda (x) (insert (2str x) "\n")))
-   list))
-
-;;; ----------------------------------------------------------------------
-;;; 1990, Sebastian Kremer, Institute for Theoretical Physics, West Germany
-;;; BITNET: ab027@dk0rrzk0.bitnet
-;;;
-(defsubst list-to-string (list &optional separator)
-  "Convert LIST into string. Optional SEPARATOR defaults to \" \".
-
-Input:
-
-  LIST       '(\"str\" \"str\" ...)
-  separator  ' '
-
-Return:
-  str"
-  (mapconcat
-   (function identity)			;returns "as is"
-   list
-   (or separator " ")
-   ))
+ ;;; #todo: Remove strcat
 
 
-(defun shell-command-to-string (command)
-  "Returns shell COMMAND's ouput as string. Tinylibm."
-  (with-temp-buffer
-    (shell-execute command (current-buffer))
-    (buffer-string)))
-#+END_SRC
+ (defsubst line-wrap-p ()
+   "Check if line wraps. ie. line is longer that current window."
+   (> (line-length) (nth 2 (window-edges))))
+
+ ;;; ----------------------------------------------------------------------
+ ;;; - Ever struggled with peeking the lists..?
+ ;;; - I have, and printing the contents of auto-mode-alist into
+ ;;;   the buffer is very easy with this.
+ ;;; - Should be default emacs function.
+ ;;;
+ (defun list-print (list)
+   "Insert content of LIST into current point."
+   (interactive "XLisp symbol, list name: ")
+   (mapcar
+    (function
+     (lambda (x) (insert (2str x) "\n")))
+    list))
+
+ ;;; ----------------------------------------------------------------------
+ ;;; 1990, Sebastian Kremer, Institute for Theoretical Physics, West Germany
+ ;;; BITNET: ab027@dk0rrzk0.bitnet
+ ;;;
+ (defsubst list-to-string (list &optional separator)
+   "Convert LIST into string. Optional SEPARATOR defaults to \" \".
+
+ Input:
+
+   LIST       '(\"str\" \"str\" ...)
+   separator  ' '
+
+ Return:
+   str"
+   (mapconcat
+    (function identity)			;returns "as is"
+    list
+    (or separator " ")
+    ))
+
+
+ (defun shell-command-to-string (command)
+   "Returns shell COMMAND's ouput as string. Tinylibm."
+   (with-temp-buffer
+     (shell-execute command (current-buffer))
+     (buffer-string)))
+ #+END_SRC
 
 * emacs lisp debug
 #+BEGIN_SRC emacs-lisp
@@ -3345,7 +3350,7 @@ of FILE in the current directory, suitable for creation"
     (let ((buf (get-buffer-create " *alarm notify* ")))
       (async-shell-command (format "notify-send -t 5000 \"%s\" \"%s\" " text text) buf) ;
       ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe --g-fatal-warnings --warning --text=\"%s\"  " text) buf)
-      (async-shell-command (format "c:\\anaconda43\\python.exe t:/usr/local/editor/emacsw32/cmdutils/pymsgdialog.py \"%s\"  " text) buf) 
+      (async-shell-command (format "c:\\anaconda\\python.exe t:/usr/local/editor/emacsw32/cmdutils/pymsgdialog.py \"%s\"  " text) buf) 
       ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe  --info --text=\"%s\"  " text) buf)
       ;;(message-box text)
       )) 
@@ -3658,3 +3663,19 @@ of FILE in the current directory, suitable for creation"
 
   #+RESULTS:
   : file-name-msys2
+* reqtrace
+  #+BEGIN_SRC emacs-lisp
+    (defun reqtrace (req reqmap)
+      (-map
+       (lambda (r)
+         (-map #'car (-filter (lambda (m) (member r m)) reqmap) )) req))
+  #+END_SRC
+
+  #+RESULTS:
+  : reqtrace
+* line-number
+  #+BEGIN_SRC emacs-lisp
+  (defun ni ()
+    (interactive)
+    (setf display-line-numbers t))
+  #+END_SRC

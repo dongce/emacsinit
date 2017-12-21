@@ -53,6 +53,7 @@
         "obA" 'ivy-pop-view
         "obb" 'ivy-switch-buffer-other-window
         "obB" 'ivy-switch-buffer
+        "bb"  'switch-to-buffer
         "ob[" 'evil-prev-buffer
         "obk" 'kill-this-buffer
         "ob]" 'evil-next-buffer

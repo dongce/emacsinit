@@ -192,6 +192,7 @@
   (add-to-list 'file-coding-system-alist '("\\.latex\\'" . utf-8))
   (add-to-list 'file-coding-system-alist '("\\(\\`\\|/\\|\\\\\\)dot-.*$". utf-8))
   (add-to-list 'file-coding-system-alist '("COMMIT_EDITMSG" . utf-8))
+  (add-to-list 'file-coding-system-alist '("ob-" . utf-8))
   ;;deprecated;; (add-to-list 'auto-coding-alist '("\\.latex\\'" . utf-8))
 
 

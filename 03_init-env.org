@@ -2,6 +2,9 @@
 * 윈도우 환경 변수 
 #+BEGIN_SRC emacs-lisp
 (when-os 'windows-nt
+ (setenv "MAGICK_CODER_MODULE_PATH" "c:\\msys264\\mingw64\\lib\\ImageMagick-7.0.6\\modules-Q16HDRI\\coders")
+ (setenv "MAGICK_HOME" "c:\\msys264\\mingw64")
+ (setenv "MAGICK_DEBUG" "ALL")
  (setenv "BZR_PLUGIN_PATH"      "t:/usr/local/bazaar/plugins"      t )
  (setenv "GUILE_HOME"      "t:/usr/local/guile"      t )
  (setenv "PYTHONUNBUFFERED"      "x" t )

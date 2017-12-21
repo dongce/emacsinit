@@ -98,6 +98,8 @@
     :demand
     :init
     (define-key  company-active-map [escape] '(lambda () (interactive) (company-abort) (evil-normal-state)))
+    (define-key company-active-map [return]    nil)
+    (define-key company-active-map (kbd "RET") nil)
     (define-key  company-active-map [end] 'company-abort))
 #+END_SRC
 

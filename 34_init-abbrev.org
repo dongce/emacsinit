@@ -1462,7 +1462,7 @@
    #+BEGIN_SRC emacs-lisp
      (add-to-list
       'global-abbrev-table-assoc
-      '("8wh" "c:\\anaconda43\\python.exe t:/usr/local/wordhacks/wordhack.py"))
+      '("8wh" "c:\\anaconda\\python.exe t:/usr/local/wordhacks/wordhack.py"))
    #+END_SRC
 
 ** addresslist

@@ -146,7 +146,7 @@
          (apply
           #'async-start-process  ;;impossible;;-reuse-buffer 
           "clip-file" 
-          "c:/anaconda43/python.exe"
+          "c:/anaconda/python.exe"
           (lambda (p) (message "파일복사 완료"))
           pyclip
           files)))
@@ -310,7 +310,7 @@
             (snipp "c:/windows/system32/SnippingTool.exe")
             (squid ,(fullpath  "../../conemul/conemu64.exe") "-reuse -dir \"c:\\squid\\sbin\" -cmd .\\squid.exe -D")
             (tscproxy ,(fullpath  "../../conemul/conemu64.exe")
-                      "-reuse -dir \"t:\\misc\\pytcpproxy\" -cmd c:\\anaconda43\\python.exe tscproxy.py")
+                      "-reuse -dir \"t:\\misc\\pytcpproxy\" -cmd c:\\anaconda\\python.exe tscproxy.py")
             (msys2conemul ,(fullpath  "../../conemul/conemu64.exe")
                           "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&c:\\msys264\\usr\\bin\\sh --login -i")
 
