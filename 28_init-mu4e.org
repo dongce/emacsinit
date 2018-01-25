@@ -22,7 +22,7 @@
 
 
           (use-package mu4e
-
+            :ensure
             :init
             (cond ((eq window-system 'w32)
                    (let ((default-directory (fullpath "../../mumailindexer/share/emacs/site-lisp")))
@@ -178,20 +178,18 @@
                 (message value)
                 ))
 
-            (define-key mu4e-headers-mode-map (kbd "!")             'open-mu4e-header)
-            (define-key mu4e-headers-mode-map (kbd "@")             'copy-mu4e-header)
-            (define-key mu4e-headers-mode-map (kbd "*")             'bmkp-mu4e-header)
-            (define-key mu4e-headers-mode-map (kbd "<kp-multiply>") 'bmkp-mu4e-header)
-            (define-key mu4e-headers-mode-map (kbd "F")             'find-file-mu4e)
-            (define-key mu4e-headers-mode-map (kbd "f")             'mu4e-field-header)
-
-
-            (define-key mu4e-view-mode-map (kbd "!")             'open-mu4e-view)
-            (define-key mu4e-view-mode-map (kbd "@")             'copy-mu4e-view)
-            (define-key mu4e-view-mode-map (kbd "*")             'bmkp-mu4e-view)
-            (define-key mu4e-view-mode-map (kbd "<kp-multiply>") 'bmkp-mu4e-view)
-            (define-key mu4e-view-mode-map (kbd "F") 'find-file-mu4e)
-            (define-key mu4e-view-mode-map (kbd "f") 'mu4e-field-view)
+            ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "!")             'open-mu4e-header)
+            ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "@")             'copy-mu4e-header)
+            ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "*")             'bmkp-mu4e-header)
+            ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "<kp-multiply>") 'bmkp-mu4e-header)
+            ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "F")             'mu4e-find-file)
+            ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "f")             'mu4e-field-header)
+            ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "!")             'open-mu4e-view)
+            ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "@")             'copy-mu4e-view)
+            ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "*")             'bmkp-mu4e-view)
+            ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "<kp-multiply>") 'bmkp-mu4e-view)
+            ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "F") 'mu4e-find-file)
+            ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "f") 'mu4e-field-view)
 
             ;; 메일을 볼 때 HTML 을 rendering 한다. 
             (require 'htmlr)                        
@@ -601,3 +599,67 @@
 
   #+RESULTS:
   : t
+* refile
+  #+BEGIN_SRC emacs-lisp
+(setq mu4e-refile-folder
+      (lambda (msg)
+        (cond
+         ;; messages to the mu mailing list go to the /mu folder
+         ;;((mu4e-message-contact-field-matches msg :to "mu-discuss@googlegroups.com") "/mu")
+         ;; messages sent directly to me go to /archive
+         ;; also `mu4e-user-mail-address-p' can be used
+         ;;((mu4e-message-contact-field-matches msg :to "dongce@gmail.com") "/hobby")
+         ;; messages with football or soccer in the subject go to /football
+         ((string-match "ATX" (mu4e-message-field msg :subject)) "/ATX")
+         ((string-match "LPH2\\|LPH-II" (mu4e-message-field msg :subject)) "/LPH2")
+         ((string-match "KDX" (mu4e-message-field msg :subject)) "/KDX")
+         ;; messages sent by me go to the sent folder
+         ;;address;;((find-if
+         ;;address;;  (lambda (addr)
+         ;;address;;    (mu4e-message-contact-field-matches msg :from addr))
+         ;;address;;  mu4e-user-mail-address-list)
+         ;;address;; mu4e-sent-folder)
+         ;; everything else goes to /archive
+         ;; important to have a catch-all at the end!
+         (t  "/archive"))))
+
+(defun mu4e-get-maildirs ()
+  "Get maildirs under `mu4e-maildir', recursively, as a list of
+  relative paths (ie., /archive, /sent etc.). Most of the work is
+  done in `mu4e~get-maildirs-1'. Note, these results are /cached/
+  if `mu4e-cache-maildir-list' is customized to non-nil. In that case,
+  the list of maildirs will not change until you restart mu4e."
+  (unless mu4e-maildir (mu4e-error "`mu4e-maildir' is not defined"))
+  (unless (and mu4e-maildir-list mu4e-cache-maildir-list)
+    (setq mu4e-maildir-list
+          (sort
+           (append
+            (when (file-accessible-directory-p
+                   (concat mu4e-maildir "/cur")) '("/"))
+            (mu4e~get-maildirs-1 mu4e-maildir "/")
+            '("../../../REFILE/ATX"
+              "../../../REFILE/LPH-II"
+              )
+            )
+           (lambda (s1 s2) (string< (downcase s1) (downcase s2))))))
+  mu4e-maildir-list)
+
+  #+END_SRC
+
+* tag
+  :tag 로 검색 가능
+  #+BEGIN_SRC emacs-lisp
+    (add-to-list 'mu4e-marks
+                 '(tag
+                   :char       "g"
+                   :prompt     "gtag"
+                   :ask-target (lambda () (completing-read "꼬리표 입력바랍니다 : " '(kdx1p lph2 fl wpl ffxii pkxb HR )))
+                   :action      (lambda (docid msg target)
+                                  (mu4e-action-retag-message msg (concat "+" target)))))
+
+    (mu4e~headers-defun-mark-for tag)
+    (mu4e~view-defun-mark-for tag)
+    (define-key mu4e-headers-mode-map (kbd "m") 'mu4e-headers-mark-for-tag)
+    (define-key mu4e-view-mode-map (kbd "m") 'mu4e-view-mark-for-tag)
+    ;;(define-key mu4e-headers-mode-map (kbd "A") 'mu4e-headers-mark-for-archive)
+  #+END_SRC

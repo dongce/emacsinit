@@ -647,38 +647,43 @@
 
 ** evil extra operator
    #+BEGIN_SRC emacs-lisp
-;; https://github.com/redguardtoo/evil-matchit/blob/master/README.org
-(use-package evil-matchit
-  :config
-  (global-evil-matchit-mode 1 )
-  (plist-put evilmi-plugins 'xah-html-mode '((evilmi-html-get-tag evilmi-html-jump)))
-  (plist-put evilmi-plugins 'web-mode '((evilmi-html-get-tag evilmi-html-jump))))
+     ;; https://github.com/redguardtoo/evil-matchit/blob/master/README.org
+     (use-package evil-matchit
+       :config
+       (global-evil-matchit-mode 1 )
+       (plist-put evilmi-plugins 'xah-html-mode '((evilmi-html-get-tag evilmi-html-jump)))
+       (plist-put evilmi-plugins 'web-mode '((evilmi-html-get-tag evilmi-html-jump))))
 
 
-(use-package evil-args
-  :config
-  ;; bind evil-args text objects
-  (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
-  (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+     (use-package evil-args
+       :config
+       ;; bind evil-args text objects
+       (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+       (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
 
-  ;; bind evil-forward/backward-args
-  (define-key evil-normal-state-map "L" 'evil-forward-arg)
-  (define-key evil-normal-state-map "H" 'evil-backward-arg)
-  (define-key evil-motion-state-map "L" 'evil-forward-arg)
-  (define-key evil-motion-state-map "H" 'evil-backward-arg)
+       ;; bind evil-forward/backward-args
+       (define-key evil-normal-state-map "L" 'evil-forward-arg)
+       (define-key evil-normal-state-map "H" 'evil-backward-arg)
+       (define-key evil-motion-state-map "L" 'evil-forward-arg)
+       (define-key evil-motion-state-map "H" 'evil-backward-arg)
 
-  ;; bind evil-jump-out-args
-  (define-key evil-normal-state-map "K" 'evil-jump-out-args))
+       ;; bind evil-jump-out-args
+       (define-key evil-normal-state-map "K" 'evil-jump-out-args))
 
-(use-package evil-extra-operator
-  :config
-  (global-evil-extra-operator-mode 1)
-  )
+     (define-key evil-normal-state-map (kbd "<S-return>")
+       (lambda ()
+         (interactive)
+         (call-interactively 'spacemacs/evil-insert-line-below)
+         (evil-next-line)))
+
+     (use-package evil-extra-operator
+       :config
+       (global-evil-extra-operator-mode 1))
 
 
-(use-package evil-visualstar
-  :config
-  (global-evil-visualstar-mode t))
+     (use-package evil-visualstar
+       :config
+       (global-evil-visualstar-mode t))
 
 
    #+END_SRC
@@ -1000,191 +1005,341 @@
 
 **** evil-org 
      deprecated by evil-org
-   #+BEGIN_SRC emacs-lisp :tangle no
+***** next deprecated 
+    #+BEGIN_SRC emacs-lisp :tangle no
    
 
-   (evil-leader/set-key-for-mode 'org-mode
-     "ha" 'helm-org-agenda-files-headings
-     "hH" 'helm-org-headings
-     "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
-     "hh" 'helm-org-in-buffer-headings
+    (evil-leader/set-key-for-mode 'org-mode
+      "ha" 'helm-org-agenda-files-headings
+      "hH" 'helm-org-headings
+      "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
+      "hh" 'helm-org-in-buffer-headings
 
-     "u"    'outline-up-heading
-     "q"    'org-todo
-     "<down>"    'outline-next-visible-heading
-     "<up>"    'outline-previous-visible-heading
-     "<right>"    'org-forward-heading-same-level
-     "<left>"    'org-backward-heading-same-level
+      "u"    'outline-up-heading
+      "q"    'org-todo
+      "<down>"    'outline-next-visible-heading
+      "<up>"    'outline-previous-visible-heading
+      "<right>"    'org-forward-heading-same-level
+      "<left>"    'org-backward-heading-same-level
 
-     "r"         'org-mark-ring-goto
-     "&"         'org-mark-ring-goto
-
-
-     "or" 'org-capture
-     "oa" 'org-agenda
-     "os" 'org-store-link
-     "ol" 'org-insert-alllink
-     "oo" 'org-open-at-point-global
-     "oR" 'org-refile
-     "oc" 'org-cliplink
-     "od" 'org-deadline
-     "oh" 'org-schedule
-     "ot" 'org-set-tags
-     "oT" 'org-time-stamp
-     "ov" 'org-attach-screenshot
-     "ob" 'org-iswitchb
-     "ow" 'org-archive-subtree-default
-     "op" 'org-link-copy-image
-     "of" 'org-link-copy-file
-     "oe" 'org-set-effort
-     "oi" 'org-clock-in
-     "oI" 'org-clock-out
-     "w" 'org-archive-subtree-default
-     )
+      "r"         'org-mark-ring-goto
+      "&"         'org-mark-ring-goto
 
 
-   (use-package org
-     :config
-     (evil-define-key 'normal evil-org-mode-map
-       (kbd "RET") 'org-open-at-point
-       "za" 'org-cycle
-       "zA" 'org-shifttab
-       "zm" 'hide-body
-       "zr" 'show-all
-       "zo" 'show-subtree
-       "zO" 'show-all
-       "zc" 'hide-subtree
-       "zC" 'hide-all
-       (kbd "<S-next>") 'evil-forward-paragraph
-       (kbd "<S-prev>") 'evil-backward-paragraph
+      "or" 'org-capture
+      "oa" 'org-agenda
+      "os" 'org-store-link
+      "ol" 'org-insert-alllink
+      "oo" 'org-open-at-point-global
+      "oR" 'org-refile
+      "oc" 'org-cliplink
+      "od" 'org-deadline
+      "oh" 'org-schedule
+      "ot" 'org-set-tags
+      "oT" 'org-time-stamp
+      "ov" 'org-attach-screenshot
+      "ob" 'org-iswitchb
+      "ow" 'org-archive-subtree-default
+      "op" 'org-link-copy-image
+      "of" 'org-link-copy-file
+      "oe" 'org-set-effort
+      "oi" 'org-clock-in
+      "oI" 'org-clock-out
+      "w" 'org-archive-subtree-default
+      )
 
-       "gn"    'outline-next-visible-heading
-       "gp"    'outline-previous-visible-heading
-       "gf"    'org-forward-heading-same-level
-       "gb"    'org-backward-heading-same-level
-       "gu"    'outline-up-heading
-       "gt"    'org-goto
+
+    (use-package org
+      :config
+      (evil-define-key 'normal evil-org-mode-map
+        (kbd "RET") 'org-open-at-point
+        "za" 'org-cycle
+        "zA" 'org-shifttab
+        "zm" 'hide-body
+        "zr" 'show-all
+        "zo" 'show-subtree
+        "zO" 'show-all
+        "zc" 'hide-subtree
+        "zC" 'hide-all
+        (kbd "<S-next>") 'evil-forward-paragraph
+        (kbd "<S-prev>") 'evil-backward-paragraph
+
+        "gn"    'outline-next-visible-heading
+        "gp"    'outline-previous-visible-heading
+        "gf"    'org-forward-heading-same-level
+        "gb"    'org-backward-heading-same-level
+        "gu"    'outline-up-heading
+        "gt"    'org-goto
     
-      ;;deprecatedby-evil-org;;"gj"    'outline-next-visible-heading
-      ;;deprecatedby-evil-org;;"gk"    'outline-previous-visible-heading
-      ;;deprecatedby-evil-org;;"gl"    'org-forward-heading-same-level
-      ;;deprecatedby-evil-org;;"gh"    'org-backward-heading-same-level
-    
-       (kbd "<kp-multiply>") 'org-insert-star
-       (kbd "M-j") 'org-shiftleft
-       (kbd "M-k") 'org-shiftright
-       (kbd "M-H") 'org-metaleft
-       (kbd "M-J") 'org-metadown
-       (kbd "M-K") 'org-metaup
-       (kbd "M-L") 'org-metaright
-       )
-
-     (evil-define-key 'visual evil-org-mode-map
-       "gn"    'outline-next-visible-heading
-       "gp"    'outline-previous-visible-heading
-       "gf"    'org-forward-heading-same-level
-       "gb"    'org-backward-heading-same-level
-       "gu"    'outline-up-heading
-       "gt"    'org-goto
-       (kbd "<S-next>") 'evil-forward-paragraph
-       (kbd "<S-prev>") 'evil-backward-paragraph
-
        ;;deprecatedby-evil-org;;"gj"    'outline-next-visible-heading
        ;;deprecatedby-evil-org;;"gk"    'outline-previous-visible-heading
        ;;deprecatedby-evil-org;;"gl"    'org-forward-heading-same-level
        ;;deprecatedby-evil-org;;"gh"    'org-backward-heading-same-level
     
-       )
+        (kbd "<kp-multiply>") 'org-insert-star
+        (kbd "M-j") 'org-shiftleft
+        (kbd "M-k") 'org-shiftright
+        (kbd "M-H") 'org-metaleft
+        (kbd "M-J") 'org-metadown
+        (kbd "M-K") 'org-metaup
+        (kbd "M-L") 'org-metaright
+        )
+
+      (evil-define-key 'visual evil-org-mode-map
+        "gn"    'outline-next-visible-heading
+        "gp"    'outline-previous-visible-heading
+        "gf"    'org-forward-heading-same-level
+        "gb"    'org-backward-heading-same-level
+        "gu"    'outline-up-heading
+        "gt"    'org-goto
+        (kbd "<S-next>") 'evil-forward-paragraph
+        (kbd "<S-prev>") 'evil-backward-paragraph
+
+        ;;deprecatedby-evil-org;;"gj"    'outline-next-visible-heading
+        ;;deprecatedby-evil-org;;"gk"    'outline-previous-visible-heading
+        ;;deprecatedby-evil-org;;"gl"    'org-forward-heading-same-level
+        ;;deprecatedby-evil-org;;"gh"    'org-backward-heading-same-level
+    
+        )
 
 
-     (evil-define-key 'normal orgstruct-mode-map
-       (kbd "RET") 'org-open-at-point
-       "za" 'org-cycle
-       "zA" 'org-shifttab
-       "zm" 'hide-body
-       "zr" 'show-all
-       "zo" 'show-subtree
-       "zO" 'show-all
-       "zc" 'hide-subtree
-       "zC" 'hide-all
-       (kbd "M-j") 'org-shiftleft
-       (kbd "M-k") 'org-shiftright
-       (kbd "M-H") 'org-metaleft
-       (kbd "M-J") 'org-metadown
-       (kbd "M-K") 'org-metaup
-       (kbd "M-L") 'org-metaright)
+      (evil-define-key 'normal orgstruct-mode-map
+        (kbd "RET") 'org-open-at-point
+        "za" 'org-cycle
+        "zA" 'org-shifttab
+        "zm" 'hide-body
+        "zr" 'show-all
+        "zo" 'show-subtree
+        "zO" 'show-all
+        "zc" 'hide-subtree
+        "zC" 'hide-all
+        (kbd "M-j") 'org-shiftleft
+        (kbd "M-k") 'org-shiftright
+        (kbd "M-H") 'org-metaleft
+        (kbd "M-J") 'org-metadown
+        (kbd "M-K") 'org-metaup
+        (kbd "M-L") 'org-metaright)
 
-     (evil-define-key 'insert evil-org-mode-map
-       (kbd "M-j") 'org-shiftleft
-       (kbd "M-k") 'org-shiftright
-       (kbd "M-H") 'org-metaleft
-       (kbd "M-J") 'org-metadown
-       (kbd "M-K") 'org-metaup
-       (kbd "M-L") 'org-metaright
-       (kbd "<M-return>") 'org-meta-return
-       (kbd "<S-next>") 'evil-forward-paragraph
-       (kbd "<S-prev>") 'evil-backward-paragraph)
+      (evil-define-key 'insert evil-org-mode-map
+        (kbd "M-j") 'org-shiftleft
+        (kbd "M-k") 'org-shiftright
+        (kbd "M-H") 'org-metaleft
+        (kbd "M-J") 'org-metadown
+        (kbd "M-K") 'org-metaup
+        (kbd "M-L") 'org-metaright
+        (kbd "<M-return>") 'org-meta-return
+        (kbd "<S-next>") 'evil-forward-paragraph
+        (kbd "<S-prev>") 'evil-backward-paragraph)
 
-     (evil-define-key 'insert orgstruct-mode-map
-       (kbd "M-j") 'org-shiftleft
-       (kbd "M-k") 'org-shiftright
-       (kbd "M-H") 'org-metaleft
-       (kbd "M-J") 'org-metadown
-       (kbd "M-K") 'org-metaup
-       (kbd "M-L") 'org-metaright)
+      (evil-define-key 'insert orgstruct-mode-map
+        (kbd "M-j") 'org-shiftleft
+        (kbd "M-k") 'org-shiftright
+        (kbd "M-H") 'org-metaleft
+        (kbd "M-J") 'org-metadown
+        (kbd "M-K") 'org-metaup
+        (kbd "M-L") 'org-metaright)
 
-     )
+      )
 
-
-   #+END_SRC
-
-
-     #+RESULTS:
-     : t
-
-*** mu4e
-    #+BEGIN_SRC emacs-lisp
-  (use-package evil-mu4e
-    :config
-    (mapcar 
-     (lambda (x)
-       (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-main-mode-map ,(car x) ,(cadr x ))))
-     '(
-       ("B"               mu4e-headers-search-bookmark-edit)
-       ("s"               mu4e-headers-search)))
-    (mapcar 
-     (lambda (x)
-       (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-view-mode-map ,(car x) ,(cadr x ))))
-     '(("S" mu4e-view-save-attachment)
-       ("o" mu4e-view-open-attachment)
-       ("O" mu4e-view-open-attachment-emacs)
-       ("B"               mu4e-headers-search-bookmark-edit)
-       ("s"               mu4e-headers-search)
-       ("x"             open-mu4e-view)
-       ("@"             copy-mu4e-view)
-       ("*"             bmkp-mu4e-view)
-       ("<kp-multiply>" bmkp-mu4e-view)
-       ("F"             find-file-mu4e)
-       ("f"             mu4e-field-view)))
-    (mapcar 
-     (lambda (x)
-       (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-headers-mode-map ,(car x) ,(cadr x ))))
-     '(
-       ("B"               mu4e-headers-search-bookmark-edit)
-       ("s"               mu4e-headers-search)
-       ("x"             open-mu4e-header)
-       ("@"             copy-mu4e-header)
-       ("*"             bmkp-mu4e-header)
-       ("<kp-multiply>" bmkp-mu4e-header)
-       ("F"             find-file-mu4e)
-       ("f"             mu4e-field-header)))
-    (evil-mu4e-init)
-    (evil-define-key 'normal mu4e-headers-mode-map
-      "?" mu4e-headers-mode-map)
-    (evil-define-key 'normal mu4e-view-mode-map
-      "?" mu4e-view-mode-map))
 
     #+END_SRC
+***** use this
+      #+BEGIN_SRC emacs-lisp
+
+        (evil-define-key 'normal evil-org-mode-map
+          "gn"    'outline-next-heading
+          "gN"    'outline-next-visible-heading
+          "gP"    'outline-previous-visible-heading
+          "gl"    'goto-line
+          ;;"gf"    'org-forward-heading-same-level
+          ;;"gb"    'org-backward-heading-same-level
+          ;;"gu"    'outline-up-heading
+          ;;"gt"    'org-goto
+
+          )
+
+        (evil-define-key 'visual evil-org-mode-map
+          "gn"    'outline-next-heading
+          "gN"    'outline-next-visible-heading
+          "gP"    'outline-previous-visible-heading
+          "gl"    'goto-line
+          ;;"gf"    'org-forward-heading-same-level
+          ;;"gb"    'org-backward-heading-same-level
+          ;;"gu"    'outline-up-heading
+          ;;"gt"    'org-goto
+  
+          )
+      #+END_SRC
+
+      #+RESULTS:
+      : t
+
+*** mu4e
+**** deprecated
+     #+BEGIN_SRC emacs-lisp :tangle no
+       (use-package evil-mu4e
+         :config
+         (mapcar 
+          (lambda (x)
+            (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-main-mode-map ,(car x) ,(cadr x ))))
+          '(
+            ("B"               mu4e-headers-search-bookmark-edit)
+            ("s"               mu4e-headers-search)))
+         (mapcar 
+          (lambda (x)
+            (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-view-mode-map ,(car x) ,(cadr x ))))
+          '(
+            ("*"             bmkp-mu4e-view)
+            ("<home>"             open-mu4e-view)   ;open in outlook
+            ("<kp-multiply>" bmkp-mu4e-view)
+            ("@"             copy-mu4e-view)
+            ("B"               mu4e-headers-search-bookmark-edit)
+            ("F"             mu4e-find-file)
+            ("f"             mu4e-field-view)
+            ("o" mu4e-view-open-attachment)
+            ("O" mu4e-view-open-attachment-emacs)
+            ("s"               mu4e-headers-search)
+            ("S" mu4e-view-save-attachment)
+            ("U" mu4e-mark-unmark-all)
+            ("x"             mu4e-mark-execute-all )
+ ))
+         (mapcar 
+          (lambda (x)
+            (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-headers-mode-map ,(car x) ,(cadr x ))))
+          '(
+            ("*"             bmkp-mu4e-header)
+            ("<home>"             open-mu4e-view)   ;open in outlook
+            ("<insert>"        mu4e-headers-mark-for-something)   ;open in outlook
+            ("<kp-multiply>" bmkp-mu4e-header)
+            ("@"             copy-mu4e-header)
+            ("B"               mu4e-headers-search-bookmark-edit)
+            ("F"             mu4e-find-file)
+            ("f"             mu4e-field-header)
+            ("s"               mu4e-headers-search)
+            ("U" mu4e-mark-unmark-all)
+            ("u" mu4e-headers-mark-for-unmark)
+            ("x"             mu4e-mark-execute-all )
+ ))
+         (evil-mu4e-init)
+         (evil-define-key 'normal mu4e-headers-mode-map
+           "?" mu4e-headers-mode-map)
+         (evil-define-key 'normal mu4e-view-mode-map
+           "?" mu4e-view-mode-map))
+
+     #+END_SRC
+
+**** brand new
+     #+BEGIN_SRC emacs-lisp 
+       (use-package evil-mu4e
+         :config
+         (append-to-list
+          'evil-mu4e-mode-map-bindings
+          (mapcar 
+           (lambda (x)
+             `(normal mu4e-main-mode-map ,(car x) ,(cadr x )))
+           '(
+             ("B"               mu4e-headers-search-bookmark-edit)
+             ("s"               mu4e-headers-search))))
+         (append-to-list
+          'evil-mu4e-mode-map-bindings
+          (mapcar
+           (lambda (x)
+             `(normal mu4e-view-mode-map ,(car x) ,(cadr x )))
+           `(
+             ("*"             bmkp-mu4e-view)
+             (,(kbd "<home>")             open-mu4e-view)   ;open in outlook
+             (,(kbd "<insert>")           mu4e-headers-mark-for-something)   ;open in outlook
+             (,(kbd "<kp-multiply>") bmkp-mu4e-view)
+             ("@"             copy-mu4e-view)
+             ("B"               mu4e-headers-search-bookmark-edit)
+             ("F"             mu4e-find-file)
+             ("f"             mu4e-field-view)
+             ("o" mu4e-view-open-attachment)
+             ("O" mu4e-view-open-attachment-emacs)
+             ("m"  	mu4e-view-mark-for-tag)
+             ("#"  	mu4e-mark-resolve-deferred-marks)
+             ("$"  	mu4e-show-log)
+             (">"  	end-of-buffer)
+             ("C"  	mu4e-compose-new)
+             ("E"  	mu4e-compose-edit)
+             ("F"  	mu4e-find-file)
+             ("H"  	mu4e-display-manual)
+             ("R"  	mu4e-compose-reply)
+             ("U"  	mu4e-mark-unmark-all)
+             ("f"  	mu4e-field-header)
+             ("s"  	mu4e-query-fragments-search)
+             ("x"  	mu4e-mark-execute-all)
+             ("y"  	mu4e-select-other-view))))
+         (append-to-list
+          'evil-mu4e-mode-map-bindings
+          (mapcar
+           (lambda (x)
+             `(normal mu4e-headers-mode-map ,(car x) ,(cadr x )))
+           `(
+             (,(kbd "<home>")             open-mu4e-view)   ;open in outlook
+             (,(kbd "<insert>")        mu4e-headers-mark-for-something)   ;open in outlook
+             (,(kbd "<kp-multiply>") bmkp-mu4e-header)
+             ("@"             copy-mu4e-header)
+             ("B"               mu4e-headers-search-bookmark-edit)
+             ("x"             mu4e-mark-execute-all)
+             ("F"             mu4e-find-file)
+             ("f"             mu4e-field-header)
+             ("#"  	mu4e-mark-resolve-deferred-marks)
+             ("$"  	mu4e-show-log)
+             (">"  	end-of-buffer)
+             ("C"  	mu4e-compose-new)
+             ("E"  	mu4e-compose-edit)
+             ("F"  	mu4e-find-file)
+             ("H"  	mu4e-display-manual)
+             ("R"  	mu4e-compose-reply)
+             ("U"  	mu4e-mark-unmark-all)
+             ("f"  	mu4e-field-header)
+             ("s"  	mu4e-query-fragments-search)
+             ("x"  	mu4e-mark-execute-all)
+             ("y"  	mu4e-select-other-view)
+             ("%"  	mu4e-headers-mark-pattern)
+             ("&"  	mu4e-headers-mark-custom)
+             ("+"  	mu4e-headers-mark-for-flag)
+             ("-"  	mu4e-headers-mark-for-unflag)
+             ("/"  	mu4e-headers-search-narrow)
+             ("="  	mu4e-headers-mark-for-untrash)
+             ("?"  	mu4e-headers-mark-for-unread)
+             ("A"  	mu4e-headers-mark-for-action)
+             ("B"  	mu4e-headers-search-bookmark-edit)
+             ("D"  	mu4e-headers-mark-for-delete)
+             ("O"  	mu4e-headers-change-sorting)
+             ("P"  	mu4e-headers-toggle-threading)
+             ("Q"  	mu4e-headers-toggle-full-search)
+             ("S"  	mu4e-headers-search-edit)
+             ("T"  	mu4e-headers-mark-thread)
+             ("V"  	mu4e-headers-toggle-skip-duplicates)
+             ("W"  	mu4e-headers-toggle-include-related)
+             ("["  	mu4e-headers-prev-unread)
+             ("\\"  	mu4e-headers-query-prev)
+             ("]"  	mu4e-headers-next-unread)
+             ("a"  	mu4e-headers-action)
+             ("b"  	mu4e-headers-search-bookmark)
+             ("d"  	mu4e-headers-mark-for-trash)
+             ("m"  	mu4e-headers-mark-for-tag)
+             ("J"  	mu4e~headers-jump-to-maildir)
+             ("M"  	mu4e-headers-mark-for-move)
+             ("n"  	mu4e-headers-next)
+             ("p"  	mu4e-headers-prev)
+             ("q"  	mu4e~headers-quit-buffer)
+             ("r"  	mu4e-headers-mark-for-refile)
+             ("t"  	mu4e-headers-mark-subthread)
+             ("u"  	mu4e-headers-mark-for-unmark)
+             ( ,(kbd "<backspace>")	mu4e-headers-mark-for-trash)
+             ( ,(kbd "<delete>")	    mu4e-headers-mark-for-delete)
+             ( ,(kbd "<deletechar>")	mu4e-headers-mark-for-delete))))
+         (evil-mu4e-init)
+         (evil-define-key 'normal mu4e-headers-mode-map
+           (kbd "<f12>") mu4e-headers-mode-map)
+         (evil-define-key 'normal mu4e-view-mode-map
+           (kbd "<f12>") mu4e-view-mode-map))
+
+     #+END_SRC
+
 
 *** dired                 
     

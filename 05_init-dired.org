@@ -380,6 +380,7 @@
             (wxdemo "c:/usr/local/python27/pythonw.exe" "\"C:/Program Files/wxPython2.9 Docs and Demos/demo/demo.pyw\"")
             (epydoc "c:/usr/local/python27/pythonw.exe" "c:/usr/local/python27/Scripts/epydocgui")
             (pinta "c:/Program Files/Pinta/Pinta.exe")
+            (momat "t:/momat/momat.exe")
             (putty "t:/usr/local/editor/emacsW32/iputty/putty.exe")
             (eclipsejee "t:/usr/local/eclipsejee/eclipse.exe")
             (vs2005 "C:/usr/microsoft/vs2005/IDE/Common7/IDE/devenv.exe")

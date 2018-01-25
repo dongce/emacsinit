@@ -1471,6 +1471,18 @@
       'global-abbrev-table-assoc
       '("8f2addr" "moonseok.yang@hanwha.com , honyun.kim@hanwha.com , kim6588.kim@hanwha.com , jeonghun.song@hanwha.com , kyungyong.kim@hanwha.com , di7979.kim@hanwha.com , jieun99.park@hanwha.com , jiyeun0107.lee@hanwha.com , kipyo.kim@hanwha.com , donghan.jung@hanwha.com , y.san.kim@hanwha.com , suseok.park@hanwha.com , kt0830.kwon@hanwha.com , jhkatt.kim@hanwha.com , dh0104.lee@hanwha.com , dy1212.park@hanwha.com , seungmo1025.jung@hanwha.com , giyeop.lee@hanwha.com , zeros79@hanwha.com , heungbae.lee@hanwha.com , dha.jung@hanwha.com , smkool.kwon@hanwha.com , hjwish.lee@hanwha.com , changsook.yang@hanwha.com , jeewon.shin@hanwha.com , jiyoon15.park@hanwha.com , cheolhoon.kim@hanwha.com , hwanjun627@hanwha.com , cs214.baek@hanwha.com , yonggyu.jeong@hanwha.com , hr10.jo@hanwha.com , jonghyeon.im@hanwha.com , kc6973.kwon@hanwha.com , sj0543.lee@hanwha.com , eunsol.kim@hanwha.com , winterkkh@hanwha.com , sj0220.yoon@hanwha.com , jg5250.lee@hanwha.com , ej0321.jo@hanwha.com , yd1208.heo@hanwha.com , sanggil12.son@hanwha.com , sh14.kang@hanwha.com , jw14.son@hanwha.com , jinh.ahn@hanwha.com , yhee.noh@hanwha.com , bwlee3415@hanwha.com , j.yujeong@hanwha.com , gyubyeong@hanwha.com , donguk38.kim@hanwha.com , bongsoo1027.kang@hanwha.com "))
 #+END_SRC
+** greeting
+   #+BEGIN_SRC emacs-lisp
+   
+     (add-to-list
+      'global-abbrev-table-assoc
+      '("8grr" "안녕하십니까."))
+
+     (add-to-list
+      'global-abbrev-table-assoc
+      '("8gr" "안녕하세요."))
+   #+END_SRC
+
 
 ** icon
 #+BEGIN_SRC emacs-lisp
@@ -1575,6 +1587,7 @@
 
  #+RESULTS:
  : t
+
 
 
 * counsel
