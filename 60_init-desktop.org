@@ -192,6 +192,7 @@
   (add-to-list 'file-coding-system-alist '("\\.latex\\'" . utf-8))
   (add-to-list 'file-coding-system-alist '("\\(\\`\\|/\\|\\\\\\)dot-.*$". utf-8))
   (add-to-list 'file-coding-system-alist '("COMMIT_EDITMSG" . utf-8))
+  (add-to-list 'file-coding-system-alist '("MERGE_MSG" . utf-8))
   (add-to-list 'file-coding-system-alist '("ob-" . utf-8))
   (add-to-list 'file-coding-system-alist '("\\.pdf\\'" . utf-8))
   (add-to-list 'file-coding-system-alist '("\\.epdf\\'" . utf-8))

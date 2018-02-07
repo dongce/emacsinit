@@ -373,7 +373,7 @@
             (vimtut  "t:/usr/local/editor/emacsW32/doc/image/vi-vim-cheat-sheet.gif")
             (jsonview  "t:/usr/local/editor/emacsW32/JsonViewerPackage/JsonView/JsonView.exe")    
             (sourcetree  "t:/usr/local/sourcetree/SourceTree.exe")
-            (vncviewer ,(fullpath "../../cmdutils/vncviewer.exe  "))
+            (vncviewer "t:/usr/local/vncviewer/VNC-Viewer-6.1.1-Windows-64bit.exe")
             (fax  "d:/kicom/e2fax/Fax2006.exe")
             (zeal  "t:/usr/local/editor/emacsW32/zeal-20131109/zeal.exe" )
             (gitk  ,(fullpath "../../cmdutils/gitk.vbs"))

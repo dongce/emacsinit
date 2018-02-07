@@ -1579,6 +1579,15 @@
         (insert  (format-time-string "%Y%m%d"))
         (buffer-string))))
 
+   (defun-abbrev
+     timestamp-with-name2
+     "8ts3"
+     (interactive)
+     (insert
+      (with-temp-buffer 
+        (insert  (format-time-string "%Y%m%dW%V"))
+        (buffer-string))))
+
 
    ;; turn on abbrev mode globally
    (setq-default abbrev-mode t)
