@@ -577,3 +577,9 @@
 
   #+RESULTS:
   : enable-wfm
+* batfile mode 
+  #+BEGIN_SRC emacs-lisp
+  (use-package bmx-mode
+  :config 
+  (bmx-mode-setup-defaults))
+  #+END_SRC

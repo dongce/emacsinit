@@ -1058,7 +1058,7 @@
            ;; (search-forward mail-header-separator)
            ;; (next-line)
            (message-goto-body)
-           (org~mu4e-mime-switch-headers-or-body)
+           ;;call by advice(org~mu4e-mime-switch-headers-or-body)
            (narrow-to-region (point) (point))
            ;; (if (and  title subregion)
            ;;     (insert-line (format  "#+TITLE: %s" title))
@@ -1070,6 +1070,9 @@
            (insert-line content)
            )))))
      )
+
+ (defadvice mu4e~compose-handler (after org-mu4e-compose-handler activate)
+  (org~mu4e-mime-switch-headers-or-body))    
 #+END_SRC
 
 ** html head

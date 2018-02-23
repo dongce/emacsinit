@@ -648,6 +648,7 @@
 * tag
   :tag 로 검색 가능
   #+BEGIN_SRC emacs-lisp
+    (require 'mu4e-mark)
     (add-to-list 'mu4e-marks
                  '(tag
                    :char       "g"
