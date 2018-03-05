@@ -7,15 +7,18 @@
 * dired
 ** serveral macro 
  #+BEGIN_SRC emacs-lisp
-   (defun 2zip ()
+   (defun 2zip ( zipfilename )
      "Zip the current file/dir in `dired'.
      If multiple files are marked, only zip the first one.
      Require unix zip commandline tool."
-     (interactive)
+     (interactive "F")
      (require 'dired)
-     (let ( (fileName (elt (dired-get-marked-files) 0))  )
-       (shell-command (format "zip -r '%s.zip' '%s'" (file-relative-name fileName) (file-relative-name fileName)))
-       ))
+     (let ( (fileNames (dired-get-marked-files)))
+       (apply
+       #'async-start-process
+       "7zip" "7za" nil "a" "-r" "-tzip"  
+       (format "%s.zip" zipfilename)
+       fileNames)))
 
 
    (defun upward-find-file (filename &optional startdir)
@@ -36,7 +39,7 @@
                                            ; If we're at / set top flag.
          (if (string= (expand-file-name dirname) "/")
              (setq top t))
-      
+
                                            ; Check for the file
          (if (file-exists-p (expand-file-name filename dirname))
              (setq found t)
@@ -128,7 +131,7 @@
      (interactive)
 
      (if (eq system-type 'windows-nt)
-      
+
          ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
          (async-start-process ;;impossible;;-reuse-buffer 
           "clip-image" 
@@ -142,7 +145,7 @@
      "Display Windows context menu on selected files"
      (interactive)
      (if (eq system-type 'windows-nt)
-      
+
          (apply
           #'async-start-process  ;;impossible;;-reuse-buffer 
           "clip-file" 
@@ -354,6 +357,7 @@
             (FileSystem     "c:/windows/system32/fsmgmt.msc"                                                          )
             (mstsc     "C:/Windows/System32/mstsc.exe")
             (msconfig     "C:/Windows/System32/msconfig.exe")
+            (han3   ,(fullpath "../../cmdutils/han3tool.exe") "/s")
             (dkw2005   ,(fullpath "../../cmdutils/dkwVS2005.vbs"))
             (nulmacs   ,(fullpath "../../cmdutils/nulmacs.vbs"))
             (dkw2008   ,(fullpath "../../cmdutils/dkwVS2008.vbs"))

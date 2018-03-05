@@ -76,6 +76,20 @@
 
         "<prior>" 'beginning-of-defun
         "<next>" 'end-of-defun
+        "<delete>" 'switch-window
+
+"oO"  'switch-window
+"o1" 'switch-window-then-maximize
+"o2" 'switch-window-then-split-below
+"o3" 'switch-window-then-split-right
+"o0" 'switch-window-then-delete
+
+"o4d" 'switch-window-then-dired
+"o4f" 'switch-window-then-find-file
+"o4m" 'switch-window-then-compose-mail
+"o4r" 'switch-window-then-find-file-read-only
+"o4b" 'switch-window-then-display-buffer
+"o40" 'switch-window-then-kill-buffer
 
         "," 'smex
         "." 'embrace-commander
@@ -200,7 +214,8 @@
         "ohM" 'helm-smex-major-mode-commands
         "od"  'counsel-goto-recent-directory
 
-        "om" 'orgmail
+        "om" 'switch-window-then-orgmail
+        "oM" 'orgmail
         "oS" 'tmpscratch
         "oI" 'ibuffer
         "ox" 'winexe
@@ -1617,3 +1632,33 @@
 
 #+RESULTS:
 : t
+* switch-window
+  #+BEGIN_SRC emacs-lisp
+  (use-package switch-window
+  :init
+  (setq switch-window-shortcut-style 'qwerty)
+  (setq switch-window-querty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "i" "o"))
+  :config
+  (global-set-key (kbd "<f12>") 'switch-window-then-display-buffer)
+  (global-set-key (kbd "<S-f12>") 'switch-window-then-find-file)
+  (global-set-key (kbd "<M-f12>") 'switch-window-then-dired)
+  ;;(global-set-key (kbd "C-x o") 'switch-window)
+  ;;(global-set-key (kbd "C-x 1") 'switch-window-then-maximize)
+  ;;(global-set-key (kbd "C-x 2") 'switch-window-then-split-below)
+  ;;(global-set-key (kbd "C-x 3") 'switch-window-then-split-right)
+  ;;(global-set-key (kbd "C-x 0") 'switch-window-then-delete)
+  ;;
+  ;;(global-set-key (kbd "C-x 4 d") 'switch-window-then-dired)
+  ;;(global-set-key (kbd "C-x 4 f") 'switch-window-then-find-file)
+  ;;(global-set-key (kbd "C-x 4 m") 'switch-window-then-compose-mail)
+  ;;(global-set-key (kbd "C-x 4 r") 'switch-window-then-find-file-read-only)
+  ;;
+  ;;(global-set-key (kbd "C-x 4 C-f") 'switch-window-then-find-file)
+  ;;(global-set-key (kbd "C-x 4 C-o") 'switch-window-then-display-buffer)
+  ;;
+  ;;(global-set-key (kbd "C-x 4 0") 'switch-window-then-kill-buffer)
+)
+
+  #+END_SRC
+
+  #+RESULTS:
