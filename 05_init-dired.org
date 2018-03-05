@@ -11,7 +11,7 @@
      "Zip the current file/dir in `dired'.
      If multiple files are marked, only zip the first one.
      Require unix zip commandline tool."
-     (interactive "F")
+     (interactive "M압축파일명 :")
      (require 'dired)
      (let ( (fileNames (dired-get-marked-files)))
        (apply
