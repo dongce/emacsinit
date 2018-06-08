@@ -1018,16 +1018,19 @@
            (org~mu4e-mime-switch-headers-or-body)
            (narrow-to-region (point) (point))
            ;; (insert-line "#+TITLE: 무제")
+           (insert-line 
+           "#+HTML_HEAD_EXTRA: <script type=\"text/javascript\"> var HS_SHOW_ALL_OPEN_DONE_TREES = false; </script> ")
            (insert-line "#+OPTIONS: toc:nil num:nil p:t ^:{} <:t \\n:t H:6")
            (insert-line "#+STARTUP: showeverything")
-           (insert-line "#+HTML_HEAD_EXTRA: <script type=\"text/javascript\"> var HS_SHOW_ALL_OPEN_DONE_TREES = false; </script> ")
+           (insert-line "")
+           (insert-line "")
            (if content
                (progn
 
                  (insert-line content)
                  (insert-line "#+end_src")))
 
-           ))))
+           ))(end-of-buffer)))
 
    (defun orgmail ()
      "DOCSTRING"
@@ -1064,12 +1067,13 @@
            ;;     (insert-line (format  "#+TITLE: %s" title))
            ;;   (if (not title ) ( insert-line "#+TITLE: 무제"  ))
            ;;   )
+           (insert-line "#+HTML_HEAD_EXTRA: <script type=\"text/javascript\"> var HS_SHOW_ALL_OPEN_DONE_TREES = false; </script> ")
            (insert-line "#+OPTIONS: toc:nil num:nil p:t ^:{} <:t \\n:t H:6")
            (insert-line "#+STARTUP: showeverything")
-           (insert-line "#+HTML_HEAD_EXTRA: <script type=\"text/javascript\"> var HS_SHOW_ALL_OPEN_DONE_TREES = false; </script> ")
+           (insert-line "")
+           (insert-line "")
            (insert-line content)
-           )))))
-     )
+           )) (end-of-buffer)))))
 
  (defadvice mu4e~compose-handler (after org-mu4e-compose-handler activate)
   (org~mu4e-mime-switch-headers-or-body))    

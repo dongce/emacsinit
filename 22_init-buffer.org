@@ -440,7 +440,7 @@
   ;;; major-mode       -> buffer local 
   ;;; minor-mode-list  -> buffer local 
   ;;; minor-mode-alist -> global  
-  (add-hook 'prog-mode-hook 'fic-mode)
+  ;;(add-hook 'prog-mode-hook 'fic-mode)
   (add-hook 'prog-mode-hook 'yafolding-mode)
   (add-hook 'prog-mode-hook '(lambda () (setf display-line-numbers t)))
 

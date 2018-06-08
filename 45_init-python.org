@@ -170,27 +170,27 @@
       ;; (pymacs-load "ropemacs" "rope-") (rope-show-doc) 
 
 
-     (use-package pymacs
-       ;; :commands pyutil-mozlz4-decompress fbmk
-       :config
-       (setq pymacs-python-command "emacspython.bat")
-       (add-to-list 'pymacs-load-path (fullpath  "../thirdparty/pymacs/"))
-       (setenv  "PYTHONPATH" (fullpath  "../thirdparty/pymacs/"))
-       ;; pyclip use external
-       ;; (pymacs-load "pyclip" "pyclip-")
-       ;; (defun pyclip-clip-file () 
-       ;;   (interactive)
-       ;;   (if (eq system-type 'windows-nt)
-       ;;       (let* ((files (dired-get-marked-files))
-       ;;              (files (if (null files)
-       ;;                         (list (dired-current-directory) )
-       ;;                       files)))
-       ;;         (pyclip-mime files))))
-       ;;(pymacs-load "pastemacs" "paste-")
-       ;;(pymacs-load "emacsuuid" "uuid-")
-       (pymacs-load "pyutil" "pyutil-")
-       (with-current-buffer "*Pymacs*"
-         (emacs-lock-mode 'kill)))
+;;     (use-package pymacs
+;;       ;; :commands pyutil-mozlz4-decompress fbmk
+;;       :config
+;;       (setq pymacs-python-command "emacspython.bat")
+;;       (add-to-list 'pymacs-load-path (fullpath  "../thirdparty/pymacs/"))
+;;       (setenv  "PYTHONPATH" (fullpath  "../thirdparty/pymacs/"))
+;;       ;; pyclip use external
+;;       ;; (pymacs-load "pyclip" "pyclip-")
+;;       ;; (defun pyclip-clip-file () 
+;;       ;;   (interactive)
+;;       ;;   (if (eq system-type 'windows-nt)
+;;       ;;       (let* ((files (dired-get-marked-files))
+;;       ;;              (files (if (null files)
+;;       ;;                         (list (dired-current-directory) )
+;;       ;;                       files)))
+;;       ;;         (pyclip-mime files))))
+;;       ;;(pymacs-load "pastemacs" "paste-")
+;;       ;;(pymacs-load "emacsuuid" "uuid-")
+;;       (pymacs-load "pyutil" "pyutil-")
+;;       (with-current-buffer "*Pymacs*"
+;;         (emacs-lock-mode 'kill)))
 
 
    #+END_SRC

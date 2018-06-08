@@ -428,7 +428,8 @@ Assumes that the frame is only split into two."
 
   (let ((hangulfont (find-if
                       (lambda (x) (font-utils-exists-p x))
-                      '( "D2Coding" "나눔고딕코딩" "돋움체" "Noto Sans CJK KR Regular"  "맑은 고딕"  ))))
+                      '( "맑은 고딕"  "D2Coding" "나눔고딕코딩" "돋움체" "Noto Sans CJK KR Regular"  ))))
+
     (if (stringp  hangulfont)
         (progn
           (set-fontset-font "fontset-default" 'hangul          (cons hangulfont  "unicode-bmp") )

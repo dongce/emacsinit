@@ -1010,6 +1010,11 @@
      (evil-define-key 'normal evil-org-mode-map
        (kbd "<kp-multiply>") 'org-insert-star)
 
+     (evil-define-key 'visual evil-org-mode-map
+       "gj" (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
+       "gk" (if (fboundp 'org-backward-same-level) 'org-backward-same-level 'org-backward-heading-same-level)
+       "gl" 'outline-next-visible-heading)
+
      (evil-define-key 'insert evil-org-mode-map
        (kbd "<M-return>") 'org-meta-return))
 
@@ -1159,8 +1164,10 @@
 
     #+END_SRC
 ***** use this
+
       #+BEGIN_SRC emacs-lisp
 
+        (use-package evil-org :demand)
         (evil-define-key 'normal evil-org-mode-map
           "gn"    'outline-next-heading
           "gN"    'outline-next-visible-heading
@@ -1209,8 +1216,8 @@
             ("<kp-multiply>" bmkp-mu4e-view)
             ("@"             copy-mu4e-view)
             ("B"               mu4e-headers-search-bookmark-edit)
-            ("F"             mu4e-find-file)
-            ("f"             mu4e-field-view)
+            (,(kbd "<f12>F")             mu4e-find-file)
+            (,(kbd "<f12>f")             mu4e-field-view)
             ("o" mu4e-view-open-attachment)
             ("O" mu4e-view-open-attachment-emacs)
             ("s"               mu4e-headers-search)
@@ -1228,8 +1235,8 @@
             ("<kp-multiply>" bmkp-mu4e-header)
             ("@"             copy-mu4e-header)
             ("B"               mu4e-headers-search-bookmark-edit)
-            ("F"             mu4e-find-file)
-            ("f"             mu4e-field-header)
+            (,(kbd "<f12>F")             mu4e-find-file)
+            (,(kbd "<f12>f")             mu4e-field-header)
             ("s"               mu4e-headers-search)
             ("U" mu4e-mark-unmark-all)
             ("u" mu4e-headers-mark-for-unmark)
@@ -1267,8 +1274,8 @@
              (,(kbd "<kp-multiply>") bmkp-mu4e-view)
              ("@"             copy-mu4e-view)
              ("B"               mu4e-headers-search-bookmark-edit)
-             ("F"             mu4e-find-file)
-             ("f"             mu4e-field-view)
+            (,(kbd "<f12>F")             mu4e-find-file)
+            (,(kbd "<f12>f")             mu4e-field-view)
              ("o" mu4e-view-open-attachment)
              ("O" mu4e-view-open-attachment-emacs)
              ("m"  	mu4e-view-mark-for-tag)
@@ -1277,11 +1284,11 @@
              (">"  	end-of-buffer)
              ("C"  	mu4e-compose-new)
              ("E"  	mu4e-compose-edit)
-             ("F"  	mu4e-find-file)
+            (,(kbd "<f12>F")  	mu4e-find-file)
              ("H"  	mu4e-display-manual)
              ("R"  	mu4e-compose-reply)
              ("U"  	mu4e-mark-unmark-all)
-             ("f"  	mu4e-field-header)
+            (,(kbd "<f12>f")  	mu4e-field-header)
              ("s"  	mu4e-query-fragments-search)
              ("x"  	mu4e-mark-execute-all)
              ("y"  	mu4e-select-other-view))))
@@ -1297,18 +1304,18 @@
              ("@"             copy-mu4e-header)
              ("B"               mu4e-headers-search-bookmark-edit)
              ("x"             mu4e-mark-execute-all)
-             ("F"             mu4e-find-file)
-             ("f"             mu4e-field-header)
+            (,(kbd "<f12>F")             mu4e-find-file)
+            (,(kbd "<f12>f")             mu4e-field-header)
              ("#"  	mu4e-mark-resolve-deferred-marks)
              ("$"  	mu4e-show-log)
              (">"  	end-of-buffer)
              ("C"  	mu4e-compose-new)
              ("E"  	mu4e-compose-edit)
-             ("F"  	mu4e-find-file)
+            (,(kbd "<f12>F")  	mu4e-find-file)
              ("H"  	mu4e-display-manual)
              ("R"  	mu4e-compose-reply)
              ("U"  	mu4e-mark-unmark-all)
-             ("f"  	mu4e-field-header)
+            (,(kbd "<f12>f")  	mu4e-field-header)
              ("s"  	mu4e-query-fragments-search)
              ("x"  	mu4e-mark-execute-all)
              ("y"  	mu4e-select-other-view)
@@ -1362,6 +1369,8 @@
 **** helm-dired-history 
      #+BEGIN_SRC emacs-lisp 
        (evil-define-key 'normal dired-mode-map ",h" #'helm-dired-history-view)
+       (evil-define-key 'normal dired-mode-map ",2" #'2zip)
+       (evil-define-key 'normal dired-mode-map ",7" #'2-7zip)
      #+END_SRC
 
      #+RESULTS:

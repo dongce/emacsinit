@@ -433,6 +433,7 @@
              ("8PSI"           "Ψ")
              ("8OMETA"         "Ω")
              ("8nabla"         "∇")
+             ("⌦"         "∇")
              ("8ohm"           "Ω")
 
              ;; ("8ts")
@@ -1462,7 +1463,8 @@
    #+BEGIN_SRC emacs-lisp
      (add-to-list
       'global-abbrev-table-assoc
-      '("8wh" "c:\\anaconda\\python.exe t:/usr/local/wordhacks/wordhack.py"))
+      '("8wh" "c:\\anaconda\\python.exe t:/usr/local/wordhacks/wordhack.py")
+      '("8ds" "c:/Users/dongil/Desktop"))
    #+END_SRC
 
 ** addresslist
@@ -1483,6 +1485,16 @@
       '("8gr" "안녕하세요."))
    #+END_SRC
 
+** build
+   #+BEGIN_SRC emacs-lisp
+   
+     (add-to-list
+      'global-abbrev-table-assoc
+      '("8bld" "빌드돌려뒀으니 파일 날짜 확인 후 사용바랍니다. "))
+     
+   #+END_SRC
+
+
 
 ** icon
 #+BEGIN_SRC emacs-lisp
@@ -1490,7 +1502,6 @@
         (append 
          global-abbrev-table-assoc
          '(("8bdel" "⌫")
-           ("8del" "⌦")
            ("8print" "⎙")
            ("8cut" "✂")
            ("8mail" "📬")

@@ -17,7 +17,7 @@
      ;;http://emacswiki.org/emacs/LoadPath
 
 
-     (setf mu4e-maildir (s-concat "f:/EAGLEOFFICE/" (datetime-format "%Y/%m/%d")))
+     (setf mu4e-maildir (s-concat "f:/PERSONAL/" (datetime-format "%Y/%m/%d")))
 
 
 

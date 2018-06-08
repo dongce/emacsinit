@@ -11,7 +11,7 @@
 
   ;; desktop 
   (setq desktop-enable t )
-  (desktop-load-default)
+  ;;(desktop-load-default)
   (desktop-read)
   (defun desktop-clear-not-modified ()
     "Empty the Desktop.
