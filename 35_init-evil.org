@@ -71,6 +71,7 @@
         "obr" 'revert-buffer
         "obc" 'xah-close-current-buffer
         "of"   'helm-resume
+        "iu"   nil
         "<home>" 'ibuffer
         "<end>" 'tmpscratch
 
@@ -243,9 +244,12 @@
          "xll" 'sort-lines-length
          "xlU" 'uniq-region
          "xlS" 'sort-lines
+         "xn"  'xah-space-to-newline
          "&"   'org-mark-ring-goto
          "nx"  'zz-narrow-repeat
          "nz"  narrow-map
+         "bb"  'ivy-switch-buffer
+         "si"  'spacemacs/search-project-auto-region-or-symbol
          )
      #+END_SRC
 
@@ -262,7 +266,7 @@
        (spacemacs/set-leader-keys-for-major-mode 'mu4e-headers-mode
          "&" 'org-mark-ring-goto)
 
-         (spacemacs/set-leader-keys-for-major-mode 'org-mode "os" ",',sb,c") 
+       (spacemacs/set-leader-keys-for-major-mode 'org-mode "os" ",',sb,c") 
 
      #+END_SRC
 
@@ -691,6 +695,9 @@
          (call-interactively 'spacemacs/evil-insert-line-below)
          (evil-next-line)))
 
+
+     (define-key evil-normal-state-map (kbd "<S-backspace>") 'split-line-indent)
+
      (use-package evil-extra-operator
        :config
        (global-evil-extra-operator-mode 1))
@@ -941,82 +948,82 @@
 *** org 
 **** org-show-current-heading-tidily
      #+BEGIN_SRC emacs-lisp
-   (defun org-show-current-heading-tidily ()
-     (interactive)  ;Inteactive
-     "Show next entry, keeping other entries closed."
-     (if (save-excursion (end-of-line) (outline-invisible-p))
-         (progn (org-show-entry) (show-children))
-       (outline-back-to-heading)
-       (unless (and (bolp) (org-on-heading-p))
-         (org-up-heading-safe)
-         (hide-subtree)
-         (error "Boundary reached"))
-       (org-overview)
-       (org-reveal t)
-       (org-show-entry)
-       (show-children)))
+       (defun org-show-current-heading-tidily ()
+         (interactive)  ;Inteactive
+         "Show next entry, keeping other entries closed."
+         (if (save-excursion (end-of-line) (outline-invisible-p))
+             (progn (org-show-entry) (show-children))
+           (outline-back-to-heading)
+           (unless (and (bolp) (org-on-heading-p))
+             (org-up-heading-safe)
+             (hide-subtree)
+             (error "Boundary reached"))
+           (org-overview)
+           (org-reveal t)
+           (org-show-entry)
+           (show-children)))
 
 
 
-   (evil-define-key 'normal evil-org-mode-map
-     "=" 'org-show-current-heading-tidily
-     ;;deprecatedby-evil-org;;"<" 'org-shiftleft
-     ;;deprecatedby-evil-org;;">" 'org-shiftright
-     )
 
-   (evil-leader/set-key-for-mode 'org-mode
-     "ha" 'helm-org-agenda-files-headings
-     "hH" 'helm-org-headings
-     "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
-     "hh" 'helm-org-in-buffer-headings
+       (evil-leader/set-key-for-mode 'org-mode
+         "ha" 'helm-org-agenda-files-headings
+         "hH" 'helm-org-headings
+         "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
+         "hh" 'helm-org-in-buffer-headings
 
-     "u"    'outline-up-heading
-     "q"    'org-todo
-     "<down>"    'outline-next-visible-heading
-     "<up>"    'outline-previous-visible-heading
-     "<right>"    'org-forward-heading-same-level
-     "<left>"    'org-backward-heading-same-level
+         "u"    'outline-up-heading
+         "q"    'org-todo
+         "<down>"    'outline-next-visible-heading
+         "<up>"    'outline-previous-visible-heading
+         "<right>"    'org-forward-heading-same-level
+         "<left>"    'org-backward-heading-same-level
 
-     "r"         'org-mark-ring-goto
-     "&"         'org-mark-ring-goto
+         "r"         'org-mark-ring-goto
+         "&"         'org-mark-ring-goto
 
+         "M" 'org-mime-org-buffer-htmlize
+         "`" 'mu4e-message-send-and-exit
+         "or" 'org-capture
+         "oa" 'org-agenda
+         "os" 'org-store-link
+         "ol" 'org-insert-alllink
+         "oo" 'org-open-at-point-global
+         "oR" 'org-refile
+         "oc" 'org-cliplink
+         "od" 'org-deadline
+         "oh" 'org-schedule
+         "ot" 'org-set-tags
+         "oT" 'org-time-stamp
+         "ov" 'org-attach-screenshot
+         "ob" 'org-iswitchb
+         "ow" 'org-archive-subtree-default
+         "op" 'org-link-copy-image
+         "of" 'org-link-copy-file
+         "oe" 'org-set-effort
+         "oi" 'org-clock-in
+         "oI" 'org-clock-out
+         "w" 'org-archive-subtree-default
+         "<f5>" 'org-redisplay-inline-images
+         )
 
-     "or" 'org-capture
-     "oa" 'org-agenda
-     "os" 'org-store-link
-     "ol" 'org-insert-alllink
-     "oo" 'org-open-at-point-global
-     "oR" 'org-refile
-     "oc" 'org-cliplink
-     "od" 'org-deadline
-     "oh" 'org-schedule
-     "ot" 'org-set-tags
-     "oT" 'org-time-stamp
-     "ov" 'org-attach-screenshot
-     "ob" 'org-iswitchb
-     "ow" 'org-archive-subtree-default
-     "op" 'org-link-copy-image
-     "of" 'org-link-copy-file
-     "oe" 'org-set-effort
-     "oi" 'org-clock-in
-     "oI" 'org-clock-out
-     "w" 'org-archive-subtree-default
-     "<f5>" 'org-redisplay-inline-images
-     )
+       (use-package org
+         :config
+         (evil-define-key 'normal evil-org-mode-map
+           "=" 'org-show-current-heading-tidily
+           ;;deprecatedby-evil-org;;"<" 'org-shiftleft
+           ;;deprecatedby-evil-org;;">" 'org-shiftright
+           (kbd "<f2>") 'org-insert-structure-template
+           (kbd "<kp-multiply>") 'org-insert-star)
 
+         (evil-define-key 'visual evil-org-mode-map
+           "gj" (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
+           "gk" (if (fboundp 'org-backward-same-level) 'org-backward-same-level 'org-backward-heading-same-level)
+           "gl" 'outline-next-visible-heading)
 
-   (use-package org
-     :config
-     (evil-define-key 'normal evil-org-mode-map
-       (kbd "<kp-multiply>") 'org-insert-star)
-
-     (evil-define-key 'visual evil-org-mode-map
-       "gj" (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
-       "gk" (if (fboundp 'org-backward-same-level) 'org-backward-same-level 'org-backward-heading-same-level)
-       "gl" 'outline-next-visible-heading)
-
-     (evil-define-key 'insert evil-org-mode-map
-       (kbd "<M-return>") 'org-meta-return))
+         (evil-define-key 'insert evil-org-mode-map
+           (kbd "<f2>") 'org-insert-structure-template
+           (kbd "<M-return>") 'org-meta-return))
 
      #+END_SRC
 
@@ -1191,6 +1198,33 @@
           ;;"gt"    'org-goto
   
           )
+
+        (evil-define-key 'normal outline-mode-map
+          "gh"    'outline-up-heading
+          "gn"    'outline-next-heading
+          "gN"    'outline-next-visible-heading
+          "gp"    'outline-previous-heading
+          "gP"    'outline-previous-visible-heading
+          "gl"    'goto-line
+          ;;"gf"    'org-forward-heading-same-level
+          ;;"gb"    'org-backward-heading-same-level
+          ;;"gu"    'outline-up-heading
+          ;;"gt"    'org-goto
+          )
+
+        (evil-define-key 'visual outline-mode-map
+          "gh"    'outline-up-heading
+          "gn"    'outline-next-heading
+          "gN"    'outline-next-visible-heading
+          "gp"    'outline-previous-heading
+          "gP"    'outline-previous-visible-heading
+          "gl"    'goto-line
+          ;;"gf"    'org-forward-heading-same-level
+          ;;"gb"    'org-backward-heading-same-level
+          ;;"gu"    'outline-up-heading
+          ;;"gt"    'org-goto
+          )
+
       #+END_SRC
 
       #+RESULTS:
@@ -1223,8 +1257,7 @@
             ("s"               mu4e-headers-search)
             ("S" mu4e-view-save-attachment)
             ("U" mu4e-mark-unmark-all)
-            ("x"             mu4e-mark-execute-all )
- ))
+            ("x"             mu4e-mark-execute-all )))
          (mapcar 
           (lambda (x)
             (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-headers-mode-map ,(car x) ,(cadr x ))))
@@ -1238,10 +1271,10 @@
             (,(kbd "<f12>F")             mu4e-find-file)
             (,(kbd "<f12>f")             mu4e-field-header)
             ("s"               mu4e-headers-search)
+            ("i"               mu4e-conversation)
             ("U" mu4e-mark-unmark-all)
             ("u" mu4e-headers-mark-for-unmark)
-            ("x"             mu4e-mark-execute-all )
- ))
+            ("x"             mu4e-mark-execute-all )))
          (evil-mu4e-init)
          (evil-define-key 'normal mu4e-headers-mode-map
            "?" mu4e-headers-mode-map)
@@ -1333,6 +1366,7 @@
              ("P"  	mu4e-headers-toggle-threading)
              ("Q"  	mu4e-headers-toggle-full-search)
              ("S"  	mu4e-headers-search-edit)
+             ("L"  	mu4e-occur-store-link)
              ("T"  	mu4e-headers-mark-thread)
              ("V"  	mu4e-headers-toggle-skip-duplicates)
              ("W"  	mu4e-headers-toggle-include-related)
@@ -1351,6 +1385,7 @@
              ("r"  	mu4e-headers-mark-for-refile)
              ("t"  	mu4e-headers-mark-subthread)
              ("u"  	mu4e-headers-mark-for-unmark)
+             ("i"   mu4e-conversation)
              ( ,(kbd "<backspace>")	mu4e-headers-mark-for-trash)
              ( ,(kbd "<delete>")	    mu4e-headers-mark-for-delete)
              ( ,(kbd "<deletechar>")	mu4e-headers-mark-for-delete))))
@@ -1359,6 +1394,10 @@
            (kbd "<f12>") mu4e-headers-mode-map)
          (evil-define-key 'normal mu4e-view-mode-map
            (kbd "<f12>") mu4e-view-mode-map))
+
+
+   (evil-leader/set-key-for-mode 'mu4e-compose-mode
+     "`" 'mu4e-message-send-and-exit)
 
      #+END_SRC
 
@@ -1671,3 +1710,32 @@
   #+END_SRC
 
   #+RESULTS:
+* evil-states
+** normal state
+   #+BEGIN_SRC emacs-lisp
+   (append-to-list 'evil-normal-state-modes '(mu4e-compose-mode occur-edit-mode))
+   #+END_SRC
+   
+** emacs state
+   #+BEGIN_SRC emacs-lisp
+     (append-to-list
+      'evil-emacs-state-modes
+      '(magit-show-branches-mode
+        svn-status-mode
+        dvc-log-edit-mode
+        project-buffer-mode
+        gtags-selection-mode
+        speedbar-mode
+        picpocket-mode
+        elfeed-mode))
+   #+END_SRC
+
+** emacs-motion state 
+   #+BEGIN_SRC emacs-lisp
+     (append-to-list
+      'evil-motion-state-modes
+      '(spacemacs-buffer-mode
+       magit-repolist-mode
+       view-mode
+       grep-mode))
+   #+END_SRC

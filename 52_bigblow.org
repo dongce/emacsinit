@@ -633,22 +633,24 @@
    #+END_SRC
 
 * narrow
-  #+BEGIN_SRC emacs-lisp
-    (use-package zones
-      :config
+  
+** zones                                                        :deprecated:
+   #+BEGIN_SRC emacs-lisp :tangle no
+     (use-package zones
+       :config
 
-      (defun zone-activate (orig-fun &rest args)
-        (setf zz-add-zone-anyway-p t)
-        (apply orig-fun args)
-        (setf zz-add-zone-anyway-p nil))
+       (defun zone-activate (orig-fun &rest args)
+         (setf zz-add-zone-anyway-p t)
+         (apply orig-fun args)
+         (setf zz-add-zone-anyway-p nil))
 
-      ;;(advice-add 'org-narrow-to-subtree :before #'(lambda (&rest args) (setf zz-add-zone-anyway-p 1)))
-      ;;(advice-add 'org-narrow-to-subtree :after  #'(lambda (&rest args) (setf zz-add-zone-anyway-p nil)))
-      (advice-add 'org-narrow-to-subtree :around #'zone-activate))
-  #+END_SRC
+       ;;(advice-add 'org-narrow-to-subtree :before #'(lambda (&rest args) (setf zz-add-zone-anyway-p 1)))
+       ;;(advice-add 'org-narrow-to-subtree :after  #'(lambda (&rest args) (setf zz-add-zone-anyway-p nil)))
+       (advice-add 'org-narrow-to-subtree :around #'zone-activate))
+   #+END_SRC
 
-  #+RESULTS:
-  : t
+   #+RESULTS:
+   : t
 
 * latex                                                         :deprecated:
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -1015,7 +1017,7 @@
            (goto-char (point-min))
            (search-forward mail-header-separator)
            (next-line)
-           (org~mu4e-mime-switch-headers-or-body)
+           ;;(org~mu4e-mime-switch-headers-or-body)
            (narrow-to-region (point) (point))
            ;; (insert-line "#+TITLE: 무제")
            (insert-line 
@@ -1060,8 +1062,9 @@
            (if title (insert title) (insert "무제"))
            ;; (search-forward mail-header-separator)
            ;; (next-line)
+
            (message-goto-body)
-           ;;call by advice(org~mu4e-mime-switch-headers-or-body)
+           ;;byadvice;;(org~mu4e-mime-switch-headers-or-body)           
            (narrow-to-region (point) (point))
            ;; (if (and  title subregion)
            ;;     (insert-line (format  "#+TITLE: %s" title))
@@ -1073,6 +1076,7 @@
            (insert-line "")
            (insert-line "")
            (insert-line content)
+
            )) (end-of-buffer)))))
 
  (defadvice mu4e~compose-handler (after org-mu4e-compose-handler activate)

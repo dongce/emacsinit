@@ -1038,212 +1038,226 @@ Note: the project list is sorted in descending alphabetic order."
 
 * desktop
 #+BEGIN_SRC emacs-lisp
-;;(defun share ()
-;;  (interactive)
-;;  (async-shell-command "net use \\\\10.239.12.87  02902774   /user:김동일")
-;;  (async-shell-command "net use \\\\10.239.12.103 jangbogo3* /user:kss3")
-;;  (async-shell-command "net use \\\\10.239.12.180 buildadmin /user:buildadmin")
-;;  (async-shell-command "net use \\\\10.239.12.181 buildadmin /user:buildadmin"))
+  ;;(defun share ()
+  ;;  (interactive)
+  ;;  (async-shell-command "net use \\\\10.239.12.87  02902774   /user:김동일")
+  ;;  (async-shell-command "net use \\\\10.239.12.103 jangbogo3* /user:kss3")
+  ;;  (async-shell-command "net use \\\\10.239.12.180 buildadmin /user:buildadmin")
+  ;;  (async-shell-command "net use \\\\10.239.12.181 buildadmin /user:buildadmin"))
   
-(defun alyac-quit ()
-  (interactive)
-  (execute-program "taskkill /s localhost /u system /t /f /im AYRTSrv.aye /im AYAgent.aye /im AYUpdSrv.aye /im EpTray.exe /im AYAgentSrv.aye")
-  (execute-program "sc stop ALYac_RTSrv")
-  (execute-program "sc stop ALYac_AgentSrv")
-  (execute-program "sc stop ALYac_UpdSrv")
-  )
-
-(defun alyac-restart ()
-  (interactive)
-  (alyac-quit)
-  (execute-program "c:/usr/local/alyac/AYLaunch.exe")
-  )
+  (defun userproc ()
+    (delete-dups
+     (mapcar (lambda (y) (cdr  (assoc 'comm y)))
+             (xah-filter-list
+              (lambda (x) (not (equal "SYSTEM" (cdr (assoc 'user x)))))
+              (mapcar #'process-attributes (list-system-processes))))))
 
 
-(defun python-quit ()
-  (interactive)
-  (execute-program "taskkill /t /f /im python.exe "))
+  (defun pkill ()
+    (interactive)
+    (let ((proc (ivy-read "종료할 프로세스 : " (userproc))))
+      (async-shell-command (format "taskkill /t /f /im %s" proc))))
 
 
-(defun shareip (ip)
-  (interactive "nIP마지막자리 : ")
-  (let ((serverlist '(
-                      (133 "net use \\\\10.239.12.133 02902774 /user:김동일")
-                      (132 "net use \\\\10.239.12.132 windlp /user:WinDLP")
-                      (103 "net use \\\\10.239.12.103 jangbogo3* /user:kss3")
-                      (87  "net use \\\\10.239.12.87  02902774   /user:김동일")
-                      (180 "net use \\\\10.239.12.180 buildadmin /user:buildadmin")
-                      ;;(175  "net use \\\\10.239.12.175  02902774   /user:김동일")
-                      (175  "net use \\\\10.239.12.175  04900441 /user:최윤석")
-                      ;; (175  "net use \\\\10.239.12.175  02902774 /user:김동일")
-                      (181 "net use \\\\10.239.12.181 buildadmin /user:buildadmin"))))
-    (if (> ip 0 )
-        (execute-program (cadr (assoc ip serverlist)))
-      (mapcar (lambda (s) (execute-program (cadr s ))) serverlist)
-      )))
+  (defun alyac-quit ()
+    (interactive)
+    (execute-program "taskkill /s localhost /u system /t /f /im AYRTSrv.aye /im AYAgent.aye /im AYUpdSrv.aye /im EpTray.exe /im AYAgentSrv.aye")
+    (execute-program "sc stop ALYac_RTSrv")
+    (execute-program "sc stop ALYac_AgentSrv")
+    (execute-program "sc stop ALYac_UpdSrv")
+    )
+
+  (defun alyac-restart ()
+    (interactive)
+    (alyac-quit)
+    (execute-program "c:/usr/local/alyac/AYLaunch.exe")
+    )
 
 
-(defun get-above-makefile () 
-  (expand-file-name
-   "Makefile" 
-   (loop as d = default-directory then (expand-file-name ".." d) 
-         if (file-exists-p (expand-file-name "Makefile" d)) return d)))
-
-;; bind compiling with get-above-makefile to f5
-;;(global-set-key [f5] (lambda () (interactive) (compile (format
-;;	   "make -f %s" (get-above-makefile)))))
+  (defun python-quit ()
+    (interactive)
+    (execute-program "taskkill /t /f /im python.exe "))
 
 
+  (defun shareip (ip)
+    (interactive "nIP마지막자리 : ")
+    (let ((serverlist '(
+                        (133 "net use \\\\10.239.12.133 02902774 /user:김동일")
+                        (132 "net use \\\\10.239.12.132 windlp /user:WinDLP")
+                        (103 "net use \\\\10.239.12.103 jangbogo3* /user:kss3")
+                        (87  "net use \\\\10.239.12.87  02902774   /user:김동일")
+                        (180 "net use \\\\10.239.12.180 buildadmin /user:buildadmin")
+                        ;;(175  "net use \\\\10.239.12.175  02902774   /user:김동일")
+                        (175  "net use \\\\10.239.12.175  04900441 /user:최윤석")
+                        ;; (175  "net use \\\\10.239.12.175  02902774 /user:김동일")
+                        (181 "net use \\\\10.239.12.181 buildadmin /user:buildadmin"))))
+      (if (> ip 0 )
+          (execute-program (cadr (assoc ip serverlist)))
+        (mapcar (lambda (s) (execute-program (cadr s ))) serverlist)
+        )))
 
-(defun desktop()
-  (interactive)
-  (dired "c:/Documents and Settings/dongil/Desktop"))
 
-(defun w32-open (x &optional thisbuffer)
-  "Open an sln file and create a project buffer using the data in it."
-  (interactive
-   (list (read-file-name "파일 열기: " nil (buffer-file-name) t nil )
-	 current-prefix-arg))
+  (defun get-above-makefile () 
+    (expand-file-name
+     "Makefile" 
+     (loop as d = default-directory then (expand-file-name ".." d) 
+           if (file-exists-p (expand-file-name "Makefile" d)) return d)))
 
-  (w32-shell-execute nil x))
+  ;; bind compiling with get-above-makefile to f5
+  ;;(global-set-key [f5] (lambda () (interactive) (compile (format
+  ;;	   "make -f %s" (get-above-makefile)))))
 
-;; F6 copy whole buffer
-(defun FM-copy-whole-buffer ()
-  "Copy the whole buffer into the kill ring"
-  (interactive)
-  (copy-region-as-kill (point-min) (point-max)))
 
-(global-set-key [C-f5] 'FM-copy-whole-buffer )
 
-;;
-;; Run a shell command on a region, and paste the results of the command
-;; over that region.
-;;
-(defun my-shell-command-on-region nil
-  "Replace region with ``shell-command-on-region''.
+  (defun desktop()
+    (interactive)
+    (dired "c:/Documents and Settings/dongil/Desktop"))
 
-By default, this will make mark active if it is not and then prompt
-you for a shell command to run and replaces region with the results.
-This is handy for doing things like getting external program locations
-in scripts and running grep and whatnot on a region."
-  (interactive)
-  (save-excursion
-    (if (equal mark-active nil)
-        (push-mark nil nil -1))
-    ; Next couple lines stolen from simple.el
-    (setq string
-          (read-from-minibuffer "Shell command on region: " nil nil nil
-                                'shell-command-history))
-    (shell-command-on-region (region-beginning) (region-end) string -1)
-    ; Get rid of final newline cause I normally did by hand anyway.
-    (delete-char -1)))
+  (defun w32-open (x &optional thisbuffer)
+    "Open an sln file and create a project buffer using the data in it."
+    (interactive
+     (list (read-file-name "파일 열기: " nil (buffer-file-name) t nil )
+     current-prefix-arg))
 
-(defun get-ip-address ()
-  "Show the IP address of the current machine."
-  (interactive)
-  (save-excursion
-    (ipconfig);; autoloaded from net-utils.el
-    (unwind-protect
-        (progn
-          ;; We are now in buffer "*Ipconfig*".
-          ;; wait for the ipconfig process to finish.
-          (while (let ((p (get-process "Ipconfig")))
-                   (and p (process-status p)))
-            (sit-for 1))
-          (beginning-of-buffer)
-          (if (save-match-data ;; Don't mess up my caller's match data.
-                (re-search-forward "^[ \t]*IP Address[. ]*:[ \t]*" nil t))
-              (buffer-substring (point) (progn (end-of-line) (point)))
-            (error "Can't find IP address")
+    (w32-shell-execute nil x))
+
+  ;; F6 copy whole buffer
+  (defun FM-copy-whole-buffer ()
+    "Copy the whole buffer into the kill ring"
+    (interactive)
+    (copy-region-as-kill (point-min) (point-max)))
+
+  (global-set-key [C-f5] 'FM-copy-whole-buffer )
+
+  ;;
+  ;; Run a shell command on a region, and paste the results of the command
+  ;; over that region.
+  ;;
+  (defun my-shell-command-on-region nil
+    "Replace region with ``shell-command-on-region''.
+
+  By default, this will make mark active if it is not and then prompt
+  you for a shell command to run and replaces region with the results.
+  This is handy for doing things like getting external program locations
+  in scripts and running grep and whatnot on a region."
+    (interactive)
+    (save-excursion
+      (if (equal mark-active nil)
+          (push-mark nil nil -1))
+      ; Next couple lines stolen from simple.el
+      (setq string
+            (read-from-minibuffer "Shell command on region: " nil nil nil
+                                  'shell-command-history))
+      (shell-command-on-region (region-beginning) (region-end) string -1)
+      ; Get rid of final newline cause I normally did by hand anyway.
+      (delete-char -1)))
+
+  (defun get-ip-address ()
+    "Show the IP address of the current machine."
+    (interactive)
+    (save-excursion
+      (ipconfig);; autoloaded from net-utils.el
+      (unwind-protect
+          (progn
+            ;; We are now in buffer "*Ipconfig*".
+            ;; wait for the ipconfig process to finish.
+            (while (let ((p (get-process "Ipconfig")))
+                     (and p (process-status p)))
+              (sit-for 1))
+            (beginning-of-buffer)
+            (if (save-match-data ;; Don't mess up my caller's match data.
+                  (re-search-forward "^[ \t]*IP Address[. ]*:[ \t]*" nil t))
+                (buffer-substring (point) (progn (end-of-line) (point)))
+              (error "Can't find IP address")
+              )
             )
-          )
-      (kill-buffer "*Ipconfig*")
+        (kill-buffer "*Ipconfig*")
+        )
       )
     )
-  )
 
-;;; ----------------------------------------------------------------------
-;;; Easier to use than lowlevel `call-process'
-;;;
-(defsubst shell-execute (command &optional buffer)
-  "Executes shell COMMAND and optionally output to BUFFER.
+  ;;; ----------------------------------------------------------------------
+  ;;; Easier to use than lowlevel `call-process'
+  ;;;
+  (defsubst shell-execute (command &optional buffer)
+    "Executes shell COMMAND and optionally output to BUFFER.
 
-References:
+  References:
 
-  `shell-file-name'	variable
-  `shell-exec-nok-p'	function
+    `shell-file-name'	variable
+    `shell-exec-nok-p'	function
 
-Return:
+  Return:
 
-  0	error
-  nbr	ok"
-  (call-process
-   shell-file-name
-   nil
-   buffer
-   nil
-   shell-command-switch ;; -c
-   command
-   ))
+    0	error
+    nbr	ok"
+    (call-process
+     shell-file-name
+     nil
+     buffer
+     nil
+     shell-command-switch ;; -c
+     command
+     ))
 
 
-;;; ----------------------------------------------------------------------
-;;;
-(defsubst file-name-dos (file)
-  "Convert FILE slashes to dos format."
-  (subst-char-in-string file ?/ ?\\))
+  ;;; ----------------------------------------------------------------------
+  ;;;
+  (defsubst file-name-dos (file)
+    "Convert FILE slashes to dos format."
+    (subst-char-in-string file ?/ ?\\))
 
-;;; ----------------------------------------------------------------------
-;;;
-(defsubst file-name-unix (file)
-  "Convert FILE slashes to unix format."
-  (subst-char-in-string file ?\\ ?/))
+  ;;; ----------------------------------------------------------------------
+  ;;;
+  (defsubst file-name-unix (file)
+    "Convert FILE slashes to unix format."
+    (subst-char-in-string file ?\\ ?/))
 
-(defun copy-rectangle-to-clipboard (p1 p2)
-  "Copy region as column (rectangle) to operating system's clipboard.
-This command will also put the text in register 0.
+  (defun copy-rectangle-to-clipboard (p1 p2)
+    "Copy region as column (rectangle) to operating system's clipboard.
+  This command will also put the text in register 0.
 
-See also: `kill-rectangle', `copy-to-register'."
-  (interactive "r")
-  (let ((x-select-enable-clipboard t))
-    (copy-rectangle-to-register ?0 p1 p2)
-    (kill-new
-     (with-temp-buffer
-       (insert-register ?0)
-       (buffer-string) )) ) )
+  See also: `kill-rectangle', `copy-to-register'."
+    (interactive "r")
+    (let ((x-select-enable-clipboard t))
+      (copy-rectangle-to-register ?0 p1 p2)
+      (kill-new
+       (with-temp-buffer
+         (insert-register ?0)
+         (buffer-string) )) ) )
 
-(defun youngfrog/copy-rectangle-to-kill-ring (start end)
-  "Saves a rectangle to the normal kill ring. Not suitable for yank-rectangle."
-  (interactive "r")
-  (let ((lines (extract-rectangle start end)))
-    (with-temp-buffer
-      (while lines ;; insert-rectangle, but without the unneeded stuff
-        ;; (most importantly no push-mark)
-        (insert-for-yank (car lines))
-        (insert "\n")
-        (setq lines (cdr lines)))
-      (kill-ring-save (point-min) (point-max)))))
+  (defun youngfrog/copy-rectangle-to-kill-ring (start end)
+    "Saves a rectangle to the normal kill ring. Not suitable for yank-rectangle."
+    (interactive "r")
+    (let ((lines (extract-rectangle start end)))
+      (with-temp-buffer
+        (while lines ;; insert-rectangle, but without the unneeded stuff
+          ;; (most importantly no push-mark)
+          (insert-for-yank (car lines))
+          (insert "\n")
+          (setq lines (cdr lines)))
+        (kill-ring-save (point-min) (point-max)))))
 
-(defun open-file-at-cursor ()
-  "Open the file path under cursor.
-If there is text selection, uses the text selection for path.
-If the path is starts with “http://”, open the URL in browser.
-Input path can be {relative, full path, URL}.
-This command is similar to `find-file-at-point' but without prompting for confirmation.
-"
-  (interactive)
-  (let ( (path (if (region-active-p)
-                   (buffer-substring-no-properties (region-beginning) (region-end))
-                 (thing-at-point 'filename) ) ))
-    (if (string-match-p "\\`https?://" path)
-        (browse-url path)
-      (progn ; not starting “http://”
-        (if (file-exists-p path)
-            (find-file path)
-          (if (file-exists-p (concat path ".el"))
-              (find-file (concat path ".el"))
-            (when (y-or-n-p (format "file doesn't exist: 「%s」. Create?" path) )
-              (find-file path )) ) ) ) ) ))
+  (defun open-file-at-cursor ()
+    "Open the file path under cursor.
+  If there is text selection, uses the text selection for path.
+  If the path is starts with “http://”, open the URL in browser.
+  Input path can be {relative, full path, URL}.
+  This command is similar to `find-file-at-point' but without prompting for confirmation.
+  "
+    (interactive)
+    (let ( (path (if (region-active-p)
+                     (buffer-substring-no-properties (region-beginning) (region-end))
+                   (thing-at-point 'filename) ) ))
+      (if (string-match-p "\\`https?://" path)
+          (browse-url path)
+        (progn ; not starting “http://”
+          (if (file-exists-p path)
+              (find-file path)
+            (if (file-exists-p (concat path ".el"))
+                (find-file (concat path ".el"))
+              (when (y-or-n-p (format "file doesn't exist: 「%s」. Create?" path) )
+                (find-file path )) ) ) ) ) ))
 
 
 #+END_SRC
@@ -1958,6 +1972,11 @@ This works on the current region."
    (interactive)
    (kill-new (buffer-file-name)))
 
+ (defun gdbb ()
+   "Returns the extention of the buffer file"
+   (interactive)
+   (kill-new (format "break %s:%d" (file-name-nondirectory (buffer-file-name)) (line-number-at-pos))))
+
 
  (defun copy-thing-at-point (thing)
    "Copy thing at point"
@@ -2229,6 +2248,27 @@ This works on the current region."
      "c:/Program Files/AhnLab/V3IS80/V3SP.exe")  
     )
   ) 
+
+(defun clip-restart () 
+  (interactive)
+  (require 'proced)
+  (let ((ph  processhacker ))
+    (mapcar (lambda (x) 
+              (w32-shell-execute 
+               "" 
+               ph
+               (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
+            (remove-if-not 
+             (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
+                            '(rdpclip.exe
+                              )))  
+             (proced-process-attributes)))
+    (w32-shell-execute 
+     "" 
+     "rdpclip.exe")  
+    )
+  ) 
+
 
 
 (defun v3kill () 
@@ -3003,12 +3043,12 @@ Version 2015-03-03"
 [[http://stackoverflow.com/questions/464516/firefox-bookmarks-sqlite-structure][Firefox Bookmarks SQLite structure - Stack Overflow]]
 #+BEGIN_SRC emacs-lisp
   (defvar firefox-bookmark-backup-folder (fullpath "../../bookmarks/"))
-  (defvar firefox-places "c:/Users/dongil/AppData/Roaming/Mozilla/Firefox/Profiles/iyq62fu7.default/places.sqlite")
+  (defvar firefox-places "c:/Users/User/AppData/Roaming/Mozilla/Firefox/Profiles/iyq62fu7.default/places.sqlite")
   (defun fbmk ()
     (interactive)
     (let* ((fb
             (caar (sort 
-                   (directory-files-and-attributes "C:/Users/dongil/AppData/Roaming/Mozilla/Firefox/Profiles/iyq62fu7.default/bookmarkbackups" t ".json")
+                   (directory-files-and-attributes "C:/Users/User/AppData/Roaming/Mozilla/Firefox/Profiles/iyq62fu7.default/bookmarkbackups" t ".json")
                    (lambda (x y) (> (float-time (nth 6 x)) (float-time (nth 6 y))))
                    )))
 
@@ -3088,17 +3128,6 @@ Version 2015-03-03"
 ** persistent                                                   :deprecated:
  #+BEGIN_SRC emacs-lisp :tangle no
  ;; 재미있는 함수 
- (defun create-scratch-buffer nil
-   "create a new scratch buffer to work in. (could be *scratch* - *scratchX*)"
-   (interactive)
-   (let ((n 0)
-	 bufname)
-     (while (progn
-	      (setq bufname (concat "*scratch" (if (= n 0) "" (int-to-string n)) "*"))
-	      (setq n (1+ n))
-	      (get-buffer bufname)))
-     (switch-to-buffer (get-buffer-create bufname))
-     (if (= n 1) (lisp-interaction-mode))))  ; 1, because n was incremented))
 
  (defun bury-scratch ()
    "Bury scratch buffer and return nil. Intended to be added to
@@ -3121,10 +3150,28 @@ Version 2015-03-03"
  #+END_SRC
 ** emacs-lock-mode
    #+BEGIN_SRC emacs-lisp
+     (defun create-scratch-buffer nil
+       "create a new scratch buffer to work in. (could be *scratch* - *scratchX*)"
+       (interactive)
+       (let ((n 0)
+             bufname)
+         (while (progn
+                  (setq bufname (concat "*scratch" (if (= n 0) "" (int-to-string n)) "*"))
+                  (setq n (1+ n))
+                  (get-buffer bufname)))
+         (switch-to-buffer (get-buffer-create bufname))
+         (if (= n 1) (lisp-interaction-mode))))  ; 1, because n was incremented))
+
+     ;(defun tmpscratch ()
+     ;  (interactive)
+     ;  (let ((b (get-buffer "*scratch*"))) 
+     ;    (if (equal nil b ) 
+     ;    ;;(create-scratch-buffer) 
+     ;    (switch-to-buffer b ))))
+
      (defun tmpscratch ()
        (interactive)
-       (let ((b (get-buffer "*scratch*"))) 
-         (if (equal nil b ) (create-scratch-buffer) (switch-to-buffer b ))))
+       (switch-to-buffer (get-buffer "*scratch*")))
 
      (global-set-key (kbd  "M-<pause>") #'tmpscratch)
 
@@ -3385,11 +3432,11 @@ of FILE in the current directory, suitable for creation"
        org-attach-screenshot-command-line
        (cond
         ((equal 1 arg )
-         "t:/usr/local/editor/emacsW32/MiniCap/MiniCap.exe -captureobjselect -noaero -bordershadow -save %f -exit")
+         "c:/usr/local/editor/emacsW32/MiniCap/MiniCap.exe -captureobjselect -noaero -bordershadow -save %f -exit")
         ((equal 2 arg )
-         "t:/usr/local/editor/emacsW32/iview_x64/i_view64.exe /capture=5 ")
+         "c:/usr/local/editor/emacsW32/iview_x64/i_view64.exe /capture=5 ")
         (t
-         "t:/usr/local/editor/emacsW32/iview_x64/i_view64.exe /capture=4 /convert=%f"))))
+         "c:/usr/local/editor/emacsW32/iview_x64/i_view64.exe /capture=4 /convert=%f"))))
   #+END_SRC
 
 
@@ -3675,7 +3722,7 @@ of FILE in the current directory, suitable for creation"
   : reqtrace
 * line-number
   #+BEGIN_SRC emacs-lisp
-  (defun ni ()
+  (defun nu ()
     (interactive)
-    (setf display-line-numbers t))
+    (if display-line-numbers (setf display-line-numbers nil ) (setf display-line-numbers t )))
   #+END_SRC

@@ -435,6 +435,41 @@
              ("8nabla"         "∇")
              ("⌦"         "∇")
              ("8ohm"           "Ω")
+("8neg"             "¬")
+("8pm"              "±")
+("8cdot"            "·")
+("8to"              "→")
+("8rightarrow"      "⇒")
+("8leftrightarrow"  "⇔")
+("8forall"          "∀")
+("8partial"         "∂")
+("8exists"          "∃")
+("8emptyset"        "∅")
+("8nabla"           "∇")
+("8in"              "∈")
+("8not"             "∉")
+("8prod"            "∏")
+("8sum"             "∑")
+("8surd"            "√")
+("8infty"           "∞")
+("8wedge"           "∧")
+("8vee"             "∨")
+("8cap"             "∩")
+("8cup"             "∪")
+("8int"             "∫")
+("8approx"          "≈")
+("8neq"             "≠")
+("8equiv"           "≡")
+("8leq"             "≤")
+("8geq"             "≥")
+("8subset"          "⊂")
+("8supset"          "⊃")
+("8circ"            "°")
+("8times"           "×")
+("8lfloor"          "⌊")
+("8rfloor"          "⌋")
+("8lceil"           "⌈")
+("8rceil"           "⌉")
 
              ;; ("8ts")
              ;; ("8ts1" ) 
@@ -1461,17 +1496,21 @@
 
 ** filename 
    #+BEGIN_SRC emacs-lisp
-     (add-to-list
+     (append-to-list
       'global-abbrev-table-assoc
-      '("8wh" "c:\\anaconda\\python.exe t:/usr/local/wordhacks/wordhack.py")
-      '("8ds" "c:/Users/dongil/Desktop"))
+      '(("8wh" "c:\\anaconda\\python.exe t:/usr/local/wordhacks/wordhack.py")
+        ("8dn" "c:/Users/dongil/Downloads/")
+        ("8me" "di7979.kim")
+        ("8memail" "di7979.kim@hanwhasystems.com")
+        ("8ds" "c:/Users/dongil/Desktop")))
    #+END_SRC
 
 ** addresslist
 #+BEGIN_SRC emacs-lisp
-     (add-to-list
+     (append-to-list
       'global-abbrev-table-assoc
-      '("8f2addr" "moonseok.yang@hanwha.com , honyun.kim@hanwha.com , kim6588.kim@hanwha.com , jeonghun.song@hanwha.com , kyungyong.kim@hanwha.com , di7979.kim@hanwha.com , jieun99.park@hanwha.com , jiyeun0107.lee@hanwha.com , kipyo.kim@hanwha.com , donghan.jung@hanwha.com , y.san.kim@hanwha.com , suseok.park@hanwha.com , kt0830.kwon@hanwha.com , jhkatt.kim@hanwha.com , dh0104.lee@hanwha.com , dy1212.park@hanwha.com , seungmo1025.jung@hanwha.com , giyeop.lee@hanwha.com , zeros79@hanwha.com , heungbae.lee@hanwha.com , dha.jung@hanwha.com , smkool.kwon@hanwha.com , hjwish.lee@hanwha.com , changsook.yang@hanwha.com , jeewon.shin@hanwha.com , jiyoon15.park@hanwha.com , cheolhoon.kim@hanwha.com , hwanjun627@hanwha.com , cs214.baek@hanwha.com , yonggyu.jeong@hanwha.com , hr10.jo@hanwha.com , jonghyeon.im@hanwha.com , kc6973.kwon@hanwha.com , sj0543.lee@hanwha.com , eunsol.kim@hanwha.com , winterkkh@hanwha.com , sj0220.yoon@hanwha.com , jg5250.lee@hanwha.com , ej0321.jo@hanwha.com , yd1208.heo@hanwha.com , sanggil12.son@hanwha.com , sh14.kang@hanwha.com , jw14.son@hanwha.com , jinh.ahn@hanwha.com , yhee.noh@hanwha.com , bwlee3415@hanwha.com , j.yujeong@hanwha.com , gyubyeong@hanwha.com , donguk38.kim@hanwha.com , bongsoo1027.kang@hanwha.com "))
+      '(("8f2addr" "moonseok.yang@hanwha.com , honyun.kim@hanwha.com , kim6588.kim@hanwha.com , jeonghun.song@hanwha.com , kyungyong.kim@hanwha.com , di7979.kim@hanwha.com , jieun99.park@hanwha.com , jiyeun0107.lee@hanwha.com , kipyo.kim@hanwha.com , donghan.jung@hanwha.com , y.san.kim@hanwha.com , suseok.park@hanwha.com , kt0830.kwon@hanwha.com , jhkatt.kim@hanwha.com , dh0104.lee@hanwha.com , dy1212.park@hanwha.com , seungmo1025.jung@hanwha.com , giyeop.lee@hanwha.com , zeros79@hanwha.com , heungbae.lee@hanwha.com , dha.jung@hanwha.com , smkool.kwon@hanwha.com , hjwish.lee@hanwha.com , changsook.yang@hanwha.com , jeewon.shin@hanwha.com , jiyoon15.park@hanwha.com , cheolhoon.kim@hanwha.com , hwanjun627@hanwha.com , cs214.baek@hanwha.com , yonggyu.jeong@hanwha.com , hr10.jo@hanwha.com , jonghyeon.im@hanwha.com , kc6973.kwon@hanwha.com , sj0543.lee@hanwha.com , eunsol.kim@hanwha.com , winterkkh@hanwha.com , sj0220.yoon@hanwha.com , jg5250.lee@hanwha.com , ej0321.jo@hanwha.com , yd1208.heo@hanwha.com , sanggil12.son@hanwha.com , sh14.kang@hanwha.com , jw14.son@hanwha.com , jinh.ahn@hanwha.com , yhee.noh@hanwha.com , bwlee3415@hanwha.com , j.yujeong@hanwha.com , gyubyeong@hanwha.com , donguk38.kim@hanwha.com , bongsoo1027.kang@hanwha.com ")
+        ("8fl" "\"이효조(HyoJo Lee)\" <hjwish.lee@hanwhasystems.com>  , \"임종현(Jonghyeon Im)\" <jonghyeon.im@hanwhasystems.com>")))
 #+END_SRC
 ** greeting
    #+BEGIN_SRC emacs-lisp
@@ -1496,6 +1535,12 @@
 
 
 
+** math
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list
+      'global-abbrev-table-assoc
+      '("8mpm" "±"))
+   #+END_SRC
 ** icon
 #+BEGIN_SRC emacs-lisp
   (setf global-abbrev-table-assoc
@@ -1571,6 +1616,17 @@
         (defun ,funcname () ,@body)
         (define-abbrev-function global-abbrev-table ,abbrev ',funcname)))
 
+
+   (defun-abbrev
+     timestamp-with-name
+     "8ts"
+     (interactive)
+     (insert
+      (with-temp-buffer 
+        (org-insert-time-stamp (org-read-date nil t "+0d") t)
+        (insert " 김동일")
+        (buffer-string))))
+
    (defun-abbrev
      timestamp-with-name1
      "8ts1"
@@ -1591,7 +1647,7 @@
         (buffer-string))))
 
    (defun-abbrev
-     timestamp-with-name2
+     timestamp-with-name3
      "8ts3"
      (interactive)
      (insert

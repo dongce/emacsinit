@@ -197,9 +197,9 @@
 * WINDOW dired
 #+BEGIN_SRC emacs-lisp
   (when-os 'windows-nt
-   ;; 윈도우 시스템의 경우
-   ;; emacs 에서 FIND 가능
-   ;;(color-theme-parus)
+    ;; 윈도우 시스템의 경우
+    ;; emacs 에서 FIND 가능
+    ;;(color-theme-parus)
     ;;  (color-theme-vim-colors)
     ;;  (color-theme-blue2)
     ;;  (color-theme-emacs-21)
@@ -267,8 +267,7 @@
           (kill-new (replace-regexp-in-string "/" "\\" pathname nil t))
           )))
 
-    (defvar nircmdexe 
-      (concat (getenv "GUILE_HOME") "/nircmd/nircmd.exe"))
+    (defvar nircmdexe (fullpath "../../cmdutils/nircmdc.exe"))
 
     (defun nircmd (cmd) 
       (interactive "MCmd " cmd) 
@@ -308,100 +307,209 @@
     ;;각종윈도우프로그램;;* Windows Memory Diagnostic: %windir%/system32/MdSched.exe
     ;;각종윈도우프로그램;;* Windows PowerShell Modules: %SystemRoot%/system32/WindowsPowerShell/v1.0/powershell.exe -NoExit -ImportSystemModules
 
-    (setf static-winexe-cmdlist 
-          `(
-            (cap ,(fullpath "../../iview_x64/i_view64.exe") )
-            (wcap "c:/windows/system32/SnippingTool.exe")
-            (dev "devmgmt.msc")
-            (snipp "c:/windows/system32/SnippingTool.exe")
-            (squid ,(fullpath  "../../conemul/conemu64.exe") "-reuse -dir \"c:\\squid\\sbin\" -cmd .\\squid.exe -D")
-            (tscproxy ,(fullpath  "../../conemul/conemu64.exe")
-                      "-reuse -dir \"t:\\misc\\pytcpproxy\" -cmd c:\\anaconda\\python.exe tscproxy.py")
-            (msys2conemul ,(fullpath  "../../conemul/conemu64.exe")
-                          "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&c:\\msys264\\usr\\bin\\sh --login -i")
+    ;;export MSYS=winsymlinks:nativestrict
 
-            (msys2term ,(fullpath  "../../conemul/conemu64.exe")
-                       "-reuse -dir \"%home%\" -run set MSYSTEM=MINGW64&&c:\\msys264\\usr\\bin\\conemu-msys2-64.exe")
+    (setf static-winexe-cmdlist
+          (append 
+           (mapcar
+            (lambda (x)
+              (if (symbolp (car x))
+                  (cons  (symbol-name (car x)) (cdr x)) x))
+            `(
+              (cap ,(fullpath "../../iview_x64/i_view64.exe") )
+              (wcap "c:/windows/system32/SnippingTool.exe")
+              (dev "devmgmt.msc")
+              (snipp "c:/windows/system32/SnippingTool.exe")
+              (squid ,(fullpath  "../../conemul/conemu64.exe") "-reuse -dir \"c:\\squid\\sbin\" -cmd .\\squid.exe -D")
+              (tscproxy ,(fullpath  "../../conemul/conemu64.exe")
+                        "-reuse -dir \"t:\\misc\\pytcpproxy\" -cmd c:\\anaconda\\python.exe tscproxy.py")
+              (msys2conemul ,(fullpath  "../../conemul/conemu64.exe")
+                            "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&c:\\msys264\\usr\\bin\\sh --login -i")
 
-            (conemul ,(fullpath  "../../conemul/conemu64.exe") "-reuse")
-            (conemul2 ( ,(fullpath  "../../conemul/conemu64.exe") "-reuse")
-                     (,(fullpath  "../../conemul/conemu64.exe")
-                      "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&c:\\msys264\\usr\\bin\\sh --login -i"))
+              (msys2term ,(fullpath  "../../conemul/conemu64.exe")
+                         "-reuse -dir \"%home%\" -run set MSYSTEM=MINGW64&&c:\\msys264\\usr\\bin\\conemu-msys2-64.exe")
 
-            (minttyconemul ,(fullpath  "../../conemul/conemu64.exe")
-                           "-reuse -dir \"%home%\" -cmd  c:\\msys264\\usr\\bin\\mintty /bin/bash -l")
+              (conemul ,(fullpath  "../../conemul/conemu64.exe") "-reuse -run {SDK}")
+              (conemul2 ( ,(fullpath  "../../conemul/conemu64.exe") "-reuse")
+                        (,(fullpath  "../../conemul/conemu64.exe")
+                         "-reuse -dir \"%home%\" -cmd set TERM=cygwin&& set MSYSTEM=MINGW64&&c:\\msys264\\usr\\bin\\sh --login -i"))
 
-            (filezilla  "t:/usr/local/FileZilla-3.7.1.1/filezilla.exe") 
-            (processhacker ,(fullpath  "../../processhacker/x64/ProcessHacker.exe"))
-            (processexplorer ,(fullpath  "../../processhacker/procexp.exe"))
-            (apt ,(fullpath  "../../advpsterm/apt.exe"))
-            (picpick ,(fullpath  "../../../../picpick/picpick.exe"))
-            (opencapture "d:/usr/local/opencapture/pOpenCapture.exe")
-            (qdir        "t:/usr/local/qdir/Q-Dir.exe")
-            (explorer    "c:/WINDOWS/explorer.exe")
-            (msys2       "c:/msys264/mingw64_shell.bat")
-            ;;(mingw       "t:/usr/local/mingwDevKit/msys.bat")
-            (mintty          "c:/msys264/usr/bin/mintty"                      "/bin/bash -l"                           )
-            (mingw          "c:/mingw/msys/1.0/msys.bat"                           )
-            (ComponentServices     "c:/windows/system32/comexp.msc"                                                          )
-            (ComputerManagement    "c:/windows/system32/compmgmt.msc"                "/s"                                    )
-            (DataSources           "c:/windows/system32/odbcad32.exe"                                                        )
-            (EventViewer           "c:/windows/system32/eventvwr.msc"                "/s"                                    )
-            (iSCSIInitiator        "c:/windows/system32/iscsicpl.exe"                                                        )
-            (PerformanceMonitor    "c:/windows/system32/perfmon.msc"                 "/s"                                    )
-            (Services              "c:/windows/system32/services.msc"                                                        )
-            (SystemConfiguration   "c:/windows/system32/msconfig.exe"                                                        )
-            (msconfig              "c:/windows/system32/msconfig.exe"                                                        )
-            (TaskScheduler         "c:/windows/system32/taskschd.msc"                 "/s"                                   )
-            (WindowsFirewall       "c:/windows/system32/WF.msc"                                                              )
-            (WindowsMemory         "c:/windows/system32/MdSched.exe"                                                         )
-            (rhapsody              "c:/usr/IBM/rhapsody76/rhapsody.exe"             "-lang=cpp"                            )
-            (WindowsPowerShell     "c:/windows/system32/WindowsPowerShell/v1.0/powershell.exe" "-NoExit -ImportSystemModules")
-            (FileSystem     "c:/windows/system32/fsmgmt.msc"                                                          )
-            (mstsc     "C:/Windows/System32/mstsc.exe")
-            (msconfig     "C:/Windows/System32/msconfig.exe")
-            (han3   ,(fullpath "../../cmdutils/han3tool.exe") "/s")
-            (dkw2005   ,(fullpath "../../cmdutils/dkwVS2005.vbs"))
-            (nulmacs   ,(fullpath "../../cmdutils/nulmacs.vbs"))
-            (dkw2008   ,(fullpath "../../cmdutils/dkwVS2008.vbs"))
-            (dkwGUILE   ,(fullpath "../../cmdutils/dkwguile.vbs"))
-            (dkwtor    ,(fullpath "../../cmdutils/dkwTORARDO.vbs"))
-            (tops      ,(fullpath "../../cmdutils/tops.vbs"))
-            (alzip "c:/usr/local/altools/alzip/ALZip.exe")
-            (alcapture "c:/usr/local/altools/alcapture/ALCapture.exe")
-            (virtualbox "c:/usr/local/virtualbox/VirtualBox.exe")
-            (ftp "t:/usr/local/FileZilla-3.7.1.1/filezilla.exe")
-            (gimp  "t:/usr/local/gimp2/bin/gimp-2.8.exe")
-            (xming  "t:/usr/local/editor/emacsW32/cmdutils/LPXDEVENV.xlaunch")
-            (dtterm   "t:/MISC/telnetcmd/tcmd.pyw" )
-            (depends "t:/usr/local/depends/depends.exe")
-            (magicdisc"c:/usr/local/magicdisc/MagicDisc.exe")
-            (foxit  "t:/usr/local/foxit/FoxitReader.exe")
-            (vimtut  "t:/usr/local/editor/emacsW32/doc/image/vi-vim-cheat-sheet.gif")
-            (jsonview  "t:/usr/local/editor/emacsW32/JsonViewerPackage/JsonView/JsonView.exe")    
-            (sourcetree  "t:/usr/local/sourcetree/SourceTree.exe")
-            (vncviewer "t:/usr/local/vncviewer/VNC-Viewer-6.1.1-Windows-64bit.exe")
-            (fax  "d:/kicom/e2fax/Fax2006.exe")
-            (zeal  "t:/usr/local/editor/emacsW32/zeal-20131109/zeal.exe" )
-            (gitk  ,(fullpath "../../cmdutils/gitk.vbs"))
-            (wxdemo "c:/usr/local/python27/pythonw.exe" "\"C:/Program Files/wxPython2.9 Docs and Demos/demo/demo.pyw\"")
-            (epydoc "c:/usr/local/python27/pythonw.exe" "c:/usr/local/python27/Scripts/epydocgui")
-            (pinta "c:/Program Files/Pinta/Pinta.exe")
-            (momat "t:/momat/momat.exe")
-            (putty "t:/usr/local/editor/emacsW32/iputty/putty.exe")
-            (eclipsejee "t:/usr/local/eclipsejee/eclipse.exe")
-            (vs2005 "C:/usr/microsoft/vs2005/IDE/Common7/IDE/devenv.exe")
-            (filesplit   "t:/usr/local/filesplitter/Free-File-Splitter-v5.0.1189.exe")))
+              (minttyconemul ,(fullpath  "../../conemul/conemu64.exe")
+                             "-reuse -dir \"%home%\" -cmd c:\\msys264\\usr\\bin\\mintty /bin/bash -l")
+
+              (filezilla  "t:/usr/local/FileZilla-3.7.1.1/filezilla.exe") 
+              (processhacker ,(fullpath  "../../processhacker/x64/ProcessHacker.exe"))
+              (processexplorer ,(fullpath  "../../processhacker/procexp.exe"))
+              (apt ,(fullpath  "../../advpsterm/apt.exe"))
+              (picpick ,(fullpath  "../../../../picpick/picpick.exe"))
+              (opencapture "d:/usr/local/opencapture/pOpenCapture.exe")
+              (qdir        "t:/usr/local/qdir/Q-Dir.exe")
+              (explorer    "c:/WINDOWS/explorer.exe")
+              (msys2       "c:/msys264/mingw64_shell.bat")
+              ;;(mingw       "t:/usr/local/mingwDevKit/msys.bat")
+              (mintty          "c:/msys264/usr/bin/mintty"                      "/bin/bash -l"                           )
+              (mingw          "c:/mingw/msys/1.0/msys.bat"                           )
+              (ComponentServices     "c:/windows/system32/comexp.msc"                                                          )
+              (ComputerManagement    "c:/windows/system32/compmgmt.msc"                "/s"                                    )
+              (DataSources           "c:/windows/system32/odbcad32.exe"                                                        )
+              (EventViewer           "c:/windows/system32/eventvwr.msc"                "/s"                                    )
+              (iSCSIInitiator        "c:/windows/system32/iscsicpl.exe"                                                        )
+              (PerformanceMonitor    "c:/windows/system32/perfmon.msc"                 "/s"                                    )
+              (Services              "c:/windows/system32/services.msc"                                                        )
+              (SystemConfiguration   "c:/windows/system32/msconfig.exe"                                                        )
+              (msconfig              "c:/windows/system32/msconfig.exe"                                                        )
+              (TaskScheduler         "c:/windows/system32/taskschd.msc"                 "/s"                                   )
+              (WindowsFirewall       "c:/windows/system32/WF.msc"                                                              )
+              (WindowsMemory         "c:/windows/system32/MdSched.exe"                                                         )
+              (rhapsody              "c:/usr/IBM/rhapsody76/rhapsody.exe"             "-lang=cpp"                            )
+              (WindowsPowerShell     "c:/windows/system32/WindowsPowerShell/v1.0/powershell.exe" "-NoExit -ImportSystemModules")
+              (FileSystem     "c:/windows/system32/fsmgmt.msc"                                                          )
+              (mstsc     "C:/Windows/System32/mstsc.exe")
+              (msconfig     "C:/Windows/System32/msconfig.exe")
+              (han3   ,(fullpath "../../cmdutils/han3tool.exe") "/s")
+              (dkw2005   ,(fullpath "../../cmdutils/dkwVS2005.vbs"))
+              (nulmacs   ,(fullpath "../../cmdutils/nulmacs.vbs"))
+              (dkw2008   ,(fullpath "../../cmdutils/dkwVS2008.vbs"))
+              (dkwGUILE   ,(fullpath "../../cmdutils/dkwguile.vbs"))
+              (dkwtor    ,(fullpath "../../cmdutils/dkwTORARDO.vbs"))
+              (tops      ,(fullpath "../../cmdutils/tops.vbs"))
+              (alzip "c:/usr/local/altools/alzip/ALZip.exe")
+              (alcapture "c:/usr/local/altools/alcapture/ALCapture.exe")
+              (firefox "t:/usr/local/firefox/firefox.exe")
+              (wireshark "t:/usr/local/wireshark/Wireshark.exe")
+              (virtualbox "c:/usr/local/virtualbox/VirtualBox.exe")
+              (ftp "t:/usr/local/FileZilla-3.7.1.1/filezilla.exe")
+              (gimp  "t:/usr/local/gimp2/bin/gimp-2.8.exe")
+              (xming  "c:/usr/local/editor/emacsW32/cmdutils/LPXDEVENV.xlaunch")
+              (dtterm   "t:/MISC/telnetcmd/tcmd.pyw" )
+              (depends "t:/usr/local/depends/depends.exe")
+              (magicdisc"c:/usr/local/magicdisc/MagicDisc.exe")
+              (foxit  "t:/usr/local/foxit/FoxitReader.exe")
+              (vimtut  "c:/usr/local/editor/emacsW32/doc/image/vi-vim-cheat-sheet.gif")
+              (jsonview  "c:/usr/local/editor/emacsW32/JsonViewerPackage/JsonView/JsonView.exe")    
+              (sourcetree  "t:/usr/local/sourcetree/SourceTree.exe")
+              (vncviewer "t:/usr/local/vncviewer/VNC-Viewer-6.1.1-Windows-64bit.exe")
+              (fax  "d:/kicom/e2fax/Fax2006.exe")
+              (zeal  "c:/usr/local/editor/emacsW32/zeal-20131109/zeal.exe" )
+              (gitk  ,(fullpath "../../cmdutils/gitk.vbs"))
+              (wxdemo "c:/usr/local/python27/pythonw.exe" "\"C:/Program Files/wxPython2.9 Docs and Demos/demo/demo.pyw\"")
+              (epydoc "c:/usr/local/python27/pythonw.exe" "c:/usr/local/python27/Scripts/epydocgui")
+              (pinta "c:/Program Files/Pinta/Pinta.exe")
+              (momat "t:/momat/momat.exe")
+              (putty "c:/usr/local/editor/emacsW32/iputty/putty.exe")
+              (eclipsejee "t:/usr/local/eclipsejee/eclipse.exe")
+              (vs2005 "C:/usr/microsoft/vs2005/IDE/Common7/IDE/devenv.exe")
+              (filesplit   "t:/usr/local/filesplitter/Free-File-Splitter-v5.0.1189.exe")
+              ))
+           (mapcar
+            (lambda (x)
+              (let ((y (reverse x)))
+                (cons (car y) (s-split " " (cadr y)))))
+            '(
+              ("desk.cpl"               "디스플레이")
+              ("control"                "제어판")
+              ("Access.cpl"             "내게 필요한 옵션")
+              ("appwiz.cpl"             "프로그램 추가/제거")
+              ("bthprops.cpl"           "블루투스장치설정")
+              ("desk.cpl"               "디스플레이 등록정보")
+              ("firewall.cpl"           "Windows방화벽")
+              ("hdwwiz.cpl"             "새하드웨어추가마법사")
+              ("inetcpl.cpl"            "인터넷 등록정보")
+              ("intl.cpl"               "국가 및 언어옵션")
+              ("irprops.cpl"            "적외선포트 설정")
+              ("joy.cpl"                "게임컨트롤러")
+              ("main.cpl"               "마우스등록정보")
+              ("mmsys.cpl"              "사운드및 오디오장치등록정보")
+              ("ncpa.cpl"               "네트워크연결")
+              ("netsetup.cpl"           "네트워크설정마법사")
+              ("nusrmgr.cpl"            "사용자계정")
+              ("nwc.cpl"                "네트워크 게이트웨이")
+              ("odbccp32.cpl"           "ODBC데이터원본 관리자")
+              ("powercfg.cpl"           "전원옵션 등록정보")
+              ("sysdm.cpl"              "시스템등록정보")
+              ("telephon.cpl"           "전화및모뎀 옵션  ")
+              ("timedate.cpl"           "날짜 및 시간 등록정보")
+              ("wscui.cpl"              "Windows 보안센터")
+              ("wuaucpl.cpl"            "자동업데이트")
+              ("Sapi.cpl"               "텍스트 음성 변환설정")
+              ("control Admintools"     "관리도구")
+              ("control Folders"        "폴더옵션")
+              ("control Userpasswords"  "사용자 계정")
+              ("certmgr.msc"            "인증서")
+              ("ciadv.msc"              "인덱싱서비스")
+              ("ntmsmgr.msc"            "이동식저장소")
+              ("ntmsoprq.msc"           "이동식저장소 운영자 요청")
+              ("secpol.msc"             "로컬보안정책")
+              ("wmimgmt.msc"            "WMI(Windows Management Infrastructure)")
+              ("compmgmt.msc"           "컴퓨터 관리")
+              ("devmgmt.msc"            "장치관리자")
+              ("diskmgmt.msc"           "디스크 관리")
+              ("dfrg.msc"               "디스크 조각모음")
+              ("eventvwr.msc"           "이벤트 뷰어")
+              ("fsmgmt.msc"             "공유폴더")
+              ("gpedit.msc"             "로컬 컴퓨터 정책")
+              ("lusrmgr.msc"            "로컬 사용자 및 그룹")
+              ("perfmon.msc"            "성능감시")
+              ("sysdm.cpl"              "성능설정")
+              ("rsop.msc"               "정책의 결과와 집합")
+              ("secpol.msc"             "로컬 보안설정")
+              ("services.msc"           "서비스")
+              ("cmd"                    "도스명령프롬프트 실행,  단, 윈98은 command")
+              ("shutdown -i"            "GUI화면으로 시스템 종료, 재부팅 가능")
+              ("shutdown -a"            "종료 설정 중지")
+              ("netstat"                "인터넷 접속 상황")
+              ("ipconfig /all"          "ip주소,게이트웨이,서브넷마스크, DNS서버주소,physical주소")
+              ("dxdiag"                 "다이렉트 - X 상태 정보 화면")
+              ("cleanmgr"               "디스크 정리")
+              ("regedit"                "레지스트리 편집기")
+              ("netsetup"               "네트워크 설정 마법사")
+              ("calc"                   "계산기")
+              ("charmap"                "문자표")
+              ("mspaint"                "그림판")
+              ("cleanmgr"               "디스크정리")
+              ("clipbrd"                "클립보드에 복사된 내용 표시")
+              ("control"                "제어판")
+              ("dxdiag"                 "다이렉트X 진단도구 및 그래픽과 사운드의 세부정보를 보여줌")
+              ("eudcedit"               "사용자 정의 문자 편집기")
+              ("explorer"               "탐색기")
+              ("magnify"                "돋보기")
+              ("osk"                    "화상키보드")
+              ("winmine"                "지뢰찾기")
+              ("sndrec32"               "녹음기")
+              ("wordpad"                "워드패드")
+              ("sndvol32"               "시스템 사운드 등록정보,볼륨조절")
+              ("sysedit"                "autoexec.bat, config.sys, win.ini, system.ini 시스템구성편집기")
+              ("systray"                "사운드 볼륨설정 노란색 스피커 아이콘을 트라이목록에 띄움")
+              ("mobsync"                "동기화")
+              ("msconfig"               "시스템 구성요소 유틸리티")
+              ("msinfo32"               "시스템정보")
+              ("mstsc"                  "원격 데스크톱 연결")
+
+              ("notepad"                "메모장")
+              ("wab"                    "주소록")
+              ("ntbackup"               "백업 및 복원 마법사")
+              ("ping"                   "핑테스트 해당 사이트의 인터넷연결 유무 확인")
+              ("sfc"                    "시스템 파일 검사기")
+              ("tourstart"              "윈도우 기능안내 html 문서표시")
+              ("winver"                 "윈도우 버전확인")
+              ("wmplayer"               "윈도우 미디어 플레이어")
+              ("wupdmgr"                "윈도우업데이트")
+              ("rundll32.exe user32.dll,LockWorkStation"     "화면잠금")
+              ("netstat -na"                              "현재 열린포트와 TCP/IP 프로토콜정보를 보여줌, 열린포트로 트라이목마형 바이러스 침투 유무확인가능")
+              ("C:\\WINDOWS\\system32\\Com\\comexp.msc"                         "구성요소서비스")
+              ("C:\\WINDOWS\\Microsoft.NET\\Framework\\v1.1.4322\\mscorcfg.msc"  ".NET Configuration 1.1"))
+            )))
+
     (defun winexe ()
       (interactive)
-      (let* ((winexe-cmdlist (cons `(gitbash  "t:/usr/local/msysgit/msys.bat" ,default-directory) static-winexe-cmdlist))
+      (let* ((winexe-cmdlist (cons `("gitbash"  "t:/usr/local/msysgit/msys.bat" ,default-directory) static-winexe-cmdlist))
              (cmd 
-              (ido-completing-read 
+              (ivy-completing-read 
                "명령을 입력하세요: "
                ;;completing-read;;(mapcar (function (lambda (x) (list (car x) t))) winexe-cmdlist)
-               (mapcar (lambda (x) (symbol-name (car x))) winexe-cmdlist)
+               (mapcar #'car winexe-cmdlist)
                nil t nil nil 'qdir)))
-        (let ((args (cdr (assoc (intern cmd) winexe-cmdlist))))
+        (let ((args (cdr (assoc cmd winexe-cmdlist))))
           (if (stringp (car args))
               (apply 
                'w32-shell-execute 
@@ -412,7 +520,7 @@
                 'w32-shell-execute 
                 (cons nil x  )
                 )
-                (sleep-for 5)
+               (sleep-for 5)
                ) args))))) 
 
     (global-set-key "\C-cx" 'winexe)
@@ -513,7 +621,7 @@
       ;;(shell-command "ftype EmacsFile=emacsclientw.exe -na runemacs.exe \"\%1\"" )
       (shell-command (format "assoc %s=EmacsFile" ext)))
 
-   )
+    )
 #+END_SRC
 
 #+RESULTS:
@@ -632,59 +740,62 @@ open and unsaved."
 
 ** ivy
  #+BEGIN_SRC emacs-lisp :tangle no
-     (defun counsel-goto-recent-directory ()
-       "Open recent directory with dired"
-       (interactive)
-       (unless recentf-mode (recentf-mode 1))
-       (let ((collection
-              (delete-dups
-               (append (mapcar 'file-name-directory recentf-list)
-                       ;; fasd history
-                       ;;(if (executable-find "fasd")
-                       ;;    (split-string (shell-command-to-string "fasd -ld") "\n" t))
-                       ))))
-         (ivy-read "directories:" collection :action 'dired)))
+   (defun counsel-goto-recent-directory ()
+     "Open recent directory with dired"
+     (interactive)
+     (unless recentf-mode (recentf-mode 1))
+     (let ((collection
+            (delete-dups
+             (append (mapcar 'file-name-directory recentf-list)
+                     ;; fasd history
+                     ;;(if (executable-find "fasd")
+                     ;;    (split-string (shell-command-to-string "fasd -ld") "\n" t))
+                     ))))
+       (ivy-read "directories:" collection :action 'dired)))
 
 
 
    (defun counsel-choose-from-recentf ()
      "Use helm to select a recently opened file from the `recentf-list'"
      (interactive)
-       (interactive)
-       (unless recentf-mode (recentf-mode 1))
-       (let* ((home (expand-file-name (getenv "HOME")))
-             (collection
-              (delete-dups
-               (mapcar (lambda (path)
-                         (replace-regexp-in-string home "~/" path))
-                       recentf-list))))
-         (ivy-read "최근 파일:" collection :action 'find-file)))
+     (interactive)
+     (unless recentf-mode (recentf-mode 1))
+     (let* ((home (expand-file-name (getenv "HOME")))
+            (collection
+             (delete-dups
+              (mapcar (lambda (path)
+                        (replace-regexp-in-string home "~/" path))
+                      recentf-list))))
+       (ivy-read "최근 파일:" collection :action 'find-file)))
 
 
  #+END_SRC
 
- #+BEGIN_SRC emacs-lisp
- 
-   (defun counsel-recentf-directory ()
-     "Find a file on `recentf-list'."
-     (interactive)
-     (require 'recentf)
-     (recentf-mode)
-     (ivy-read "Recentf: "
-               (delete-dups
-                (append (mapcar 'file-name-directory recentf-list)
-                        ;; fasd history
-                        ;;(if (executable-find "fasd")
-                        ;;    (split-string (shell-command-to-string "fasd -ld") "\n" t))
-                        ))
-               :action (lambda (f)
-                         (with-ivy-window
-                          (find-file f)))
-               :caller 'counsel-recentf))
-   (ivy-set-actions
-    'counsel-recentf-directory
-    '(("j" find-file-other-window "other-window")
-      ("x" counsel-find-file-extern "open externally")))
+ #+BEGIN_SRC emacs-lisp 
+
+   (use-package ivy
+     :config
+     (defun counsel-recentf-directory ()
+       "Find a file on `recentf-list'."
+       (interactive)
+       (require 'recentf)
+       (recentf-mode)
+       (ivy-read "Recentf: "
+                 (delete-dups
+                  (append (mapcar 'file-name-directory recentf-list)
+                          ;; fasd history
+                          ;;(if (executable-find "fasd")
+                          ;;    (split-string (shell-command-to-string "fasd -ld") "\n" t))
+                          ))
+                 :action (lambda (f)
+                           (with-ivy-window
+                             (find-file f)))
+                 :caller 'counsel-recentf))
+     (ivy-set-actions
+      'counsel-recentf-directory
+      '(("j" find-file-other-window "other-window")
+        ("x" counsel-find-file-extern "open externally"))))               
+
  #+END_SRC
  #+RESULTS:
  | ivy-switch-buffer | ((k (lambda (x) (kill-buffer x) (ivy--reset-state ivy-last)) kill) (j ivy--switch-buffer-other-window-action other window) (r ivy--rename-buffer-action rename)) | counsel-describe-variable | ((i counsel-info-lookup-symbol info) (d counsel--find-symbol definition)) | counsel-describe-function | ((i counsel-info-lookup-symbol info) (d counsel--find-symbol definition)) | counsel-M-x | ((d counsel--find-symbol definition) (h (lambda (x) (describe-function (intern x))) help)) | counsel-descbinds | ((d counsel-descbinds-action-find definition) (i counsel-descbinds-action-info info)) | counsel-git | ((j find-file-other-window other)) | counsel-find-file | ((f find-file-other-frame other frame) (w find-file-other-window other window) (v spacemacs/find-file-vsplit in vertical split) (s spacemacs/find-file-split in horizontal split) (l find-file-literally literally) (d spacemacs/delete-file delete file) (r spacemacs/rename-file rename file)) | counsel-recentf | ((j find-file-other-window other-window) (x counsel-find-file-extern open externally)) | counsel-locate | ((x counsel-locate-action-extern xdg-open) (d counsel-locate-action-dired dired)) | counsel-linux-app | ((f counsel-linux-app-action-file run on a file)) | spacemacs/ivy-spacemacs-layouts | ((c persp-kill-without-buffers Close layout(s)) (k persp-kill Kill layout(s))) | counsel-recentf-directory | ((j find-file-other-window other-window) (x counsel-find-file-extern open externally)) |

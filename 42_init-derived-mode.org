@@ -29,3 +29,58 @@ definitions can also be stored in files and used in batch mode."
  :commands elf-mode
 )
 #+END_SRC
+* TNNL FILE
+
+
+  #+BEGIN_SRC emacs-lisp
+    (define-derived-mode mo-mode outline-mode "mo"
+      "Major mode for editing Octave code.
+
+    Octave is a high-level language, primarily intended for numerical
+    computations.  It provides a convenient command line interface
+    for solving linear and nonlinear problems numerically.  Function
+    definitions can also be stored in files and used in batch mode."
+      ;; grep-regexp-alist 
+      ;; compilation-error-regexp-alist
+      ;; 위의 두 변수를 수정하여 새로은 컴파일모드를 생성할 수 있다. 
+      (setq outline-regexp "[ \t]*\\(SPECIFICATION\\|SERVICE\\|GROUP\\|OBJECT\\|COLUMNS\\|RESOURCES\\|LAYOUT\\)")
+      (setq outline-heading-end-regexp "\n")
+      (setq 
+       outline-level 
+       (lambda ()
+         (save-excursion
+
+           (skip-chars-forward " \t")                          
+           (cond ((looking-at "SPECIFICATION") 1) 
+                 ((looking-at "SERVICE") 2) 
+                 ((looking-at "GROUP") 3) 
+                 ((looking-at "OBJECT") 4) 
+                 ((looking-at "COLUMNS") 5) 
+                 ((looking-at "RESOURCES") 6) 
+                 ((looking-at "LAYOUT") 6) 
+                 (t 0))))))
+
+    (define-derived-mode uimx-mode outline-mode "uimx"
+      "Major mode for editing Octave code.
+
+    Octave is a high-level language, primarily intended for numerical
+    computations.  It provides a convenient command line interface
+    for solving linear and nonlinear problems numerically.  Function
+    definitions can also be stored in files and used in batch mode."
+      ;; grep-regexp-alist 
+      ;; compilation-error-regexp-alist
+      ;; 위의 두 변수를 수정하여 새로은 컴파일모드를 생성할 수 있다. 
+      (setq outline-regexp "[ \t]*\*.*\.class:")
+      (setq outline-heading-end-regexp "\n")
+      (setq 
+       outline-level 
+       (lambda ()
+         (save-excursion
+           (skip-chars-forward " \t")                          
+           (cond 
+                 (t 1))))))
+
+  #+END_SRC
+
+  #+RESULTS:
+  : mo-mode

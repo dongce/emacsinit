@@ -2,9 +2,9 @@
 * 윈도우 환경 변수 
 #+BEGIN_SRC emacs-lisp
 (when-os 'windows-nt
- (setenv "MAGICK_CODER_MODULE_PATH" "c:\\msys264\\mingw64\\lib\\ImageMagick-7.0.7\\modules-Q16HDRI\\coders")
+ (setenv "MAGICK_CODER_MODULE_PATH" "c:\\msys264\\mingw64\\lib\\ImageMagick-7.0.8\\modules-Q16HDRI\\coders")
  (setenv "MAGICK_HOME" "c:\\msys264\\mingw64")
- (setenv "MAGICK_DEBUG" "ALL")
+ ;;(setenv "MAGICK_DEBUG" "ALL")
  (setenv "BZR_PLUGIN_PATH"      "t:/usr/local/bazaar/plugins"      t )
  (setenv "GUILE_HOME"      "t:/usr/local/guile"      t )
  (setenv "PYTHONUNBUFFERED"      "x" t )
@@ -13,7 +13,9 @@
  (setenv "LANG" "ko_KR.UTF-8")
  (setenv "LC_ALL" "ko_KR.UTF-8")
  (setenv "MSYSTEM" "MINGW64")
- (prepend-path  "t:/usr/local/editor/emacsW32/graphviz/bin/")
+ (setenv "MSYS" "winsymlinks:nativestrict")
+ (setenv "STARDICT_DATA_DIR" "c:/usr/local/editor/emacsW32/sdict")
+ (prepend-path  (fullpath "../../graphviz/bin"))
  (append-path (fullpath "../../cmdutils/"))
  (append-path (fullpath "../../xz/bin_i486"))
  (append-path (concat  (getenv "GUILE_HOME") "/default/bin"))
@@ -22,6 +24,7 @@
  ;; (append-path  (fullpath "../../../../python27/"))
  (append-path  "c:/anaconda/scripts")
  (append-path  "c:/anaconda/")
+ (append-path  "c:/anaconda/library/bin")
  (append-path  "c:/msys264/usr/bin")
  (append-path  "c:/msys264/mingw64/bin")
  (append-path  (fullpath "../../EmacsW32/bin"))
@@ -44,3 +47,12 @@
 #+END_SRC
 
 #+RESULTS:
+* imagemagick
+  #+BEGIN_SRC emacs-lisp
+  (imagemagick-register-types)
+  
+  #+END_SRC
+
+  #+RESULTS:
+  : \.\(?:3fr\|a\(?:rw\|vs\)\|bmp[23]?\|c\(?:als?\|myka?\|r[2w]\|u[rt]\)\|d\(?:c[mrx]\|ds\|jvu\|ng\|px\)\|exr\|f\(?:ax\|its\)\|gif\(?:87\)?\|hrz\|ic\(?:on\|[bo]\)\|j\(?:2c\|ng\|p\(?:eg\|[2cg]\)\)\|k\(?:25\|dc\)\|m\(?:iff\|ng\|rw\|s\(?:l\|vg\)\|tv\)\|nef\|o\(?:rf\|tb\)\|p\(?:bm\|c\(?:ds\|[dltx]\)\|db\|ef\|gm\|i\(?:ct\|x\)\|jpeg\|n\(?:g\(?:24\|32\|8\)\|[gm]\)\|pm\|sd\|tif\|wp\)\|r\(?:a[fs]\|gb[ao]?\|l[ae]\)\|s\(?:c[rt]\|fw\|gi\|r[2f]\|un\|vgz?\)\|t\(?:ga\|i\(?:ff\(?:64\)?\|le\|m\)\|tf\)\|uyvy\|v\(?:da\|i\(?:car\|d\|ff\)\|st\)\|w\(?:bmp\|pg\)\|x\(?:3f\|bm\|cf\|pm\|[cv]\)\|y\(?:cbcra?\|uv\)\)\'
+

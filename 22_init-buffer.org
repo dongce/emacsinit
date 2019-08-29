@@ -71,7 +71,7 @@
 
    (defun download ()
      (interactive)
-     (dired "h:/FIREFOX"))
+     (dired "C:/Users/dongil/Downloads"))
 
    (defun switch-to-buffer-and-back (buf)
      "Toggle between given buffer and the current buffer."

@@ -123,7 +123,12 @@
   (add-to-list 'auto-mode-alist '("\\.text*"     . markdown-mode))
   (add-to-list 'auto-mode-alist '("\\.md*"       . markdown-mode))
   (add-to-list 'auto-mode-alist '("\\.dlog\\'"   . scheme-mode  ))
+  (add-to-list 'auto-mode-alist '("\\.ins\\'"   . sh-mode  ))
+  (add-to-list 'auto-mode-alist '("\\.i\\'"   . fundamental-mode  ))
   (add-to-list 'auto-mode-alist '("\\.mak\\'"    . makefile-mode  ))
+  (add-to-list 'auto-mode-alist '("\\.mo\\'"     . mo-mode     ))
+  (add-to-list 'auto-mode-alist '("\\.i\\'"     . uimx-mode     ))
+  
   ;; ("vxWorks*" . hexl-mode)                     )
 
   (require 'ada-mode)
@@ -396,6 +401,12 @@
 (defalias 'unicode-browser 'xub-mode)
 #+END_SRC
 
+* KDX BUILD 
+  #+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.pdf\\'" . ada-mode)) 
+  (add-to-list 'auto-mode-alist '("\\.sv\\'" . fundamental-mode)) 
+  (add-to-list 'auto-mode-alist '("\\.mr\\'" . fundamental-mode)) 
+  #+END_SRC
 * which function 
 #+BEGIN_SRC emacs-lisp
 ;;emacsdefault;;(require 'which-func)
@@ -582,4 +593,14 @@
   (use-package bmx-mode
   :config 
   (bmx-mode-setup-defaults))
+  #+END_SRC
+* helm
+  spacemacs helm layer 에 문제가 있음. helm 모드를 직접 사용함 
+
+  #+BEGIN_SRC emacs-lisp
+  (helm-mode)
+  #+END_SRC
+* beacon
+  #+BEGIN_SRC emacs-lisp
+  (use-package beacon :config (beacon-mode))
   #+END_SRC

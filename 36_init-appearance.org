@@ -344,9 +344,14 @@ Assumes that the frame is only split into two."
 *** font size
     #+BEGIN_SRC emacs-lisp
 
-    (defvar dongil/efontsize  17)
-    (defvar dongil/hfontsize  16)
-    (defvar dongil/symbolsize 20)
+    ;;(defvar dongil/efontsize  15)
+    ;;(defvar dongil/hfontsize  15)
+    ;;(defvar dongil/symbolsize 20)
+
+    (setf dongil/efontsize  15)
+    (setf dongil/hfontsize  15)
+    (setf dongil/symbolsize 15)
+
     #+END_SRC
 
     #+RESULTS:
@@ -358,19 +363,21 @@ Assumes that the frame is only split into two."
     (let ((defaultfont (find-if 
                         (lambda (x) (font-utils-exists-p x)) 
                         '(
-                          ;;"Fira Code"
-                          "Ubuntu Mono"
-                          ;; "Bitstream Vera Sans Mono"
-                          ;; "DejaVu Sans Mono"
-                          ;; "Consolas"
-                          ;; "Inconsolata"
-                          ;; "Source Code Pro"
+                          "IBM Plex Mono"
+                          "Hack"
+                          ;; "Fira Code"
+                          ;;"InputMono"
+                           ;; "DejaVu Sans Mono"
+                          ;; "Ubuntu Mono"
+                          ;;"Bitstream Vera Sans Mono"
+                          ;; "Inconsolatag"
+                          "Source Code Pro"
                           ;; "Menlo"
+                          "Consolas"
                           ))))
       (if (stringp  defaultfont)
-          (set-fontset-font "fontset-default" 'latin (font-spec :name defaultfont :size dongil/efontsize) )))
-
-
+          (set-fontset-font "fontset-default" 'latin (font-spec :name defaultfont  :size dongil/efontsize) )))
+          
     #+END_SRC
 
     #+RESULTS:
@@ -384,7 +391,7 @@ Assumes that the frame is only split into two."
                         '( "Fira Code Symbol"))))
       (if (stringp  firafont) 
           (progn
-            (set-fontset-font "fontset-default" (cons #Xe100  #Xe16f) (font-spec :name firafont  )  ))))
+            (set-fontset-font "fontset-default" (cons #Xe100  #Xe16f) (font-spec :name firafont)))))
 
 
 
@@ -399,16 +406,15 @@ Assumes that the frame is only split into two."
 
     (let ((emojifont (find-if 
                         (lambda (x) (font-utils-exists-p x)) 
-                        '( "Noto Emoji"))))
+                        '("NotoSymbol"  "Segoe UI Symbol"    ))))
       (if (stringp  emojifont) 
           (progn
-            (set-fontset-font "fontset-default" '(1041637 . 1041646) (font-spec :name "Noto Emoji"  )  ) 
-            (set-fontset-font "fontset-default" '(9000 . 9999) (font-spec :name "Noto Emoji"  )  ) 
-            (set-fontset-font "fontset-default" '(2400 . 2700) (font-spec :name "Noto Emoji"  )  ) 
-            (set-fontset-font "fontset-default" (cons #x1f004 #xfe837) (font-spec :name "Noto Emoji"  )  ) 
-            (set-fontset-font "fontset-default" 'symbol (font-spec :name "Noto Emoji"  )  ) 
+            (set-fontset-font "fontset-default" '(1041637 . 1041646) (font-spec :name emojifont  )  ) 
+            (set-fontset-font "fontset-default" '(9000 . 9999) (font-spec :name emojifont  )  ) 
+            (set-fontset-font "fontset-default" '(2400 . 2700) (font-spec :name emojifont  )  ) 
+            (set-fontset-font "fontset-default" (cons #x1f004 #xfe837) (font-spec :name emojifont  )  ) 
+            (set-fontset-font "fontset-default" 'symbol (font-spec :name emojifont  )  ) 
             )))
-
 
     #+END_SRC
 
@@ -428,7 +434,7 @@ Assumes that the frame is only split into two."
 
   (let ((hangulfont (find-if
                       (lambda (x) (font-utils-exists-p x))
-                      '( "맑은 고딕"  "D2Coding" "나눔고딕코딩" "돋움체" "Noto Sans CJK KR Regular"  ))))
+                      '(  "맑은 고딕" "D2Coding" "나눔고딕코딩" "돋움체" "Noto Sans CJK KR Regular"  ))))
 
     (if (stringp  hangulfont)
         (progn
@@ -455,6 +461,9 @@ Assumes that the frame is only split into two."
 ;; https://www.emacswiki.org/emacs/FontSets
 (set-face-font 'default "fontset-default")
     #+END_SRC
+
+    #+RESULTS:
+
 *** fontlock 설정 
     #+BEGIN_SRC emacs-lisp
     (setq 
@@ -529,238 +538,149 @@ Assumes that the frame is only split into two."
 #+END_SRC
 
 #+RESULTS:
-| System                          |
-| Terminal                        |
-| Fixedsys                        |
-| Modern                          |
-| Roman                           |
-| Script                          |
-| Courier                         |
-| MS Serif                        |
-| MS Sans Serif                   |
-| Small Fonts                     |
-| STIX                            |
-| STIX Math                       |
-| STIXIntegralsUpSm               |
-| STIXNonUnicode                  |
-| STIXSizeFiveSym                 |
-| STIXSizeFourSym                 |
-| STIXSizeOneSym                  |
-| STIXSizeThreeSym                |
-| STIXSizeTwoSym                  |
-| STIXVariants                    |
-| STIXGeneral                     |
-| STIXIntegralsD                  |
-| STIXIntegralsSm                 |
-| STIXIntegralsUp                 |
-| STIXIntegralsUpD                |
-| Noto Sans Mono CJK KR Regular   |
-| Noto Sans CJK KR Black          |
-| Noto Sans CJK KR Bold           |
-| Noto Sans CJK KR DemiLight      |
-| Noto Sans CJK KR Light          |
-| Noto Sans CJK KR Medium         |
-| Noto Sans CJK KR Regular        |
-| Noto Sans CJK KR Thin           |
-| Noto Sans Mono CJK KR Bold      |
-| Noto Serif CJK KR SemiBold      |
-| Noto Serif CJK KR Black         |
-| Noto Serif CJK KR               |
-| Noto Serif CJK KR ExtraLight    |
-| Noto Serif CJK KR Light         |
-| Noto Serif CJK KR Medium        |
-| Marlett                         |
+| STIX Two Text                   |
+| STIX Two Math                   |
+| Fira Code Symbol                |
 | Arial                           |
-| 바탕                            |
-| 바탕체                          |
-| 궁서                            |
-| 궁서체                          |
+| Arial Black                     |
+| Bahnschrift Light               |
+| Bahnschrift SemiLight           |
+| Bahnschrift                     |
+| Bahnschrift SemiBold            |
+| Bahnschrift Light SemiCondensed |
+| Bahnschrift SemiLight SemiConde |
+| Bahnschrift SemiCondensed       |
+| Bahnschrift SemiBold SemiConden |
+| Bahnschrift Light Condensed     |
+| Bahnschrift SemiLight Condensed |
+| Bahnschrift Condensed           |
+| Bahnschrift SemiBold Condensed  |
+| Calibri                         |
+| Calibri Light                   |
+| Cambria                         |
+| Cambria Math                    |
+| Candara                         |
+| Candara Light                   |
+| Comic Sans MS                   |
+| Consolas                        |
+| Constantia                      |
+| Corbel                          |
+| Corbel Light                    |
 | Courier New                     |
-| DaunPenh                        |
-| DokChampa                       |
-| Estrangelo Edessa               |
-| Euphemia                        |
-| Gautami                         |
-| Vani                            |
-| 굴림                            |
-| 굴림체                          |
-| 돋움                            |
-| 돋움체                          |
+| Ebrima                          |
+| Franklin Gothic Medium          |
+| Gabriola                        |
+| Gadugi                          |
+| Georgia                         |
 | Impact                          |
-| Iskoola Pota                    |
-| Kalinga                         |
-| Kartika                         |
-| Khmer UI                        |
-| Lao UI                          |
-| Latha                           |
+| Ink Free                        |
+| Javanese Text                   |
+| Leelawadee UI                   |
+| Leelawadee UI Semilight         |
 | Lucida Console                  |
+| Lucida Sans Unicode             |
 | 맑은 고딕                       |
-| Mangal                          |
-| Meiryo                          |
-| Meiryo UI                       |
+| 맑은 고딕 Semilight             |
 | Microsoft Himalaya              |
 | Microsoft JhengHei              |
+| Microsoft JhengHei UI           |
+| Microsoft JhengHei Light        |
+| Microsoft JhengHei UI Light     |
+| Microsoft New Tai Lue           |
+| Microsoft PhagsPa               |
+| Microsoft Sans Serif            |
+| Microsoft Tai Le                |
 | Microsoft YaHei                 |
-| MingLiU                         |
-| PMingLiU                        |
-| MingLiU_HKSCS                   |
+| Microsoft YaHei UI              |
+| Microsoft YaHei Light           |
+| Microsoft YaHei UI Light        |
+| Microsoft Yi Baiti              |
 | MingLiU-ExtB                    |
 | PMingLiU-ExtB                   |
 | MingLiU_HKSCS-ExtB              |
 | Mongolian Baiti                 |
 | MS Gothic                       |
-| MS PGothic                      |
 | MS UI Gothic                    |
-| MS Mincho                       |
-| MS PMincho                      |
+| MS PGothic                      |
 | MV Boli                         |
-| Microsoft New Tai Lue           |
-| Nyala                           |
-| Microsoft PhagsPa               |
-| Plantagenet Cherokee            |
-| Raavi                           |
+| Myanmar Text                    |
+| Nirmala UI                      |
+| Nirmala UI Semilight            |
+| Palatino Linotype               |
+| Segoe MDL2 Assets               |
+| Segoe Print                     |
 | Segoe Script                    |
 | Segoe UI                        |
-| Segoe UI Semibold               |
+| Segoe UI Black                  |
+| Segoe UI Emoji                  |
+| Segoe UI Historic               |
 | Segoe UI Light                  |
+| Segoe UI Semibold               |
+| Segoe UI Semilight              |
 | Segoe UI Symbol                 |
-| Shruti                          |
 | SimSun                          |
 | NSimSun                         |
 | SimSun-ExtB                     |
+| Sitka Small                     |
+| Sitka Text                      |
+| Sitka Subheading                |
+| Sitka Heading                   |
+| Sitka Display                   |
+| Sitka Banner                    |
 | Sylfaen                         |
-| Microsoft Tai Le                |
-| Times New Roman                 |
-| Tunga                           |
-| Vrinda                          |
-| Shonar Bangla                   |
-| Microsoft Yi Baiti              |
 | Tahoma                          |
-| Microsoft Sans Serif            |
-| Angsana New                     |
-| Aparajita                       |
-| Cordia New                      |
-| Ebrima                          |
-| Gisha                           |
-| Kokila                          |
-| Leelawadee                      |
-| Microsoft Uighur                |
-| MoolBoran                       |
-| Symbol                          |
-| Utsaah                          |
-| Vijaya                          |
-| Wingdings                       |
-| Andalus                         |
-| Arabic Typesetting              |
-| Simplified Arabic               |
-| Simplified Arabic Fixed         |
-| Sakkal Majalla                  |
-| Traditional Arabic              |
-| Aharoni                         |
-| David                           |
-| FrankRuehl                      |
-| Levenim MT                      |
-| Miriam                          |
-| Miriam Fixed                    |
-| Narkisim                        |
-| Rod                             |
-| FangSong                        |
-| SimHei                          |
-| KaiTi                           |
-| AngsanaUPC                      |
-| Browallia New                   |
-| BrowalliaUPC                    |
-| CordiaUPC                       |
-| DilleniaUPC                     |
-| EucrosiaUPC                     |
-| FreesiaUPC                      |
-| IrisUPC                         |
-| JasmineUPC                      |
-| KodchiangUPC                    |
-| LilyUPC                         |
-| DFKai-SB                        |
-| Lucida Sans Unicode             |
-| Arial Black                     |
-| Calibri                         |
-| Cambria                         |
-| Cambria Math                    |
-| Comic Sans MS                   |
-| Consolas                        |
-| Franklin Gothic Medium          |
-| Gabriola                        |
-| Georgia                         |
-| Palatino Linotype               |
-| Segoe Print                     |
+| Times New Roman                 |
 | Trebuchet MS                    |
 | Verdana                         |
-| Webdings                        |
-| Nina                            |
-| Segoe Condensed                 |
-| Haettenschweiler                |
-| Book Antiqua                    |
-| Century Gothic                  |
-| Monotype Corsiva                |
-| Agency FB                       |
-| Arial Rounded MT Bold           |
-| Blackadder ITC                  |
-| Bodoni MT                       |
-| Bodoni MT Black                 |
-| Bodoni MT Condensed             |
-| Bradley Hand ITC                |
-| Calisto MT                      |
-| Castellar                       |
-| Century Schoolbook              |
-| Copperplate Gothic Bold         |
-| Copperplate Gothic Light        |
-| Curlz MT                        |
-| Edwardian Script ITC            |
-| Elephant                        |
-| Engravers MT                    |
-| Eras Bold ITC                   |
-| Eras Demi ITC                   |
-| Eras Light ITC                  |
-| Eras Medium ITC                 |
-| Felix Titling                   |
-| Forte                           |
-| Franklin Gothic Book            |
-| Franklin Gothic Demi            |
-| Franklin Gothic Demi Cond       |
-| Franklin Gothic Heavy           |
-| Franklin Gothic Medium Cond     |
-| French Script MT                |
-| Gigi                            |
-| Gill Sans MT                    |
-| Gill Sans MT Condensed          |
-| Gill Sans Ultra Bold            |
-| Gill Sans Ultra Bold Condensed  |
-| Gill Sans MT Ext Condensed Bold |
-| Gloucester MT Extra Condensed   |
-| Goudy Old Style                 |
-| Goudy Stout                     |
-| Imprint MT Shadow               |
-| Lucida Sans                     |
-| Lucida Sans Typewriter          |
-| Maiandra GD                     |
-| OCR A Extended                  |
-| Palace Script MT                |
-| Papyrus                         |
-| Perpetua                        |
-| Perpetua Titling MT             |
+| Yu Gothic                       |
+| Yu Gothic UI                    |
+| Yu Gothic UI Semibold           |
+| Yu Gothic Light                 |
+| Yu Gothic UI Light              |
+| Yu Gothic Medium                |
+| Yu Gothic UI Semilight          |
+| 바탕                            |
+| 바탕체                          |
+| 궁서                            |
+| 궁서체                          |
+| 굴림                            |
+| 굴림체                          |
+| 돋움                            |
+| 돋움체                          |
+| HoloLens MDL2 Assets            |
+| 함초롬바탕                      |
+| 한컴돋움                        |
+| 한컴바탕                        |
+| 함초롬돋움                      |
+| 함초롬돋움 확장                 |
+| 안상수2006중간                  |
+| 안상수2006가는                  |
+| 안상수2006굵은                  |
+| 문체부 훈민정음체               |
+| 새굴림                          |
+| Century                         |
+| Leelawadee                      |
+| Microsoft Uighur                |
+| Tempus Sans ITC                 |
 | Pristina                        |
-| Rage Italic                     |
-| Rockwell                        |
-| Rockwell Condensed              |
-| Rockwell Extra Bold             |
-| Script MT Bold                  |
-| Tw Cen MT                       |
-| Tw Cen MT Condensed             |
-| Tw Cen MT Condensed Extra Bold  |
+| Papyrus                         |
+| Mistral                         |
+| Lucida Handwriting              |
+| Kristen ITC                     |
+| Juice ITC                       |
+| French Script MT                |
+| Freestyle Script                |
+| Bradley Hand ITC                |
+| Arial Narrow                    |
+| Book Antiqua                    |
+| Garamond                        |
+| Monotype Corsiva                |
+| Century Gothic                  |
 | Algerian                        |
 | Baskerville Old Face            |
 | Bauhaus 93                      |
 | Bell MT                         |
 | Berlin Sans FB                  |
-| Berlin Sans FB Demi             |
 | Bernard MT Condensed            |
 | Bodoni MT Poster Compressed     |
 | Britannic Bold                  |
@@ -772,21 +692,16 @@ Assumes that the frame is only split into two."
 | Colonna MT                      |
 | Cooper Black                    |
 | Footlight MT Light              |
-| Freestyle Script                |
 | Harlow Solid Italic             |
 | Harrington                      |
 | High Tower Text                 |
 | Jokerman                        |
-| Juice ITC                       |
-| Kristen ITC                     |
 | Kunstler Script                 |
 | Lucida Bright                   |
 | Lucida Calligraphy              |
 | Lucida Fax                      |
-| Lucida Handwriting              |
 | Magneto                         |
 | Matura MT Script Capitals       |
-| Mistral                         |
 | Modern No. 20                   |
 | Niagara Engraved                |
 | Niagara Solid                   |
@@ -800,13 +715,82 @@ Assumes that the frame is only split into two."
 | Showcard Gothic                 |
 | Snap ITC                        |
 | Stencil                         |
-| Tempus Sans ITC                 |
 | Viner Hand ITC                  |
 | Vivaldi                         |
 | Vladimir Script                 |
 | Wide Latin                      |
-| Arial Unicode MS                |
-| HY헤드라인M                     |
+| Tw Cen MT                       |
+| Tw Cen MT Condensed             |
+| Script MT Bold                  |
+| Rockwell Extra Bold             |
+| Rockwell Condensed              |
+| Rockwell                        |
+| Rage Italic                     |
+| Perpetua Titling MT             |
+| Perpetua                        |
+| Palace Script MT                |
+| OCR A Extended                  |
+| Maiandra GD                     |
+| Lucida Sans Typewriter          |
+| Lucida Sans                     |
+| Imprint MT Shadow               |
+| Haettenschweiler                |
+| Goudy Stout                     |
+| Goudy Old Style                 |
+| Gloucester MT Extra Condensed   |
+| Gill Sans Ultra Bold Condensed  |
+| Gill Sans Ultra Bold            |
+| Gill Sans MT Condensed          |
+| Gill Sans MT                    |
+| Gill Sans MT Ext Condensed Bold |
+| Gigi                            |
+| Franklin Gothic Medium Cond     |
+| Franklin Gothic Heavy           |
+| Franklin Gothic Demi Cond       |
+| Franklin Gothic Demi            |
+| Franklin Gothic Book            |
+| Forte                           |
+| Felix Titling                   |
+| Eras Medium ITC                 |
+| Eras Light ITC                  |
+| Eras Demi ITC                   |
+| Eras Bold ITC                   |
+| Engravers MT                    |
+| Elephant                        |
+| Edwardian Script ITC            |
+| Curlz MT                        |
+| Copperplate Gothic Light        |
+| Copperplate Gothic Bold         |
+| Century Schoolbook              |
+| Castellar                       |
+| Calisto MT                      |
+| Bookman Old Style               |
+| Bodoni MT Condensed             |
+| Bodoni MT Black                 |
+| Bodoni MT                       |
+| Blackadder ITC                  |
+| Arial Rounded MT Bold           |
+| Agency FB                       |
+| MS Reference Sans Serif         |
+| Berlin Sans FB Demi             |
+| Tw Cen MT Condensed Extra Bold  |
+| Ubuntu Mono                     |
+| DejaVu Sans Mono                |
+| Noto Emoji                      |
+| System                          |
+| Terminal                        |
+| Fixedsys                        |
+| Modern                          |
+| Roman                           |
+| Script                          |
+| Courier                         |
+| MS Serif                        |
+| MS Sans Serif                   |
+| Small Fonts                     |
+| Marlett                         |
+| Symbol                          |
+| Webdings                        |
+| Wingdings                       |
 | 한컴바탕확장                    |
 | 한컴 윤체 M                     |
 | 한컴 윤체 L                     |
@@ -825,12 +809,7 @@ Assumes that the frame is only split into two."
 | 한컴 쿨재즈 M                   |
 | 한컴 백제 B                     |
 | 한컴 윤고딕 230                 |
-| 함초롬바탕                      |
-| 한컴돋움                        |
 | HyhwpEQ                         |
-| 한컴바탕                        |
-| 함초롬돋움                      |
-| 함초롬돋움 확장                 |
 | 함초롬바탕 확장                 |
 | CentSchbook BT                  |
 | Courier10 BT                    |
@@ -846,9 +825,7 @@ Assumes that the frame is only split into two."
 | MD이솝체                        |
 | MD아트체                        |
 | MD아롱체                        |
-| 안상수2006중간                  |
-| 안상수2006가는                  |
-| 안상수2006굵은                  |
+| NewJumja                        |
 | DomCasual BT                    |
 | Freehand591 BT                  |
 | FuturaBlack BT                  |
@@ -904,7 +881,6 @@ Assumes that the frame is only split into two."
 | HY울릉도M                       |
 | 문체부 제목 바탕체              |
 | 문체부 돋음체                   |
-| 문체부 훈민정음체               |
 | 문체부 궁체 정자체              |
 | 문체부 제목 돋음체              |
 | 문체부 궁체 흘림체              |
@@ -933,29 +909,6 @@ Assumes that the frame is only split into two."
 | 양재소슬체S                     |
 | 양재튼튼체B                     |
 | 양재와당체M                     |
-| Calibri Light                   |
-| Candara                         |
-| Constantia                      |
-| Corbel                          |
-| SWGamekeys MT                   |
-| Bitstream Vera Sans Mono        |
-| DejaVu Sans Mono                |
-| Everson Mono                    |
-| Ubuntu Light                    |
-| Ubuntu Mono                     |
-| Ubuntu                          |
-| Ubuntu Condensed                |
-| 나눔고딕코딩                    |
-| Arial Narrow                    |
-| Garamond                        |
-| Bookman Old Style               |
-| Century                         |
-| Wingdings 2                     |
-| Wingdings 3                     |
-| MS Outlook                      |
-| Bookshelf Symbol 7              |
-| MS Reference Sans Serif         |
-| MS Reference Specialty          |
 | 휴먼아미체                      |
 | 휴먼둥근헤드라인                |
 | 휴먼매직체                      |
@@ -963,18 +916,19 @@ Assumes that the frame is only split into two."
 | 휴먼엑스포                      |
 | HY그래픽M                       |
 | HY궁서B                         |
+| HY헤드라인M                     |
 | HY중고딕                        |
 | HY목각파임B                     |
 | HY신명조                        |
 | HY얕은샘물M                     |
 | HY엽서L                         |
-| 새굴림                          |
 | 휴먼편지체                      |
 | MT Extra                        |
-| Symbola                         |
-| UbuntuMonoDerivativePowerline N |
-| Noto Emoji                      |
-| VisualUI                        |
+| Wingdings 2                     |
+| Wingdings 3                     |
+| MS Outlook                      |
+| Bookshelf Symbol 7              |
+| MS Reference Specialty          |
 
 * unicode characters                                              :document:
   [[https://en.wikibooks.org/wiki/Unicode/List_of_useful_symbols][Unicode/List

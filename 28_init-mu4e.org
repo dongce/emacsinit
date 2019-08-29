@@ -56,8 +56,8 @@
 
        (defun bmkp-mu4e-view ()
          (interactive)
-         (let* ((subject (mu4e-message-field mu4e~view-msg :subject))
-                (docid (mu4e-message-field mu4e~view-msg :docid)))
+         (let* ((subject (mu4e-message-field mu4e~view-message :subject))
+                (docid (mu4e-message-field mu4e~view-message :docid)))
            (bmkp-mu4e-helper subject docid)))
 
        (defun bmkp-mu4e-header ()
@@ -79,26 +79,26 @@
                 (docid (mu4e-message-field msg :docid)))
            (kill-new (format "%s %s : (lambda ()  (mu4e~proc-view %d nil nil))" subject path docid))))
 
-       (defvar outlook.exe "C:\\Program Files (x86)\\Microsoft Office\\Office15\\OUTLOOK.EXE")
-       (defun open-mu4e-header ()
-         (interactive)
-         (w32-shell-execute nil outlook.exe (format "/eml \"%s\"" (mu4e-message-field (mu4e-message-at-point) :path ) )))
+       (defvar outlook.exe "C:\\Program Files\\Microsoft Office\\Office16\\OUTLOOK.EXE")
 
        (defun copy-mu4e-view ()
          (interactive)
-         (let* ((subject (mu4e-message-field mu4e~view-msg :subject))
-                (path    (mu4e-filename mu4e~view-msg ))
-                (docid (mu4e-message-field mu4e~view-msg :docid)))
+         (let* ((subject (mu4e-message-field mu4e~view-message :subject))
+                (path    (mu4e-filename mu4e~view-message ))
+                (docid (mu4e-message-field mu4e~view-message :docid)))
            (kill-new (format "%s %s (lambda () (mu4e~proc-view %d nil nil))" subject path docid))))
 
-
-       (defun open-mu4e-view (&optional findfile)
-         (interactive "P")
-         (let ( (file (mu4e-message-field mu4e~view-msg :path))) 
-           (message file )
-           (if findfile
-               (find-file file )
-             (w32-shell-execute nil outlook.exe (format "/eml \"%s\"" file )))))
+  ;;(defun open-mu4e-header ()
+  ;;  (interactive)
+  ;;  (w32-shell-execute nil outlook.exe (format "/eml \"%s\"" (mu4e-message-field (mu4e-message-at-point) :path ) )))
+  (defun open-mu4e-view (&optional findfile)
+    (interactive "P")
+    (let ( (file (mu4e-message-field
+                  (if (equal major-mode 'mu4e-view-mode) mu4e~view-message (mu4e-message-at-point)) :path)))
+      (message file )
+      (if findfile
+          (find-file file )
+        (w32-shell-execute nil outlook.exe (format "/eml \"%s\"" file )))))
 
        (setf mu4e-field-list '(:path :docid :from :to :cc :subject :date :size :message-id  :maildir :priority :flags :attachments :references )) ;:parts
 
@@ -109,7 +109,7 @@
 
        (defun mu4e-field-view ()
          (interactive)
-         (mu4e-field-helper mu4e~view-msg (cons ':parts mu4e-field-list)))
+         (mu4e-field-helper mu4e~view-message (cons ':parts mu4e-field-list)))
 
        (defun mu4e-find-file()
          (interactive)
@@ -272,7 +272,7 @@
        ;;oldversion;;    (with-current-buffer buf
        ;;oldversion;;      (let ((inhibit-read-only t))
        ;;oldversion;;        (setq ;; buffer local
-       ;;oldversion;;         mu4e~view-msg msg
+       ;;oldversion;;         mu4e~view-message msg
        ;;oldversion;;         mu4e~view-headers-buffer headersbuf)
        ;;oldversion;;        (erase-buffer)
        ;;oldversion;;        (insert (mu4e-view-message-text msg))
@@ -472,6 +472,7 @@
        (interactive "p")
        (let ((days (if  days  (prefix-numeric-value days) 3 )))
          (pyutil-win32event "fetchmail") 
+         (mu4e-update-index)
          (message (format "dayns %d" days))
          (mu4e-headers-search (format  "date:%dd..now" days))))
 
@@ -479,6 +480,7 @@
 
 
      (global-set-key [f3] 'mymail)
+     (global-set-key [C-f3] 'mu4e-update-index)
      (global-set-key [M-f3] 'mu)
      (global-set-key [S-f3] '(lambda ()  (interactive) (pop-to-buffer "*mu4e-headers*")))
 
@@ -559,6 +561,19 @@
 #+RESULTS:
 : org-mu4e-open
 
+** send advice
+   #+begin_src emacs-lisp
+     (defun mu4e-message-send-and-exit ()
+       (interactive)
+       (goto-char 0 )
+       (mu4e-compose-mode)
+       (add-hook 'message-send-hook 'org~mu4e-mime-convert-to-html-maybe nil t)
+       (message-send-and-exit))
+   #+end_src
+
+   #+RESULTS:
+   : mu4e-message-send-and-exit
+
 * keybinding
 
   #+BEGIN_SRC emacs-lisp
@@ -573,7 +588,6 @@
   #+END_SRC
 
   #+RESULTS:
-
 
 * imapget
 ** moved to .spacemacs
@@ -663,3 +677,10 @@
     (define-key mu4e-view-mode-map (kbd "m") 'mu4e-view-mark-for-tag)
     ;;(define-key mu4e-headers-mode-map (kbd "A") 'mu4e-headers-mark-for-archive)
   #+END_SRC
+* occur-store-link
+  #+begin_src emacs-lisp
+    (defun mu4e-occur-store-link ()
+      (interactive)
+      (next-error)
+      (org-store-link 0 t))
+  #+end_src
