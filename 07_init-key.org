@@ -17,9 +17,12 @@
          w32-pass-apps-to-system nil 
          w32-lwindow-modifier nil ;;'super ; Left Windows key 
          w32-rwindow-modifier nil ;;'super ; Right Windows key 
-         w32-apps-modifier 'hyper) ; Menu key
+         w32-apps-modifier 'nil) ; Menu key
 
-   (when-os 'windows-nt (global-set-key [rwindow] 'helm-smex))
+   (when-os 'windows-nt (global-set-key [rwindow] 'counsel-M-x))
+   (when-os 'windows-nt 
+     (global-set-key [apps] 'dired-jump)
+     (global-set-key [S-apps] 'dired))
 
    ;;hyper super define;;(global-set-key (kbd "H-b") 'backward-word) ; H is for hyper
    ;;hyper super define;;(global-set-key (kbd "s-b") 'backward-word) ; lower case “s” is for super
@@ -727,3 +730,13 @@
    #+BEGIN_SRC emacs-lisp
    (ace-link-setup-default)
    #+END_SRC
+** toggle maximize-buffer 
+#+begin_src emacs-lisp
+
+  (global-set-key [f14] 'spacemacs/toggle-maximize-buffer)
+  (global-set-key [S-f14] (lambda () (interactive) (save-mark-and-excursion (switch-to-buffer-other-window "*Occur*") (other-window 1))))
+  (global-set-key [M-f14] (lambda () (interactive) (save-mark-and-excursion (switch-to-buffer-other-window "*Grep*") (other-window 1))))
+  (global-set-key [f9] 'other-window)
+  (global-set-key [insert] 'counsel-M-x)
+
+#+end_src

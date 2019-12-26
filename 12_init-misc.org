@@ -2007,16 +2007,17 @@ to the symbol at point."
 
 ** copy
    #+BEGIN_SRC emacs-lisp 
-(defun copy-rectangle-to-clipboard (p1 p2)
-  "Copy region as column (rectangle) to operating system's clipboard.
-This command will also put the text in register 0. (sec: `copy-to-register')"
-  (interactive "r")
-  (let ((x-select-enable-clipboard t))
-    (copy-rectangle-to-register ?0 p1 p2)
-    (kill-new
-     (with-temp-buffer
-       (insert-register ?0)
-       (buffer-string) ))))
+     (defun copy-rectangle-to-clipboard (p1 p2)
+       "Copy region as column (rectangle) to operating system's clipboard.
+     This command will also put the text in register 0. (sec: `copy-to-register')"
+       (interactive "r")
+       (let ((x-select-enable-clipboard t))
+         (copy-rectangle-to-register ?0 p1 p2)
+         (kill-new
+          (with-temp-buffer
+            (insert-register ?0)
+            (delete-trailing-whitespace (point-min) (point-max))
+            (buffer-string) ))))
 
    #+END_SRC
 

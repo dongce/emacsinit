@@ -9,7 +9,7 @@
  (setenv "GUILE_HOME"      "t:/usr/local/guile"      t )
  (setenv "PYTHONUNBUFFERED"      "x" t )
  (setenv "WORKON_HOME"      "t:/usr/local/pyvenv" t )
- (setenv "GRAPHVIZ_DOT"      "t:/usr/local/editor/emacsW32/graphviz/bin/dot.exe" t )
+ (setenv "GRAPHVIZ_DOT"      "c:/usr/local/editor/emacsW32/graphviz/bin/dot.exe" t )
  (setenv "LANG" "ko_KR.UTF-8")
  (setenv "LC_ALL" "ko_KR.UTF-8")
  (setenv "MSYSTEM" "MINGW64")
@@ -24,6 +24,7 @@
  ;; (append-path  (fullpath "../../../../python27/"))
  (append-path  "c:/anaconda/scripts")
  (append-path  "c:/anaconda/")
+ (append-path  "c:/gnat/2019/bin")
  (append-path  "c:/anaconda/library/bin")
  (append-path  "c:/msys264/usr/bin")
  (append-path  "c:/msys264/mingw64/bin")
@@ -43,7 +44,8 @@
  (append-path  (fullpath "../../putty"))
  (append-path  "c:/usr/local/gnupg")
  (append-path "c:/usr/local/7zip")
- (append-path  "c:/usr/local/gpg4win"))
+ (append-path  "c:/usr/local/gpg4win")
+ (append-path "c:/TOPS/OTW11/otw/jre/bin"))
 #+END_SRC
 
 #+RESULTS:

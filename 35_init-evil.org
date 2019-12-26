@@ -1414,32 +1414,41 @@
 
      #+RESULTS:
 
-**** dired mapping                                              :deprecated:
-#+BEGIN_SRC emacs-lisp
-       ;;  (use-package dired
-       ;;    :config
-       ;;;;; Dired
-       ;;    (define-key dired-mode-map (kbd "SPC") nil)
-       ;;    (define-key dired-mode-map (kbd "/") nil)
-       ;;    (define-key dired-mode-map (kbd "n") nil)
-       ;;    (define-key dired-mode-map (kbd "N") nil)
-       ;;    
-       ;;    ;; use the standard Dired bindings as a base
-       ;;    (evil-make-overriding-map dired-mode-map 'normal t)
-       ;;    (evil-add-hjkl-bindings dired-mode-map 'normal
-       ;;      "J" 'dired-goto-file     ; "j"
-       ;;      "K" 'dired-do-kill-lines ; "k"
-       ;;      ;; "r" 'dired-do-redisplay  ; "l"
-       ;;      "r" 'revert-buffer
-       ;;      ;; "g" 'revert-buffer
-       ;;      (kbd  "RET") 'diredp-find-file-reuse-dir-buffer
-       ;;      ";" (lookup-key dired-mode-map ":")) ; ":d", ":v", ":s", ":e"
-       ;;    (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
-       ;;    ;;evil-extra-operator;;(evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
-       ;;    ;;evil-extra-operator;;(evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
-       ;;    (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first))
-#+END_SRC
+**** dired mapping  
+***** deprecated 
+ #+BEGIN_SRC emacs-lisp :tangle no
+        ;;  (use-package dired
+        ;;    :config
+        ;;;;; Dired
+        ;;    (define-key dired-mode-map (kbd "SPC") nil)
+        ;;    (define-key dired-mode-map (kbd "/") nil)
+        ;;    (define-key dired-mode-map (kbd "n") nil)
+        ;;    (define-key dired-mode-map (kbd "N") nil)
+        ;;    
+        ;;    ;; use the standard Dired bindings as a base
+        ;;    (evil-make-overriding-map dired-mode-map 'normal t)
+        ;;    (evil-add-hjkl-bindings dired-mode-map 'normal
+        ;;      "J" 'dired-goto-file     ; "j"
+        ;;      "K" 'dired-do-kill-lines ; "k"
+        ;;      ;; "r" 'dired-do-redisplay  ; "l"
+        ;;      "r" 'revert-buffer
+        ;;      ;; "g" 'revert-buffer
+        ;;      (kbd  "RET") 'diredp-find-file-reuse-dir-buffer
+        ;;      ";" (lookup-key dired-mode-map ":")) ; ":d", ":v", ":s", ":e"
+        ;;    (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
+        ;;    ;;evil-extra-operator;;(evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
+        ;;    ;;evil-extra-operator;;(evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
+        ;;    (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first))
+ #+END_SRC
 
+***** v make visual
+      #+begin_src emacs-lisp
+       (evil-define-key 'normal dired-mode-map "v" #'evil-visual-char)
+      #+end_src
+***** list files
+      #+begin_src emacs-lisp
+        (evil-define-key 'normal dired-mode-map (kbd "<f6>") #'diredp-list-marked)
+      #+end_src
 *** key combo
 
     #+BEGIN_SRC emacs-lisp
@@ -1687,7 +1696,7 @@
   (setq switch-window-shortcut-style 'qwerty)
   (setq switch-window-querty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "i" "o"))
   :config
-  (global-set-key (kbd "<f12>") 'switch-window-then-display-buffer)
+  (global-set-key (kbd "<f12>") 'switch-to-buffer)
   (global-set-key (kbd "<S-f12>") 'switch-window-then-find-file)
   (global-set-key (kbd "<M-f12>") 'switch-window-then-dired)
   ;;(global-set-key (kbd "C-x o") 'switch-window)
@@ -1710,6 +1719,22 @@
   #+END_SRC
 
   #+RESULTS:
+* garbage-collection
+  
+  #+begin_src emacs-lisp
+    (global-set-key (kbd "<f13>")
+                    (lambda ()
+                      (interactive)
+                      (save-some-buffers t
+                                         #'(lambda ()
+                                             (and (not buffer-read-only)
+                                                  (buffer-file-name))))
+                      (garbage-collect)))
+  #+end_src
+
+  #+RESULTS:
+  | lambda | nil | (interactive) | (save-some-buffers t #'(lambda nil (and (not buffer-read-only) (buffer-file-name)))) | (garbage-collect) |
+
 * evil-states
 ** normal state
    #+BEGIN_SRC emacs-lisp
