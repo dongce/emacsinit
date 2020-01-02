@@ -17,8 +17,8 @@
        :init
        (setq   
         python-check-command "pyflakes"
-        python-shell-interpreter "ipython.exe"
-        python-shell-interpreter-args "-i --colors=NoColor"
+        python-shell-interpreter "/opt/python38/bin/ipython3"
+        python-shell-interpreter-args "-i --simple-prompt --colors=NoColor"
         python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
         python-shell-prompt-regexp "In \\[[0-9]+\\]: "))
 
@@ -173,7 +173,7 @@
     (use-package pymacs
       ;; :commands pyutil-mozlz4-decompress fbmk
       :config
-      (setq pymacs-python-command "emacspython.bat")
+      (setq pymacs-python-command "/opt/python38/bin/python3")
       (add-to-list 'pymacs-load-path (fullpath  "../thirdparty/pymacs/"))
       (setenv  "PYTHONPATH" (fullpath  "../thirdparty/pymacs/"))
       ;; pyclip use external

@@ -8,30 +8,26 @@
   #+RESULTS:
 
 * mu4e setting
+
 ** initial setting
    #+BEGIN_SRC emacs-lisp
 
-          ;;;_ emacs 버그 - TZ 환경 변수를 정상적으로 처리하지 못한다. 
+             ;;;_ emacs 버그 - TZ 환경 변수를 정상적으로 처리하지 못한다. 
      ;;(setenv "TZ" "ROK")                     ;mingw 프로그램 영향 
 
      ;;http://emacswiki.org/emacs/LoadPath
 
 
-     (setf mu4e-maildir (s-concat "f:/PERSONAL/" (datetime-format "%Y/%m/%d")))
-
-
+     (setf mu4e-maildir (s-concat "/f/PERSONAL/" (datetime-format "%Y/%m/%d")))
 
      (use-package mu4e
        :init
-       (cond ((eq window-system 'w32)
-              (let ((default-directory (fullpath "../../mumailindexer/share/emacs/site-lisp")))
-                (normal-top-level-add-subdirs-to-load-path))
-              (append-path (fullpath "../../mumailindexer/bin/")))
-             (t
-              (let ((default-directory  "/opt/emacs/mumail/default/share/emacs/site-lisp"))
-                (normal-top-level-add-subdirs-to-load-path))
-              (append-path  "/opt/emacs/mumail/default/bin/"))
-             )
+       (cond (t
+              (add-to-list 'load-path (concat emacsw32-home "local/share/emacs/site-lisp/mu4e"))
+              (append-path "/opt/local/bin")))
+
+
+
        :config
        (setq mu4e-bookmarks
              '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)
@@ -79,7 +75,7 @@
                 (docid (mu4e-message-field msg :docid)))
            (kill-new (format "%s %s : (lambda ()  (mu4e~proc-view %d nil nil))" subject path docid))))
 
-       (defvar outlook.exe "C:\\Program Files\\Microsoft Office\\Office16\\OUTLOOK.EXE")
+       (setf outlook.exe "C:\\Program Files\\Microsoft Office\\Office16\\OUTLOOK.EXE")
 
        (defun copy-mu4e-view ()
          (interactive)
@@ -88,17 +84,17 @@
                 (docid (mu4e-message-field mu4e~view-message :docid)))
            (kill-new (format "%s %s (lambda () (mu4e~proc-view %d nil nil))" subject path docid))))
 
-  ;;(defun open-mu4e-header ()
-  ;;  (interactive)
-  ;;  (w32-shell-execute nil outlook.exe (format "/eml \"%s\"" (mu4e-message-field (mu4e-message-at-point) :path ) )))
-  (defun open-mu4e-view (&optional findfile)
-    (interactive "P")
-    (let ( (file (mu4e-message-field
-                  (if (equal major-mode 'mu4e-view-mode) mu4e~view-message (mu4e-message-at-point)) :path)))
-      (message file )
-      (if findfile
-          (find-file file )
-        (w32-shell-execute nil outlook.exe (format "/eml \"%s\"" file )))))
+       ;;(defun open-mu4e-header ()
+       ;;  (interactive)
+       ;;  (w32-shell-execute nil outlook.exe (format "/eml \"%s\"" (mu4e-message-field (mu4e-message-at-point) :path ) )))
+       (defun open-mu4e-view (&optional findfile)
+         (interactive "P")
+         (let ( (file (mu4e-message-field
+                       (if (equal major-mode 'mu4e-view-mode) mu4e~view-message (mu4e-message-at-point)) :path)))
+           (message file )
+           (if findfile
+               (find-file file )
+             (w32-shell-execute nil outlook.exe (format "/eml \"%s\"" file )))))
 
        (setf mu4e-field-list '(:path :docid :from :to :cc :subject :date :size :message-id  :maildir :priority :flags :attachments :references )) ;:parts
 
@@ -130,42 +126,42 @@
 
        (defun mu4e-field-helper (msg fieldlist )
          "Retrieve FIELD from message plist MSG.
-          FIELD is one of :from, :to, :cc, :bcc, :subject, :data,
-          :message-id, :path, :maildir, :priority, :attachments,
-          :references, :in-reply-to, :body-txt, :body-html
+             FIELD is one of :from, :to, :cc, :bcc, :subject, :data,
+             :message-id, :path, :maildir, :priority, :attachments,
+             :references, :in-reply-to, :body-txt, :body-html
 
-          Returns `nil' if the field does not exist.
+             Returns `nil' if the field does not exist.
 
-          A message plist looks something like:
-          \(:docid 32461
-           :from ((\"Nikola Tesla\" . \"niko@example.com\"))
-           :to ((\"Thomas Edison\" . \"tom@example.com\"))
-           :cc ((\"Rupert The Monkey\" . \"rupert@example.com\"))
-           :subject \"RE: what about the 50K?\"
-           :date (20369 17624 0)
-           :size 4337
-           :message-id \"6BDC23465F79238C8233AB82D81EE81AF0114E4E74@123213.mail.example.com\"
-           :path  \"/home/tom/Maildir/INBOX/cur/133443243973_1.10027.atlas:2,S\"
-           :maildir \"/INBOX\"
-           :priority normal
-           :flags (seen)
-           :attachments
-               ((:index 2 :name \"photo.jpg\" :mime-type \"image/jpeg\" :size 147331)
-                (:index 3 :name \"book.pdf\" :mime-type \"application/pdf\" :size 192220))
-           :references  (\"6BDC23465F79238C8384574032D81EE81AF0114E4E74@123213.mail.example.com\"
-           \"6BDC23465F79238203498230942D81EE81AF0114E4E74@123213.mail.example.com\")
-           :in-reply-to \"6BDC23465F79238203498230942D81EE81AF0114E4E74@123213.mail.example.com\"
-           :body-txt \"Hi Tom, ...\"
-          \)).
-          Some notes on the format:
-          - The address fields are lists of pairs (NAME . EMAIL), where NAME can be nil.
-          - The date is in format emacs uses in `current-time'
-          - Attachments are a list of elements with fields :index (the number of
-            the MIME-part), :name (the file name, if any), :mime-type (the
-            MIME-type, if any) and :size (the size in bytes, if any).
-          - Messages in the Headers view come from the database and do not have
-            :attachments, :body-txt or :body-html fields. Message in the
-            Message view use the actual message file, and do include these fields."
+             A message plist looks something like:
+             \(:docid 32461
+              :from ((\"Nikola Tesla\" . \"niko@example.com\"))
+              :to ((\"Thomas Edison\" . \"tom@example.com\"))
+              :cc ((\"Rupert The Monkey\" . \"rupert@example.com\"))
+              :subject \"RE: what about the 50K?\"
+              :date (20369 17624 0)
+              :size 4337
+              :message-id \"6BDC23465F79238C8233AB82D81EE81AF0114E4E74@123213.mail.example.com\"
+              :path  \"/home/tom/Maildir/INBOX/cur/133443243973_1.10027.atlas:2,S\"
+              :maildir \"/INBOX\"
+              :priority normal
+              :flags (seen)
+              :attachments
+                  ((:index 2 :name \"photo.jpg\" :mime-type \"image/jpeg\" :size 147331)
+                   (:index 3 :name \"book.pdf\" :mime-type \"application/pdf\" :size 192220))
+              :references  (\"6BDC23465F79238C8384574032D81EE81AF0114E4E74@123213.mail.example.com\"
+              \"6BDC23465F79238203498230942D81EE81AF0114E4E74@123213.mail.example.com\")
+              :in-reply-to \"6BDC23465F79238203498230942D81EE81AF0114E4E74@123213.mail.example.com\"
+              :body-txt \"Hi Tom, ...\"
+             \)).
+             Some notes on the format:
+             - The address fields are lists of pairs (NAME . EMAIL), where NAME can be nil.
+             - The date is in format emacs uses in `current-time'
+             - Attachments are a list of elements with fields :index (the number of
+               the MIME-part), :name (the file name, if any), :mime-type (the
+               MIME-type, if any) and :size (the size in bytes, if any).
+             - Messages in the Headers view come from the database and do not have
+               :attachments, :body-txt or :body-html fields. Message in the
+               Message view use the actual message file, and do include these fields."
          ;; after all this documentation, the spectacular implementation
 
          (interactive)
@@ -214,8 +210,8 @@
 
        (defun shr-insert-document-temp (dom)
          "Render the parsed document DOM into the current buffer.
-          DOM should be a parse tree as generated by
-          `libxml-parse-html-region' or similar."
+             DOM should be a parse tree as generated by
+             `libxml-parse-html-region' or similar."
          (setq shr-content-cache nil)
          (let ((start (point))
                (shr-state nil)
@@ -492,10 +488,10 @@
      ;;  (lambda (p)
      ;;    (mu4e nil)
      ;;    (mu4e-update-mail-and-index t))))
-          ;;; mu db 위치
-          ;;; %HOME%/.mu
+             ;;; mu db 위치
+             ;;; %HOME%/.mu
 
-          ;;; index 순서 
+             ;;; index 순서 
      ;;mu index -m f:/single-repo
      ;;mu index -m f:/MYSINGLE
      ;;mu index -m g:/MYSINGLE

@@ -1170,7 +1170,7 @@ The value of DEFAULT is inserted into PROMPT."
  '("^\\([^,\n\t]+\\),\\([0-9]+\\),\\([0-9]+\\)," 1 2 3))
 
 ;; tcf 와 CPP 파일을 연결합니다. 
-(setf cc-other-file-alist (cons '("\\.tcf\\'" (".cpp" )) cc-other-file-alist))
+;;(setf cc-other-file-alist (cons '("\\.tcf\\'" (".cpp" )) cc-other-file-alist))
 
 
 (defun release ()
@@ -1460,17 +1460,17 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
     ;; Uncomment the below line to use eww (Emacs Web Wowser)
     ;; (setq xah-lookup-browser-function 'eww)
 
-    (req-package xah-lookup
-      :force t
-      :config 
-      (defun xah-lookup-cppreference (&optional word)
-        "Lookup definition of current word or text selection in URL."
-        (interactive)
-        (xah-lookup-word-on-internet
-         word
-         ;; Use � as a placeholder in the query URL.
-         "http://en.cppreference.com/mwiki/index.php?search=�"
-         xah-lookup-browser-function)))
+   ;;(req-package xah-lookup
+   ;;  :force t
+   ;;  :config 
+   ;;  (defun xah-lookup-cppreference (&optional word)
+   ;;    "Lookup definition of current word or text selection in URL."
+   ;;    (interactive)
+   ;;    (xah-lookup-word-on-internet
+   ;;     word
+   ;;     ;; Use � as a placeholder in the query URL.
+   ;;     "http://en.cppreference.com/mwiki/index.php?search=�"
+   ;;     xah-lookup-browser-function)))
   #+END_SRC
 
   #+RESULTS:
@@ -3295,7 +3295,7 @@ When called from Lisp code, ARG may be a prefix string to copy."
    ;;;; C-x r l   list all of your bookmarks
    ;;;; M-x bookmark-delete   delete a bookmark by name
 
-   (require 'bookmark+)
+   ;;(require 'bookmark+)
    (global-set-key (kbd "C-*") 'bookmark-bmenu-list)
 
 

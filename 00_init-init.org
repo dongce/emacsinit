@@ -74,7 +74,7 @@
 #+BEGIN_SRC emacs-lisp
 
   (require 'use-package)
-  (require 'req-package)
+  ;;(require 'req-package)
   (use-package package-helper)
 #+END_SRC
 
@@ -97,7 +97,7 @@
 
 #+BEGIN_SRC emacs-lisp
 
-  (require 'bc-mode)
+  ;;(require 'bc-mode)
   (require 'tramp-adb)
   (require 'grep-ed)
   (require 'markerpen)
