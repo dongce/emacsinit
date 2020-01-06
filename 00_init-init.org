@@ -216,3 +216,26 @@
 
 
 
+* WSL path converter
+
+** win → wsl 
+ #+begin_src emacs-lisp
+ (require 'wsl-path)
+
+ ;;(wsl-path-convert-file-name "/mnt/c/xxx")
+ #+end_src
+
+** wsl → win
+
+   #+begin_src  emacs-lisp
+     (defun win-path-convert-file-name (p)
+       (decode-coding-string
+        (base64-decode-string
+         (pyutil-wslpath
+          (base64-encode-string
+           (encode-coding-string p 'utf-8)))) 'utf-8))
+
+   #+end_src
+
+   #+RESULTS:
+   : win-path-convert-file-name

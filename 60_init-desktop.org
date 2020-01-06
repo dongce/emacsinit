@@ -7,7 +7,7 @@
   #+END_SRC
 
 * desktop
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
 
   ;; desktop 
   (setq desktop-enable t )

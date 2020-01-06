@@ -2217,142 +2217,150 @@ This works on the current region."
 * external
 
 #+BEGIN_SRC emacs-lisp
-(defvar processhacker (fullpath  "../../processhacker/x64/ProcessHacker.exe"))
+  (setf processhacker "c:\\usr\\local\\editor\\emacsW32\\processhacker\\x64\\ProcessHacker.exe")
 
-(defun v3restart () 
-  (interactive)
-  (require 'proced)
-  (let ((ph  processhacker ))
-    (mapcar (lambda (x) 
-              (w32-shell-execute 
-               "" 
-               ph
-               (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
-            (remove-if-not 
-             (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                            '(V3SP.exe 
-                              V3Svc.exe 
-                              V3PScan.exe 
-                              V3Medic.exe 
-                              ;;PaSvc.exe 
-                              ;;PaTray.exe
-                              )))  
-             (proced-process-attributes)))
-    (w32-shell-execute 
-     "" 
-     ph
-     "-c -ctype service -cobject \"V3 Service\" -caction start"
-     )
-    (w32-shell-execute 
-     "" 
-     "c:/Program Files/AhnLab/V3IS80/V3SP.exe")  
-    )
-  ) 
-
-(defun clip-restart () 
-  (interactive)
-  (require 'proced)
-  (let ((ph  processhacker ))
-    (mapcar (lambda (x) 
-              (w32-shell-execute 
-               "" 
-               ph
-               (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
-            (remove-if-not 
-             (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                            '(rdpclip.exe
-                              )))  
-             (proced-process-attributes)))
-    (w32-shell-execute 
-     "" 
-     "rdpclip.exe")  
-    )
-  ) 
-
-
-
-(defun v3kill () 
-  (interactive)
-  (require 'proced)
-  (let ((ph  processhacker )
-        (fmt "-c -ctype process -cobject %d -caction terminate" ))
-    (mapcar
-     (lambda (x) 
-       (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x ))))
-       (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x )))))
-     (remove-if-not 
-      (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                      '(
-                        V3UI.exe 
-                        V3Svc.exe 
-                        V3PScan.exe 
-                        V3Medic.exe 
-                        PaSvc.exe 
-                        PaTray.exe
-
-                        ;; NHCASysMon.exe
-                        ;; NHCARemote.exe
-                        ;; NHCAUI.exe 
-
-                        )))  
-      (proced-process-attributes)))
-    (mapcar
-     (lambda (x) 
-       (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x ))))
-       (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x )))))
-     (remove-if-not 
-      (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                      '(
-                        V3SP.exe 
-                        V3Svc.exe 
-                        V3PScan.exe 
-                        V3Medic.exe 
-                        PaSvc.exe 
-                        PaTray.exe
-
-                        ;; NHCASysMon.exe
-                        ;; NHCARemote.exe
-                        ;; NHCAUI.exe 
-                        )))  
-      (proced-process-attributes)))
-    ))
-
-(defun iekill () 
-  (interactive)
-  (require 'proced)
-  (let ((ph  processhacker ))
-    (mapcar (lambda (x) 
-              (w32-shell-execute 
-               "" 
-               ph
-               (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
-            (remove-if-not 
-             (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                            '(iexplore.exe
-                              )))  
-             (proced-process-attributes)))))
-
-
-(defun cmd/v3kill () 
-  (interactive)
-  (require 'proced)
-  (let ((ph  processhacker ))
-    (with-temp-buffer 
+  (defun v3restart () 
+    (interactive)
+    (require 'proced)
+    (let ((ph  processhacker ))
       (mapcar (lambda (x) 
-                (insert
-                 (format "%s -c -ctype process -cobject %d -caction terminate\n" ph (cdr  (assoc 'pid x )))) )
+                (w32-shell-execute 
+                 "" 
+                 ph
+                 (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
               (remove-if-not 
                (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                               '(V3SP.exe 
-                                 V3Svc.exe 
-                                 V3PScan.exe 
-                                 V3Medic.exe 
-                                 ;;PaSvc.exe 
-                                 ;;PaTray.exe
-                                 )))  
+                              '(V3SP.exe 
+                                V3Svc.exe 
+                                V3PScan.exe 
+                                V3Medic.exe 
+                                ;;PaSvc.exe 
+                                ;;PaTray.exe
+                                )))  
                (proced-process-attributes)))
-      (kill-new (buffer-substring (point-min) (point-max))))
-    ))
+      (w32-shell-execute 
+       "" 
+       ph
+       "-c -ctype service -cobject \"V3 Service\" -caction start"
+       )
+      (w32-shell-execute 
+       "" 
+       "c:/Program Files/AhnLab/V3IS80/V3SP.exe")  
+      )
+    ) 
+
+  (defun clip-restart () 
+    (interactive)
+    (require 'proced)
+    (let ((ph  processhacker ))
+      (mapcar (lambda (x) 
+                (w32-shell-execute 
+                 "" 
+                 ph
+                 (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
+              (remove-if-not 
+               (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
+                              '(rdpclip.exe
+                                )))  
+               (proced-process-attributes)))
+      (w32-shell-execute 
+       "" 
+       "rdpclip.exe")  
+      )
+    ) 
+
+    (defun* pkill ( &rest args)
+      (let ((ph  processhacker )
+            (fmt "\"-c -ctype process -cobject %d -caction terminate\"" ))
+        (mapcar
+         (lambda (x) 
+           (w32-shell-execute nil ph (format fmt x))
+           (w32-shell-execute nil  ph (format fmt x)))
+         args)))
+
+
+  (defun v3kill () 
+    (interactive)
+    (require 'proced)
+    (let ((ph  processhacker )
+          (fmt "-c -ctype process -cobject %d -caction terminate" ))
+      (mapcar
+       (lambda (x) 
+         (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x ))))
+         (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x )))))
+       (remove-if-not 
+        (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
+                        '(
+                          V3UI.exe 
+                          V3Svc.exe 
+                          V3PScan.exe 
+                          V3Medic.exe 
+                          PaSvc.exe 
+                          PaTray.exe
+
+                          ;; NHCASysMon.exe
+                          ;; NHCARemote.exe
+                          ;; NHCAUI.exe 
+
+                          )))  
+        (proced-process-attributes)))
+      (mapcar
+       (lambda (x) 
+         (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x ))))
+         (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x )))))
+       (remove-if-not 
+        (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
+                        '(
+                          V3SP.exe 
+                          V3Svc.exe 
+                          V3PScan.exe 
+                          V3Medic.exe 
+                          PaSvc.exe 
+                          PaTray.exe
+
+                          ;; NHCASysMon.exe
+                          ;; NHCARemote.exe
+                          ;; NHCAUI.exe 
+                          )))  
+        (proced-process-attributes)))
+      ))
+
+  (defun iekill () 
+    (interactive)
+    (require 'proced)
+    (let ((ph  processhacker ))
+      (mapcar (lambda (x) 
+                (w32-shell-execute 
+                 "" 
+                 ph
+                 (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
+              (remove-if-not 
+               (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
+                              '(iexplore.exe
+                                )))  
+               (proced-process-attributes)))))
+
+
+  (defun cmd/v3kill () 
+    (interactive)
+    (require 'proced)
+    (let ((ph  processhacker ))
+      (with-temp-buffer 
+        (mapcar (lambda (x) 
+                  (insert
+                   (format "%s -c -ctype process -cobject %d -caction terminate\n" ph (cdr  (assoc 'pid x )))) )
+                (remove-if-not 
+                 (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
+                                 '(V3SP.exe 
+                                   V3Svc.exe 
+                                   V3PScan.exe 
+                                   V3Medic.exe 
+                                   ;;PaSvc.exe 
+                                   ;;PaTray.exe
+                                   )))  
+                 (proced-process-attributes)))
+        (kill-new (buffer-substring (point-min) (point-max))))
+      ))
 #+END_SRC
 
 * buffer
@@ -3726,3 +3734,34 @@ of FILE in the current directory, suitable for creation"
     (interactive)
     (if display-line-numbers (setf display-line-numbers nil ) (setf display-line-numbers t )))
   #+END_SRC
+* w32-shell-execute
+
+** 사전준비
+ #+begin_src shell
+ call wsl -- tmux new-session -s powershell -d
+ call wsl -- tmux send -t  powershell "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe" ENTER
+ call wsl -- tmux send -t  powershell "Remove-Module -Name PSReadline" ENTER
+ #+end_src
+
+** w32-shell-execute 관련 
+ #+begin_src emacs-lisp
+   (defmacro w32-shell-execute ( OPERATION DOCUMENT &optional PARAMETERS SHOW-FLAG )
+     `(emamux:tmux-run-command nil "send-keys" "-t" "powershell" "start-process"
+                               " -FilePath " ,DOCUMENT
+                               ,@(if (stringp PARAMETERS)  `(" -ArgumentList " ,PARAMETERS )) 
+                               " -Verb " ,(if  OPERATION OPERATION "open")
+
+                               ;;" -WorkingDirectory <String> "
+                               ;;" -PassThru "
+                               ;;" -WindowStyle <ProcessWindowStyle> "
+                               ;;" -Wait "
+                               ;;" -WhatIf "
+                               ;;" -Confirm "
+                               ;;"<CommonParameters> "
+                               "C-m"))
+
+   ;; (w32-shell-execute nil "notepad.exe" "c:\\xxx.txt") 
+ #+end_src
+
+ #+RESULTS:
+ : w32-shell-execute

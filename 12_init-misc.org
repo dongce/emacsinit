@@ -646,7 +646,7 @@ is run).
 * personal
   #+BEGIN_SRC emacs-lisp
     (defun tjcode (code1 code2 securitycard )
-      (let ((table (eval (read (epg-decrypt-file (epg-make-context) securitycard nil)))))
+      (let ((table (eval (read (epg-decrypt-file (epg-make-context) (wsl-path-convert-file-name securitycard) nil)))))
         (kill-buffer "*Messages*")
         (message "코드: %d %d"  (car (cadr (assoc code1 table))) (cadr (cadr (assoc code2 table))))))
 
@@ -750,6 +750,9 @@ is run).
         ))    
 
   #+END_SRC
+
+  #+RESULTS:
+  : hanwhaid
 
 * sw team
 

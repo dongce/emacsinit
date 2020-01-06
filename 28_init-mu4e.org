@@ -94,7 +94,13 @@
            (message file )
            (if findfile
                (find-file file )
-             (w32-shell-execute nil outlook.exe (format "/eml \"%s\"" file )))))
+             (w32-shell-execute nil (format "\"%s\"" outlook.exe) 
+                                (format "\"/eml `\"%s`\"\""
+                                        (win-path-convert-file-name file)
+                                        ;;(base64-decode-string  (pyutil-wslpath file)) 
+                                        ;;(s-replace "/"  "\\" (s-replace "/mnt/f/" "f:" file))
+                                        ;;(pyutil-wslpath file)
+                                        )))))
 
        (setf mu4e-field-list '(:path :docid :from :to :cc :subject :date :size :message-id  :maildir :priority :flags :attachments :references )) ;:parts
 

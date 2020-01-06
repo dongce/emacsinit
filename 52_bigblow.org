@@ -48,7 +48,7 @@
 
 
      (setq org-log-done 'time)
-     (setq org-default-notes-file "u:/orgdir/notes.org")
+     (setq org-default-notes-file "/mnt/u/orgdir/notes.org")
 
      ;; (setq org-directory "~/Documents/Dropbox/OrgFiles/")
      ;; (setq org-agenda-files `(,org-directory))
@@ -1347,7 +1347,7 @@
    ;; https://github.com/jwiegley/org-mode/issues/14
 
    ;; Use pygments highlighting for code
-   (defvar pygmentize (w32-unix-eval ( "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe" ) ("pygmentize") ))
+   (setf pygmentize (w32-unix-eval ( "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe" ) ("/opt/python38/bin/pygmentize") ))
    (defun pygmentize (lang code)
      "Use Pygments to highlight the given code and return the output"
      (with-temp-buffer
@@ -1521,6 +1521,9 @@
 
    #+END_SRC
 
+   #+RESULTS:
+   : org-html-src-format-code
+
 ** util func
 
    #+BEGIN_SRC emacs-lisp
@@ -1614,7 +1617,7 @@
      :ensure t
      :defer 10
      :init
-     ;; (setq yankpad-file "u:/orgdir/yankpad.org")
+     ;; (setq yankpad-file "/mnt/u/orgdir/yankpad.org")
      :config
      ;; (bind-key "<f7>" 'yankpad-map)
 
@@ -1625,6 +1628,12 @@
 
  #+RESULTS:
  : [nil 0 10 0 nil require (yankpad nil t) idle 0]
+
+
+** encoding
+   #+begin_src emacs-lisp
+   (add-to-list 'mm-body-charset-encoding-alist '(utf-8 . base64)) 
+   #+end_src
 
 * org babel
 
@@ -1661,7 +1670,7 @@
       org-caldav-url "http://localhost:1080/users"
       org-caldav-calendar-id "di7979.kim@hanwhasystems.com/calendar"
       org-caldav-uuid-extension ".EML"
-      org-caldav-inbox "u:/orgdir/caldav.org"
+      org-caldav-inbox "/mnt/u/orgdir/caldav.org"
       )
    #+END_SRC
 * evil conflict
