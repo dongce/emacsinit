@@ -1686,82 +1686,159 @@
 
 #+RESULTS:
 
-* org-attach-clipboard
+* org-attach
 
-#+begin_src emacs-lisp
+** screenshot, clipboard 
+   #+begin_src emacs-lisp
+     (use-package org-attach-screenshot 
+       :config 
+       (defun org-attach-screenshot (prfx filename)
+         "Take an area screenshot and place it in the entry's attachment directory.
 
-  (defun org-attach-clipboard (prfx filename)
-    "Take an area screenshot and place it in the entry's attachment directory.
+       The user is interactively prompted for a base FILENAME for the
+       screenshot.  If the name is empty, a generic name will be
+       generated.  If the org entry has no defined attachment directory,
+       the user will be offered the choice to create one through the
+       `org-attach-screenshot-get-attach-dir' function.
 
-  The user is interactively prompted for a base FILENAME for the
-  screenshot.  If the name is empty, a generic name will be
-  generated.  If the org entry has no defined attachment directory,
-  the user will be offered the choice to create one through the
-  `org-attach-screenshot-get-attach-dir' function.
+       The frame invoking the function gets hidden while taking the
+       screenshot unless a prefix argument PRFX is passed (this allows
+       taking screenshots of the Emacs session itself).  If no filename
+       extension is provided, .png will be added.
 
-  The frame invoking the function gets hidden while taking the
-  screenshot unless a prefix argument PRFX is passed (this allows
-  taking screenshots of the Emacs session itself).  If no filename
-  extension is provided, .png will be added.
+       The command for invoking the external screenshot utility can be
+       customized using the `org-attach-screenshot-command-line' variable.
 
-  The command for invoking the external screenshot utility can be
-  customized using the `org-attach-screenshot-command-line' variable.
+       Note that the screenshots are not stored as actual attachments
+       which would mean that entries for the Attachments would be
+       written to the PROPERTIES section of a headline in addition to
+       the links being already placed inside the text."
 
-  Note that the screenshots are not stored as actual attachments
-  which would mean that entries for the Attachments would be
-  written to the PROPERTIES section of a headline in addition to
-  the links being already placed inside the text."
+         (interactive (list current-prefix-arg
+                            (let ((defval (format-time-string
+                                           "screenshot-%Y%m%d-%H%M%S.png")))
+                              (read-string
+                               (format "Screenshot base filename (%s): "
+                                       defval)
+                               nil nil
+                               defval))))
+         (unless (file-name-extension filename)
+           (setq filename (concat filename ".png")))
+         (assert (derived-mode-p 'org-mode) nil
+                 "you must be in org mode to take a screenshot")
+         (let* ((scrfilename (concat (file-name-as-directory
+                                      (org-attach-screenshot-get-attach-dir))
+                                     filename))
+                (arglst (split-string org-attach-screenshot-command-line " "))
+                (cmd (car arglst))
+                linkfilename status)
+           (assert (executable-find cmd) nil
+                   "Cannot find executable '%s'. Please check org-attach-screenshot-command-line"
+                   cmd)
+           (if org-attach-screenshot-relative-links
+               (setq linkfilename
+                     (file-relative-name
+                      scrfilename (file-name-directory
+                                   (or (buffer-file-name) default-directory))))
+             (setq linkfilename scrfilename))
+           (if (and (file-exists-p scrfilename)
+                    (not (y-or-n-p (format "%s already exists. Overwrite?"
+                                           scrfilename))))
+               (call-interactively 'org-attach-screenshot)
+             (insert (concat "[[file:" linkfilename "]]"))
+             (if prfx (make-frame-invisible nil t))
+             ;; we must canoncicalize the file name when we hand it
+             ;; by call-process to the import command
+             (let* ((scrpath (convert-standard-filename  (expand-file-name scrfilename)))
+                    (args (mapcar (lambda (x) (replace-regexp-in-string "%f" (win-path-convert-file-name scrpath) x t t))
+                                  (cdr arglst))))
+               (setq status (apply 'call-process cmd nil nil nil args))
+               (if prfx (make-frame-visible))
+               (unless (equal status 0)
+                 (error "screenshot command exited with status %d: %s" status
+                        (mapconcat 'identity (cons cmd args) " ")) )
+               (message "wrote screenshot to %s" scrpath))
+             (when (or (eq org-attach-screenshot-auto-refresh 'always)
+                       (and (eq org-attach-screenshot-auto-refresh 'ask)
+                            (y-or-n-p "Refresh inline images?")))
+               (org-display-inline-images nil t)))))
 
-    (interactive (list (not  current-prefix-arg)
-                       (let* ((defval (format-time-string
-                                       "screenshot-%Y%m%d-%H%M%S.png")))
-                         (if current-prefix-arg
-                             (read-string
-                              (format "Screenshot base filename (%s): "
-                                      defval)
-                              nil nil
-                              defval)
-                           defval))))
-    (unless (file-name-extension filename)
-      (setq filename (concat filename ".png")))
-    (assert (derived-mode-p 'org-mode) nil
-            "you must be in org mode to take a screenshot")
-    (let* ((scrfilename (concat (file-name-as-directory
-                                 ;;(org-attach-screenshot-get-attach-dir)
-                                 (org-attach-dir t))
-                                filename))
-           (arglst  (list  nircmdexe  "clipboard" "saveimage" "%f" ))
-           (cmd (car arglst))
-           linkfilename status)
-      (assert (executable-find cmd) nil
-              "Cannot find executable '%s'. Please check org-attach-screenshot-command-line"
-              cmd)
-      (if org-attach-screenshot-relative-links
-          (setq linkfilename
-                (file-relative-name
-                 scrfilename (file-name-directory
-                              (or (buffer-file-name) default-directory))))
-        (setq linkfilename scrfilename))
-      (if (and (file-exists-p scrfilename)
-               (not (y-or-n-p (format "%s already exists. Overwrite?"
-                                      scrfilename))))
-          (call-interactively 'org-attach-clipboard)
-        (insert (concat "[[file:" linkfilename "]]"))
-        (unless prfx (make-frame-invisible nil t))
-        ;; we must canoncicalize the file name when we hand it
-        ;; by call-process to the import command
-        (let* ((scrpath (s-replace "/" "\\" (convert-standard-filename  (expand-file-name scrfilename))))
-               (args (mapcar (lambda (x) (replace-regexp-in-string "%f" scrpath x t t))
-                             (cdr arglst))))
-          (setq status (apply 'call-process cmd nil nil nil args))
-          (unless prfx (make-frame-visible))
-          (unless (equal status 0)
-            (error "screenshot command exited with status %d: %s" status
-                   (mapconcat 'identity (cons cmd args) " ")) )
-          (message "wrote screenshot to %s" scrpath))
-        (when (or (eq org-attach-screenshot-auto-refresh 'always)
-                  (and (eq org-attach-screenshot-auto-refresh 'ask)
-                       (y-or-n-p "Refresh inline images?")))
-          (org-display-inline-images nil t)))))
 
-#+end_src
+       (defun org-attach-clipboard (prfx filename)
+         "Take an area screenshot and place it in the entry's attachment directory.
+
+     The user is interactively prompted for a base FILENAME for the
+     screenshot.  If the name is empty, a generic name will be
+     generated.  If the org entry has no defined attachment directory,
+     the user will be offered the choice to create one through the
+     `org-attach-screenshot-get-attach-dir' function.
+
+     The frame invoking the function gets hidden while taking the
+     screenshot unless a prefix argument PRFX is passed (this allows
+     taking screenshots of the Emacs session itself).  If no filename
+     extension is provided, .png will be added.
+
+     The command for invoking the external screenshot utility can be
+     customized using the `org-attach-screenshot-command-line' variable.
+
+     Note that the screenshots are not stored as actual attachments
+     which would mean that entries for the Attachments would be
+     written to the PROPERTIES section of a headline in addition to
+     the links being already placed inside the text."
+
+         (interactive (list (not  current-prefix-arg)
+                            (let* ((defval (format-time-string
+                                            "screenshot-%Y%m%d-%H%M%S.png")))
+                              (if current-prefix-arg
+                                  (read-string
+                                   (format "Screenshot base filename (%s): "
+                                           defval)
+                                   nil nil
+                                   defval)
+                                defval))))
+         (unless (file-name-extension filename)
+           (setq filename (concat filename ".png")))
+         (assert (derived-mode-p 'org-mode) nil
+                 "you must be in org mode to take a screenshot")
+         (let* ((scrfilename (concat (file-name-as-directory
+                                      ;;(org-attach-screenshot-get-attach-dir)
+                                      (org-attach-dir t))
+                                     filename))
+                (arglst  (list  nircmdexe  "clipboard" "saveimage" "%f" ))
+                (cmd (car arglst))
+                linkfilename status)
+           (assert (executable-find cmd) nil
+                   "Cannot find executable '%s'. Please check org-attach-screenshot-command-line"
+                   cmd)
+           (if org-attach-screenshot-relative-links
+               (setq linkfilename
+                     (file-relative-name
+                      scrfilename (file-name-directory
+                                   (or (buffer-file-name) default-directory))))
+             (setq linkfilename scrfilename))
+           (if (and (file-exists-p scrfilename)
+                    (not (y-or-n-p (format "%s already exists. Overwrite?"
+                                           scrfilename))))
+               (call-interactively 'org-attach-clipboard)
+             (insert (concat "[[file:" linkfilename "]]"))
+             (unless prfx (make-frame-invisible nil t))
+             ;; we must canoncicalize the file name when we hand it
+             ;; by call-process to the import command
+             (let* ((scrpath (convert-standard-filename  (expand-file-name scrfilename)))
+                    (args (mapcar (lambda (x) (replace-regexp-in-string "%f" (win-path-convert-file-name scrpath) x t t))
+                                  (cdr arglst))))
+               (setq status (apply 'call-process cmd nil nil nil args))
+               (unless prfx (make-frame-visible))
+               (unless (equal status 0)
+                 (error "screenshot command exited with status %d: %s" status
+                        (mapconcat 'identity (cons cmd args) " ")) )
+               (message "wrote screenshot to %s" scrpath))
+             (when (or (eq org-attach-screenshot-auto-refresh 'always)
+                       (and (eq org-attach-screenshot-auto-refresh 'ask)
+                            (y-or-n-p "Refresh inline images?")))
+               (org-display-inline-images nil t))))))
+
+ #+end_src
+
+ #+RESULTS:
+ : t

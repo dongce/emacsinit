@@ -2325,6 +2325,12 @@ This works on the current region."
         (proced-process-attributes)))
       ))
 
+  (defun v3process ()
+    (interactive)
+    (emamux:tmux-run-command nil "send-keys" "-t" "powershell" "get-process " "V3*,PA*"))
+
+
+
   (defun iekill () 
     (interactive)
     (require 'proced)
@@ -3748,7 +3754,7 @@ of FILE in the current directory, suitable for creation"
    (defmacro w32-shell-execute ( OPERATION DOCUMENT &optional PARAMETERS SHOW-FLAG )
      `(emamux:tmux-run-command nil "send-keys" "-t" "powershell" "start-process"
                                " -FilePath " ,DOCUMENT
-                               ,@(if (stringp PARAMETERS)  `(" -ArgumentList " ,PARAMETERS )) 
+                               ,@(if PARAMETERS  `(" -ArgumentList " ,PARAMETERS )) 
                                " -Verb " ,(if  OPERATION OPERATION "open")
 
                                ;;" -WorkingDirectory <String> "
@@ -3765,3 +3771,13 @@ of FILE in the current directory, suitable for creation"
 
  #+RESULTS:
  : w32-shell-execute
+
+** powershell
+  
+   #+begin_src emacs-lisp
+   (setf powershell.exe "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+
+   ;;(call-process powershell.exe nil t nil "get-process" "v3*,pa*")
+   #+end_src
+  
+   

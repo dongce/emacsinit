@@ -211,10 +211,12 @@
   ;;(define-key dired-mode-map "["  'w32shell-cmd-here)
   ;; 윈도우에서 유용하게 사용할 수 있는 방법
   (defun w32open (fname)
-    (let ((file-name (replace-regexp-in-string "/" "\\"  fname nil t)))
-      ;;(message (replace-regexp-in-string "/" "\\" file-name nil t) )
-      (if (file-exists-p file-name)
-          (w32-shell-execute nil  file-name nil 1))))
+    (w32-shell-execute nil  (format "\"%s\"" (win-path-convert-file-name fname)) nil 1))
+
+  ;;window;;  (let ((file-name (replace-regexp-in-string "/" "\\"  fname nil t)))
+  ;;window;;    ;;(message (replace-regexp-in-string "/" "\\" file-name nil t) )
+  ;;window;;    (if (file-exists-p file-name)
+  ;;window;;        (w32-shell-execute nil  file-name nil 1))))
   (defun w32-dired-open-explorer ()
     "Open a file in dired mode by explorer.exe as you double click it."
     (interactive)
@@ -253,7 +255,7 @@
         (kill-new (replace-regexp-in-string "/" "\\" pathname nil t))
         )))
 
-  (defvar nircmdexe (fullpath "../../cmdutils/nircmdc.exe"))
+  (setf nircmdexe "c:/centos7/nircmd.exe")
 
   (defun nircmd (cmd) 
     (interactive "MCmd " cmd) 
