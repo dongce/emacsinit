@@ -1722,7 +1722,7 @@
 * garbage-collection
   
   #+begin_src emacs-lisp
-    (global-set-key (kbd "<f13>")
+    (global-set-key (kbd "<C-f13>")
                     (lambda ()
                       (interactive)
                       (save-some-buffers t
@@ -1730,10 +1730,13 @@
                                              (and (not buffer-read-only)
                                                   (buffer-file-name))))
                       (garbage-collect)))
+
+    (global-set-key (kbd "<f13>") 'keyboard-quit)
+
   #+end_src
 
   #+RESULTS:
-  | lambda | nil | (interactive) | (save-some-buffers t #'(lambda nil (and (not buffer-read-only) (buffer-file-name)))) | (garbage-collect) |
+  : keyboard-quit
 
 * evil-states
 ** normal state
