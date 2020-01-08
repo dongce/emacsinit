@@ -1,0 +1,10 @@
+[Unit]
+Description=WSL environment service
+After=sshd.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/bash /opt/site-lisp/init/wsl-service.sh
+
+[Install]
+WantedBy=multi-user.target

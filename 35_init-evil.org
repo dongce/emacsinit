@@ -1722,7 +1722,7 @@
 * garbage-collection
   
   #+begin_src emacs-lisp
-    (global-set-key (kbd "<C-f13>")
+    (global-set-key (kbd "<C-f33>")
                     (lambda ()
                       (interactive)
                       (save-some-buffers t
@@ -1731,7 +1731,7 @@
                                                   (buffer-file-name))))
                       (garbage-collect)))
 
-    (global-set-key (kbd "<f13>") 'keyboard-quit)
+    (global-set-key (kbd "<f33>") 'keyboard-quit)
 
   #+end_src
 

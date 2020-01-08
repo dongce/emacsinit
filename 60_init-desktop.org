@@ -3545,3 +3545,13 @@
         #+RESULTS:
         : [nil 22698 57072 0 nil alarm-clock-message ("퇴근하시요. チャ;cha;차") nil 0]
         
+* xmodmap
+
+  xmodmap -pke 하면 적용되어 있는 키값을 확인할 수 있다. 
+  #+begin_src emacs-lisp
+    (when-os 'gnu/linux
+      (call-process "/usr/bin/xmodmap" nil nil nil "/opt/site-lisp/init/xmodmap.conf"))q
+  #+end_src
+
+  #+RESULTS:
+  : 0
