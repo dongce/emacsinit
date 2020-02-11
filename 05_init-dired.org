@@ -283,6 +283,10 @@
     (interactive "M프로세스 : " p)
     (nircmd (concat "killprocess "  p)))
 
+  (defun emptybin ()
+    (interactive )
+    (nircmd "emptybin"))
+
 
 
 
@@ -838,3 +842,10 @@ open and unsaved."
 
   #+RESULTS:
   : t
+* dired+
+  
+#+begin_src emacs-lisp
+(use-package dired+)
+#+end_src
+
+#+RESULTS:

@@ -2,6 +2,9 @@
 * 윈도우 환경 변수 
 #+BEGIN_SRC emacs-lisp
 (setenv "PYTHONUNBUFFERED"      "x" t )
+(when-os 'gnu/linux
+ (append-path  "/opt/local/bin"))
+
 (when-os 'windows-nt
  (setenv "MAGICK_CODER_MODULE_PATH" "c:\\msys264\\mingw64\\lib\\ImageMagick-7.0.8\\modules-Q16HDRI\\coders")
  (setenv "MAGICK_HOME" "c:\\msys264\\mingw64")

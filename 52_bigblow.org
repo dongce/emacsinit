@@ -1347,7 +1347,7 @@
    ;; https://github.com/jwiegley/org-mode/issues/14
 
    ;; Use pygments highlighting for code
-   (setf pygmentize (w32-unix-eval ( "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe" ) ("/opt/python38/bin/pygmentize") ))
+   (setf pygmentize (w32-unix-eval ( "t:\\usr\\local\\python35\\Scripts\\pygmentize.exe" ) ("/opt/anaconda3/bin/pygmentize") ))
    (defun pygmentize (lang code)
      "Use Pygments to highlight the given code and return the output"
      (with-temp-buffer
@@ -1842,3 +1842,11 @@
 
  #+RESULTS:
  : t
+* org-file-apps
+
+  #+begin_src emacs-lisp
+  (add-to-list 'org-file-apps '("\\.png\\'" . (lambda (file link) (w32-shell-execute "Open" (win-path-convert-file-name file))))) 
+  #+end_src
+
+  #+RESULTS:
+  : ((\.png\' lambda (file link) (w32-shell-execute Edit (win-path-convert-file-name file))) (auto-mode . emacs) (\.mm\' . default) (\.x?html?\' . default) (\.pdf\' . default) (\.xls[x]\' . system) (\.doc[x]\' . system) (\.ppt[x]\' . system) (t . emacs) (\.png . system))

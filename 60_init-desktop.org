@@ -3550,7 +3550,7 @@
   xmodmap -pke 하면 적용되어 있는 키값을 확인할 수 있다. 
   #+begin_src emacs-lisp
     (when-os 'gnu/linux
-      (call-process "/usr/bin/xmodmap" nil nil nil "/opt/site-lisp/init/xmodmap.conf"))q
+      (call-process "/usr/bin/xmodmap" nil nil nil "/opt/site-lisp/init/xmodmap.conf"))
   #+end_src
 
   #+RESULTS:

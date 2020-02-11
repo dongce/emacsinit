@@ -548,69 +548,87 @@ Assumes that the frame is only split into two."
 #+END_SRC
 
 #+RESULTS:
-| IBM Plex Sans Thai Looped |
-| IBM Plex Sans Devanagari  |
-| Standard Symbols PS       |
-| IBM Plex Sans Condensed   |
-| IBM Plex Sans Thai        |
-| URW Gothic                |
-| IBM Plex Sans Hebrew      |
-| IBM Plex Serif            |
-| Symbola                   |
-| Nimbus Roman              |
-| Malgun Gothic             |
-| STIX Two Math             |
-| IBM Plex Mono             |
-| D2Coding                  |
-| STIX Two Text             |
-| IBM Plex Sans Arabic      |
-| Cascadia Mono             |
-| Nimbus Sans               |
-| STIXGeneral               |
-| D2Coding ligature         |
-| Nimbus Mono PS            |
-| Fira Code Symbol          |
-| DejaVu Sans               |
-| Nimbus Sans Narrow        |
-| URW Bookman               |
-| IBM Plex Sans             |
-| Cascadia Code             |
-| C059                      |
-| NanumGothicCoding         |
-| Z003                      |
-| D050000L                  |
-| Malgun Gothic Semilight   |
-| Cascadia Code PL          |
-| Cascadia Mono PL          |
-| P052                      |
-| Noto Emoji                |
-| fangsong ti               |
-| fixed                     |
-| clean                     |
-| gothic                    |
-| open look cursor          |
-| open look glyph           |
-| supplement                |
-| courier                   |
-| helvetica                 |
-| new century schoolbook    |
-| symbol                    |
-| times                     |
-| utopia                    |
-| lucida                    |
-| lucidabright              |
-| lucidatypewriter          |
-| charter                   |
-| terminal                  |
-| application               |
-| interface system          |
-| interface user            |
-| lucidux mono              |
-| lucidux sans              |
-| lucidux serif             |
-| cursor                    |
-| mincho                    |
-| myeongjo                  |
+| IBM Plex Sans Thai Looped                         |
+| IBM Plex Sans Devanagari                          |
+| Standard Symbols PS                               |
+| IBM Plex Sans Condensed                           |
+| IBM Plex Sans Thai                                |
+| URW Gothic                                        |
+| Noto Serif                                        |
+| IBM Plex Sans Hebrew                              |
+| Dotum                                             |
+| IBM Plex Serif                                    |
+| Symbola                                           |
+| Nimbus Roman                                      |
+| Malgun Gothic                                     |
+| STIX Two Math                                     |
+| Noto Serif CJK KR                                 |
+| IBM Plex Mono                                     |
+| D2Coding                                          |
+| STIX Two Text                                     |
+| IBM Plex Sans Arabic                              |
+| Cascadia Mono                                     |
+| Nimbus Sans                                       |
+| STIXGeneral                                       |
+| D2Coding ligature                                 |
+| Gungsuh                                           |
+| Nimbus Mono PS                                    |
+| Fira Code Symbol                                  |
+| DejaVu Sans                                       |
+| Nimbus Sans Narrow                                |
+| URW Bookman                                       |
+| IBM Plex Sans                                     |
+| Batang                                            |
+| Utopia                                            |
+| Bitstream Charter                                 |
+| Cascadia Code                                     |
+| Courier 10 Pitch                                  |
+| C059                                              |
+| NanumGothicCoding                                 |
+| GulimChe                                          |
+| Noto Sans                                         |
+| Z003                                              |
+| D050000L                                          |
+| DotumChe                                          |
+| BatangChe                                         |
+| \353\247\221\354\235\200 \352\263\240\353\224\225 |
+| Cascadia Code PL                                  |
+| Noto Color Emoji                                  |
+| Cascadia Mono PL                                  |
+| Noto Sans Mono CJK KR                             |
+| Cursor                                            |
+| P052                                              |
+| Noto Emoji                                        |
+| GungsuhChe                                        |
+| Gulim                                             |
+| fangsong ti                                       |
+| fixed                                             |
+| clean                                             |
+| gothic                                            |
+| open look cursor                                  |
+| open look glyph                                   |
+| supplement                                        |
+| courier                                           |
+| helvetica                                         |
+| new century schoolbook                            |
+| symbol                                            |
+| times                                             |
+| utopia                                            |
+| lucida                                            |
+| lucidabright                                      |
+| lucidatypewriter                                  |
+| charter                                           |
+| terminal                                          |
+| application                                       |
+| interface system                                  |
+| interface user                                    |
+| lucidux mono                                      |
+| lucidux sans                                      |
+| lucidux serif                                     |
+| cursor                                            |
+| mincho                                            |
+| myeongjo                                          |
+
 
 
 * unicode characters                                              :document:
