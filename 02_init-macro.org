@@ -3791,7 +3791,9 @@ of FILE in the current directory, suitable for creation"
    (defmacro w32-shell-execute ( OPERATION DOCUMENT &optional PARAMETERS SHOW-FLAG )
      `(emamux:tmux-run-command nil "send-keys" "-t" "powershell" "start-process"
                                " -FilePath " ,DOCUMENT
-                               ,@(if (stringp PARAMETERS)  `(" -ArgumentList " ,PARAMETERS )) 
+                               (if (stringp ,PARAMETERS ) (format " -ArgumentList %s "  ,PARAMETERS ) " " ) 
+                               ;;,@(if (or (consp PARAMETERS) (stringp PARAMETERS ))  `(" -ArgumentList "  ,PARAMETERS ) '()) 
+                               ;;,@(if (or (consp PARAMETERS) (stringp PARAMETERS))  `(" -ArgumentList " ,PARAMETERS )) 
                                " -Verb " ,(if  OPERATION OPERATION "open")
                                " -WindowStyle " "Maximized"
                                ;;" -WorkingDirectory <String> "
@@ -3808,6 +3810,8 @@ of FILE in the current directory, suitable for creation"
 
  #+RESULTS:
  : w32-shell-execute
+
+
 
 ** powershell
   
