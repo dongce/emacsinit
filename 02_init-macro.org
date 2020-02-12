@@ -2230,13 +2230,13 @@ This works on the current region."
                  (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
               (remove-if-not 
                (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                              '(V3SP.exe 
-                                V3Svc.exe 
-                                V3PScan.exe 
-                                V3Medic.exe 
-                                ;;PaSvc.exe 
-                                ;;PaTray.exe
-                                )))  
+                               '(V3SP.exe 
+                                 V3Svc.exe 
+                                 V3PScan.exe 
+                                 V3Medic.exe 
+                                 ;;PaSvc.exe 
+                                 ;;PaTray.exe
+                                 )))  
                (proced-process-attributes)))
       (w32-shell-execute 
        "" 
@@ -2260,8 +2260,8 @@ This works on the current region."
                  (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
               (remove-if-not 
                (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                              '(rdpclip.exe
-                                )))  
+                               '(rdpclip.exe
+                                 )))  
                (proced-process-attributes)))
       (w32-shell-execute 
        "" 
@@ -2269,66 +2269,80 @@ This works on the current region."
       )
     ) 
 
-    (defun* pkill ( &rest args)
-      (let ((ph  processhacker )
-            (fmt "\"-c -ctype process -cobject %d -caction terminate\"" ))
-        (mapcar
-         (lambda (x) 
-           (w32-shell-execute nil ph (format fmt x))
-           (w32-shell-execute nil  ph (format fmt x)))
-         args)))
-
-
-  (defun v3kill () 
-    (interactive)
-    (require 'proced)
+  (defun* pkill ( &rest args)
     (let ((ph  processhacker )
-          (fmt "-c -ctype process -cobject %d -caction terminate" ))
+          (fmt "\"-c -ctype process -cobject %d -caction terminate\"" ))
       (mapcar
        (lambda (x) 
-         (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x ))))
-         (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x )))))
-       (remove-if-not 
-        (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                        '(
-                          V3UI.exe 
-                          V3Svc.exe 
-                          V3PScan.exe 
-                          V3Medic.exe 
-                          PaSvc.exe 
-                          PaTray.exe
+         (w32-shell-execute nil ph (format fmt x))
+         (w32-shell-execute nil  ph (format fmt x)))
+       args)))
 
-                          ;; NHCASysMon.exe
-                          ;; NHCARemote.exe
-                          ;; NHCAUI.exe 
 
-                          )))  
-        (proced-process-attributes)))
-      (mapcar
-       (lambda (x) 
-         (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x ))))
-         (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x )))))
-       (remove-if-not 
-        (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                        '(
-                          V3SP.exe 
-                          V3Svc.exe 
-                          V3PScan.exe 
-                          V3Medic.exe 
-                          PaSvc.exe 
-                          PaTray.exe
-
-                          ;; NHCASysMon.exe
-                          ;; NHCARemote.exe
-                          ;; NHCAUI.exe 
-                          )))  
-        (proced-process-attributes)))
-      ))
+  ;;(defun v3kill () 
+  ;;  (interactive)
+  ;;  (require 'proced)
+  ;;  (let ((ph  processhacker )
+  ;;        (fmt "-c -ctype process -cobject %d -caction terminate" ))
+  ;;    (mapcar
+  ;;     (lambda (x) 
+  ;;       (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x ))))
+  ;;       (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x )))))
+  ;;     (remove-if-not 
+  ;;      (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
+  ;;                      '(
+  ;;                        V3UI.exe 
+  ;;                        V3Svc.exe 
+  ;;                        V3PScan.exe 
+  ;;                        V3Medic.exe 
+  ;;                        PaSvc.exe 
+  ;;                        PaTray.exe
+  ;;
+  ;;                        ;; NHCASysMon.exe
+  ;;                        ;; NHCARemote.exe
+  ;;                        ;; NHCAUI.exe 
+  ;;
+  ;;                        )))  
+  ;;      (proced-process-attributes)))
+  ;;    (mapcar
+  ;;     (lambda (x) 
+  ;;       (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x ))))
+  ;;       (w32-shell-execute "" ph (format fmt (cdr  (assoc 'pid x )))))
+  ;;     (remove-if-not 
+  ;;      (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
+  ;;                      '(
+  ;;                        V3SP.exe 
+  ;;                        V3Svc.exe 
+  ;;                        V3PScan.exe 
+  ;;                        V3Medic.exe 
+  ;;                        PaSvc.exe 
+  ;;                        PaTray.exe
+  ;;
+  ;;                        ;; NHCASysMon.exe
+  ;;                        ;; NHCARemote.exe
+  ;;                        ;; NHCAUI.exe 
+  ;;                        )))  
+  ;;      (proced-process-attributes)))
+  ;;    ))
 
   (defun v3process ()
     (interactive)
-    (emamux:tmux-run-command nil "send-keys" "-t" "powershell" "get-process " "V3*,PA*"))
+    (emamux:tmux-run-command nil "send-keys" "-t" "powershell" "get-process " "V3*,PA*" "C-m"))
 
+
+  (defun v3kill ()
+    (interactive)
+    (emamux:tmux-run-command nil "send-keys" "-t" "powershell" 
+  "foreach ( $id in (get-process V3*,PA*).ID) {
+    start-process -FilePath c:\\usr\\local\\editor\\emacsW32\\processhacker\\x64\\ProcessHacker.exe -ArgumentList \"-c -ctype process -cobject $ID -caction terminate\" -Verb open -WindowStyle Maximized
+  }" "C-m"))
+
+  (defun kill (name)
+    (interactive "S종료할프로세스명 :")
+    (emamux:tmux-run-command nil "send-keys" "-t" "powershell" 
+(format  "foreach ( $id in (get-process %s).ID) {
+    start-process -FilePath c:\\usr\\local\\editor\\emacsW32\\processhacker\\x64\\ProcessHacker.exe -ArgumentList \"-c -ctype process -cobject $ID -caction terminate\" -Verb open -WindowStyle Maximized
+  }" name) "C-m"))
 
 
   (defun iekill () 
@@ -2342,8 +2356,8 @@ This works on the current region."
                  (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
               (remove-if-not 
                (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                              '(iexplore.exe
-                                )))  
+                                   '(iexplore.exe
+                                     )))  
                (proced-process-attributes)))))
 
 
@@ -2357,13 +2371,13 @@ This works on the current region."
                    (format "%s -c -ctype process -cobject %d -caction terminate\n" ph (cdr  (assoc 'pid x )))) )
                 (remove-if-not 
                  (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                                 '(V3SP.exe 
-                                   V3Svc.exe 
-                                   V3PScan.exe 
-                                   V3Medic.exe 
-                                   ;;PaSvc.exe 
-                                   ;;PaTray.exe
-                                   )))  
+                                     '(V3SP.exe 
+                                       V3Svc.exe 
+                                       V3PScan.exe 
+                                       V3Medic.exe 
+                                       ;;PaSvc.exe 
+                                       ;;PaTray.exe
+                                       )))  
                  (proced-process-attributes)))
         (kill-new (buffer-substring (point-min) (point-max))))
       ))
@@ -3777,7 +3791,7 @@ of FILE in the current directory, suitable for creation"
    (defmacro w32-shell-execute ( OPERATION DOCUMENT &optional PARAMETERS SHOW-FLAG )
      `(emamux:tmux-run-command nil "send-keys" "-t" "powershell" "start-process"
                                " -FilePath " ,DOCUMENT
-                               ,@(if PARAMETERS  `(" -ArgumentList " ,PARAMETERS )) 
+                               ,@(if (stringp PARAMETERS)  `(" -ArgumentList " ,PARAMETERS )) 
                                " -Verb " ,(if  OPERATION OPERATION "open")
                                " -WindowStyle " "Maximized"
                                ;;" -WorkingDirectory <String> "
