@@ -1,7 +1,7 @@
-for d in $( ls /mnt) ;
-do
-    mount --bind /mnt/$d /$d;
-done ;
+##binddir##for d in $( ls /mnt) ;
+##binddir##do
+##binddir##    mount --bind /mnt/$d /$d;
+##binddir##done ;
 
 
 tmux new-session -s powershell -d

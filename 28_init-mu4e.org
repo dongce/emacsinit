@@ -18,7 +18,7 @@
      ;;http://emacswiki.org/emacs/LoadPath
 
 
-     (setf mu4e-maildir (s-concat "/f/PERSONAL/" (datetime-format "%Y/%m/%d")))
+     (setf mu4e-maildir (s-concat "/mnt/f/PERSONAL/" (datetime-format "%Y/%m/%d")))
 
      (use-package mu4e
        :init
@@ -481,9 +481,8 @@
          (let ((days (if  days  (prefix-numeric-value days) 3 )))
            (message (format "dayns %d" days))
            (pyutil-win32event "fetchmail")
-           (run-at-time 5 nil #'mu4e-update-index)
+           ;; (run-at-time 5 nil #'mu4e-update-index)
            (run-at-time 8 nil #'mu4e-headers-search (format  "date:%dd..now" days)))))
-
 
 
      (global-set-key [f3] 'mymail)
@@ -702,3 +701,15 @@
       (next-error)
       (org-store-link 0 t))
   #+end_src
+* update index 
+
+  #+begin_src emacs-lisp :tangle no
+    (mu4e~proc-index 
+     (s-concat "/mnt/f/PERSONAL/" (datetime-format "%Y/%m/%d"))
+     mu4e-user-mail-address-list
+     nil
+     nil)
+
+  #+end_src
+
+  #+RESULTS:

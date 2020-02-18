@@ -651,7 +651,7 @@ is run).
         (message "코드: %d %d"  (car (cadr (assoc code1 table))) (cadr (cadr (assoc code2 table))))))
 
     (defun tjcodeall (code1 code2 securitycard )
-      (let ((table (eval (read (epg-decrypt-file (epg-make-context) securitycard nil)))))
+      (let ((table (eval (read (epg-decrypt-file (epg-make-context) (wsl-path-convert-file-name securitycard) nil)))))
         (message "코드: %s %s"  (cadr (assoc code1 table)) (cadr (assoc code2 table)))
         (kill-buffer "*Messages*")))
 

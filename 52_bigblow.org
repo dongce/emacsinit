@@ -1850,3 +1850,13 @@
 
   #+RESULTS:
   : ((\.png\' lambda (file link) (w32-shell-execute Edit (win-path-convert-file-name file))) (auto-mode . emacs) (\.mm\' . default) (\.x?html?\' . default) (\.pdf\' . default) (\.xls[x]\' . system) (\.doc[x]\' . system) (\.ppt[x]\' . system) (t . emacs) (\.png . system))
+
+
+* ob-http
+  #+begin_src emacs-lisp
+     (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((http . t)))
+  #+end_src
+
+  #+RESULTS:
