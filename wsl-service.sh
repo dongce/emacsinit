@@ -10,7 +10,8 @@ tmux send -t  powershell "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powersh
 tmux send -t  powershell "echo DONE" ENTER
 
 
-/opt/local/bin/mu index -v --nocolor --maildir /mnt/f/PERSONAL/2020/$(date +%m)
+#/opt/local/bin/mu init  --maildir /mnt/f/PERSONAL/2020/$(date +%m)
+/opt/local/bin/mu index -v --nocolor 
 tmux new-session -s imapget -d
 tmux send -t  imapget "cd /mnt/t/misc/eaglemail" ENTER
 tmux send -t  imapget "/opt/anaconda3/bin/python3 imapget.py" ENTER
