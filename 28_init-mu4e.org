@@ -713,3 +713,13 @@
   #+end_src
 
   #+RESULTS:
+* contact-decomose
+
+#+begin_src emacs-lisp
+  (defun decode-contacts (str)
+    (decode-coding-string str 'utf-8))
+#+end_src
+
+
+#+RESULTS:
+: decode-contacts
