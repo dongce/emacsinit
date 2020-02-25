@@ -346,7 +346,8 @@
 
   ;;deprecated;;(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
   (evil-set-toggle-key "<pause>")
-  (define-key evil-normal-state-map "U" 'undo-tree-redo)
+  (define-key evil-normal-state-map "u" 'undo-fu-only-undo)
+  (define-key evil-normal-state-map "U" 'undo-fu-only-redo)
   (define-key evil-normal-state-map [escape] 'keyboard-quit)
   (define-key evil-visual-state-map [escape] 'keyboard-quit)
   (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)

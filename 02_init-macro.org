@@ -3818,7 +3818,14 @@ of FILE in the current directory, suitable for creation"
    #+begin_src emacs-lisp
    (setf powershell.exe "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
 
+  (defun* powershell (&rest args)
+    (emamux:tmux-run-command nil "send-keys" "-t" "powershell" (s-join " " args) "C-m"))
+
+
    ;;(call-process powershell.exe nil t nil "get-process" "v3*,pa*")
    #+end_src
+
+   #+RESULTS:
+   : powershell
   
    

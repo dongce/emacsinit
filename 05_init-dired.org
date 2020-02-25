@@ -9,23 +9,23 @@
  #+BEGIN_SRC emacs-lisp
    (defun 2zip ( zipfilename )
      "Zip the current file/dir in `dired'.
-     If multiple files are marked, only zip the first one.
-     Require unix zip commandline tool."
+        If multiple files are marked, only zip the first one.
+        Require unix zip commandline tool."
      (interactive "M압축파일명 :")
      (require 'dired)
      (let ( (fileNames (dired-get-marked-files)))
        (apply
-       #'async-start-process
-       "7zip" "7za" nil "a" "-r" "-tzip"  
-       (format "%s.zip" zipfilename)
-       fileNames)))
+        #'async-start-process
+        "7zip" "7za" nil "a" "-r" "-tzip"  
+        (format "%s.zip" zipfilename)
+        fileNames)))
 
 
    (defun upward-find-file (filename &optional startdir)
      "Move up directories until we find a certain filename. If we
-       manage to find it, return the containing directory. Else if we
-       get to the toplevel directory and still can't find it, return
-       nil. Start at startdir or . if startdir not given"
+          manage to find it, return the containing directory. Else if we
+          get to the toplevel directory and still can't find it, return
+          nil. Start at startdir or . if startdir not given"
 
      (let ((dirname (expand-file-name
                      (if startdir startdir ".")))
@@ -57,8 +57,8 @@
 
    (defun 2-zip ()
      "Zip the current file/dir in `dired'.
-     If multiple files are marked, only zip the first one.
-     Require unix zip commandline tool."
+        If multiple files are marked, only zip the first one.
+        Require unix zip commandline tool."
      (interactive)
      (require 'dired)
      (let ( (fileName (elt (dired-get-marked-files) 0))  )
@@ -69,8 +69,8 @@
 
    (defun unzip(fileList)
      "Zip the current file/dir in `dired'.
-     If multiple files are marked, only zip the first one.
-     Require unix zip commandline tool."
+        If multiple files are marked, only zip the first one.
+        Require unix zip commandline tool."
      (interactive (list (dired-get-marked-files) ))
      (require 'dired)
      (mapc
@@ -90,8 +90,8 @@
 
    (defun unzipcur(fileList)
      "Zip the current file/dir in `dired'.
-     If multiple files are marked, only zip the first one.
-     Require unix zip commandline tool."
+        If multiple files are marked, only zip the first one.
+        Require unix zip commandline tool."
      (interactive (list (dired-get-marked-files) ))
      (require 'dired)
      (mapc
@@ -113,16 +113,16 @@
 
    (defun 2-7zip ( zipfilename )
      "Zip the current file/dir in `dired'.
-     If multiple files are marked, only zip the first one.
-     Require unix zip commandline tool."
+        If multiple files are marked, only zip the first one.
+        Require unix zip commandline tool."
      (interactive "M압축파일명 :")
      (require 'dired)
      (let ( (fileNames (dired-get-marked-files)))
        (apply
-       #'async-start-process
-       "7zip" "7za" nil "a" "-r" 
-       (format "%s.7z" zipfilename)
-       fileNames)))
+        #'async-start-process
+        "7zip" "7za" nil "a" "-r" 
+        (format "%s.7z" zipfilename)
+        fileNames)))
 
 
    (defcustom pyclip (fullpath "../misc/pyclip3.py") "python clip")
@@ -155,20 +155,20 @@
           "c:/anaconda/python.exe"
           (lambda (p) (message "파일복사 완료"))
           pyclip
-          files)))
+          files)
+       (powershell "set-clipboard -path" (s-join "," (-map (lambda (x) (s-wrap (win-path-convert-file-name x) "\"" "\"") ) files)))))
+
 
 
    (defun clip-file ()
      "Display Windows context menu on selected files"
      (interactive)
-
-     (if (eq system-type 'windows-nt)
-         (let* ((files (dired-get-marked-files))
-                (files (if (null files)
-                           (list (dired-current-directory) )
-                         files)))
-           ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
-           (apply #'copy-files files))))
+     (let* ((files (dired-get-marked-files))
+            (files (if (null files)
+                       (list (dired-current-directory) )
+                     files)))
+       ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
+       (apply #'copy-files files)))
 
    (defun clip-image ()
      "Display Windows context menu on selected files"

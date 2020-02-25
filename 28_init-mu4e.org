@@ -717,7 +717,9 @@
 
 #+begin_src emacs-lisp
   (defun decode-contacts (str)
-    (decode-coding-string str 'utf-8))
+    (if  (> (length str) 3)
+        (decode-coding-string str 'utf-8)
+      nil))
 #+end_src
 
 
