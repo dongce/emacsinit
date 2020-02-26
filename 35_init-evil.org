@@ -74,7 +74,6 @@
         "iu"   nil
         "<home>" 'ibuffer
         "<end>" 'tmpscratch
-
         "<prior>" 'beginning-of-defun
         "<next>" 'end-of-defun
         "<delete>" 'switch-window
@@ -1697,8 +1696,9 @@
   (setq switch-window-shortcut-style 'qwerty)
   (setq switch-window-querty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "i" "o"))
   :config
-  (global-set-key (kbd "<f12>") 'switch-to-buffer)
-  (global-set-key (kbd "<S-f12>") 'switch-window-then-find-file)
+  (global-set-key (kbd "<f12>") 'vterm-toggle)
+  (global-set-key (kbd "<f22>") 'switch-to-buffer)
+  ;;(global-set-key (kbd "<S-f12>") 'switch-window-then-find-file)
   (global-set-key (kbd "<M-f12>") 'switch-window-then-dired)
   ;;(global-set-key (kbd "C-x o") 'switch-window)
   ;;(global-set-key (kbd "C-x 1") 'switch-window-then-maximize)
@@ -1756,6 +1756,7 @@
         gtags-selection-mode
         speedbar-mode
         picpocket-mode
+        vterm-mode
         elfeed-mode))
    #+END_SRC
 

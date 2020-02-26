@@ -575,6 +575,8 @@
   (global-set-key [f11] 'xah-paste-from-register)
   (global-set-key [S-f10] 'xah-append-to-register)
   (global-set-key [S-f11] 'xah-clear-register)
+  (global-set-key [f20] 'xah-append-to-register)
+  (global-set-key [f21] 'xah-clear-register)
 #+END_SRC
 
 ** package gdb/helm etc

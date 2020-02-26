@@ -3446,10 +3446,10 @@ of FILE in the current directory, suitable for creation"
     "The actual alarm action.
   Argument TEXT alarm message."
     (let ((buf (get-buffer-create " *alarm notify* ")))
-      (async-shell-command (format "notify-send -t 5000 \"%s\" \"%s\" " text text) buf) ;
+      ;; (async-shell-command (format "notify-send -t 5000 \"%s\" \"%s\" " text text) buf) ;
       ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe --g-fatal-warnings --warning --text=\"%s\"  " text) buf)
-      (async-shell-command (format "c:\\anaconda\\python.exe t:/usr/local/editor/emacsw32/cmdutils/pymsgdialog.py \"%s\"  " text) buf) 
-      ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe  --info --text=\"%s\"  " text) buf)
+      ;; (async-shell-command (format "c:\\anaconda\\python.exe t:/usr/local/editor/emacsw32/cmdutils/pymsgdialog.py \"%s\"  " text) buf) 
+      (async-shell-command (format "zenity  --info --text=\"%s\"  " (encode-coding-string text 'utf-8)) buf)
       ;;(message-box text)
       )) 
   (defun alarm-clock ()
