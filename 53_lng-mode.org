@@ -11,20 +11,43 @@
 
 * lsp
 
-#+begin_src emacs-lisp :tangle no
-(use-package lsp-mode
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  :init (setq lsp-keymap-prefix "<f12>")
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (python-mode . lsp)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
+** PENDING custom setting 
+   - State "PENDING"    from              [2020-02-27 목 09:37]
+ #+begin_src emacs-lisp :tangle no
+ (use-package lsp-mode
+   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+   :init (setq lsp-keymap-prefix "<f12>")
+   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+          (python-mode . lsp)
+          ;; if you want which-key integration
+          (lsp-mode . lsp-enable-which-key-integration))
+   :commands lsp)
 
-(setq read-process-output-max (* 1024 1024))
+ (setq read-process-output-max (* 1024 1024))
 
 
-#+end_src
+ #+end_src
 
-#+RESULTS:
-: 1048576
+ #+RESULTS:
+ : 1048576
+
+** spacemacs layer
+   #+begin_src emacs-lisp
+   (defvar c-c++-backend 'lsp-ccls) 
+   #+end_src
+* magit
+  #+begin_src emacs-lisp
+        (setf magit-repository-directories
+              '(
+                ("/mnt/t/gitdir/DLP_LINK11/" . 0 )
+                ("/mnt/t/gitdir/DLP_ISDL/" . 0 )
+                ("/mnt/t/gitdir/ltslph1iffmode5" . 0 )
+                ("/mnt/t/KSS3/HCI_LINK11/" . 0 )
+                ("/mnt/t/KSS3/HCI_ISDL/" . 0 )
+                ("~/" . 0 )
+                ("/opt/site-lisp/init/" . 0 )
+                ("/mnt/t/LTS/LPH-I/IFFMODE5" . 1)))
+  #+end_src
+
+  #+RESULTS:
+  : ((/mnt/t/gitdir/DLP_LINK11/ . 0) (/mnt/t/gitdir/DLP_ISDL/ . 0) (/mnt/t/gitdir/ltslph1iffmode5 . 0) (/mnt/t/KSS3/HCI_LINK11/ . 0) (/mnt/t/KSS3/HCI_ISDL/ . 0) (~/ . 0) (/opt/site-lisp/init/ . 0) (/mnt/t/LTS/LPH-I/IFFMODE5 . 1))
