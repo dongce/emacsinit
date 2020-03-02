@@ -1,0 +1,398 @@
+* header
+  #+BEGIN_SRC emacs-lisp
+;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
+  #+END_SRC
+
+* 오늘의한자
+  #+BEGIN_SRC emacs-lisp
+    (let* ((days (time-to-day-in-year (current-time)))
+           (mod (/ (length hanja-grade3) 3))
+           (hit (% days  mod))
+           (hit-1 (% (- days 1)  mod)))
+      (setf today-hanja3
+            (format "%s;%s;%s"
+                    (nth hit hanja-grade3)
+                    (nth (+ mod hit) hanja-grade3)
+                    (nth (+ mod mod hit) hanja-grade3)))
+
+      (setf today-hanja4
+            (format "%s;%s;%s;%s" 
+                    (nth hit hanja-grade4)
+                    (nth (+ mod hit) hanja-grade4)
+                    (nth (+ mod mod hit) hanja-grade4)
+                    (nth (+ mod mod mod hit) hanja-grade4)))
+
+      (setf yesterday-hanja3
+            (format "%s;%s;%s"
+                    (nth hit-1 hanja-grade3)
+                    (nth (+ mod hit-1) hanja-grade3)
+                    (nth (+ mod mod hit-1) hanja-grade3)))
+
+      (setf yesterday-hanja4
+            (format "%s;%s;%s;%s" 
+                    (nth hit-1 hanja-grade4)
+                    (nth (+ mod hit-1) hanja-grade4)
+                    (nth (+ mod mod hit-1) hanja-grade4)
+                    (nth (+ mod mod mod hit-1) hanja-grade4))))
+
+    (spacemacs-buffer/warning
+     (today-message "어제의 한자 3급 %s" yesterday-hanja3))
+
+    (spacemacs-buffer/warning
+     (today-message "어제의 한자 4급 %s" yesterday-hanja4))
+
+
+    (spacemacs-buffer/warning
+     (today-message "오늘의 한자 3급 %s" today-hanja3))
+
+    (spacemacs-buffer/warning
+     (today-message "오늘의 한자 4급 %s" today-hanja4))
+
+  #+END_SRC
+
+  #+RESULTS:
+  | Cannot find any of the specified fonts (Source Code Pro)! Font settings may not be correct. | Both the `helm' and `ivy' layers are enabled. This may lead to unexpected behaviour. | More than one init function found for package helm-make. Previous owner was helm, replacing it with layer ivy. | 어제의 한자 3급 (蜜 : 꿀밀);(潤 : 불을윤);(荒 : 거칠황) | 어제의 한자 4급 (問 : 물을문);(音 : 소리음);(紅 : 붉을홍);nil | 오늘의 한자 3급 (朴 : 순박할박);(隱 : 숨을은);(回 : 돌아올회) | 오늘의 한자 4급 (聞 : 들을문);(飮 : 마실음);(火 : 불화);nil |
+ 
+
+* 오늘의 카타카나 
+  #+BEGIN_SRC emacs-lisp
+
+    (defun katakanahanja (it)
+        (let ((result  (assoc (car it) katakana→hanja)))
+          (if result result (assoc (car (reverse it )) katakana→hanja))))
+      (defun daykatakana (dayoffset)
+        (let ((it  (nth  (%  (-  (time-to-day-in-year (current-time)) dayoffset) (length  katakana) ) katakana)))
+          (format  "%s%s"
+                   (s-join ";" (-map #'symbol-name it))
+                   (format "%s" (getmean (cadr  (katakanahanja it)))   ))))
+      (spacemacs-buffer/warning
+       (today-message "어제의 카타카나 %s" (daykatakana 1) ))
+      (spacemacs-buffer/warning
+       (today-message "오늘의 카타카나 %s" (daykatakana 0)))
+  #+END_SRC
+
+  #+RESULTS:
+  | Cannot find any of the specified fonts (Source Code Pro)! Font settings may not be correct. | More than one init function found for package helm-make. Previous owner was helm, replacing it with layer ivy. | Auto-evilication could not remap these functions in map `elfeed-search-mode-map': |
+
+* desktop
+  #+BEGIN_SRC emacs-lisp 
+
+  ;; desktop 
+  (desktop-save-mode)
+  ;;(desktop-load-default)
+  (desktop-read)
+  (defun desktop-clear-not-modified ()
+    "Empty the Desktop.
+  desktop-clear 기능중에서 변경되지 않은 파일만을 닫는다."
+    (interactive)
+    (desktop-lazy-abort)
+    (dolist (var desktop-globals-to-clear)
+      (if (symbolp var)
+        (eval `(setq-default ,var nil))
+        (eval `(setq-default ,(car var) ,(cdr var)))))
+    (let ((buffers (buffer-list))
+          (preserve-regexp (concat "^\\("
+                                   (mapconcat (lambda (regexp)
+                                                (concat "\\(" regexp "\\)"))
+                                              desktop-clear-preserve-buffers
+                                              "\\|")
+                                   "\\)$")))
+      (while buffers
+        (let ((bufname (buffer-name (car buffers))))
+           (or
+             (null bufname)
+             (string-match preserve-regexp bufname)
+             ;; Don't kill buffers made for internal purposes.
+             (and (not (equal bufname "")) (eq (aref bufname 0) ?\s))
+             (if (not (buffer-modified-p (car buffers))) (kill-buffer (car buffers)))))
+        (setq buffers (cdr buffers))))
+    (delete-other-windows))
+
+  (define-key Buffer-menu-mode-map "c" 'desktop-clear-not-modified)
+  #+END_SRC
+
+
+
+** xmodmap
+
+   xmodmap -pke 하면 적용되어 있는 키값을 확인할 수 있다. 
+   #+begin_src emacs-lisp
+     (when-os 'gnu/linux
+       (call-process "/usr/bin/xmodmap" nil nil nil "/opt/site-lisp/init/xmodmap.conf"))
+   #+end_src
+
+   #+RESULTS:
+   : 0
+* alarm
+   #+BEGIN_SRC emacs-lisp 
+
+  (let* ((ct (decode-time (current-time)))
+         (ctm (+  (cadr ct) (* 60 (caddr ct)))))
+    (if (not (> ctm (+ (* 10  60 ) 0  )))
+        (myalarm "10:00" (format "휴식하시요. %s\n%s\n%s" (daykatakana 0) today-hanja3 today-hanja4)))
+    (if (not (> ctm (+ (* 15  60 ) 0  )))
+        (myalarm "15:00" (format "휴식하시요. %s\n%s\n%s" (daykatakana 0) today-hanja3 today-hanja4)))
+    (if (not (> ctm (+ (* 18  60 ) 10 )))
+        (myalarm "18:10" (format "퇴근하시요. %s\n%s\n%s" (daykatakana 0) today-hanja3 today-hanja4)))
+    (if (not (> ctm (+ (* 19  60 ) 20 )))
+        (myalarm "19:20" (format "퇴근하시요. %s\n%s\n%s" (daykatakana 0) today-hanja3 today-hanja4)))
+    (if (not (> ctm (+ (* 20  60 ) 20 )))
+        (myalarm "21:20" (format "퇴근하시요. %s\n%s\n%s" (daykatakana 0) today-hanja3 today-hanja4))))
+  
+  (run-at-time "12:20" nil 'garbage-collect)
+
+
+   #+END_SRC
+
+   #+RESULTS:
+   : [nil 22698 57072 0 nil alarm-clock-message ("퇴근하시요. チャ;cha;차") nil 0]
+
+
+* wsl
+  :PROPERTIES:
+  :END:
+  
+** path converter
+   #+begin_src emacs-lisp
+     (use-package wsl-path
+       :config
+       (wsl-path-activate))
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+
+* theme
+  #+begin_src emacs-lisp
+
+
+(tool-bar-mode 0 )
+(menu-bar-mode 0 )
+(if (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode -1 ))
+(setq whitespace-line-column 80) ;; limit line length
+(setq whitespace-style '(face lines-tail))
+
+;;; http://www.reddit.com/r/emacs/comments/1huhsg/i_need_help_with_adding_keywords_for_syntax/
+;; font lock 설정 
+(global-font-lock-mode 1)                     ; for all buffers
+
+  #+end_src
+
+* font
+** font setup
+
+*** font size
+    #+BEGIN_SRC emacs-lisp
+
+    (setf dongil/efontsize  14)
+    (setf dongil/hfontsize  17)
+    (setf dongil/symbolsize 15)
+
+    #+END_SRC
+
+    #+RESULTS:
+    : 15
+
+*** 기본 영문 폰트 
+    #+BEGIN_SRC emacs-lisp
+
+    (let ((defaultfont (find-if 
+                        (lambda (x) (font-utils-exists-p x)) 
+                        '(
+                          "Cascadia Mono PL"
+                          "IBM Plex Mono"
+                          "Hack"
+                          ;; "Fira Code"
+                          ;;"InputMono"
+                           ;; "DejaVu Sans Mono"
+                          ;; "Ubuntu Mono"
+                          ;;"Bitstream Vera Sans Mono"
+                          ;; "Inconsolatag"
+                          "Source Code Pro"
+                          ;; "Menlo"
+                          "Consolas"
+                          ))))
+      (if (stringp  defaultfont)
+          (set-fontset-font "fontset-default" 'latin (font-spec :name defaultfont  :size dongil/efontsize) )))
+          
+    #+END_SRC
+
+    #+RESULTS:
+
+*** 심볼 폰트
+
+    #+BEGIN_SRC emacs-lisp
+
+    (let ((firafont (find-if 
+                        (lambda (x) (font-utils-exists-p x)) 
+                        '( "Fira Code Symbol"))))
+      (if (stringp  firafont) 
+          (progn
+            (set-fontset-font "fontset-default" (cons #Xe100  #Xe16f) (font-spec :name firafont)))))
+
+
+
+    (let ((symbolfont (find-if 
+                        (lambda (x) (font-utils-exists-p x)) 
+                        '( "STIX Two Math" "StixGeneral"))))
+      (if (stringp  symbolfont) 
+          (dolist (x '( greek mathematical (9089 . 9090)))
+           (set-fontset-font "fontset-default" x (font-spec :name symbolfont :size dongil/symbolsize ))))) 
+
+
+
+    (let ((emojifont (find-if 
+                        (lambda (x) (font-utils-exists-p x)) 
+                        '( "Noto Color Emoji" "Noto Emoji" "NotoSymbol" "Segoe UI Symbol"    ))))
+      (if (stringp  emojifont) 
+          (progn
+            (set-fontset-font "fontset-default" '(1041637 . 1041646) (font-spec :name emojifont  )  ) 
+            (set-fontset-font "fontset-default" '(9000 . 9999) (font-spec :name emojifont  )  ) 
+            (set-fontset-font "fontset-default" '(2400 . 2700) (font-spec :name emojifont  )  ) 
+            (set-fontset-font "fontset-default" (cons #x1f004 #xfe837) (font-spec :name emojifont  )  ) 
+            (set-fontset-font "fontset-default" 'symbol (font-spec :name emojifont  )))))
+
+    #+END_SRC
+
+    #+RESULTS:
+
+*** 한글 폰트
+    #+BEGIN_SRC emacs-lisp
+  ;; :size dongil/hfontsize 를 사용하면 글자 크기가 고정이 되어 버림 
+   (let ((hangulfont (find-if 
+                       (lambda (x) (font-utils-exists-p x)) 
+                       '( 
+                       "Noto Sans Mono CJK KR"
+                       "DotumChe"
+                       "Malgun Gothic"
+                       "NanumGothicCoding"
+                       "맑은 고딕" "돋움체" "나눔고딕코딩"))))
+     (if (stringp  hangulfont) 
+         (progn 
+           (set-fontset-font "fontset-default" 'hangul          (font-spec :name  hangulfont  ) )
+           (set-fontset-font "fontset-default" 'han             (font-spec :name  hangulfont  ) )
+           (set-fontset-font "fontset-default" '(8251 . 8252)   (font-spec :name  hangulfont  ) )
+           (set-fontset-font "fontset-default" '(61548 . 61549) (font-spec :name  hangulfont  ) ))))
+
+;;  (let ((hangulfont (find-if
+;;                      (lambda (x) (font-utils-exists-p x))
+;;                      '(
+;;                      "D2Coding"  
+;;                      "NanumGothicCoding"
+;;                     "Malgun Gothic" 
+;;                       "나눔고딕코딩" "돋움체" "Noto Sans CJK KR Regular"  ))))
+;;
+;;    (if (stringp  hangulfont)
+;;        (progn
+;;          (set-fontset-font "fontset-default" 'hangul          (cons hangulfont  "unicode-bmp") )
+;;          (set-fontset-font "fontset-default" '(8251 . 8252)   (cons hangulfont  "unicode-bmp") )
+;;          (set-fontset-font "fontset-default" '(61548 . 61549) (cons hangulfont  "unicode-bmp") ))))
+    #+END_SRC
+
+    #+RESULTS:
+
+*** fallback font 
+    #+BEGIN_SRC emacs-lisp 
+      (let ((fallbackfont (find-if 
+                          (lambda (x) (font-utils-exists-p x)) 
+                          '("StixGeneral"   "Symbola"   ))))
+        (if (stringp  fallbackfont)
+            (progn
+              (set-fontset-font "fontset-default" '(9109 . 9110) (font-spec :name fallbackfont :size dongil/efontsize))
+              (set-fontset-font "fontset-default" nil (font-spec :name fallbackfont :size dongil/efontsize)))))
+
+    #+END_SRC
+
+    #+RESULTS:
+
+*** fontlock 설정 
+    #+BEGIN_SRC emacs-lisp
+    (setq 
+     font-lock-maximum-decoration 
+     '(
+       (c-mode . t)
+       ;;(c++-mode . 1)
+       (c++-mode . 2)
+       (t . t)
+       ))
+
+    ;; (use-package unicode-fonts
+    ;;   :config
+    ;;   (unicode-fonts-setup))
+
+    ;;(setq font-lock-support-mode 'fast-lock-mode ; lazy-lock-mode jit-lock-mode
+    ;;      fast-lock-cache-directories '("~/.emacs-flc"))
+
+    ;; 모드별로 키워드 추가가 가능하다. 
+    ;; http://www.emacswiki.org/emacs/AddKeywords
+    ;;FONT-LOCK;;(defvar font-lock-comment-face   'font-lock-comment-face
+    ;;FONT-LOCK;;  "Face name to use for comments.")
+
+    ;;customize;;(font-lock-add-keywords 'python-mode
+    ;;customize;;  '(("\\btry\\b" . font-lock-keyword-face)
+    ;;customize;;    ("\\bfinally\\b" . font-lock-keyword-face)
+    ;;customize;;    ("\\bwith\\b" . font-lock-keyword-face)
+    ;;customize;;    ("\\bas\\b" . font-lock-keyword-face)
+    ;;customize;;    ))
+
+
+
+
+    ;; https://en.wikipedia.org/wiki/Unicode_block
+    ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Modifying-Fontsets.html
+
+
+    ;;; 22.15 Modifying Fontsets
+    ;;; 
+    ;;; Fontsets do not always have to be created from scratch. If only minor changes are required it may be easier to modify an existing fontset. Modifying ‘fontset-default’ will also affect other fontsets that use it as a fallback, so can be an effective way of fixing problems with the fonts that Emacs chooses for a particular script.
+    ;;; 
+    ;;; Fontsets can be modified using the function set-fontset-font, specifying a character, a charset, a script, or a range of characters to modify the font for, and a font specification for the font to be used. Some examples are:
+    ;;; 
+    ;;; ;; Use Liberation Mono for latin-3 charset.
+    ;;; (set-fontset-font "fontset-default" 'iso-8859-3
+    ;;;                   "Liberation Mono")
+    ;;; 
+    ;;; ;; Prefer a big5 font for han characters
+    ;;; (set-fontset-font "fontset-default"
+    ;;;                   'han (font-spec :registry "big5")
+    ;;;                   nil 'prepend)
+    ;;; 
+    ;;; ;; Use DejaVu Sans Mono as a fallback in fontset-startup
+    ;;; ;; before resorting to fontset-default.
+    ;;; (set-fontset-font "fontset-startup" nil "DejaVu Sans Mono"
+    ;;;                   nil 'append)
+    ;;; 
+    ;;; ;; Use MyPrivateFont for the Unicode private use area.
+    ;;; (set-fontset-font "fontset-default"  '(#xe000 . #xf8ff)
+    ;;;                   "MyPrivateFont")
+
+    #+END_SRC
+
+    #+RESULTS:
+    : ((c-mode . t) (c++-mode . 2) (t . t))
+
+*** set font face 
+   
+      #+BEGIN_SRC emacs-lisp
+  ;; https://www.emacswiki.org/emacs/FontSets
+  (set-face-font 'default "fontset-default")
+      #+END_SRC
+
+      #+RESULTS:
+
+* recentf
+  #+begin_src emacs-lisp
+    (recentf-load-list)
+  #+end_src
+
+  #+RESULTS:
+
+* serverstart
+#+begin_src emacs-lisp
+
+  (server-start)
+  (require 'edit-server )
+  (edit-server-start)
+#+end_src

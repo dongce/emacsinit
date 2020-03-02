@@ -577,6 +577,10 @@
   (global-set-key [S-f11] 'xah-clear-register)
   (global-set-key [f20] 'xah-append-to-register)
   (global-set-key [f21] 'xah-clear-register)
+
+  (global-set-key [f15] 'ivy-resume)
+  (global-set-key [mouse-8] 'resume)
+
 #+END_SRC
 
 ** package gdb/helm etc

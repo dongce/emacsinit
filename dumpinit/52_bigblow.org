@@ -1845,11 +1845,11 @@
 * org-file-apps
 
   #+begin_src emacs-lisp
-  (add-to-list 'org-file-apps '("\\.png\\'" . (lambda (file link) (w32-shell-execute "Open" (win-path-convert-file-name file))))) 
+  (add-to-list 'org-file-apps '("\\.png" . (lambda (file link) (w32-shell-execute "Open" (win-path-convert-file-name file))))) 
   #+end_src
 
   #+RESULTS:
-  : ((\.png\' lambda (file link) (w32-shell-execute Edit (win-path-convert-file-name file))) (auto-mode . emacs) (\.mm\' . default) (\.x?html?\' . default) (\.pdf\' . default) (\.xls[x]\' . system) (\.doc[x]\' . system) (\.ppt[x]\' . system) (t . emacs) (\.png . system))
+  : ((\.png lambda (file link) (w32-shell-execute Open (win-path-convert-file-name file))) (\.png\' lambda (file link) (w32-shell-execute Open (win-path-convert-file-name file))) (auto-mode . emacs) (\.mm\' . default) (\.x?html?\' . default) (\.pdf\' . default) (\.xls[x]\' . system) (\.doc[x]\' . system) (\.ppt[x]\' . system) (t . emacs) (\.png . system))
 
 
 * ob-http
@@ -1860,3 +1860,4 @@
   #+end_src
 
   #+RESULTS:
+

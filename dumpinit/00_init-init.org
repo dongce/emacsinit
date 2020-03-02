@@ -225,6 +225,9 @@
  ;;(wsl-path-convert-file-name "/mnt/c/xxx")
  #+end_src
 
+ #+RESULTS:
+ : wsl-path
+
 ** wsl → win
 
    #+begin_src  emacs-lisp

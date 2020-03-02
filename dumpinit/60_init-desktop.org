@@ -6,60 +6,10 @@
     ;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
   #+END_SRC
 
-* desktop
-  #+BEGIN_SRC emacs-lisp 
-
-  ;; desktop 
-  (desktop-save-mode)
-  ;;(desktop-load-default)
-  (desktop-read)
-  (defun desktop-clear-not-modified ()
-    "Empty the Desktop.
-  desktop-clear 기능중에서 변경되지 않은 파일만을 닫는다."
-    (interactive)
-    (desktop-lazy-abort)
-    (dolist (var desktop-globals-to-clear)
-      (if (symbolp var)
-        (eval `(setq-default ,var nil))
-        (eval `(setq-default ,(car var) ,(cdr var)))))
-    (let ((buffers (buffer-list))
-          (preserve-regexp (concat "^\\("
-                                   (mapconcat (lambda (regexp)
-                                                (concat "\\(" regexp "\\)"))
-                                              desktop-clear-preserve-buffers
-                                              "\\|")
-                                   "\\)$")))
-      (while buffers
-        (let ((bufname (buffer-name (car buffers))))
-           (or
-             (null bufname)
-             (string-match preserve-regexp bufname)
-             ;; Don't kill buffers made for internal purposes.
-             (and (not (equal bufname "")) (eq (aref bufname 0) ?\s))
-             (if (not (buffer-modified-p (car buffers))) (kill-buffer (car buffers)))))
-        (setq buffers (cdr buffers))))
-    (delete-other-windows))
-
-  (define-key Buffer-menu-mode-map "c" 'desktop-clear-not-modified)
-  #+END_SRC
 * perf
   #+BEGIN_SRC emacs-lisp
   (remove-hook 'find-file-hooks 'vc-find-file-hook)
   #+END_SRC
-
-* wsl
-  :PROPERTIES:
-  :END:
-  
-** path converter
-   #+begin_src emacs-lisp
-     (use-package wsl-path
-       :config
-       (wsl-path-activate))
-   #+end_src
-
-   #+RESULTS:
-   : t
 
 * 오늘의 메시지 
 
@@ -2922,58 +2872,8 @@
  : hanja-grade3
 
 
-*** 오늘의한자
-    #+BEGIN_SRC emacs-lisp
-      (let* ((days (time-to-day-in-year (current-time)))
-             (mod (/ (length hanja-grade3) 3))
-             (hit (% days  mod))
-             (hit-1 (% (- days 1)  mod)))
-        (setf today-hanja3
-              (format "%s;%s;%s"
-                      (nth hit hanja-grade3)
-                      (nth (+ mod hit) hanja-grade3)
-                      (nth (+ mod mod hit) hanja-grade3)))
 
-        (setf today-hanja4
-              (format "%s;%s;%s;%s" 
-                      (nth hit hanja-grade4)
-                      (nth (+ mod hit) hanja-grade4)
-                      (nth (+ mod mod hit) hanja-grade4)
-                      (nth (+ mod mod mod hit) hanja-grade4)))
-
-        (setf yesterday-hanja3
-              (format "%s;%s;%s"
-                      (nth hit-1 hanja-grade3)
-                      (nth (+ mod hit-1) hanja-grade3)
-                      (nth (+ mod mod hit-1) hanja-grade3)))
-
-        (setf yesterday-hanja4
-              (format "%s;%s;%s;%s" 
-                      (nth hit-1 hanja-grade4)
-                      (nth (+ mod hit-1) hanja-grade4)
-                      (nth (+ mod mod hit-1) hanja-grade4)
-                      (nth (+ mod mod mod hit-1) hanja-grade4))))
-
-      (spacemacs-buffer/warning
-       (today-message "어제의 한자 3급 %s" yesterday-hanja3))
-
-      (spacemacs-buffer/warning
-       (today-message "어제의 한자 4급 %s" yesterday-hanja4))
-
-
-      (spacemacs-buffer/warning
-       (today-message "오늘의 한자 3급 %s" today-hanja3))
-
-      (spacemacs-buffer/warning
-       (today-message "오늘의 한자 4급 %s" today-hanja4))
-
-    #+END_SRC
-
-    #+RESULTS:
-    | Cannot find any of the specified fonts (Source Code Pro)! Font settings may not be correct. | Both the `helm' and `ivy' layers are enabled. This may lead to unexpected behaviour. | More than one init function found for package helm-make. Previous owner was helm, replacing it with layer ivy. | 어제의 한자 3급 (蜜 : 꿀밀);(潤 : 불을윤);(荒 : 거칠황) | 어제의 한자 4급 (問 : 물을문);(音 : 소리음);(紅 : 붉을홍);nil | 오늘의 한자 3급 (朴 : 순박할박);(隱 : 숨을은);(回 : 돌아올회) | 오늘의 한자 4급 (聞 : 들을문);(飮 : 마실음);(火 : 불화);nil |
  
-
-
 *** hanja 
     #+BEGIN_SRC emacs-lisp
       (defun getmean (x)
@@ -3226,58 +3126,12 @@
       #+RESULTS:
       : katakana
 
-*** 오늘의 카타카나 
-    #+BEGIN_SRC emacs-lisp
-
-      (defun katakanahanja (it)
-          (let ((result  (assoc (car it) katakana→hanja)))
-            (if result result (assoc (car (reverse it )) katakana→hanja))))
-        (defun daykatakana (dayoffset)
-          (let ((it  (nth  (%  (-  (time-to-day-in-year (current-time)) dayoffset) (length  katakana) ) katakana)))
-            (format  "%s%s"
-                     (s-join ";" (-map #'symbol-name it))
-                     (format "%s" (getmean (cadr  (katakanahanja it)))   ))))
-        (spacemacs-buffer/warning
-         (today-message "어제의 카타카나 %s" (daykatakana 1) ))
-        (spacemacs-buffer/warning
-         (today-message "오늘의 카타카나 %s" (daykatakana 0)))
-    #+END_SRC
-
-    #+RESULTS:
-    | Cannot find any of the specified fonts (Source Code Pro)! Font settings may not be correct. | More than one init function found for package helm-make. Previous owner was helm, replacing it with layer ivy. | Auto-evilication could not remap these functions in map `elfeed-search-mode-map': |
-
 *** hanja mean
     #+BEGIN_SRC emacs-lisp
     (defun what-hanja ()
       (interactive)
       (message (format "%s" (getmean (intern (char-to-string (following-char)))))))
     #+END_SRC
-* alarm
-** move to .spacemacs
-        #+BEGIN_SRC emacs-lisp :tangle no
-
-          (let* ((ct (decode-time (current-time)))
-                 (ctm (+  (cadr ct) (* 60 (caddr ct)))))
-            (if (not (> ctm (+ (* 10  60 ) 0  ))) (myalarm "10:00" (format "휴식하시요. %s\n%s\n%s" today-katakana today-hanja3 today-hanja4)))
-            (if (not (> ctm (+ (* 15  60 ) 0  ))) (myalarm "15:00" (format "휴식하시요. %s\n%s\n%s" today-katakana today-hanja3 today-hanja4)))
-            (if (not (> ctm (+ (* 18  60 ) 10 ))) (myalarm "18:10" (format "퇴근하시요. %s\n%s\n%s" today-katakana today-hanja3 today-hanja4)))
-            (if (not (> ctm (+ (* 19  60 ) 20 ))) (myalarm "19:20" (format "퇴근하시요. %s\n%s\n%s" today-katakana today-hanja3 today-hanja4)))
-            (if (not (> ctm (+ (* 20  60 ) 20 ))) (myalarm "21:20" (format "퇴근하시요. %s\n%s\n%s" today-katakana today-hanja3 today-hanja4))))
-        #+END_SRC
-
-        #+RESULTS:
-        : [nil 22698 57072 0 nil alarm-clock-message ("퇴근하시요. チャ;cha;차") nil 0]
-        
-* xmodmap
-
-  xmodmap -pke 하면 적용되어 있는 키값을 확인할 수 있다. 
-  #+begin_src emacs-lisp
-    (when-os 'gnu/linux
-      (call-process "/usr/bin/xmodmap" nil nil nil "/opt/site-lisp/init/xmodmap.conf"))
-  #+end_src
-
-  #+RESULTS:
-  : 0
 * encoding
 
 ** old setting

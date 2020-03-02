@@ -3444,18 +3444,15 @@ of FILE in the current directory, suitable for creation"
 
   (defun alarm-clock-message (text)
     "The actual alarm action.
-  Argument TEXT alarm message."
-    (let ((buf (get-buffer-create " *alarm notify* ")))
-      ;; (async-shell-command (format "notify-send -t 5000 \"%s\" \"%s\" " text text) buf) ;
-      ;;(async-shell-command (format "t:/usr/local/editor/emacsw32/zenity/bin/zenity.exe --g-fatal-warnings --warning --text=\"%s\"  " text) buf)
-      ;; (async-shell-command (format "c:\\anaconda\\python.exe t:/usr/local/editor/emacsw32/cmdutils/pymsgdialog.py \"%s\"  " text) buf) 
-      (async-shell-command (format "zenity  --info --text=\"%s\"  " (encode-coding-string text 'utf-8)) buf)
-      ;;(message-box text)
-      )) 
+    Argument TEXT alarm message."
+    (async-start-process "zenity" "zenity" nil "--info" 
+                         (format "--text=\"====================================================\n%s\"  "
+                                 (encode-coding-string text 'utf-8)) ) 
+    ) 
   (defun alarm-clock ()
     "Set an alarm.
-  The time format is the same accepted by `run-at-time'.  For
-  example \"11:30am\"."
+    The time format is the same accepted by `run-at-time'.  For
+    example \"11:30am\"."
     (interactive)
     (let ((time (read-string "Time(example, 11:30am): "))
           (text (read-string "Message: ")))
@@ -3829,3 +3826,16 @@ of FILE in the current directory, suitable for creation"
    : powershell
   
    
+* resume
+  기존 윈도우를 복원한다. 
+
+  #+begin_src emacs-lisp
+    (defun resume (arg)
+      (interactive "p")
+      (case arg
+        ((1) (ivy-resume))
+        (t (ivy-resume))))
+  #+end_src
+
+  #+RESULTS:
+  : resume

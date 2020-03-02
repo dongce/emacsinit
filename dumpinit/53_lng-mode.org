@@ -1,0 +1,70 @@
+
+
+* babel
+#+begin_src emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((restclient . t)))
+#+end_src
+
+#+RESULTS:
+
+* lsp
+
+** PENDING custom setting 
+   - State "PENDING"    from              [2020-02-27 목 09:37]
+ #+begin_src emacs-lisp :tangle no
+ (use-package lsp-mode
+   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+   :init (setq lsp-keymap-prefix "<f12>")
+   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+          (python-mode . lsp)
+          ;; if you want which-key integration
+          (lsp-mode . lsp-enable-which-key-integration))
+   :commands lsp)
+
+ (setq read-process-output-max (* 1024 1024))
+
+
+ #+end_src
+
+ #+RESULTS:
+ : 1048576
+
+** spacemacs layer
+   #+begin_src emacs-lisp
+   (defvar c-c++-backend 'lsp-ccls) 
+   #+end_src
+** ccls
+   #+begin_src emacs-lisp
+   ;; (setq ccls-args '("--log-file=/tmp/ccls.log"))  
+   (setq ccls-executable "/opt/ccls/bin/ccls")
+   #+end_src
+
+   #+RESULTS:
+   : /opt/ccls/bin/ccls
+
+* magit
+  #+begin_src emacs-lisp
+    (setf magit-repository-directories
+          '(
+            ;; LINK
+            ("/mnt/t/gitdir/DLP_LINK11/" . 0 )
+            ("/mnt/t/gitdir/DLP_ISDL/" . 0 )
+            ("/mnt/t/KSS3/HCI_LINK11/" . 0 )
+            ("/mnt/t/KSS3/HCI_ISDL/" . 0 )
+            ;; configuration
+            ("~/" . 0 )
+            ("/opt/site-lisp/init/" . 0 )
+            ;; org progject
+            ("/mnt/u/orgdir/" . 0 )
+            ("/mnt/e/kdxbuild/" . 0 )
+            ;; LTS
+            ("/mnt/t/iff/src/kdxbuild-pdf2pda/" . 0 )
+            ("/mnt/t/iff/src/data_man/" . 0 )
+            ("/mnt/t/gitdir/ltslph1iffmode5" . 0 )
+            ("/mnt/t/LTS/LPH-I/IFFMODE5" . 1)))
+  #+end_src
+
+  #+RESULTS:
+  : ((/mnt/t/gitdir/DLP_LINK11/ . 0) (/mnt/t/gitdir/DLP_ISDL/ . 0) (/mnt/t/gitdir/ltslph1iffmode5 . 0) (/mnt/t/KSS3/HCI_LINK11/ . 0) (/mnt/t/KSS3/HCI_ISDL/ . 0) (~/ . 0) (/opt/site-lisp/init/ . 0) (/mnt/u/orgdir/ . 0) (/mnt/e/kdxbuild/ . 0) (/mnt/t/LTS/LPH-I/IFFMODE5 . 1))

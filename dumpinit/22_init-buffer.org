@@ -234,9 +234,9 @@
               (mode   . sql-mode)
               (name   . "^\\*SQL\\*$")))
       ("이메일"  (or
-                  (mode . mu4e-main-mode )
-                  (mode . mu4e-view-mode )
-                  (mode . mu4e-headers-mode)))
+                  (mode . mu4e:main-mode )
+                  (mode . mu4e:view-mode )
+                  (mode . mu4e:headers-mode)))
       ("컴파일" (or
                  (mode   . grep-mode)
                  (mode   . occur-mode)
@@ -560,8 +560,8 @@
   (add-to-list 'purpose-user-mode-purposes '(compilation-mode . comp))
   (add-to-list 'purpose-user-mode-purposes '(org-mode . org))
 
-  (add-to-list 'purpose-user-mode-purposes '(mu4e-headers-mode . mu4e-header))
-  (add-to-list 'purpose-user-mode-purposes '(mu4e-view-mode  . mu4e-view))
+  (add-to-list 'purpose-user-mode-purposes '(mu4e:headers-mode . mu4e-header))
+  (add-to-list 'purpose-user-mode-purposes '(mu4e:view-mode  . mu4e-view))
 
   (purpose-compile-user-configuration)
 
