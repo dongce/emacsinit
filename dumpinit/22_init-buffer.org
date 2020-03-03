@@ -361,7 +361,7 @@
     ;;conflict-pscp-tramp;; (projectile-global-mode)
     (setq projectile-enable-caching t))
 
-  (use-package projectile-explorer
+  (use-package project-explorer
     :config
     (defun project-explorer-close ()
       (interactive)

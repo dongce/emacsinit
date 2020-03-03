@@ -1319,7 +1319,7 @@ Note: the project list is sorted in descending alphabetic order."
   ;; For each number in S
   (dotimes (i n)
     (let ((x (aref S i)))
-      (report-errors (format "Alert for %d is %%s" x)
+      (with-demoted-errors (format "Alert for %d is %%s" x)
         (let ((result (funcall 'f x)))
           ;; else
           (message "Result for %d is %s" x result))))))

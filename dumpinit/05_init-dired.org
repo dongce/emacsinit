@@ -674,10 +674,11 @@ open and unsaved."
 
 * appearance
 #+BEGIN_SRC emacs-lisp
-(use-package hl-line+
-  :config
-  (add-hook 'dired-mode-hook (lambda () (interactive) (hl-line-mode t))))
+  (add-hook 'dired-mode-hook (lambda ()  (hl-line-mode t)))
 #+END_SRC
+
+#+RESULTS:
+| (lambda nil (interactive) (hl-line-mode t)) | turn-on-gnus-dired-mode | recentf-add-dired-directory | cscope:hook | diredp-nb-marked-in-mode-name | diredp--set-up-font-locking | dired-quick-sort | dired-omit-mode | dired-extra-startup | spacemacs//init-jump-handlers-dired-mode |
 
 * dired menu
 #+BEGIN_SRC emacs-lisp

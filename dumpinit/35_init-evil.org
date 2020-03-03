@@ -37,199 +37,196 @@
 *** myown
     #+BEGIN_SRC emacs-lisp
     
-      (spacemacs/set-leader-keys 
-        "<backtab>" #'back-to-indentation
-        "<backspace>" #'twin
-        "%" 'evil-virep-replace-regexp
-        "ak" 'kproc
-        "a[" 'w32shell-cmd-here
-        "yi" 'yankpad-insert
-        "ye" 'yankpad-edit
-        "ym" 'yankpad-map
-        "yc" 'yankpad-set-category
-        "oj" 'open-junk-file
-        "obi" 'ido-switch-buffer-other-frame
-        "oba" 'ivy-push-view
-        "obA" 'ivy-pop-view
-        "obb" 'ivy-switch-buffer-other-window
-        "obB" 'ivy-switch-buffer
-        "bb"  'switch-to-buffer
-        "ob[" 'evil-prev-buffer
-        "obk" 'kill-this-buffer
-        "ob]" 'evil-next-buffer
-        "obn" 'narrow-to-region
-        "obN" 'narrow-to-defun
-        "obw" 'widen
-        "obs" 'save-buffer
-        "obS" 'save-some-buffers
-        "obm" 'boomark-set
-        "obj" 'boomark-jump
-        "obM" 'bookmark-bmenu-list
-        "obl" 'xah-open-last-closed
-        "obf" 'prelude-copy-file-name-to-clipboard
-        "obh" 'mark-whole-buffer
-        "obr" 'revert-buffer
-        "obc" 'xah-close-current-buffer
-        "of"   'helm-resume
-        "iu"   nil
-        "<home>" 'ibuffer
-        "<end>" 'tmpscratch
-        "<prior>" 'beginning-of-defun
-        "<next>" 'end-of-defun
-        "<delete>" 'switch-window
+            (spacemacs/set-leader-keys 
+              "<backtab>" #'back-to-indentation
+              "<backspace>" #'twin
+              "%" 'evil-virep-replace-regexp
+              "ak" 'kproc
+              "a[" 'w32shell-cmd-here
+              "yi" 'yankpad-insert
+              "ye" 'yankpad-edit
+              "ym" 'yankpad-map
+              "yc" 'yankpad-set-category
+              "oj" 'open-junk-file
+              "obi" 'ido-switch-buffer-other-frame
+              "oba" 'ivy-push-view
+              "obA" 'ivy-pop-view
+              "obb" 'ivy-switch-buffer-other-window
+              "obB" 'ivy-switch-buffer
+              "bb"  'switch-to-buffer
+              "ob[" 'evil-prev-buffer
+              "obk" 'kill-this-buffer
+              "ob]" 'evil-next-buffer
+              "obn" 'narrow-to-region
+              "obN" 'narrow-to-defun
+              "obw" 'widen
+              "obs" 'save-buffer
+              "obS" 'save-some-buffers
+              "obm" 'boomark-set
+              "obj" 'boomark-jump
+              "obM" 'bookmark-bmenu-list
+              "obl" 'xah-open-last-closed
+              "obf" 'prelude-copy-file-name-to-clipboard
+              "obh" 'mark-whole-buffer
+              "obr" 'revert-buffer
+              "obc" 'xah-close-current-buffer
+              "of"   'helm-resume
+              "iu"   nil
+              "<home>" 'ibuffer
+              "<end>" 'tmpscratch
+              "<prior>" 'beginning-of-defun
+              "<next>" 'end-of-defun
+              "<delete>" 'switch-window
 
-"oO"  'switch-window
-"o1" 'switch-window-then-maximize
-"o2" 'switch-window-then-split-below
-"o3" 'switch-window-then-split-right
-"o0" 'switch-window-then-delete
+      "oO"  'switch-window
+      "o1" 'switch-window-then-maximize
+      "o2" 'switch-window-then-split-below
+      "o3" 'switch-window-then-split-right
+      "o0" 'switch-window-then-delete
 
-"o4d" 'switch-window-then-dired
-"o4f" 'switch-window-then-find-file
-"o4m" 'switch-window-then-compose-mail
-"o4r" 'switch-window-then-find-file-read-only
-"o4b" 'switch-window-then-display-buffer
-"o40" 'switch-window-then-kill-buffer
+      "o4d" 'switch-window-then-dired
+      "o4f" 'switch-window-then-find-file
+      "o4m" 'switch-window-then-compose-mail
+      "o4r" 'switch-window-then-find-file-read-only
+      "o4b" 'switch-window-then-display-buffer
+      "o40" 'switch-window-then-kill-buffer
 
-        "," 'smex
-        "." 'embrace-commander
-        "/" 'evil-replace-word-selection
-        "\\" 'xah-copy-file-path
-        "-" 'xah-copy-file-name
-        "osL" 'loccur
-        "oo" 'occur
-        "osn" 'smartscan-symbol-go-forward
-        "osp" 'smartscan-symbol-go-backward
-        "osc" 'xah-lookup-cppreference
-        "os." 'gtags-find-tag
-        "os," 'gtags-pop-stack
-        "os_" 'isearch-forward-symbol
-        "os-" 'isearch-forward-at-point
-        "osm" 'grep-word
-        "ost" 'xah-find-text
-        "osT" 'xah-find-text-regex
+              "," 'smex
+              "." 'embrace-commander
+              "/" 'evil-replace-word-selection
+              "\\" 'xah-copy-file-path
+              "-" 'xah-copy-file-name
+              "osL" 'loccur
+              "oo" 'occur
+              "osn" 'smartscan-symbol-go-forward
+              "osp" 'smartscan-symbol-go-backward
+              "osc" 'xah-lookup-cppreference
+              "os." 'gtags-find-tag
+              "os," 'gtags-pop-stack
+              "os_" 'isearch-forward-symbol
+              "os-" 'isearch-forward-at-point
+              "osm" 'grep-word
+              "ost" 'xah-find-text
+              "osT" 'xah-find-text-regex
 
-        "ou"  'hydra-undo-tree/body
-        "op" 'pandoc-main-hydra/body
+              "ou"  'hydra-undo-tree/body
+              "op" 'pandoc-main-hydra/body
 
-        "S" smerge-basic-map
+              "S" smerge-basic-map
 
-        "u" 'counsel-recentf;;helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
-        "U" 'counsel-recentf-directory ;;helm-goto-recent-directory ;;counsel-goto-recent-directory ;;;;'string-rectangle ;;'recentf-open-most-recent-file
-        ";" 'evilnc-comment-or-uncomment-lines
+              "u" 'counsel-recentf;;helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
+              "U" 'counsel-recentf-directory ;;helm-goto-recent-directory ;;counsel-goto-recent-directory ;;;;'string-rectangle ;;'recentf-open-most-recent-file
+              ";" 'evilnc-comment-or-uncomment-lines
 
-        "oCw" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
-        "oCx" #'crux-open-with
-        "oCO" #'crux-smart-open-line-above
-        "oCo" #'crux-smart-open-line
-        "oCs" #'crux-cleanup-buffer-or-region
-        "oCr" #'crux-recentf-ido-find-file
-        "oCv" #'crux-view-url
-        "oCe" #'crux-eval-and-replace
-        "oCt" #'crux-transpose-windows
-        "oCD" #'crux-delete-file-and-buffer
-        "oCl" #'crux-duplicate-current-line-or-region
-        "oCL" #'crux-duplicate-and-comment-current-line-or-region
-        "oCR" #'crux-rename-file-and-buffer
-        "oCn" #'crux-visit-term-buffer
-        "oC1" #'crux-kill-other-buffers
-        "oCi" #'crux-indent-defun
-        "oCI" #'crux-indent-rigidly-and-copy-to-clipboard
-        "oC." #'crux-find-user-init-file
-        "oCs" #'crux-find-shell-init-file
-        "oCj" #'crux-top-join-lines
-        "oCk" #'crux-kill-whole-line
-        "oCK" #'crux-kill-line-backwards
-        "oCa" #'crux-ispell-word-then-abbrev
-
-
+              "oCw" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
+              "oCx" #'crux-open-with
+              "oCO" #'crux-smart-open-line-above
+              "oCo" #'crux-smart-open-line
+              "oCs" #'crux-cleanup-buffer-or-region
+              "oCr" #'crux-recentf-ido-find-file
+              "oCv" #'crux-view-url
+              "oCe" #'crux-eval-and-replace
+              "oCt" #'crux-transpose-windows
+              "oCD" #'crux-delete-file-and-buffer
+              "oCl" #'crux-duplicate-current-line-or-region
+              "oCL" #'crux-duplicate-and-comment-current-line-or-region
+              "oCR" #'crux-rename-file-and-buffer
+              "oCn" #'crux-visit-term-buffer
+              "oC1" #'crux-kill-other-buffers
+              "oCi" #'crux-indent-defun
+              "oCI" #'crux-indent-rigidly-and-copy-to-clipboard
+              "oC." #'crux-find-user-init-file
+              "oCs" #'crux-find-shell-init-file
+              "oCj" #'crux-top-join-lines
+              "oCk" #'crux-kill-whole-line
+              "oCK" #'crux-kill-line-backwards
+              "oCa" #'crux-ispell-word-then-abbrev
 
 
-        "O" 'win-switch-next-window
-        "o]" 'exit-recursive-edit
-        "ov" 'evil-scroll-down
-        "oV" 'evil-scroll-up
-
-        "G" 'keyboard-quit
-        "ee" 'eval-last-sexp
-        "E"  mu4e-main-mode-map
-        "Eu" 'mu4e-update-mail-and-index
 
 
-        "W" 'read-only-mode
-        "oww" 'read-only-mode
-        "owk" 'win-switch-up
-        "owj" 'win-switch-down
-        "owh" 'win-switch-left
-        "owl" 'win-switch-right
-        "ow1" 'delete-other-windows
-        "ow2" 'split-window-below
-        "ow3" 'split-window-right
-        "ow0" 'delete-window
-        "owo" 'win-switch-dispatch
-        "owd" 'delete-blank-lines
-        "ows" 'resize-window
-        "owj"      'winner-undo
-        "owk"      'winner-redo
+              "o]" 'exit-recursive-edit
+              "ov" 'evil-scroll-down
+              "oV" 'evil-scroll-up
 
-        "as" 'twin
-        "aw" 'winexe
-        ;;deprecattion;;"+" #'evil-numbers/inc-at-pt
-        ;;deprecattion;;"-" #'evil-numbers/dec-at-pt
-        ;;deprecattion;;"M" #'pop-to-mark-command ;;'evil-scroll-down
-        ;;deprecattion;;"m" #'er/expand-region ;;#'extend-selection
-        ;;deprecattion;;"S-m" #'mark-line ;;#'extend-selection
-        ;;deprecattion;;"<" #'loccur
-        ;;deprecattion;;"0" #'delete-window
-        ;;deprecattion;;"1" #'delete-other-windows
-        ;;deprecattion;;"2" #'split-window-below
-        ;;deprecattion;;"3" #'split-window-right
-        ;;deprecattion;;"(" #'kmacro-start-macro
-        ;;deprecattion;;")" #'kmacro-end-macro
-        ;;deprecattion;;"xx"  #'kmacro-end-and-call-macro
-        ;;deprecattion;;"xi"  #'string-inflection-all-cycle
-        ;;deprecattion;;"D" #'toggle-current-window-dedication
-        ;;deprecattion;;"kb" 'kill-buffer
-        ;;deprecattion;;"op"  (cdar (cddr  (cadr  projectile-mode-map)))
-        ;;deprecattion;;"opw"  'purpose-load-window-layout
-        ;;deprecattion;;"opW"  'purpose-save-window-layout
-        ;;deprecattion;;"opE"  'project-explorer-open
-        ;;deprecattion;;"opC"  'project-explorer-close
-        ;;deprecattion;;"op/"  'projectile-grep
-        ;;deprecattion;;"<SPC>" #'smex
+              "G" 'keyboard-quit
+              "ee" 'eval-last-sexp
+              "E"  mu4e-main-mode-map
+              "Eu" 'mu4e-update-mail-and-index
 
-        "ohz" 'zeal-at-point
-        "ohh"      'helm-mini
-        "oha"      'helm-apropos
-        "ohB"      'helm-buffers-list
-        "ohb"      'helm-descbindings
-        "ohy"      'helm-show-kill-ring
-        "ohx"      'helm-M-x
-        "oho"     'helm-occur
-        "ohs"     'helm-swoop
-        "ohy"     'helm-yas-complete
-        "ohY"     'helm-yas-create-snippet-on-region
-        "ohr" 'helm-all-mark-rings
-        "ohm" 'helm-smex
-        "ohM" 'helm-smex-major-mode-commands
-        "od"  'counsel-goto-recent-directory
 
-        "om" 'switch-window-then-orgmail
-        "oM" 'orgmail
-        "oS" 'tmpscratch
-        "oI" 'ibuffer
-        "ox" 'winexe
-        "or" 'org-capture
-        "oa" 'org-agenda
-        "ol" 'org-store-link
-        "oc" 'org-cliplink
-        "oG"  'gxref-set-project-dir
-        "ogd" 'gxref-set-project-dir
-        "ogc" 'gxref-clear-project-dir
-        "ogu" 'gxref-update-db
-        "[" 'ivy-push-view 
-        "]" 'ivy-pop-view 
-        )
+              "W" 'read-only-mode
+              "oww" 'read-only-mode
+              "ow1" 'delete-other-windows
+              "ow2" 'split-window-below
+              "ow3" 'split-window-right
+              "ow0" 'delete-window
+              "owd" 'delete-blank-lines
+              "ows" 'resize-window
+              "owj"      'winner-undo
+              "owk"      'winner-redo
+
+              "as" 'twin
+              "aw" 'winexe
+              ;;deprecattion;;"+" #'evil-numbers/inc-at-pt
+              ;;deprecattion;;"-" #'evil-numbers/dec-at-pt
+              ;;deprecattion;;"M" #'pop-to-mark-command ;;'evil-scroll-down
+              ;;deprecattion;;"m" #'er/expand-region ;;#'extend-selection
+              ;;deprecattion;;"S-m" #'mark-line ;;#'extend-selection
+              ;;deprecattion;;"<" #'loccur
+              ;;deprecattion;;"0" #'delete-window
+              ;;deprecattion;;"1" #'delete-other-windows
+              ;;deprecattion;;"2" #'split-window-below
+              ;;deprecattion;;"3" #'split-window-right
+              ;;deprecattion;;"(" #'kmacro-start-macro
+              ;;deprecattion;;")" #'kmacro-end-macro
+              ;;deprecattion;;"xx"  #'kmacro-end-and-call-macro
+              ;;deprecattion;;"xi"  #'string-inflection-all-cycle
+              ;;deprecattion;;"D" #'toggle-current-window-dedication
+              ;;deprecattion;;"kb" 'kill-buffer
+              ;;deprecattion;;"op"  (cdar (cddr  (cadr  projectile-mode-map)))
+              ;;deprecattion;;"opw"  'purpose-load-window-layout
+              ;;deprecattion;;"opW"  'purpose-save-window-layout
+              ;;deprecattion;;"opE"  'project-explorer-open
+              ;;deprecattion;;"opC"  'project-explorer-close
+              ;;deprecattion;;"op/"  'projectile-grep
+              ;;deprecattion;;"<SPC>" #'smex
+
+              "ohz" 'zeal-at-point
+              "ohh"      'helm-mini
+              "oha"      'helm-apropos
+              "ohB"      'helm-buffers-list
+              "ohb"      'helm-descbindings
+              "ohy"      'helm-show-kill-ring
+              "ohx"      'helm-M-x
+              "oho"     'helm-occur
+              "ohs"     'helm-swoop
+              "ohy"     'helm-yas-complete
+              "ohY"     'helm-yas-create-snippet-on-region
+              "ohr" 'helm-all-mark-rings
+              "ohm" 'helm-smex
+              "ohM" 'helm-smex-major-mode-commands
+              "od"  'counsel-goto-recent-directory
+
+              "om" 'switch-window-then-orgmail
+              "oM" 'orgmail
+              "oS" 'tmpscratch
+              "oI" 'ibuffer
+              "ox" 'winexe
+              "or" 'org-capture
+              "oa" 'org-agenda
+              "ol" 'org-store-link
+              "oc" 'org-cliplink
+              "oG"  'gxref-set-project-dir
+              "ogd" 'gxref-set-project-dir
+              "ogc" 'gxref-clear-project-dir
+              "ogu" 'gxref-update-db
+              "[" 'ivy-push-view 
+              "]" 'ivy-pop-view 
+              "ph" 'project-explorer-open-helm
+              "pH" 'project-explorer-open
+              "px" 'project-explorer-close
+              )
     #+END_SRC
 
     #+RESULTS:
@@ -522,13 +519,13 @@
 
     (evil-leader/set-key 
 
-      "`o" #'owdriver-next-window
-      "`k" #'owdriver-do-scroll-up
-      "`j" #'owdriver-do-scroll-down
-      "`s" #'owdriver-do-isearch-forward
-      "`r" #'owdriver-do-isearch-backward
-      "`<" #'owdriver-do-beginning-of-buffer
-      "`>" #'owdriver-do-end-of-buffer))
+      "Oo" #'owdriver-next-window
+      "Ok" #'owdriver-do-scroll-up
+      "Oj" #'owdriver-do-scroll-down
+      "Os" #'owdriver-do-isearch-forward
+      "Or" #'owdriver-do-isearch-backward
+      "O<" #'owdriver-do-beginning-of-buffer
+      "O>" #'owdriver-do-end-of-buffer))
 
    #+END_SRC
 
@@ -1769,3 +1766,11 @@
        view-mode
        grep-mode))
    #+END_SRC
+* evil-search-highlight-persist
+
+  #+begin_src emacs-lisp
+    (use-package evil-search-highlight-persist
+      :ensure)
+  #+end_src
+
+  #+RESULTS:

@@ -147,6 +147,51 @@
    #+RESULTS:
    : [nil 22698 57072 0 nil alarm-clock-message ("퇴근하시요. チャ;cha;차") nil 0]
 
+* pymacs
+  #+BEGIN_SRC emacs-lisp
+
+
+    ;;;_ PYMACS
+    ;;(require 'pymacs)
+    ;;tempdeprecated(setq pymacs-python-command "python.bat")
+    ;;tempdeprecated(add-to-list 'pymacs-load-path "t:/usr/local/editor/emacsW32/site-lisp/pymacs/")
+    ;;tempdeprecated;;; _환경번수 http://docs.python.org/2/using/cmdline.html
+    ;;tempdeprecated(setenv  "PYTHONPATH" "t:/usr/local/editor/emacsW32/site-lisp/pymacs/")
+    ;;tempdeprecated;;(pymacs-load "pastemacs" "paste-")
+    ;;tempdeprecated;;(pymacs-load "emacsuuid" "uuid-")
+    ;;tempdeprecated;;(pymacs-load "pyutil" "pyutil-") ;;call like this (pyutil-int-to-bin 10 )
+    ;;tempdeprecated;;(pymacs-load "pyclip" "pyclip-")
+     ;; (pymacs-load "ropemacs" "rope-") (rope-show-doc) 
+
+
+   (use-package pymacs
+     ;; :commands pyutil-mozlz4-decompress fbmk
+     :config
+     (setq pymacs-python-command "/opt/anaconda3/bin/python3")
+     (add-to-list 'pymacs-load-path (fullpath  "../../thirdparty/pymacs/"))
+     (setenv  "PYTHONPATH" (fullpath  "../../thirdparty/pymacs/"))
+     ;; pyclip use external
+     ;; (pymacs-load "pyclip" "pyclip-")
+     ;; (defun pyclip-clip-file () 
+     ;;   (interactive)
+     ;;   (if (eq system-type 'windows-nt)
+     ;;       (let* ((files (dired-get-marked-files))
+     ;;              (files (if (null files)
+     ;;                         (list (dired-current-directory) )
+     ;;                       files)))
+     ;;         (pyclip-mime files))))
+     ;;(pymacs-load "pastemacs" "paste-")
+     ;;(pymacs-load "emacsuuid" "uuid-")
+     (pymacs-load "pyutil" "pyutil-")
+     (with-current-buffer "*Pymacs*"
+       (emacs-lock-mode 'kill)))
+
+
+  #+END_SRC
+
+  #+RESULTS:
+  : t
+
 
 * wsl
   :PROPERTIES:

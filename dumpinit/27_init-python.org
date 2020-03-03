@@ -153,123 +153,78 @@
 
    #+END_SRC
 
-** pymacs
-   #+BEGIN_SRC emacs-lisp
-
-
-     ;;;_ PYMACS
-     ;;(require 'pymacs)
-     ;;tempdeprecated(setq pymacs-python-command "python.bat")
-     ;;tempdeprecated(add-to-list 'pymacs-load-path "t:/usr/local/editor/emacsW32/site-lisp/pymacs/")
-     ;;tempdeprecated;;; _환경번수 http://docs.python.org/2/using/cmdline.html
-     ;;tempdeprecated(setenv  "PYTHONPATH" "t:/usr/local/editor/emacsW32/site-lisp/pymacs/")
-     ;;tempdeprecated;;(pymacs-load "pastemacs" "paste-")
-     ;;tempdeprecated;;(pymacs-load "emacsuuid" "uuid-")
-     ;;tempdeprecated;;(pymacs-load "pyutil" "pyutil-") ;;call like this (pyutil-int-to-bin 10 )
-     ;;tempdeprecated;;(pymacs-load "pyclip" "pyclip-")
-      ;; (pymacs-load "ropemacs" "rope-") (rope-show-doc) 
-
-
-    (use-package pymacs
-      ;; :commands pyutil-mozlz4-decompress fbmk
-      :config
-      (setq pymacs-python-command "/opt/anaconda3/bin/python3")
-      (add-to-list 'pymacs-load-path (fullpath  "../thirdparty/pymacs/"))
-      (setenv  "PYTHONPATH" (fullpath  "../thirdparty/pymacs/"))
-      ;; pyclip use external
-      ;; (pymacs-load "pyclip" "pyclip-")
-      ;; (defun pyclip-clip-file () 
-      ;;   (interactive)
-      ;;   (if (eq system-type 'windows-nt)
-      ;;       (let* ((files (dired-get-marked-files))
-      ;;              (files (if (null files)
-      ;;                         (list (dired-current-directory) )
-      ;;                       files)))
-      ;;         (pyclip-mime files))))
-      ;;(pymacs-load "pastemacs" "paste-")
-      ;;(pymacs-load "emacsuuid" "uuid-")
-      (pymacs-load "pyutil" "pyutil-")
-      (with-current-buffer "*Pymacs*"
-        (emacs-lock-mode 'kill)))
-
-
-   #+END_SRC
-
-   #+RESULTS:
-   : t
-
 ** outline
 
    #+BEGIN_SRC emacs-lisp
-   (use-package imenu-tree )
+     ;;(use-package imenu-tree )
 
-   ;;; _OUTLINE 
-   (use-package outline-magic
-     :config
-     (w32-unix-eval
-      ((define-key outline-minor-mode-map [S-tab] 'outline-cycle))
-      ((define-key outline-minor-mode-map [(backtab)]'outline-cycle))))
+     ;;; _OUTLINE 
+     (use-package outline-magic
+       :config
+       (w32-unix-eval
+        ((define-key outline-minor-mode-map [S-tab] 'outline-cycle))
+        ((define-key outline-minor-mode-map [(backtab)]'outline-cycle))))
 
-   ;; (with-package* (outshine)
-   ;;   (add-hook  'outline-minor-mode-hook 'outshine-hook-function))
-   ;; 문서형 프로그래밍에 유리 
-   ;;(require 'python-magic)
+     ;; (with-package* (outshine)
+     ;;   (add-hook  'outline-minor-mode-hook 'outshine-hook-function))
+     ;; 문서형 프로그래밍에 유리 
+     ;;(require 'python-magic)
 
 
-   ;; python-magic 참고
-   (add-hook 
-    'python-mode-hook 
-    (lambda ()
-      ;;(setq outline-regexp "[ \t]*# \\|[ \t]+\\(class\\|def\\|if\\|elif\\|else\\|while\\|for\\|try\\|except\\|with\\) ")
-      ;;(setq outline-regexp "def\\|class ")
-      (setq outline-regexp "[ \t]*\\(class\\|def\\|with\\|for\\|@.*\\|###_.*\\) ")
-      (setq outline-heading-end-regexp "\n")
-      (setq 
-       outline-level 
-       (lambda ()
-         (let (buffer-invisibility-spec)
-           (save-excursion
-             (skip-chars-forward " \t")         
-             (if (char-equal ?\# (char-after))
-                 (current-column)
-               (+ (current-column) 1)
-               )))))
-      ;; (smartparens-mode) 
-      (outline-minor-mode t)
-      ;; (set (make-local-variable 'eldoc-documentation-function) 'rope-eldoc-function)
-      ;;deprecated;;(set (make-variable-buffer-local 'beginning-of-defun-function)
-      ;;deprecated;;     'py-beginning-of-def-or-class)
+     ;; python-magic 참고
+     (add-hook 
+      'python-mode-hook 
+      (lambda ()
+        ;;(setq outline-regexp "[ \t]*# \\|[ \t]+\\(class\\|def\\|if\\|elif\\|else\\|while\\|for\\|try\\|except\\|with\\) ")
+        ;;(setq outline-regexp "def\\|class ")
+        (setq outline-regexp "[ \t]*\\(class\\|def\\|with\\|for\\|@.*\\|###_.*\\) ")
+        (setq outline-heading-end-regexp "\n")
+        (setq 
+         outline-level 
+         (lambda ()
+           (let (buffer-invisibility-spec)
+             (save-excursion
+               (skip-chars-forward " \t")         
+               (if (char-equal ?\# (char-after))
+                   (current-column)
+                 (+ (current-column) 1)
+                 )))))
+        ;; (smartparens-mode) 
+        (outline-minor-mode t)
+        ;; (set (make-local-variable 'eldoc-documentation-function) 'rope-eldoc-function)
+        ;;deprecated;;(set (make-variable-buffer-local 'beginning-of-defun-function)
+        ;;deprecated;;     'py-beginning-of-def-or-class)
 
-      ;; (add-hook 'which-func-functions #'python-info-current-defun-short nil t)
+        ;; (add-hook 'which-func-functions #'python-info-current-defun-short nil t)
 
-      ;; (guide-key/add-local-guide-key-sequence "C-c")
-   
+        ;; (guide-key/add-local-guide-key-sequence "C-c")
 
-      ;;(hide-body)
-      ;;(show-body)
-      ;;(define-key outline-minor-mode-map [tab]    'outline-cycle)
-      ;;(define-key outline-minor-mode-map [S-tab]  'indent-for-tab-command)
-      ;;(define-key outline-minor-mode-map [M-down] 'outline-move-subtree-down)
-      ;;(define-key outline-minor-mode-map [M-up]   'outline-move-subtree-up)
-      ;;(define-key outline-minor-mode-map [S-tab]    'outline-cycle)
-   ;; If you used python-mode.el you probably will miss auto-indentation
-   ;; when inserting newlines.  To achieve the same behavior you have
-   ;; two options:
-   ;; 1) Use GNU/Emacs' standard binding for `newline-and-indent': C-j.
-   ;; 2) Add the following hook in your .emacs:
-   ;; (add-hook 'python-mode-hook
-   ;;   #'(lambda ()
-   ;;       (define-key python-mode-map "\C-m" 'newline-and-indent)))
-      ))
 
-   (add-hook 'python-mode-hook 'evil-text-object-python-add-bindings)
+        ;;(hide-body)
+        ;;(show-body)
+        ;;(define-key outline-minor-mode-map [tab]    'outline-cycle)
+        ;;(define-key outline-minor-mode-map [S-tab]  'indent-for-tab-command)
+        ;;(define-key outline-minor-mode-map [M-down] 'outline-move-subtree-down)
+        ;;(define-key outline-minor-mode-map [M-up]   'outline-move-subtree-up)
+        ;;(define-key outline-minor-mode-map [S-tab]    'outline-cycle)
+     ;; If you used python-mode.el you probably will miss auto-indentation
+     ;; when inserting newlines.  To achieve the same behavior you have
+     ;; two options:
+     ;; 1) Use GNU/Emacs' standard binding for `newline-and-indent': C-j.
+     ;; 2) Add the following hook in your .emacs:
+     ;; (add-hook 'python-mode-hook
+     ;;   #'(lambda ()
+     ;;       (define-key python-mode-map "\C-m" 'newline-and-indent)))
+        ))
 
-   ;;deprecated;;(require 'python-mode)
-   ;;deprecated;;(require 'ipython)
-   ;;deprecated;;(py-set-ipython-completion-command-string "ipython.exe")
-   ;;deprecated;;(set-default
-   ;;deprecated;; 'py-python-command-args
-   ;;deprecated;; '("-u" "c:/usr/local/python27/Scripts/ipython-script.py"  "--colors=NoColor"))
+     (add-hook 'python-mode-hook 'evil-text-object-python-add-bindings)
+
+     ;;deprecated;;(require 'python-mode)
+     ;;deprecated;;(require 'ipython)
+     ;;deprecated;;(py-set-ipython-completion-command-string "ipython.exe")
+     ;;deprecated;;(set-default
+     ;;deprecated;; 'py-python-command-args
+     ;;deprecated;; '("-u" "c:/usr/local/python27/Scripts/ipython-script.py"  "--colors=NoColor"))
 
 
 
