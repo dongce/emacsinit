@@ -2,82 +2,88 @@
 * paredit
 #+BEGIN_SRC emacs-lisp
 
-;; 정규표현을 highlight 한다. 
-;; (require 'highlight-sexp)
-;;deprecated;;(add-hook 'lisp-mode-hook   'highlight-sexp-mode)
-;;deprecated;;(add-hook 'scheme-mode-hook 'highlight-sexp-mode)
-;;deprecated;;(add-hook 'emacs-lisp-mode-hook 'highlight-sexp-mode)
+   ;; 정규표현을 highlight 한다. 
+   ;; (require 'highlight-sexp)
+   ;;deprecated;;(add-hook 'lisp-mode-hook   'highlight-sexp-mode)
+   ;;deprecated;;(add-hook 'scheme-mode-hook 'highlight-sexp-mode)
+   ;;deprecated;;(add-hook 'emacs-lisp-mode-hook 'highlight-sexp-mode)
 
-;; http://mumble.net/~campbell/emacs/paredit.html
-;; http://mumble.net/~campbell/emacs/
-;; https://github.com/joelittlejohn/paredit-cheatsheet
+   ;; http://mumble.net/~campbell/emacs/paredit.html
+   ;; http://mumble.net/~campbell/emacs/
+   ;; https://github.com/joelittlejohn/paredit-cheatsheet
 
-(use-package paredit
-  ;;  "Minor mode for pseudo-structurally editing Lisp code."
-  :commands paredit-mode 
+   (use-package paredit
+     ;;  "Minor mode for pseudo-structurally editing Lisp code."
+      :demand
+      :commands paredit-mode 
+     )
+
+   (use-package evil-paredit
+     ;;"Minor mode for pseudo-structurally editing Lisp code."
+      :demand
+     ;; :commands evil-paredit-mode 
+     )
+
+   ;; (with-package (smartparen )
+   ;;   (sp-pair "`" nil :actions :rem)
+   ;;   (sp-pair "'" nil :actions :rem)
+
+   ;;   (add-hook 'emacs-lisp-mode-hook       
+   ;;             (lambda () (turn-on-eldoc-mode) (smartparens-mode +1)  (rtog/activate) )) ;;(litable-mode t)
+
+   ;;   (add-hook 'lisp-mode-hook             (lambda () (turn-on-eldoc-mode) (smartparens-mode +1) ))
+
+   ;;   (add-hook 'lisp-interaction-mode-hook (lambda () (turn-on-eldoc-mode) (smartparens-mode +1) ))
+   ;;   (add-hook 'scheme-mode-hook           (lambda () (turn-on-eldoc-mode) (smartparens-mode +1) )))
+
+   ;;;_ paredit key 
+   (use-package paredit
+      :demand
+     :config
+     (progn (setq paredit-commands
+                  `(
+                    "Basic Insertion Commands"
+                    "Movement & Navigation"
+                    (("M-S-<up>" "ESC <up>")
+                     paredit-splice-sexp-killing-backward
+                     ("(foo (let ((x 5)) |(sqrt n)) bar)"
+                      "(foo (sqrt n) bar)"))
+                    (("M-S-<down>" "ESC <down>")
+                     paredit-splice-sexp-killing-forward
+                     ("(a (b c| d e) f)"
+                      "(a b c f)"))
+                    "Barfage & Slurpage"
+                    (("M-S-<right>" ) ;;"C-<right>")
+                     paredit-forward-slurp-sexp
+                     ("(foo (bar |baz) quux zot)"
+                      "(foo (bar |baz quux) zot)")
+                     ("(a b ((c| d)) e f)"
+                      "(a b ((c| d) e) f)"))
+                    (("M-S-<left>"  ) ;;"C-<left>")
+                     paredit-forward-barf-sexp
+                     ("(foo (bar |baz quux) zot)"
+                      "(foo (bar |baz) quux zot)"))
+                    ))
+            nil)                             ; end of PROGN
+
+
+   (use-package repl-toggle
+     ;; "Switch to the repl asscociated with the major mode of the
+     ;; current buffer. If in a repl already switch back to the buffer we
+     ;; came from.\(fn)"
+     :demand
+
+     ;; :commands rtog/activate
   )
 
-(use-package evil-paredit
-  ;;"Minor mode for pseudo-structurally editing Lisp code."
-  :commands evil-paredit-mode 
-  )
-
-;; (with-package (smartparen )
-;;   (sp-pair "`" nil :actions :rem)
-;;   (sp-pair "'" nil :actions :rem)
-
-;;   (add-hook 'emacs-lisp-mode-hook       
-;;             (lambda () (turn-on-eldoc-mode) (smartparens-mode +1)  (rtog/activate) )) ;;(litable-mode t)
-
-;;   (add-hook 'lisp-mode-hook             (lambda () (turn-on-eldoc-mode) (smartparens-mode +1) ))
-
-;;   (add-hook 'lisp-interaction-mode-hook (lambda () (turn-on-eldoc-mode) (smartparens-mode +1) ))
-;;   (add-hook 'scheme-mode-hook           (lambda () (turn-on-eldoc-mode) (smartparens-mode +1) )))
-
-;;;_ paredit key 
-(use-package paredit
-  :config
-  (progn (setq paredit-commands
-               `(
-                 "Basic Insertion Commands"
-                 "Movement & Navigation"
-                 (("M-S-<up>" "ESC <up>")
-                  paredit-splice-sexp-killing-backward
-                  ("(foo (let ((x 5)) |(sqrt n)) bar)"
-                   "(foo (sqrt n) bar)"))
-                 (("M-S-<down>" "ESC <down>")
-                  paredit-splice-sexp-killing-forward
-                  ("(a (b c| d e) f)"
-                   "(a b c f)"))
-                 "Barfage & Slurpage"
-                 (("M-S-<right>" ) ;;"C-<right>")
-                  paredit-forward-slurp-sexp
-                  ("(foo (bar |baz) quux zot)"
-                   "(foo (bar |baz quux) zot)")
-                  ("(a b ((c| d)) e f)"
-                   "(a b ((c| d) e) f)"))
-                 (("M-S-<left>"  ) ;;"C-<left>")
-                  paredit-forward-barf-sexp
-                  ("(foo (bar |baz quux) zot)"
-                   "(foo (bar |baz) quux zot)"))
-                 ))
-         nil)                             ; end of PROGN
 
 
-(use-package repl-toggle
-  ;; "Switch to the repl asscociated with the major mode of the
-  ;; current buffer. If in a repl already switch back to the buffer we
-  ;; came from.\(fn)"
-  :commands rtog/activate )
+     (add-hook 'emacs-lisp-mode-hook       
+               (lambda () (turn-on-eldoc-mode) (paredit-mode +1)  (rtog/activate) )) ;;(litable-mode t)
 
-
-
-  (add-hook 'emacs-lisp-mode-hook       
-            (lambda () (turn-on-eldoc-mode) (paredit-mode +1)  (rtog/activate) )) ;;(litable-mode t)
-  
-  (add-hook 'lisp-mode-hook             (lambda () (turn-on-eldoc-mode) (paredit-mode +1) ))
-  (add-hook 'lisp-interaction-mode-hook (lambda () (turn-on-eldoc-mode) (paredit-mode +1) ))
-  (add-hook 'scheme-mode-hook           (lambda () (turn-on-eldoc-mode) (paredit-mode +1) )))
+     (add-hook 'lisp-mode-hook             (lambda () (turn-on-eldoc-mode) (paredit-mode +1) ))
+     (add-hook 'lisp-interaction-mode-hook (lambda () (turn-on-eldoc-mode) (paredit-mode +1) ))
+     (add-hook 'scheme-mode-hook           (lambda () (turn-on-eldoc-mode) (paredit-mode +1) )))
 
 
 #+END_SRC
@@ -138,7 +144,8 @@
 
   (use-package markdown-mode 
     ;;"Major mode for editing Markdown files"
-    :commands markdown-mode
+     :demand
+    ;; :commands markdown-mode
     )
 
 
@@ -156,7 +163,7 @@
 
 
 
-  (use-package yaml-mode)
+  (use-package yaml-mode :ensure)
 
 
   ;;(autoload 'dos-mode "dos" "Edit Dos scripts." t)
@@ -197,6 +204,7 @@
 ;; · C-c C-s : select current HTML element
 
   (use-package web-mode
+     :demand
     :config
     (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode)) 
     (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode)) 
@@ -212,6 +220,7 @@
     (setq web-mode-java-offset 2)
     )
   (use-package mmm-auto
+     :demand
     :config
     (setq mmm-global-mode 'maybe)
     (mmm-add-mode-ext-class 'html-mode nil 'html-js))
@@ -450,6 +459,7 @@
 
 
 (use-package geiser
+     :demand
   :config
   (defun geiser-autodoc--autodoc (path &optional signs)
     (ignore-errors 
@@ -469,6 +479,7 @@
 * tmux
 #+BEGIN_SRC emacs-lisp
 (use-package emamux
+     :demand
   :config
   (defun emamux:read-dwim (prompt )
     (let ((cmd (read-shell-command prompt 
@@ -504,7 +515,7 @@
 #+END_SRC
 
 * lentic 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package lentic-mode
     :config (global-lentic-mode)
     )
@@ -570,9 +581,7 @@
 * dot
 
   #+BEGIN_SRC emacs-lisp
-    (use-package graphviz-dot-mode
-      :config
-      )
+    (use-package graphviz-dot-mode :demand)
   #+END_SRC
 * which-function-mode
   #+BEGIN_SRC emacs-lisp
@@ -592,9 +601,14 @@
 * batfile mode 
   #+BEGIN_SRC emacs-lisp
   (use-package bmx-mode
+     :demand
   :config 
   (bmx-mode-setup-defaults))
   #+END_SRC
+
+  #+RESULTS:
+  : t
+
 * helm
   spacemacs helm layer 에 문제가 있음. helm 모드를 직접 사용함 
 
@@ -603,10 +617,10 @@
   #+END_SRC
 * beacon
   #+BEGIN_SRC emacs-lisp
-  (use-package beacon :config (beacon-mode))
+  (use-package beacon :ensure :config (beacon-mode))
   #+END_SRC
 * undo-tree
-  #+begin_src emacs-lisp
+  #+begin_src emacs-lisp :tangle no
 (use-package undo-tree
   :ensure t
   :init

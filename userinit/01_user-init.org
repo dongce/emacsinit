@@ -222,7 +222,7 @@
 ;;; http://www.reddit.com/r/emacs/comments/1huhsg/i_need_help_with_adding_keywords_for_syntax/
 ;; font lock 설정 
 (global-font-lock-mode 1)                     ; for all buffers
-
+(global-hl-line-mode -1)
   #+end_src
 
 * font

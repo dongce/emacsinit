@@ -19,6 +19,7 @@
   ;; git://github.com/capitaomorte/yasnippet.git
 
   (use-package yasnippet
+     :demand
     :config 
 
     (add-to-list 'yas-snippet-dirs (concat emacsw32-home "YASnippet"))

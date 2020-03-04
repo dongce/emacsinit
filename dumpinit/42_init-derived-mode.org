@@ -24,11 +24,16 @@ definitions can also be stored in files and used in batch mode."
 
 * ELF MODE 
 [[http://oremacs.com/2016/08/28/elf-mode/][elf-mode - view the symbol list in a binary · (or emacs]]
-#+BEGIN_SRC elf-mode
+
+#+BEGIN_SRC emacs-lisp
 (use-package elf-mode
- :commands elf-mode
+     :demand
+ ;; :commands elf-mode
 )
 #+END_SRC
+
+#+RESULTS:
+
 * TNNL FILE
 
 

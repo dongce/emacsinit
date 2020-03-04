@@ -126,6 +126,7 @@ Assumes that the frame is only split into two."
 ;; (with-package* (smart-mode-line) (sml-modeline-mode))
 
 (use-package diminish
+  :demand
   :config
   (diminish 'company-mode "Cmp")
   (diminish 'abbrev-mode "Ab")
@@ -200,9 +201,14 @@ Assumes that the frame is only split into two."
 ;;(add-hook 'c++-mode-hook        'pretty-symbols-mode)
 
 (use-package modern-cpp-font-lock
+  :demand
   :config
   (modern-c++-font-lock-global-mode t))
   #+END_SRC
+
+  #+RESULTS:
+  : t
+
 * font
 ** cycle font 
    #+BEGIN_SRC emacs-lisp

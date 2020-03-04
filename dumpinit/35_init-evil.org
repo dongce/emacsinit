@@ -223,7 +223,7 @@
               "ogu" 'gxref-update-db
               "[" 'ivy-push-view 
               "]" 'ivy-pop-view 
-              "ph" 'project-explorer-open-helm
+              "ph" 'project-explorer-helm
               "pH" 'project-explorer-open
               "px" 'project-explorer-close
               )
@@ -272,6 +272,7 @@
    #+BEGIN_SRC emacs-lisp :tangle no
      (if (eq window-system nil)
          (use-package powerline-evil
+     :demand
            :config
            (defpowerline powerline-lcl current-input-method-title)
 
@@ -330,7 +331,9 @@
                  (concat (powerline-render lhs)
                          (powerline-fill mode-line (powerline-width rhs))
                          (powerline-render rhs))))))))
-     (use-package evil-mode-line)
+     (use-package evil-mode-line
+     :demand
+     )
 
    #+END_SRC
 
@@ -493,19 +496,23 @@
 ** evil surround
    #+BEGIN_SRC emacs-lisp
   (use-package evil-surround
+     :demand
     :config
     (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
     (global-evil-surround-mode 1))
 
   (use-package evil-embrace
+     :demand
     :config
     (add-hook 'org-mode-hook 'embrace-org-mode-hook)
     (evil-embrace-enable-evil-surround-integration))
 
    #+END_SRC
 ** use other window
-   #+BEGIN_SRC emacs-lisp
+   suspend owdriver
+   #+BEGIN_SRC emacs-lisp :tangle no 
   (use-package owdriver
+     :demand
     :config
     (owdriver-define-command scroll-up               t)
     (owdriver-define-command scroll-down             t)
@@ -629,6 +636,7 @@
    #+BEGIN_SRC emacs-lisp
 ;;; Auto-complete
 (use-package auto-complete
+     :demand
   :config
   (evil-add-command-properties 'ac-complete :repeat 'evil-ac-repeat)
   (evil-add-command-properties 'ac-expand :repeat 'evil-ac-repeat)
@@ -665,6 +673,7 @@
    #+BEGIN_SRC emacs-lisp
      ;; https://github.com/redguardtoo/evil-matchit/blob/master/README.org
      (use-package evil-matchit
+     :demand
        :config
        (global-evil-matchit-mode 1 )
        (plist-put evilmi-plugins 'xah-html-mode '((evilmi-html-get-tag evilmi-html-jump)))
@@ -672,6 +681,7 @@
 
 
      (use-package evil-args
+     :demand
        :config
        ;; bind evil-args text objects
        (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
@@ -696,11 +706,13 @@
      (define-key evil-normal-state-map (kbd "<S-backspace>") 'split-line-indent)
 
      (use-package evil-extra-operator
+     :demand
        :config
        (global-evil-extra-operator-mode 1))
 
 
      (use-package evil-visualstar
+     :demand
        :config
        (global-evil-visualstar-mode t))
 
@@ -777,6 +789,7 @@
 
 
   (use-package wgrep
+     :demand
     :config
 
     (w32-unix-eval
@@ -888,6 +901,7 @@
    ;; check when there are spaces before parens
    ;; When the cursor is on an open paren, go up one level on an open paren
    (use-package paredit ;  (smartparens)
+     :demand
      :config
      (evil-define-motion evil-exit-sexp (count)
        :type inclusive
@@ -1005,6 +1019,7 @@
          )
 
        (use-package org
+         :demand
          :config
          (evil-define-key 'normal evil-org-mode-map
            "=" 'org-show-current-heading-tidily
@@ -1074,6 +1089,7 @@
 
 
     (use-package org
+     :demand
       :config
       (evil-define-key 'normal evil-org-mode-map
         (kbd "RET") 'org-open-at-point
@@ -1231,6 +1247,7 @@
 **** deprecated
      #+BEGIN_SRC emacs-lisp :tangle no
        (use-package evil-mu4e
+         :demand
          :config
          (mapcar 
           (lambda (x)
@@ -1283,6 +1300,7 @@
 **** brand new
      #+BEGIN_SRC emacs-lisp 
        (use-package evil-mu4e
+         :demand
          :config
          (append-to-list
           'evil-mu4e-mode-map-bindings
@@ -1450,6 +1468,7 @@
 
     #+BEGIN_SRC emacs-lisp
 (use-package key-combo
+     :demand
   :config
   ;;   (global-key-combo-mode t)
   ;;   (key-combo-define evil-insert-state-map (kbd "=") '(" = " " == " "=" " === "))
@@ -1507,6 +1526,7 @@
 ;;   (add-hook 'org-mode-hook 'guide-key-hook-function-for-org-mode))
 
 (use-package which-key
+     :demand
   :config
   (which-key-mode)
   ( which-key-setup-side-window-right)
@@ -1537,6 +1557,7 @@
 
 
 (use-package git-timemachine
+     :demand
   :config
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
   ;; force update evil keymaps after git-timemachine-mode loaded
@@ -1545,6 +1566,7 @@
 
 
 (use-package evil-magit 
+     :demand
   :commands
   (magit-status))
 
@@ -1553,6 +1575,7 @@
 *** mathinput
     #+BEGIN_SRC emacs-lisp :tangle on
       (use-package xah-math-input-mode
+     :demand
         :config
         (evil-declare-key 'normal xah-math-input-keymap [f9] 'xah-math-input-change-to-symbol)
         (evil-declare-key 'insert xah-math-input-keymap [f9] 'xah-math-input-change-to-symbol)
@@ -1582,6 +1605,7 @@
 ** bind map
    #+BEGIN_SRC emacs-lisp
 (use-package evil-lisp-state
+     :demand
   :init
   (let ((leader ","))
     (bind-map evil-lisp-state-map
@@ -1632,6 +1656,7 @@
 
 
   (use-package bind-map
+     :demand
     :config
     (bind-map-set-keys helm-ag-map
       (kbd "<f2>") 'helm-ag-edit
@@ -1679,7 +1704,7 @@
 [[https://github.com/edkolev/evil-lion][GitHub - edkolev/evil-lion: Evil align operator]]
 #+BEGIN_SRC emacs-lisp
 (use-package evil-lion
-  :ensure t
+  :demand
   :config
   (evil-lion-mode))
 #+END_SRC
@@ -1689,6 +1714,7 @@
 * switch-window
   #+BEGIN_SRC emacs-lisp
   (use-package switch-window
+     :demand
   :init
   (setq switch-window-shortcut-style 'qwerty)
   (setq switch-window-querty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "i" "o"))

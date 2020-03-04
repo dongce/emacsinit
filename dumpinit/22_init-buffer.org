@@ -23,8 +23,8 @@
    ;;deprecated;;(open-sln "c:/ffx/CFCS/SIGCONV/proj/winproj/winproj.sln")
    ;;(global-set-key (kbd "<C-tab>") 'iflipb-next-buffer)
    ;;(require 'iflipb)
-   ;;;;(global-set-key (kbd "M-n") 'iflipb-next-buffer)
-   ;;;;(global-set-key (kbd "M-N") 'iflipb-previous-buffer)
+      ;;;;(global-set-key (kbd "M-n") 'iflipb-next-buffer)
+      ;;;;(global-set-key (kbd "M-N") 'iflipb-previous-buffer)
    ;;deprecated;;(require 'cycle-buffer)
    ;;deprecated;;(global-set-key (kbd "<C-tab>") 'cycle-buffer)
    ;;(require 'swbuff)
@@ -87,8 +87,14 @@
    ;; (global-set-key [(control ?\')]     'recentf-open-most-recent-file)
    ;; (global-set-key [(control ?\")]     'recentf-open-files)
 
-   (use-package recentf-ext)
-   (use-package open-junk-file)
+   (use-package recentf-ext
+     :demand
+
+     )
+
+   (use-package open-junk-file
+     :demand
+     )
 
    ;; (define-key dired-mode-map "V" 
    ;;   (aif (mapcar (lambda (x) (find-file-other-frame x )) (dired-get-marked-files))))
@@ -126,7 +132,7 @@
 
    (defun next-user-buffer ()
      "Switch to the next user buffer.
-   User buffers are those whose name does not start with *."
+      User buffers are those whose name does not start with *."
      (interactive)
      (next-buffer)
      (let ((i 0))
@@ -135,7 +141,7 @@
 
    (defun previous-user-buffer ()
      "Switch to the previous user buffer.
-   User buffers are those whose name does not start with *."
+      User buffers are those whose name does not start with *."
      (interactive)
      (previous-buffer)
      (let ((i 0))
@@ -144,7 +150,7 @@
 
    (defun next-emacs-buffer ()
      "Switch to the next emacs buffer.
-   Emacs buffers are those whose name starts with *."
+      Emacs buffers are those whose name starts with *."
      (interactive)
      (next-buffer)
      (let ((i 0))
@@ -153,7 +159,7 @@
 
    (defun previous-emacs-buffer ()
      "Switch to the previous emacs buffer.
-   Emacs buffers are those whose name starts with *."
+      Emacs buffers are those whose name starts with *."
      (interactive)
      (previous-buffer)
      (let ((i 0))
@@ -162,7 +168,7 @@
 
    (require 'buffer-utils)
 
-   ;;; most-positive-fixnum
+      ;;; most-positive-fixnum
    ;; (require 'vlf)
 
 
@@ -252,8 +258,11 @@
 
 * project
 #+BEGIN_SRC emacs-lisp
-  (use-package fuzzy)
+  (use-package fuzzy
+    :demand
+    )
   (use-package project-buffer-mode
+    :demand
     :config
     (require 'project-buffer-mode+)
     (project-buffer-mode-p-setup)
@@ -339,7 +348,7 @@
     (defun projectile-serialize (data filename)
       "Serialize DATA to FILENAME.
 
-  The saved data can be restored with `projectile-unserialize'."
+    The saved data can be restored with `projectile-unserialize'."
       (when (file-writable-p filename)
         (with-temp-file filename
           (set-buffer-file-coding-system 'utf-8) ;계속 물어봐서 고정하였음. 
@@ -357,11 +366,13 @@
   ;; check following
 
   (use-package projectile
+    :demand
     :config
     ;;conflict-pscp-tramp;; (projectile-global-mode)
     (setq projectile-enable-caching t))
 
   (use-package project-explorer
+    :demand
     :config
     (defun project-explorer-close ()
       (interactive)
@@ -375,6 +386,7 @@
           (kill-buffer  "*project-explorer*")))))
 
   (use-package  grep 
+    :demand
     :config
     (defun projectile-grep ()
       "Perform rgrep in the project."
@@ -435,11 +447,14 @@
   ;;(add-to-list 'minor-mode-alist '(case-fold-search " CFS"))
 
   ;; (require 'xmsi-math-symbols-input)
-  (use-package xah-math-input)
-  ;;; 관련 변수 확인 
-  ;;; major-mode       -> buffer local 
-  ;;; minor-mode-list  -> buffer local 
-  ;;; minor-mode-alist -> global  
+  (use-package xah-math-input
+    :demand
+
+    )
+    ;;; 관련 변수 확인 
+    ;;; major-mode       -> buffer local 
+    ;;; minor-mode-list  -> buffer local 
+    ;;; minor-mode-alist -> global  
   ;;(add-hook 'prog-mode-hook 'fic-mode)
   (add-hook 'prog-mode-hook 'yafolding-mode)
   (add-hook 'prog-mode-hook '(lambda () (setf display-line-numbers t)))
@@ -475,7 +490,7 @@
   ;;conflict-tramp;;   (define-key term-raw-map "\C-c\C-y" 'term-paste)
   ;;conflict-tramp;;   (setq term-prompt-regexp "^->")))
 
-  ;;; https://github.com/leoliu/easy-kill
+    ;;; https://github.com/leoliu/easy-kill
 
   ;; w -> word at point
   ;; s -> sexp at point
@@ -576,7 +591,7 @@
 * perspeen
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package perspeen
-    :ensure t
+    :demand 
     :init
     (setq perspeen-use-tab t)
     :config

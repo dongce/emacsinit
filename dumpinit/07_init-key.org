@@ -433,6 +433,7 @@
 #+BEGIN_SRC emacs-lisp :tangle no
 
    (use-package win-switch
+     :demand
      :config 
      (defun win-switch-setup-keys-hjkl (&rest dispatch-keys)
        "Restore default key commands and bind global dispatch keys.
@@ -587,10 +588,12 @@
 #+BEGIN_SRC emacs-lisp
 
    (use-package helm-descbinds
+     :demand
      :config
      (helm-descbinds-mode))
 
    (use-package proced
+     :demand
      :config
     (defun proced-gdb ()
       (interactive)
@@ -602,6 +605,7 @@
 
 
    (use-package gdb-mi
+     :demand
      :config
      (defun gud-key ()
        (interactive)
@@ -672,6 +676,10 @@
                    (t
                     (comint-interrupt-subjob)))))))
 #+END_SRC
+
+#+RESULTS:
+: t
+
 ** xah isearch
 #+BEGIN_SRC emacs-lisp
    ;; http://ergoemacs.org/emacs/emacs_isearch_by_arrow_keys.html

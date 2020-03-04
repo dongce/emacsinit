@@ -49,6 +49,7 @@
        (if found dirname nil)))
 
    (use-package dired
+     :demand
      :config
      (define-key dired-mode-map ":c" 'clip-file)
      (define-key dired-mode-map ":p" 'clip-paste)
@@ -190,9 +191,13 @@
 ** helm-dired-history                                           :deprecated:
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package helm-dired-history
+     :demand
     :config
     (add-to-list 'savehist-additional-variables 'helm-dired-history-variable))
 #+END_SRC
+
+#+RESULTS:
+: t
 
 * WINDOW dired
 #+BEGIN_SRC emacs-lisp
@@ -654,6 +659,7 @@ open and unsaved."
 * diredp buffer setting
 #+BEGIN_SRC emacs-lisp :tangle on 
     (use-package dired+
+     :demand
       :config
       (toggle-diredp-find-file-reuse-dir 1)
       ;;(define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file) ; was dired-advertised-find-file
@@ -690,7 +696,8 @@ open and unsaved."
 #+BEGIN_SRC emacs-lisp
 
   (use-package thumbs
-    :commands thumbs  ;;"Preview images in a directory." t
+    ;;:commands thumbs  ;;"Preview images in a directory." t
+     :demand
     :config
     (add-hook 'image-mode-hook 'eimp-mode))
 #+END_SRC
@@ -777,6 +784,7 @@ open and unsaved."
  #+BEGIN_SRC emacs-lisp 
 
    (use-package ivy
+     :demand
      :config
      (defun counsel-recentf-directory ()
        "Find a file on `recentf-list'."
@@ -816,6 +824,7 @@ open and unsaved."
 
 #+BEGIN_SRC emacs-lisp 
   (use-package dired-x
+     :demand
     :config
     (progn
       (setq dired-omit-verbose nil)
@@ -837,6 +846,7 @@ open and unsaved."
 * sorting
   #+BEGIN_SRC emacs-lisp
     (use-package dired-quick-sort
+     :demand
       :config
       (dired-quick-sort-setup)) 
   #+END_SRC
@@ -846,7 +856,7 @@ open and unsaved."
 * dired+
   
 #+begin_src emacs-lisp
-(use-package dired+)
+(use-package dired+ :demand)
 #+end_src
 
 #+RESULTS:

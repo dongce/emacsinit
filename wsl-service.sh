@@ -12,7 +12,7 @@ tmux send -t  powershell "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powersh
 ##
 ##tmux send -t  powershell "(New-Object -ComObject WScript.Network).MapNetworkDrive(\"Y:\", \"\\\\10.239.12.100\\confidential\" , False, \"di7979.kim\", \"godid2013!@#\")" ENTER
 
-tmux send -t  powershell "net use * /del"                                                        ENTER
+##tmux send -t  powershell "net use * /del"                                                        ENTER
 tmux send -t  powershell "net use \\\\10.239.23.100\\confidential /USER:di7979.kim godid2013!@#" ENTER
 tmux send -t  powershell "net use y: \\\\10.239.23.100\\confidential"                            ENTER
 

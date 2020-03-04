@@ -241,6 +241,7 @@ Test cases
     (insert "\n"))
 
   (use-package xah-get-thing
+    :demand
     :commands xah-get-thing-or-selection)
 
   (defun sort-lines-length (reverse beg end)
@@ -303,7 +304,7 @@ Test cases
       (setq inputText (elt bds 0) )
       (setq p1 (elt bds 1) )
       (setq p2 (elt bds 2) )
-    
+
       (setq outputText (format "<%s%s%s>%s</%s>" tagName idStr classStr inputText tagName ) )
 
       (delete-region p1 p2)
@@ -485,7 +486,7 @@ Test cases
       (setq mainText (replace-regexp-in-string changeFrom changeTo (buffer-substring-no-properties p1 p2)) )
       (delete-region p1 p2)
       (insert mainText)
-    
+
       (put 'cycle-hyphen-underscore-space 'state nextState)
 
       (when startedWithRegion-p 
@@ -2036,12 +2037,16 @@ This works on the current region."
 ** dpaste
 #+BEGIN_SRC emacs-lisp
  (use-package dpaste_de
+  :demand
   :config
  (defun vdpaste (name)
    (interactive "Spaste 이름을 입력해 주세요 :")  ; ask for the name of the macro
    (eww (format "http://10.239.12.181:8000/dpaste/%s/raw" name))))
 
 #+END_SRC
+
+#+RESULTS:
+: t
 
 ** modern paste
 #+BEGIN_SRC emacs-lisp

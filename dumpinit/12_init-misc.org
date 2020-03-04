@@ -367,10 +367,11 @@ basicstyle=\\footnotesize\\ttfamily,
   #+END_SRC
 * external
   #+BEGIN_SRC emacs-lisp
-(use-package calc-ext)
+;; (use-package :ensure calc-ext)
 (use-package sqlite
+     :demand
   :config
-  (setq  sqlite-program "t:/usr/local/sqlite/sqlite3.exe"))
+  (setq  sqlite-program "sqlite3"))
 
 
 ;;; http://www.mikusa.com/python-mysql-docs/index.html
@@ -796,14 +797,16 @@ is run).
   #+BEGIN_SRC emacs-lisp
 
     (use-package simple-secrets
-      :commands secret-lookup-clipboard secret-new
+      :demand
+      ;; :commands secret-lookup-clipboard secret-new
       :init 
-      (setq secret-password-file (fullpath "secrets.gpg"))
+      (setq secret-password-file "/mnt/u/orgdir/secrets.gpg")
       :config
       (secret-load-keys))
   #+END_SRC
 
   #+RESULTS:
+  : t
 
 * SCM
   #+BEGIN_SRC emacs-lisp
@@ -829,7 +832,7 @@ is run).
 ;;(global-set-key (kbd "C-.") 'svn-commit-dir)
 
 
-(use-package psvn )
+;; (use-package psvn )
 ;;(load-library "dsvn" )                  ;; subversion 1.7 이상 
 ;;(setq svn-call-process-function 'call-process )
 ;;(setq svn-start-process-function 'start-process )
@@ -966,6 +969,7 @@ The value of DEFAULT is inserted into PROMPT."
 
 
 (use-package git-timemachine
+     :demand
   :config
   (defun my-git-timemachine-show-selected-revision ()
     "Show last (current) revision of file."
@@ -993,10 +997,8 @@ The value of DEFAULT is inserted into PROMPT."
 
 
 ;; compile 확장 버젼
-(use-package compile-
-  :commands (compile))
-(use-package compile)
-;;(require 'compile+)
+(use-package compile- :demand )
+(use-package compile :demand )
 
 ;; 특정파일만 컴파일 할 수 있습니다. 
 (defun compile-file (option-file)
@@ -1246,8 +1248,8 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
 
       (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_LINK11"))
       (grep (if case-senstive 
-  	      (format "%s \"%s\" *" grep-command word )
-  	    (format "%s --smart-case   \"%s\" *" grep-command word ))))
+                (format "%s \"%s\" *" grep-command word )
+              (format "%s --smart-case   \"%s\" *" grep-command word ))))
 
     (defun isdl-grep (word &optional case-senstive )
       "현제커서 위치의 단어를 검색한다."
@@ -1256,8 +1258,8 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
 
       (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_ISDL"))
       (grep (if case-senstive 
-  	      (format "%s \"%s\" *" grep-command word )
-  	    (format "%s  \"%s\" *" grep-command word ))))
+                (format "%s \"%s\" *" grep-command word )
+              (format "%s  \"%s\" *" grep-command word ))))
 
     (defun dlp-grep (word &optional case-senstive )
       "현제커서 위치의 단어를 검색한다."
@@ -1265,8 +1267,8 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
        (list (read-string "찾을 단어: " (current-word)) current-prefix-arg ))
       (if (not (eq nil (string-match "isdl" (buffer-file-name))))
           (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_ISDL"))
-          (if (not (eq nil (string-match "link11" (buffer-file-name))))
-              (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_LINK11"))))
+        (if (not (eq nil (string-match "link11" (buffer-file-name))))
+            (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_LINK11"))))
       (grep (if case-senstive (format " \"%s\" *" grep-command word ) (format "%s  \"%s\" *" grep-command word ))))
 
     (defun grep-dired-marked (word)
@@ -1280,7 +1282,7 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
         ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
         (grep (format "%s \"%s\" %s" grep-command word
                       (s-join " "  (mapcar (lambda (x) (format "\"%s\" " x)) files))))))
-  
+
 
     (global-set-key "\C-cu" 'dlp-grep)
 
@@ -1292,7 +1294,7 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
       "현제커서 위치의 단어를 검색한다."
       (interactive
        (list (read-string "grep 찾을 단어: " (current-word)) current-prefix-arg ))
-  
+
       (let ((directory-name-backup default-directory))
 
         (if case-senstive 
@@ -1300,31 +1302,31 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
                   (mapconcat (lambda (x) x ) (reverse (cdr (nthcdr case-senstive (reverse (split-string default-directory "/"))))) "/")))
         (grep (format "%s  -E \"%s\" " grep-command word ))
         (setq default-directory directory-name-backup)))
-  
+
 
 
     (defun woccur (word &optional nlines )
       "현제커서 위치의 단어를 OCCUR한다."
       (interactive
        (list (read-string "occur 찾을 단어: " (current-word)) 
-  	   (prefix-numeric-value current-prefix-arg) ))
+             (prefix-numeric-value current-prefix-arg) ))
       (occur word nlines ))
 
     (defun occur-region( beg end &optional lines )
-     "Check occurence of string which is selected by markejr."
-     (interactive "r\nP")
-     (occur (buffer-substring-no-properties beg end) lines ))
+      "Check occurence of string which is selected by markejr."
+      (interactive "r\nP")
+      (occur (buffer-substring-no-properties beg end) lines ))
     (defun occur-compile-region( beg end &optional lines )
-     "Check occurence of string which is selected by marker."
-     (interactive "r\nP")
-     (occur-compile (buffer-substring-no-properties beg end) lines ))
+      "Check occurence of string which is selected by marker."
+      (interactive "r\nP")
+      (occur-compile (buffer-substring-no-properties beg end) lines ))
 
 
     (defun occur-xml ( regexp &optional nlines)
       "Show all lines matching REGEXP in buffers specified by BUFREGEXP.
-    Normally BUFREGEXP matches against each buffer's visited file name,
-    but if you specify a prefix argument, it matches against the buffer name.
-    See also `multi-occur'."
+        Normally BUFREGEXP matches against each buffer's visited file name,
+        but if you specify a prefix argument, it matches against the buffer name.
+        See also `multi-occur'."
       (interactive (occur-read-primary-args))
       (occur-1 regexp nlines
                (delq nil (mapcar 
@@ -1410,10 +1412,10 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
     ;;ISEARCH HOOK;;			      isearch-mode-map)))
 
 
-    ;;; GNU GLOBAL incremental update It’s possible to use GNU GLOBAL
-    ;;; incremental update feature in after-save-hook in order to keep
-    ;;; synchronized the changes you made in source code and gtags
-    ;;; databasc:
+        ;;; GNU GLOBAL incremental update It’s possible to use GNU GLOBAL
+        ;;; incremental update feature in after-save-hook in order to keep
+        ;;; synchronized the changes you made in source code and gtags
+        ;;; databasc:
 
     (append-path (fullpath "../../global/bin/"))
     (append-path (fullpath "../../cscope-15.8a/"))
@@ -1451,29 +1453,30 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
 
     (helm-flx-mode +1)
 
-    (use-package smartscan
-      :defer t
-      :config (global-smartscan-mode t)
-      (unbind-key "M-n" smartscan-map)
-      (unbind-key "M-p" smartscan-map)
-      )
+    ;;donouse;;(use-package smartscan
+    ;;donouse;;  :ensure 
+    ;;donouse;;  :config 
+    ;;donouse;;  (global-smartscan-mode t)
+    ;;donouse;;  (unbind-key "M-n" smartscan-map)
+    ;;donouse;;  (unbind-key "M-p" smartscan-map)
+    ;;donouse;;  )
 
 
 
     ;; Uncomment the below line to use eww (Emacs Web Wowser)
     ;; (setq xah-lookup-browser-function 'eww)
 
-   ;;(req-package xah-lookup
-   ;;  :force t
-   ;;  :config 
-   ;;  (defun xah-lookup-cppreference (&optional word)
-   ;;    "Lookup definition of current word or text selection in URL."
-   ;;    (interactive)
-   ;;    (xah-lookup-word-on-internet
-   ;;     word
-   ;;     ;; Use � as a placeholder in the query URL.
-   ;;     "http://en.cppreference.com/mwiki/index.php?search=�"
-   ;;     xah-lookup-browser-function)))
+    ;;(req-package xah-lookup
+    ;;  :force t
+    ;;  :config 
+    ;;  (defun xah-lookup-cppreference (&optional word)
+    ;;    "Lookup definition of current word or text selection in URL."
+    ;;    (interactive)
+    ;;    (xah-lookup-word-on-internet
+    ;;     word
+    ;;     ;; Use � as a placeholder in the query URL.
+    ;;     "http://en.cppreference.com/mwiki/index.php?search=�"
+    ;;     xah-lookup-browser-function)))
   #+END_SRC
 
   #+RESULTS:
@@ -2246,31 +2249,36 @@ to the symbol at point."
 ** move , selection, hide
 
    #+BEGIN_SRC emacs-lisp
-  (defun backward-symbol (arg)
-    (interactive "p")
-    (forward-symbol (* -1 arg )))
+     (defun backward-symbol (arg)
+       (interactive "p")
+       (forward-symbol (* -1 arg )))
 
-  (defun toggle-line-move-visual ()
-    "Toggle behavior of up/down arrow key, by visual line vs logical line."
-    (interactive)
-    (if line-move-visual
-        (setq line-move-visual nil)
-      (setq line-move-visual t))
-    )
+     (defun toggle-line-move-visual ()
+       "Toggle behavior of up/down arrow key, by visual line vs logical line."
+       (interactive)
+       (if line-move-visual
+           (setq line-move-visual nil)
+         (setq line-move-visual t))
+       )
 
-  (use-package expand-region)
+     (use-package expand-region :ensure)
 
-  (use-package mwim
-    :config
-    (global-set-key (kbd "<home>") 'mwim-beginning-of-code-or-line)
-    (global-set-key (kbd "<end>")  'mwim-end-of-code-or-line))
+     (use-package mwim
+       :demand
+       :config
+       (global-set-key (kbd "<home>") 'mwim-beginning-of-code-or-line)
+       (global-set-key (kbd "<end>")  'mwim-end-of-code-or-line))
 
-  (use-package delsel
-    :config
-    (delete-selection-mode 1))
+     (use-package delsel
+       :demand
+       :config
+       (delete-selection-mode 1))
 
-  (use-package hide-region+
-    :commands hide-region-hide hide-region-unhide)
+
+     (use-package hide-region+
+       :demand
+       ;; :commands hide-region-hide hide-region-unhide
+       )
 
    #+END_SRC
 
@@ -2279,6 +2287,7 @@ to the symbol at point."
    #+BEGIN_SRC emacs-lisp :tangle no
 ;;; _ AUTO COMPLETE 
 (use-package auto-complete
+     :demand
 :config
 (define-key ac-completing-map (kbd "C-j") 'ac-next)
 (define-key ac-completing-map (kbd "C-p") 'ac-previous)
@@ -2327,6 +2336,7 @@ to the symbol at point."
 
    #+BEGIN_SRC emacs-lisp :tangle no
   (use-package mark-more-like-this
+     :demand
     :config
     (global-set-key (kbd "C-<") 'mark-previous-like-this)
     (global-set-key (kbd "C->") 'mark-next-like-this)
@@ -3156,41 +3166,50 @@ When called from Lisp code, ARG may be a prefix string to copy."
   #+END_SRC
 
 * web
-  #+BEGIN_SRC emacs-lisp
+** intranet
+   #+BEGIN_SRC emacs-lisp
 
-;; https://github.com/skeeto/skewer-mode
-
-
-(use-package httprepl)
-(use-package skewer-mode
-  :config
-  ( skewer-setup ))
+ ;; https://github.com/skeeto/skewer-mode
 
 
-(defun httpget (url)
-  (interactive "sURL: ")
-  (let ((url-request-method "GET")
-        ;;(arg-stuff (concat "?query=" (url-hexify-string str)
-        ;;                   "&filter=" (url-hexify-string type)))
-        )
-    (url-retrieve url (lambda (status) (switch-to-buffer (current-buffer))))))
+ (use-package httprepl
+      :demand
+ )
+ (use-package skewer-mode
+      :demand
+   :config
+   ( skewer-setup ))
 
 
-
-(use-package  google-contacts :commands google-contacts)
-
-
-;; http://pragmaticemacs.com/emacs/weather-in-emacs/
-(use-package wttrin
-  :ensure t
-  :commands wttrin
-  :init
-  (setq wttrin-default-cities '("gumi-si" "Daegu")))
+ (defun httpget (url)
+   (interactive "sURL: ")
+   (let ((url-request-method "GET")
+         ;;(arg-stuff (concat "?query=" (url-hexify-string str)
+         ;;                   "&filter=" (url-hexify-string type)))
+         )
+     (url-retrieve url (lambda (status) (switch-to-buffer (current-buffer))))))
 
 
 
 
-  #+END_SRC
+
+
+   #+END_SRC
+** internet
+ #+begin_src emacs-lisp :tangle no 
+ (use-package  google-contacts 
+ :demand
+ :commands google-contacts)
+
+ ;; http://pragmaticemacs.com/emacs/weather-in-emacs/
+ (use-package wttrin
+   :demand
+   :commands wttrin
+   :init
+   (setq wttrin-default-cities '("gumi-si" "Daegu")))
+ #+end_src
+
+
 * jump
 
 ** bookmark
@@ -3371,56 +3390,57 @@ When called from Lisp code, ARG may be a prefix string to copy."
   #+BEGIN_SRC emacs-lisp
 
 
-  ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Building-Emacs.html#Building-Emacs
-  (if (> 10 (length build-files))
-      (progn
-        (require 'f)
-        (require 's)
-        (setf build-files (mapcar (lambda (x) (f-filename x)) (s-split " " (car  build-files) )))))
+    ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Building-Emacs.html#Building-Emacs
+    (if (> 10 (length build-files))
+        (progn
+          (require 'f)
+          (require 's)
+          (setf build-files (mapcar (lambda (x) (f-filename x)) (s-split " " (car  build-files) )))))
 
 
 
-  (require 'info+)
-  (require 'info-look)
+    (require 'info+)
+    (require 'info-look)
 
-  (info-lookup-add-help
-   :mode 'python-mode
-   :regexp "[[:alnum:]_]+"
-   :doc-spec
-   '(("(python)Index" nil "")))
+    (info-lookup-add-help
+     :mode 'python-mode
+     :regexp "[[:alnum:]_]+"
+     :doc-spec
+     '(("(python)Index" nil "")))
 
-  (global-set-key "\C-h\t" 'info-lookup-symbol)
+    (global-set-key "\C-h\t" 'info-lookup-symbol)
 
-  ;;(global-set-key (kbd "<kp-home> <kp-0>") (lambda () (interactive) (find-file "~/git/xah_emacs_init/xah_emacs_keybinding.el")))
-  ;;(global-set-key (kbd "<kp-home> <kp-1>") (lambda () (interactive) (find-file "~/web/xahlee_info/js/blog.html")))
-  ;;(global-set-key (kbd "<kp-home> <kp-2>") (lambda () (interactive) (find-file "~/web/xahlee_info/comp/blog.html")))
-  ;;(global-set-key (kbd "<kp-home> <kp-3>") (lambda () (interactive) (find-file "~/web/ergoemacs_org/emacs/blog.html")))
-  ;;(global-set-key (kbd "<kp-home> <kp-4>") (lambda () (interactive) (find-file "~/web/xahlee_info/math/blog.html")))
-
-
-  (setq common-lisp-hyperspec-root
-        "filc:U:/usr/local/clisp-2.37/hyperspec/HyperSpec/" )
-
-  (use-package irfc
-    :init
-    (setq irfc-directory (fullpath "../rfcdoc")) 
-    (setq irfc-assoc-mode t)
-    :config
-    (defun rfcsearch () 
-      (interactive)
-      (browse-url "http://www.ietf.org/rfc.html"))
-
-    (defun rfcindex ()
-      (interactive)
-      (let ((url-request-method "GET")
-            ;; (arg-stuff (concat "?query=" (url-hexify-string str) "&filter=" (url-hexify-string type)))
-            )
-        (url-retrieve  "http://www.ietf.org/download/rfc-index.txt" (lambda (status) (switch-to-buffer (current-buffer))))))
-    )
+    ;;(global-set-key (kbd "<kp-home> <kp-0>") (lambda () (interactive) (find-file "~/git/xah_emacs_init/xah_emacs_keybinding.el")))
+    ;;(global-set-key (kbd "<kp-home> <kp-1>") (lambda () (interactive) (find-file "~/web/xahlee_info/js/blog.html")))
+    ;;(global-set-key (kbd "<kp-home> <kp-2>") (lambda () (interactive) (find-file "~/web/xahlee_info/comp/blog.html")))
+    ;;(global-set-key (kbd "<kp-home> <kp-3>") (lambda () (interactive) (find-file "~/web/ergoemacs_org/emacs/blog.html")))
+    ;;(global-set-key (kbd "<kp-home> <kp-4>") (lambda () (interactive) (find-file "~/web/xahlee_info/math/blog.html")))
 
 
-  ;; know-your-http-well package 
-  ;; https://github.com/for-GET/know-your-http-well
+    (setq common-lisp-hyperspec-root
+          "filc:U:/usr/local/clisp-2.37/hyperspec/HyperSpec/" )
+
+    (use-package irfc
+      :demand
+      :init
+      (setq irfc-directory (fullpath "../rfcdoc")) 
+      (setq irfc-assoc-mode t)
+      :config
+      (defun rfcsearch () 
+        (interactive)
+        (browse-url "http://www.ietf.org/rfc.html"))
+
+      (defun rfcindex ()
+        (interactive)
+        (let ((url-request-method "GET")
+              ;; (arg-stuff (concat "?query=" (url-hexify-string str) "&filter=" (url-hexify-string type)))
+              )
+          (url-retrieve  "http://www.ietf.org/download/rfc-index.txt" (lambda (status) (switch-to-buffer (current-buffer))))))
+      )
+
+
+    ;; know-your-http-well package 
+    ;; https://github.com/for-GET/know-your-http-well
   #+END_SRC
 
 ** CANCELED WINDOW PATH
@@ -3990,21 +4010,22 @@ _l_: load
 * SDCV dictionary
 
   #+begin_src emacs-lisp
-        (use-package sdcv
-          :init
-          (setq sdcv-dictionary-simple-list        ;; a simple dictionary list
-                '(
-                  "quick_english-korean"
-                  ))
-          (setq sdcv-dictionary-complete-list      ;; a complete dictionary list
-                '(
-                  "Concise Oxford English Dictionary (En-En)"
-                  "Concise Oxford Thesaurus 2nd Ed. (Eng-Eng)"
-                  "Korean Medical Dic"
-                  "quick_english-korean"
-                  ))
+    (use-package sdcv
+      :ensure
+      :init
+      (setq sdcv-dictionary-simple-list        ;; a simple dictionary list
+            '(
+              "quick_english-korean"
+              ))
+      (setq sdcv-dictionary-complete-list      ;; a complete dictionary list
+            '(
+              "Concise Oxford English Dictionary (En-En)"
+              "Concise Oxford Thesaurus 2nd Ed. (Eng-Eng)"
+              "Korean Medical Dic"
+              "quick_english-korean"
+              ))
 
-          )
+      )
 
     ;; 패키지 내부에 있는 함수 변경 
     (defun sdcv-pronounce-word (&optional word)

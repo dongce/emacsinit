@@ -21,6 +21,7 @@
      (setf mu4e-maildir (s-concat "/mnt/f/PERSONAL/" (datetime-format "%Y/%m/%d")))
 
      (use-package mu4e
+     :demand
        :init
        (cond (t
               (add-to-list 'load-path (concat emacsw32-home "local/share/emacs/site-lisp/mu4e"))
@@ -424,6 +425,7 @@
 
 
      (use-package helm-mu
+     :demand
        :config 
        (defvar mucontacts-source
          (helm-build-in-buffer-source "mu를 이용하여 메일주소를 검색합니다."
@@ -618,6 +620,7 @@
 * filter 
   #+BEGIN_SRC emacs-lisp
   (use-package mu4e-query-fragments
+     :demand
     :config  
     (setq mu4e-query-fragments-list
       '(("%pkx" . "subject:*PKX* or *PKG")
