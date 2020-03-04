@@ -18,11 +18,11 @@
       :commands paredit-mode 
      )
 
-   (use-package evil-paredit
-     ;;"Minor mode for pseudo-structurally editing Lisp code."
-      :demand
-     ;; :commands evil-paredit-mode 
-     )
+   ;;(use-package evil-paredit
+   ;;  ;;"Minor mode for pseudo-structurally editing Lisp code."
+   ;;   :demand
+   ;;  ;; :commands evil-paredit-mode 
+   ;;  )
 
    ;; (with-package (smartparen )
    ;;   (sp-pair "`" nil :actions :rem)
