@@ -1128,7 +1128,7 @@ Note: the project list is sorted in descending alphabetic order."
     (interactive)
     (copy-region-as-kill (point-min) (point-max)))
 
-  (global-set-key [C-f5] 'FM-copy-whole-buffer )
+  (global-set-key [C-f6] 'FM-copy-whole-buffer )
 
   ;;
   ;; Run a shell command on a region, and paste the results of the command
@@ -3818,13 +3818,22 @@ of FILE in the current directory, suitable for creation"
 ** powershell
   
    #+begin_src emacs-lisp
-   (setf powershell.exe "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
+      (setf powershell.exe "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe")
 
-  (defun* powershell (&rest args)
-    (emamux:tmux-run-command nil "send-keys" "-t" "powershell" (s-join " " args) "C-m"))
+     (defun* powershell (&rest args)
+       (emamux:tmux-run-command nil "send-keys" "-t" "powershell" (s-join " " args) "C-m"))
 
 
-   ;;(call-process powershell.exe nil t nil "get-process" "v3*,pa*")
+     (defun* powershell-repeat ( args)
+       (interactive "p")
+       (if (= 0 args) (setf args 1))
+       (dotimes (x args)
+         (emamux:tmux-run-command nil "send-keys" "-t" "powershell" "UP" "ENTER")
+         (sleep-for 1)))
+
+  (global-set-key [C-f5] 'powershell-repeat )
+
+      ;;(call-process powershell.exe nil t nil "get-process" "v3*,pa*")
    #+end_src
 
    #+RESULTS:

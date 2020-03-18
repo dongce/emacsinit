@@ -641,3 +641,15 @@
 
   #+RESULTS:
   : t
+* searcher
+  #+begin_src emacs-lisp
+    (use-package ag
+      :ensure
+      )
+
+    (use-package pt
+      :ensure
+    )
+  #+end_src
+
+  #+RESULTS:

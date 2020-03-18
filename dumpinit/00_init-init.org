@@ -3,8 +3,6 @@
 * language
 #+BEGIN_SRC emacs-lisp
 
-  (setenv "HANGUL_KEYBOARD_TYPE" "3f")
-  (setenv "LANG" "ko_KR.UTF-8")
   (setq  default-korean-keyboard "3f")
   (set-language-environment "Korean")
   ;; 이렇게 하여서 한글을 사용할 때 깜박이는 현상을 없앨 수 있을 것이다. 

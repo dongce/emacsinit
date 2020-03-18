@@ -434,6 +434,79 @@
 
   #+RESULTS:
 
+* calendar
+  #+begin_src emacs-lisp :tangle no
+(cfw:open-org-calendar)
+  #+end_src
+
+  #+RESULTS:
+  : Warn : open org-agenda buffer first.
+
+* envvar
+#+begin_src emacs-lisp
+  (setenv "HANGUL_KEYBOARD_TYPE" "3f")
+  (setenv "LANG" "ko_KR.UTF-8")
+
+
+(setenv "PYTHONUNBUFFERED"      "x" t )
+(when-os 'gnu/linux
+ (append-path  "/opt/local/bin"))
+
+(when-os 'windows-nt
+ (setenv "MAGICK_CODER_MODULE_PATH" "c:\\msys264\\mingw64\\lib\\ImageMagick-7.0.8\\modules-Q16HDRI\\coders")
+ (setenv "MAGICK_HOME" "c:\\msys264\\mingw64")
+ ;;(setenv "MAGICK_DEBUG" "ALL")
+ (setenv "BZR_PLUGIN_PATH"      "t:/usr/local/bazaar/plugins"      t )
+ (setenv "GUILE_HOME"      "t:/usr/local/guile"      t )
+ (setenv "WORKON_HOME"      "t:/usr/local/pyvenv" t )
+ (setenv "GRAPHVIZ_DOT"      "c:/usr/local/editor/emacsW32/graphviz/bin/dot.exe" t )
+ (setenv "LANG" "ko_KR.UTF-8")
+ (setenv "LC_ALL" "ko_KR.UTF-8")
+ (setenv "MSYSTEM" "MINGW64")
+ (setenv "MSYS" "winsymlinks:nativestrict")
+ (setenv "STARDICT_DATA_DIR" "c:/usr/local/editor/emacsW32/sdict")
+ (prepend-path  (fullpath "../../graphviz/bin"))
+ (append-path (fullpath "../../cmdutils/"))
+ (append-path (fullpath "../../xz/bin_i486"))
+ (append-path (concat  (getenv "GUILE_HOME") "/default/bin"))
+ (append-path  "t:/usr/texlive2013/bin/win32")
+ ;; (append-path  (fullpath "../../../../python27/scripts"))
+ ;; (append-path  (fullpath "../../../../python27/"))
+ (append-path  "c:/anaconda/scripts")
+ (append-path  "c:/anaconda/")
+ (append-path  "c:/gnat/2019/bin")
+ (append-path  "c:/anaconda/library/bin")
+ (append-path  "c:/msys264/usr/bin")
+ (append-path  "c:/msys264/mingw64/bin")
+ (append-path  (fullpath "../../EmacsW32/bin"))
+ (append-path  (fullpath "../../EmacsW32/codesearch"))
+ (append-path  (fullpath "../../EmacsW32/gnuwin32/bin"))
+ (append-path  (fullpath "../../gnutls/bin"))
+ (append-path  (fullpath "../../bc/bin/"))
+ (append-path  (fullpath "../../processhacker/x86"))
+ ;;deprecatedby-msys2;;(append-path  (fullpath "../../imagemagick/"))
+ (append-path  (fullpath "../../zeal-20131109/"))
+ (append-path  (fullpath "../../../../postscript/ghostscript/bin/"))
+ (append-path  (fullpath "../../../../sqlite/"))
+ (append-path  (fullpath "../../../../llvmclang/bin/"))
+ (prepend-path  (fullpath "../../../../msysgit/libexec/git-core/"))
+ (prepend-path  (fullpath "../../../../msysgit/cmd/"))
+ (append-path  (fullpath "../../putty"))
+ (append-path  "c:/usr/local/gnupg")
+ (append-path "c:/usr/local/7zip")
+ (append-path  "c:/usr/local/gpg4win")
+ (append-path "c:/TOPS/OTW11/otw/jre/bin"))
+#+end_src
+
+* temporary
+  #+begin_src emacs-lisp
+
+  (add-to-list 'org-file-apps '("\\.png" . (lambda (file link) (w32-shell-execute "Open" (win-path-convert-file-name file))))) 
+  #+end_src
+
+  #+RESULTS:
+  : ((\.png lambda (file link) (w32-shell-execute Open (win-path-convert-file-name file))) (auto-mode . emacs) (\.mm\' . default) (\.x?html?\' . default) (\.pdf\' . default) (\.xls[x]\' . system) (\.doc[x]\' . system) (\.ppt[x]\' . system) (t . emacs) (\.png . system))
+
 * serverstart
 #+begin_src emacs-lisp
 

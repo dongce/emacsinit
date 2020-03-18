@@ -1453,13 +1453,13 @@ To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
 
     (helm-flx-mode +1)
 
-    ;;donouse;;(use-package smartscan
-    ;;donouse;;  :ensure 
-    ;;donouse;;  :config 
-    ;;donouse;;  (global-smartscan-mode t)
-    ;;donouse;;  (unbind-key "M-n" smartscan-map)
-    ;;donouse;;  (unbind-key "M-p" smartscan-map)
-    ;;donouse;;  )
+    ;;(use-package smartscan
+    ;;  :ensure 
+    ;;  :config 
+    ;;  (global-smartscan-mode t)
+    ;;  (unbind-key "M-n" smartscan-map)
+    ;;  (unbind-key "M-p" smartscan-map)
+    ;;  )
 
 
 

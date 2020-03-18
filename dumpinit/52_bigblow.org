@@ -615,7 +615,7 @@
     #+END_SRC
 
 ** elfeed
-   #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp :tangle no
 
      ;; (use-package elfeed-goodies
      ;;   :commands elfeed
@@ -1855,15 +1855,6 @@
 
  #+RESULTS:
  : t
-* org-file-apps
-
-  #+begin_src emacs-lisp
-  (add-to-list 'org-file-apps '("\\.png" . (lambda (file link) (w32-shell-execute "Open" (win-path-convert-file-name file))))) 
-  #+end_src
-
-  #+RESULTS:
-  : ((\.png lambda (file link) (w32-shell-execute Open (win-path-convert-file-name file))) (\.png\' lambda (file link) (w32-shell-execute Open (win-path-convert-file-name file))) (auto-mode . emacs) (\.mm\' . default) (\.x?html?\' . default) (\.pdf\' . default) (\.xls[x]\' . system) (\.doc[x]\' . system) (\.ppt[x]\' . system) (t . emacs) (\.png . system))
-
 
 * ob-http
   #+begin_src emacs-lisp
@@ -1877,5 +1868,24 @@
 
 * calendar framework
   #+begin_src emacs-lisp
-(use-package calfw-org :ensure )
+    (use-package calfw-org :ensure )
+    (require 'cal-korea-x)
+    (setq calendar-holidays cal-korea-x-korean-holidays)
   #+end_src
+
+  #+RESULTS:
+  | holiday-fixed    |  1 |   1 | 신정     |            |    |
+  | holiday-lunar-ko |  1 | nil | 1        | 설날       | -1 |
+  | holiday-lunar-ko |  1 | nil | 1        | 설날       |    |
+  | holiday-lunar-ko |  1 | nil | 1        | 설날       |  1 |
+  | holiday-fixed    |  3 |   1 | 3.1절    |            |    |
+  | holiday-lunar-ko |  4 | nil | 8        | 석가탄신일 |    |
+  | holiday-fixed    |  5 |   5 | 어린이날 |            |    |
+  | holiday-fixed    |  6 |   6 | 현충일   |            |    |
+  | holiday-fixed    |  8 |  15 | 광복절   |            |    |
+  | holiday-fixed    | 10 |   3 | 개천절   |            |    |
+  | holiday-fixed    | 10 |   9 | 한글날   |            |    |
+  | holiday-lunar-ko |  8 | nil | 15       | 추석       | -1 |
+  | holiday-lunar-ko |  8 | nil | 15       | 추석       |    |
+  | holiday-lunar-ko |  8 | nil | 15       | 추석       |  1 |
+  | holiday-fixed    | 12 |  25 | 성탄절   |            |    |
