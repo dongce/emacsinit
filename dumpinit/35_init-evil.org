@@ -1815,18 +1815,23 @@ Update: evil-regexp-range was recently replaced with evil-select-paren. This wor
  #+begin_src emacs-lisp
 
 
- (defmacro define-and-bind-text-object (key start-regex end-regex)
-   (let ((inner-name (make-symbol "inner-name"))
-         (outer-name (make-symbol "outer-name")))
-     `(progn
-        (evil-define-text-object ,inner-name (count &optional beg end type)
-          (evil-select-paren ,start-regex ,end-regex beg end type count nil))
-        (evil-define-text-object ,outer-name (count &optional beg end type)
-          (evil-select-paren ,start-regex ,end-regex beg end type count t))
-        (define-key evil-inner-text-objects-map ,key (quote ,inner-name))
-        (define-key evil-outer-text-objects-map ,key (quote ,outer-name)))))
+   (defmacro define-and-bind-text-object (name key start-regex end-regex)
+     (let ((inner-name (make-symbol (s-append "-inner-name" name)))
+           (outer-name (make-symbol (s-append "-outer-name" name))))
+       `(progn
+          (evil-define-text-object ,inner-name (count &optional beg end type)
+            (evil-select-paren ,start-regex ,end-regex beg end type count nil))
+          (evil-define-text-object ,outer-name (count &optional beg end type)
+            (evil-select-paren ,start-regex ,end-regex beg end type count t))
+          (define-key evil-inner-text-objects-map ,key (quote ,inner-name))
+          (define-key evil-outer-text-objects-map ,key (quote ,outer-name)))))
+
+  (define-and-bind-text-object "cblock" "c" "<\[0-9\]\\{8\\}W\[0-9\]\\{2\\}" "\[0-9\]\\{8\\}W\[0-9\]\\{2\\}>")
 
  #+end_src
+
+ #+RESULTS:
+ : define-and-bind-text-object
 
 ** Usage:
 

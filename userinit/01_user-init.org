@@ -510,6 +510,8 @@
 * serverstart
 #+begin_src emacs-lisp
 
+  (defun server-ensure-safe-dir (dir) "NOOP" t)
+
   (server-start)
   (require 'edit-server )
   (edit-server-start)

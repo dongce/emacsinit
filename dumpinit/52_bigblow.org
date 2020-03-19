@@ -319,6 +319,11 @@
                                     match scope skip)))))))
 
 
+
+      (defun org-star-next-level ()
+        (interactive)
+        (org-insert-star (+ 1 (org-current-level))))
+
      #+END_SRC
 
 ** helm refile
