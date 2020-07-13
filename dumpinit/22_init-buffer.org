@@ -556,35 +556,56 @@
 : projectile-load-files
 
 
-* purpose                                                       :deprecated:
+* purpose     
 
-#+BEGIN_SRC emacs-lisp :tangle no
+** usepurpose
+   #+begin_src emacs-lisp
+     (use-package window-purpose
+       :demand 
+       :config
+       (add-to-list 'purpose-user-mode-purposes '(python-mode . py))
+       (add-to-list 'purpose-user-mode-purposes '(inferior-python-mode . py-repl))
+       (add-to-list 'purpose-user-mode-purposes '(prog-mode . prog))
+       (add-to-list 'purpose-user-mode-purposes '(compilation-mode . comp))
+       (add-to-list 'purpose-user-mode-purposes '(org-mode . org))
 
-;; (with-package*
-;;   (perspective)
-;;   (persp-mode)
-;;   (require 'persp-projectile)
-;;   )
+       ;; (add-to-list 'purpose-user-mode-purposes '(mu4e:headers-mode . mu4e-header))
+       ;; (add-to-list 'purpose-user-mode-purposes '(mu4e:view-mode  . mu4e-view))
 
-(with-package*
-  (window-purpose window-purpose-x)
-  ;; (if (eq window-system 'w32)  (purpose-mode))  ;;purpose blink grep , dired ..
-  (add-to-list 'purpose-user-mode-purposes '(python-mode . py))
-  (add-to-list 'purpose-user-mode-purposes '(inferior-python-mode . py-repl))
-  (add-to-list 'purpose-user-mode-purposes '(prog-mode . prog))
-  (add-to-list 'purpose-user-mode-purposes '(compilation-mode . comp))
-  (add-to-list 'purpose-user-mode-purposes '(org-mode . org))
+       (purpose-compile-user-configuration))
+   #+end_src
 
-  (add-to-list 'purpose-user-mode-purposes '(mu4e:headers-mode . mu4e-header))
-  (add-to-list 'purpose-user-mode-purposes '(mu4e:view-mode  . mu4e-view))
+   #+RESULTS:
+   : t
 
-  (purpose-compile-user-configuration)
+** deprecated
+ #+BEGIN_SRC emacs-lisp :tangle no
+
+ ;; (with-package*
+ ;;   (perspective)
+ ;;   (persp-mode)
+ ;;   (require 'persp-projectile)
+ ;;   )
+
+ (with-package*
+   (window-purpose window-purpose-x)
+   ;; (if (eq window-system 'w32)  (purpose-mode))  ;;purpose blink grep , dired ..
+   (add-to-list 'purpose-user-mode-purposes '(python-mode . py))
+   (add-to-list 'purpose-user-mode-purposes '(inferior-python-mode . py-repl))
+   (add-to-list 'purpose-user-mode-purposes '(prog-mode . prog))
+   (add-to-list 'purpose-user-mode-purposes '(compilation-mode . comp))
+   (add-to-list 'purpose-user-mode-purposes '(org-mode . org))
+
+   (add-to-list 'purpose-user-mode-purposes '(mu4e:headers-mode . mu4e-header))
+   (add-to-list 'purpose-user-mode-purposes '(mu4e:view-mode  . mu4e-view))
+
+   (purpose-compile-user-configuration)
 
 
-  (purpose-x-kill-setup)
-  )
+   (purpose-x-kill-setup)
+   )
 
-#+END_SRC
+ #+END_SRC
 
 
 

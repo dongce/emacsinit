@@ -232,13 +232,38 @@
     #+BEGIN_SRC emacs-lisp
 
     (setf dongil/efontsize  14)
-    (setf dongil/hfontsize  17)
+    (setf dongil/hfontsize  12)
     (setf dongil/symbolsize 15)
 
     #+END_SRC
 
     #+RESULTS:
     : 15
+
+*** font rescale
+    #+begin_src emacs-lisp
+
+      (setq face-font-rescale-alist
+            `(
+
+              (,(font-spec :name  "휴먼가는샘체" ) . 2.3)
+              (,(font-spec :name  "바탕체" ) . 1.24)
+              (,(font-spec :name  "맑은 고딕" ) . 1.24)
+              (,(font-spec :name  "나눔고딕코딩" ) . 1.24)
+              (,(font-spec :name  "돋움체" ) . 1.24)
+              ;;(,(font-spec :name (encode-coding-string "나눔고딕코딩" 'utf-8)) 1.4)
+              ;;(,(font-spec :name  "나눔고딕코딩" ) 1.4)
+              ;;("나눔고딕코딩"  1.4)
+
+              ("Noto Sans Mono CJK KR" . 1.35)
+              ("Noto Sans CJK KR" . 1.35)
+              ( "Noto Serif CJK KR" . 1.35)
+              ("Malgun Gothic" 1.35)
+              ("NanumGothicCoding" . 1.2)))
+    #+end_src
+
+    #+RESULTS:
+    : ((#<font-spec nil nil 휴먼가는샘체 nil nil nil nil nil nil nil nil nil ((:name . 휴먼가는샘체))> . 2.3) (#<font-spec nil nil 바탕체 nil nil nil nil nil nil nil nil nil ((:name . 바탕체))> . 1.24) (#<font-spec nil nil 맑은 고딕 nil nil nil nil nil nil nil nil nil ((:name . 맑은 고딕))> . 1.24) (#<font-spec nil nil 나눔고딕코딩 nil nil nil nil nil nil nil nil nil ((:name . 나눔고딕코딩))> . 1.24) (#<font-spec nil nil 돋움체 nil nil nil nil nil nil nil nil nil ((:name . 돋움체))> . 1.24) (Noto Sans Mono CJK KR . 1.35) (Noto Sans CJK KR . 1.35) (Noto Serif CJK KR . 1.35) (Malgun Gothic 1.35) (NanumGothicCoding . 1.2))
 
 *** 기본 영문 폰트 
     #+BEGIN_SRC emacs-lisp
@@ -305,35 +330,42 @@
 
 *** 한글 폰트
     #+BEGIN_SRC emacs-lisp
-  ;; :size dongil/hfontsize 를 사용하면 글자 크기가 고정이 되어 버림 
-   (let ((hangulfont (find-if 
-                       (lambda (x) (font-utils-exists-p x)) 
-                       '( 
-                       "Noto Sans Mono CJK KR"
-                       "DotumChe"
-                       "Malgun Gothic"
-                       "NanumGothicCoding"
-                       "맑은 고딕" "돋움체" "나눔고딕코딩"))))
-     (if (stringp  hangulfont) 
-         (progn 
-           (set-fontset-font "fontset-default" 'hangul          (font-spec :name  hangulfont  ) )
-           (set-fontset-font "fontset-default" 'han             (font-spec :name  hangulfont  ) )
-           (set-fontset-font "fontset-default" '(8251 . 8252)   (font-spec :name  hangulfont  ) )
-           (set-fontset-font "fontset-default" '(61548 . 61549) (font-spec :name  hangulfont  ) ))))
+      ;; :size dongil/hfontsize 를 사용하면 글자 크기가 고정이 되어 버림 
+      (let ((hangulfont (find-if 
+                         (lambda (x) (font-utils-exists-p x)) 
+                         `( 
+                            ,(encode-coding-string "돋움체" 'utf-8) 
+                            ,(encode-coding-string "휴먼가는샘체" 'utf-8) 
+                            ,(encode-coding-string "바탕체" 'utf-8) 
+                            ,(encode-coding-string "나눔고딕코딩" 'utf-8)
+                            ,(encode-coding-string "맑은 고딕" 'utf-8)
+                           "NanumGothicCoding"
+                           "Noto Sans CJK KR"
+                           "Noto Serif CJK KR"
+                           "DotumChe"
+                           "Malgun Gothic"
+                           "mincho"
+                           ))))
+        (if (stringp  hangulfont) 
+            (progn 
+              (set-fontset-font "fontset-default" 'hangul          (font-spec :name  hangulfont  ) )
+              (set-fontset-font "fontset-default" 'han             (font-spec :name  hangulfont  ) )
+              (set-fontset-font "fontset-default" '(8251 . 8252)   (font-spec :name  hangulfont  ) )
+              (set-fontset-font "fontset-default" '(61548 . 61549) (font-spec :name  hangulfont  ) ))))
 
-;;  (let ((hangulfont (find-if
-;;                      (lambda (x) (font-utils-exists-p x))
-;;                      '(
-;;                      "D2Coding"  
-;;                      "NanumGothicCoding"
-;;                     "Malgun Gothic" 
-;;                       "나눔고딕코딩" "돋움체" "Noto Sans CJK KR Regular"  ))))
-;;
-;;    (if (stringp  hangulfont)
-;;        (progn
-;;          (set-fontset-font "fontset-default" 'hangul          (cons hangulfont  "unicode-bmp") )
-;;          (set-fontset-font "fontset-default" '(8251 . 8252)   (cons hangulfont  "unicode-bmp") )
-;;          (set-fontset-font "fontset-default" '(61548 . 61549) (cons hangulfont  "unicode-bmp") ))))
+      ;;  (let ((hangulfont (find-if
+      ;;                      (lambda (x) (font-utils-exists-p x))
+      ;;                      '(
+      ;;                      "D2Coding"  
+      ;;                      "NanumGothicCoding"
+      ;;                     "Malgun Gothic" 
+      ;;                       "나눔고딕코딩" "돋움체" "Noto Sans CJK KR Regular"  ))))
+      ;;
+      ;;    (if (stringp  hangulfont)
+      ;;        (progn
+      ;;          (set-fontset-font "fontset-default" 'hangul          (cons hangulfont  "unicode-bmp") )
+      ;;          (set-fontset-font "fontset-default" '(8251 . 8252)   (cons hangulfont  "unicode-bmp") )
+      ;;          (set-fontset-font "fontset-default" '(61548 . 61549) (cons hangulfont  "unicode-bmp") ))))
     #+END_SRC
 
     #+RESULTS:
@@ -427,6 +459,7 @@
 
       #+RESULTS:
 
+
 * recentf
   #+begin_src emacs-lisp
     (recentf-load-list)
@@ -446,56 +479,57 @@
 #+begin_src emacs-lisp
   (setenv "HANGUL_KEYBOARD_TYPE" "3f")
   (setenv "LANG" "ko_KR.UTF-8")
+  (setenv "MU_PLAY_PROGRAM" "wslview")
 
+  (setenv "PYTHONUNBUFFERED"      "x" t )
+  (when-os 'gnu/linux
+    (setenv "DISPLAY" "nameserver:0.0")
+    (append-path  "/opt/local/bin"))
 
-(setenv "PYTHONUNBUFFERED"      "x" t )
-(when-os 'gnu/linux
- (append-path  "/opt/local/bin"))
-
-(when-os 'windows-nt
- (setenv "MAGICK_CODER_MODULE_PATH" "c:\\msys264\\mingw64\\lib\\ImageMagick-7.0.8\\modules-Q16HDRI\\coders")
- (setenv "MAGICK_HOME" "c:\\msys264\\mingw64")
- ;;(setenv "MAGICK_DEBUG" "ALL")
- (setenv "BZR_PLUGIN_PATH"      "t:/usr/local/bazaar/plugins"      t )
- (setenv "GUILE_HOME"      "t:/usr/local/guile"      t )
- (setenv "WORKON_HOME"      "t:/usr/local/pyvenv" t )
- (setenv "GRAPHVIZ_DOT"      "c:/usr/local/editor/emacsW32/graphviz/bin/dot.exe" t )
- (setenv "LANG" "ko_KR.UTF-8")
- (setenv "LC_ALL" "ko_KR.UTF-8")
- (setenv "MSYSTEM" "MINGW64")
- (setenv "MSYS" "winsymlinks:nativestrict")
- (setenv "STARDICT_DATA_DIR" "c:/usr/local/editor/emacsW32/sdict")
- (prepend-path  (fullpath "../../graphviz/bin"))
- (append-path (fullpath "../../cmdutils/"))
- (append-path (fullpath "../../xz/bin_i486"))
- (append-path (concat  (getenv "GUILE_HOME") "/default/bin"))
- (append-path  "t:/usr/texlive2013/bin/win32")
- ;; (append-path  (fullpath "../../../../python27/scripts"))
- ;; (append-path  (fullpath "../../../../python27/"))
- (append-path  "c:/anaconda/scripts")
- (append-path  "c:/anaconda/")
- (append-path  "c:/gnat/2019/bin")
- (append-path  "c:/anaconda/library/bin")
- (append-path  "c:/msys264/usr/bin")
- (append-path  "c:/msys264/mingw64/bin")
- (append-path  (fullpath "../../EmacsW32/bin"))
- (append-path  (fullpath "../../EmacsW32/codesearch"))
- (append-path  (fullpath "../../EmacsW32/gnuwin32/bin"))
- (append-path  (fullpath "../../gnutls/bin"))
- (append-path  (fullpath "../../bc/bin/"))
- (append-path  (fullpath "../../processhacker/x86"))
- ;;deprecatedby-msys2;;(append-path  (fullpath "../../imagemagick/"))
- (append-path  (fullpath "../../zeal-20131109/"))
- (append-path  (fullpath "../../../../postscript/ghostscript/bin/"))
- (append-path  (fullpath "../../../../sqlite/"))
- (append-path  (fullpath "../../../../llvmclang/bin/"))
- (prepend-path  (fullpath "../../../../msysgit/libexec/git-core/"))
- (prepend-path  (fullpath "../../../../msysgit/cmd/"))
- (append-path  (fullpath "../../putty"))
- (append-path  "c:/usr/local/gnupg")
- (append-path "c:/usr/local/7zip")
- (append-path  "c:/usr/local/gpg4win")
- (append-path "c:/TOPS/OTW11/otw/jre/bin"))
+  (when-os 'windows-nt
+    (setenv "MAGICK_CODER_MODULE_PATH" "c:\\msys264\\mingw64\\lib\\ImageMagick-7.0.8\\modules-Q16HDRI\\coders")
+    (setenv "MAGICK_HOME" "c:\\msys264\\mingw64")
+    ;;(setenv "MAGICK_DEBUG" "ALL")
+    (setenv "BZR_PLUGIN_PATH"      "t:/usr/local/bazaar/plugins"      t )
+    (setenv "GUILE_HOME"      "t:/usr/local/guile"      t )
+    (setenv "WORKON_HOME"      "t:/usr/local/pyvenv" t )
+    (setenv "GRAPHVIZ_DOT"      "c:/usr/local/editor/emacsW32/graphviz/bin/dot.exe" t )
+    (setenv "LANG" "ko_KR.UTF-8")
+    (setenv "LC_ALL" "ko_KR.UTF-8")
+    (setenv "MSYSTEM" "MINGW64")
+    (setenv "MSYS" "winsymlinks:nativestrict")
+    (setenv "STARDICT_DATA_DIR" "c:/usr/local/editor/emacsW32/sdict")
+    (prepend-path  (fullpath "../../graphviz/bin"))
+    (append-path (fullpath "../../cmdutils/"))
+    (append-path (fullpath "../../xz/bin_i486"))
+    (append-path (concat  (getenv "GUILE_HOME") "/default/bin"))
+    (append-path  "t:/usr/texlive2013/bin/win32")
+    ;; (append-path  (fullpath "../../../../python27/scripts"))
+    ;; (append-path  (fullpath "../../../../python27/"))
+    (append-path  "c:/anaconda/scripts")
+    (append-path  "c:/anaconda/")
+    (append-path  "c:/gnat/2019/bin")
+    (append-path  "c:/anaconda/library/bin")
+    (append-path  "c:/msys264/usr/bin")
+    (append-path  "c:/msys264/mingw64/bin")
+    (append-path  (fullpath "../../EmacsW32/bin"))
+    (append-path  (fullpath "../../EmacsW32/codesearch"))
+    (append-path  (fullpath "../../EmacsW32/gnuwin32/bin"))
+    (append-path  (fullpath "../../gnutls/bin"))
+    (append-path  (fullpath "../../bc/bin/"))
+    (append-path  (fullpath "../../processhacker/x86"))
+    ;;deprecatedby-msys2;;(append-path  (fullpath "../../imagemagick/"))
+    (append-path  (fullpath "../../zeal-20131109/"))
+    (append-path  (fullpath "../../../../postscript/ghostscript/bin/"))
+    (append-path  (fullpath "../../../../sqlite/"))
+    (append-path  (fullpath "../../../../llvmclang/bin/"))
+    (prepend-path  (fullpath "../../../../msysgit/libexec/git-core/"))
+    (prepend-path  (fullpath "../../../../msysgit/cmd/"))
+    (append-path  (fullpath "../../putty"))
+    (append-path  "c:/usr/local/gnupg")
+    (append-path "c:/usr/local/7zip")
+    (append-path  "c:/usr/local/gpg4win")
+    (append-path "c:/TOPS/OTW11/otw/jre/bin"))
 #+end_src
 
 * temporary
@@ -507,12 +541,36 @@
   #+RESULTS:
   : ((\.png lambda (file link) (w32-shell-execute Open (win-path-convert-file-name file))) (auto-mode . emacs) (\.mm\' . default) (\.x?html?\' . default) (\.pdf\' . default) (\.xls[x]\' . system) (\.doc[x]\' . system) (\.ppt[x]\' . system) (t . emacs) (\.png . system))
 
+* lock-mode
+#+begin_src emacs-lisp
+
+  ;; emacs-lock-mode 
+  (unless noninteractive
+    (add-hook 'kill-buffer-query-functions 'emacs-lock--kill-buffer-query-functions)
+    ;; We set a hook in both kill-emacs-hook and kill-emacs-query-functions because
+    ;; we really want to use k-e-q-f to stop as soon as possible, but don't want to
+    ;; be caught by surprise if someone calls `kill-emacs' instead.
+    (add-hook 'kill-emacs-hook 'emacs-lock--kill-emacs-hook)
+    (add-hook 'kill-emacs-query-functions 'emacs-lock--kill-emacs-query-functions)) 
+#+end_src
+
+#+RESULTS:
+| emacs-lock--kill-emacs-query-functions | persp-kill-emacs-query-function | server-kill-emacs-query-function |
+
 * serverstart
 #+begin_src emacs-lisp
 
   (defun server-ensure-safe-dir (dir) "NOOP" t)
 
+  ;; does not read the init file.
+  (setf server-socket-dir
+        (and (featurep 'make-network-process '(:family local))
+             (format "/tmp/emacs%d"  (user-uid))))
+
   (server-start)
   (require 'edit-server )
   (edit-server-start)
 #+end_src
+
+#+RESULTS:
+: An edit-server process is already running

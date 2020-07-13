@@ -298,92 +298,70 @@ Assumes that the frame is only split into two."
 ** font-list 
  #+BEGIN_SRC emacs-lisp :tangle no 
    (-map
-    (lambda (x) (list x))
+    (lambda (x) (list (decode-coding-string x 'utf-8)))
        (font-utils-list-names))
 
  #+END_SRC
 
  #+RESULTS:
- | IBM Plex Sans Thai Looped                         |
- | IBM Plex Sans Devanagari                          |
- | Standard Symbols PS                               |
- | IBM Plex Sans Condensed                           |
- | IBM Plex Sans Thai                                |
- | URW Gothic                                        |
- | Noto Serif                                        |
- | IBM Plex Sans Hebrew                              |
- | Dotum                                             |
- | IBM Plex Serif                                    |
- | Symbola                                           |
- | Nimbus Roman                                      |
- | Malgun Gothic                                     |
- | STIX Two Math                                     |
- | Noto Serif CJK KR                                 |
- | IBM Plex Mono                                     |
- | D2Coding                                          |
- | STIX Two Text                                     |
- | IBM Plex Sans Arabic                              |
- | Cascadia Mono                                     |
- | Nimbus Sans                                       |
- | STIXGeneral                                       |
- | D2Coding ligature                                 |
- | Gungsuh                                           |
- | Nimbus Mono PS                                    |
- | Fira Code Symbol                                  |
- | DejaVu Sans                                       |
- | Nimbus Sans Narrow                                |
- | URW Bookman                                       |
- | IBM Plex Sans                                     |
- | Batang                                            |
- | Utopia                                            |
- | Bitstream Charter                                 |
- | Cascadia Code                                     |
- | Courier 10 Pitch                                  |
- | C059                                              |
- | NanumGothicCoding                                 |
- | GulimChe                                          |
- | Noto Sans                                         |
- | Z003                                              |
- | D050000L                                          |
- | DotumChe                                          |
- | BatangChe                                         |
- | \353\247\221\354\235\200 \352\263\240\353\224\225 |
- | Cascadia Code PL                                  |
- | Noto Color Emoji                                  |
- | Cascadia Mono PL                                  |
- | Noto Sans Mono CJK KR                             |
- | Cursor                                            |
- | P052                                              |
- | Noto Emoji                                        |
- | GungsuhChe                                        |
- | Gulim                                             |
- | fangsong ti                                       |
- | fixed                                             |
- | clean                                             |
- | gothic                                            |
- | open look cursor                                  |
- | open look glyph                                   |
- | supplement                                        |
- | courier                                           |
- | helvetica                                         |
- | new century schoolbook                            |
- | symbol                                            |
- | times                                             |
- | utopia                                            |
- | lucida                                            |
- | lucidabright                                      |
- | lucidatypewriter                                  |
- | charter                                           |
- | terminal                                          |
- | application                                       |
- | interface system                                  |
- | interface user                                    |
- | lucidux mono                                      |
- | lucidux sans                                      |
- | lucidux serif                                     |
- | cursor                                            |
- | mincho                                            |
- | myeongjo                                          |
+ | IBM Plex Sans Thai Looped |
+ | IBM Plex Serif            |
+ | Nimbus Mono PS            |
+ | Nimbus Roman              |
+ | Nimbus Sans               |
+ | Nimbus Sans Narrow        |
+ | Noto Color Emoji          |
+ | Noto Emoji                |
+ | Noto Sans CJK KR          |
+ | Noto Sans Mono CJK KR     |
+ | Noto Serif CJK KR         |
+ | P052                      |
+ | STIX Two Math             |
+ | STIX Two Text             |
+ | STIXGeneral               |
+ | Standard Symbols PS       |
+ | Symbola                   |
+ | URW Bookman               |
+ | URW Gothic                |
+ | Z003                      |
+ | application               |
+ | charter                   |
+ | clean                     |
+ | courier                   |
+ | cursor                    |
+ | fangsong ti               |
+ | fixed                     |
+ | gothic                    |
+ | helvetica                 |
+ | interface system          |
+ | interface user            |
+ | lucida                    |
+ | lucidabright              |
+ | lucidatypewriter          |
+ | lucidux mono              |
+ | lucidux sans              |
+ | lucidux serif             |
+ | mincho                    |
+ | myeongjo                  |
+ | new century schoolbook    |
+ | open look cursor          |
+ | open look glyph           |
+ | supplement                |
+ | symbol                    |
+ | terminal                  |
+ | times                     |
+ | utopia                    |
+ | 굴림                      |
+ | 굴림체                    |
+ | 궁서                      |
+ | 궁서체                    |
+ | 나눔고딕코딩              |
+ | 돋움                      |
+ | 돋움체                    |
+ | 맑은 고딕                 |
+ | 바탕                      |
+ | 바탕체                    |
+ | 휴먼가는샘체              |
 
 ** unicode characters                                              :document:
    [[https://en.wikibooks.org/wiki/Unicode/List_of_useful_symbols][Unicode/List

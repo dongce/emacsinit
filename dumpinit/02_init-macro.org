@@ -3853,3 +3853,30 @@ of FILE in the current directory, suitable for creation"
 
   #+RESULTS:
   : resume
+* UNHEX REGION
+  #+begin_src emacs-lisp
+    (defun apply-region (start end fun)
+      "run a function over the region between START and END in current buffer."
+      (save-excursion
+        (let ((text (delete-and-extract-region start end)))
+          (insert (funcall fun text)))))
+
+    (defun hex-region (start end)
+      "urlencode the region between START and END in current buffer."
+      (interactive "r")
+      (apply-region start end #'url-hexify-string))
+
+    (defun unhex-region (start end)
+      "de-urlencode the region between START and END in current buffer."
+      (interactive "r")
+      (apply-region start end #'url-unhex-string))
+
+    (defun unhex-region-utf-8 (start end)
+      "de-urlencode the region between START and END in current buffer."
+      (interactive "r")
+      (apply-region start end (lambda (x) (decode-coding-string (url-unhex-string x) 'utf-8))))
+
+  #+end_src
+
+  #+RESULTS:
+  : unhex-region-utf-8

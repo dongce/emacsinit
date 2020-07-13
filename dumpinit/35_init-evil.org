@@ -1201,9 +1201,9 @@
           "gN"    'outline-next-visible-heading
           "gP"    'outline-previous-visible-heading
           "gl"    'goto-line
-          ;;"gf"    'org-forward-heading-same-level
-          ;;"gb"    'org-backward-heading-same-level
-          ;;"gu"    'outline-up-heading
+          "gf"    'org-forward-heading-same-level
+          "gb"    'org-backward-heading-same-level
+          "gu"    'outline-up-heading
           ;;"gt"    'org-goto
 
           )
@@ -1213,9 +1213,9 @@
           "gN"    'outline-next-visible-heading
           "gP"    'outline-previous-visible-heading
           "gl"    'goto-line
-          ;;"gf"    'org-forward-heading-same-level
-          ;;"gb"    'org-backward-heading-same-level
-          ;;"gu"    'outline-up-heading
+          "gf"    'org-forward-heading-same-level
+          "gb"    'org-backward-heading-same-level
+          "gu"    'outline-up-heading
           ;;"gt"    'org-goto
   
           )
@@ -1227,9 +1227,9 @@
           "gp"    'outline-previous-heading
           "gP"    'outline-previous-visible-heading
           "gl"    'goto-line
-          ;;"gf"    'org-forward-heading-same-level
-          ;;"gb"    'org-backward-heading-same-level
-          ;;"gu"    'outline-up-heading
+          "gf"    'org-forward-heading-same-level
+          "gb"    'org-backward-heading-same-level
+          "gu"    'outline-up-heading
           ;;"gt"    'org-goto
           )
 
@@ -1240,18 +1240,27 @@
           "gp"    'outline-previous-heading
           "gP"    'outline-previous-visible-heading
           "gl"    'goto-line
-          ;;"gf"    'org-forward-heading-same-level
-          ;;"gb"    'org-backward-heading-same-level
-          ;;"gu"    'outline-up-heading
+          "gf"    'org-forward-heading-same-level
+          "gb"    'org-backward-heading-same-level
+          "gu"    'outline-up-heading
           ;;"gt"    'org-goto
           )
 
       #+END_SRC
 
       #+RESULTS:
-      : t
 
 *** mu4e
+**** leader key
+     #+BEGIN_SRC emacs-lisp 
+       
+   (evil-leader/set-key-for-mode 'mu4e-compose-mode
+     "`" 'mu4e-message-send-and-exit)
+
+     #+END_SRC
+
+     #+RESULTS:
+
 **** deprecated
      #+BEGIN_SRC emacs-lisp :tangle no
        (use-package evil-mu4e
@@ -1300,131 +1309,7 @@
          (evil-mu4e-init)
          (evil-define-key 'normal mu4e-headers-mode-map
            "?" mu4e-headers-mode-map)
-         (evil-define-key 'normal mu4e-view-mode-map
-           "?" mu4e-view-mode-map))
-
-     #+END_SRC
-
-**** brand new
-     #+BEGIN_SRC emacs-lisp 
-       (use-package evil-mu4e
-         :demand
-         :config
-         (append-to-list
-          'evil-mu4e-mode-map-bindings
-          (mapcar 
-           (lambda (x)
-             `(normal mu4e-main-mode-map ,(car x) ,(cadr x )))
-           '(
-             ("B"               mu4e-headers-search-bookmark-edit)
-             ("s"               mu4e-headers-search))))
-         (append-to-list
-          'evil-mu4e-mode-map-bindings
-          (mapcar
-           (lambda (x)
-             `(normal mu4e-view-mode-map ,(car x) ,(cadr x )))
-           `(
-             ("*"             bmkp-mu4e-view)
-             (,(kbd "<home>")             open-mu4e-view)   ;open in outlook
-             (,(kbd "<insert>")           mu4e-headers-mark-for-something)   ;open in outlook
-             (,(kbd "<kp-multiply>") bmkp-mu4e-view)
-             ("@"             copy-mu4e-view)
-             ("B"               mu4e-headers-search-bookmark-edit)
-            (,(kbd "<f12>F")             mu4e-find-file)
-            (,(kbd "<f12>f")             mu4e-field-view)
-             ("o" mu4e-view-open-attachment)
-             ("O" mu4e-view-open-attachment-emacs)
-             ("m"  	mu4e-view-mark-for-tag)
-             ("#"  	mu4e-mark-resolve-deferred-marks)
-             ("$"  	mu4e-show-log)
-             (">"  	end-of-buffer)
-             ("C"  	mu4e-compose-new)
-             ("E"  	mu4e-compose-edit)
-            (,(kbd "<f12>F")  	mu4e-find-file)
-             ("H"  	mu4e-display-manual)
-             ("R"  	mu4e-compose-reply)
-             ("U"  	mu4e-mark-unmark-all)
-            (,(kbd "<f12>f")  	mu4e-field-header)
-             ("s"  	mu4e-query-fragments-search)
-             ("x"  	mu4e-mark-execute-all)
-             ("y"  	mu4e-select-other-view))))
-         (append-to-list
-          'evil-mu4e-mode-map-bindings
-          (mapcar
-           (lambda (x)
-             `(normal mu4e-headers-mode-map ,(car x) ,(cadr x )))
-           `(
-             (,(kbd "<home>")             open-mu4e-view)   ;open in outlook
-             (,(kbd "<insert>")        mu4e-headers-mark-for-something)   ;open in outlook
-             (,(kbd "<kp-multiply>") bmkp-mu4e-header)
-             ("@"             copy-mu4e-header)
-             ("B"               mu4e-headers-search-bookmark-edit)
-             ("x"             mu4e-mark-execute-all)
-            (,(kbd "<f12>F")             mu4e-find-file)
-            (,(kbd "<f12>f")             mu4e-field-header)
-             ("#"  	mu4e-mark-resolve-deferred-marks)
-             ("$"  	mu4e-show-log)
-             (">"  	end-of-buffer)
-             ("C"  	mu4e-compose-new)
-             ("E"  	mu4e-compose-edit)
-            (,(kbd "<f12>F")  	mu4e-find-file)
-             ("H"  	mu4e-display-manual)
-             ("R"  	mu4e-compose-reply)
-             ("U"  	mu4e-mark-unmark-all)
-            (,(kbd "<f12>f")  	mu4e-field-header)
-             ("s"  	mu4e-query-fragments-search)
-             ("x"  	mu4e-mark-execute-all)
-             ("y"  	mu4e-select-other-view)
-             ("%"  	mu4e-headers-mark-pattern)
-             ("&"  	mu4e-headers-mark-custom)
-             ("+"  	mu4e-headers-mark-for-flag)
-             ("-"  	mu4e-headers-mark-for-unflag)
-             ("/"  	mu4e-headers-search-narrow)
-             ("="  	mu4e-headers-mark-for-untrash)
-             ("?"  	mu4e-headers-mark-for-unread)
-             ("A"  	mu4e-headers-mark-for-action)
-             ("B"  	mu4e-headers-search-bookmark-edit)
-             ("D"  	mu4e-headers-mark-for-delete)
-             ("O"  	mu4e-headers-change-sorting)
-             ("P"  	mu4e-headers-toggle-threading)
-             ("Q"  	mu4e-headers-toggle-full-search)
-             ("S"  	mu4e-headers-search-edit)
-             ("L"  	mu4e-occur-store-link)
-             ("T"  	mu4e-headers-mark-thread)
-             ("V"  	mu4e-headers-toggle-skip-duplicates)
-             ("W"  	mu4e-headers-toggle-include-related)
-             ("["  	mu4e-headers-prev-unread)
-             ("\\"  	mu4e-headers-query-prev)
-             ("]"  	mu4e-headers-next-unread)
-             ("a"  	mu4e-headers-action)
-             ("b"  	mu4e-headers-search-bookmark)
-             ("d"  	mu4e-headers-mark-for-trash)
-             ("m"  	mu4e-headers-mark-for-tag)
-             ("J"  	mu4e~headers-jump-to-maildir)
-             ("M"  	mu4e-headers-mark-for-move)
-             ("n"  	mu4e-headers-next)
-             ("p"  	mu4e-headers-prev)
-             ("q"  	mu4e~headers-quit-buffer)
-             ("r"  	mu4e-headers-mark-for-refile)
-             ("t"  	mu4e-headers-mark-subthread)
-             ("u"  	mu4e-headers-mark-for-unmark)
-             ("i"   mu4e-conversation)
-             ( ,(kbd "<backspace>")	mu4e-headers-mark-for-trash)
-             ( ,(kbd "<delete>")	    mu4e-headers-mark-for-delete)
-             ( ,(kbd "<deletechar>")	mu4e-headers-mark-for-delete))))
-         (evil-mu4e-init)
-         (evil-define-key 'normal mu4e-headers-mode-map
-           (kbd "<f12>") mu4e-headers-mode-map)
-         (evil-define-key 'normal mu4e-view-mode-map
-           (kbd "<f12>") mu4e-view-mode-map))
-
-
-   (evil-leader/set-key-for-mode 'mu4e-compose-mode
-     "`" 'mu4e-message-send-and-exit)
-
-     #+END_SRC
-
-
+         (evil-define-
 *** dired                 
     
 
@@ -1609,6 +1494,13 @@
     #+END_SRC
 
 
+*** occur
+    
+       #+begin_src emacs-lisp :tangle no
+       (evil-define-key 'normal occur-mode-map "y" #'evil-yank)
+       #+end_src
+
+       #+RESULTS:
 
 ** bind map
    #+BEGIN_SRC emacs-lisp
@@ -1773,7 +1665,7 @@
 * evil-states
 ** normal state
    #+BEGIN_SRC emacs-lisp
-   (append-to-list 'evil-normal-state-modes '(mu4e-compose-mode occur-edit-mode))
+   (append-to-list 'evil-normal-state-modes '(mu4e-compose-mode occur-mode occur-edit-mode))
    #+END_SRC
    
 ** emacs state
@@ -1870,3 +1762,40 @@ I hope it helps others vimacsers too!
 
 In the second case (entire buffer), is the regex fast, or it gets slow with large buffers (e.g. compared to a solution based on beginning-of-buffer, end-of-buffer)?
 #+end_quote
+
+* evil-collection
+
+** mu4e
+   #+begin_src emacs-lisp
+     (evil-collection-init 'mu4e)
+
+     (let ((bindings `((mu4e-view-mode-map 
+                        "*"             bmkp-mu4e-view
+                        ,(kbd "<home>")             open-mu4e-view   ;open in outlook
+                        ,(kbd "<insert>")           mu4e-headers-mark-for-something   ;open in outlook
+                        ,(kbd "<kp-multiply>") bmkp-mu4e-view
+                        "@"             copy-mu4e-view
+                        ,(kbd "<f12>F")             mu4e-find-file
+                        ,(kbd "<f12>f")             mu4e-field-view
+                        "o" mu4e-view-open-attachment
+                        "O" mu4e-view-open-attachment-emacs
+                        "m"  	mu4e-view-mark-for-tag
+                        "#"  	mu4e-mark-resolve-deferred-marks)
+                       (mu4e-headers-mode-map 
+                        ,(kbd "<home>")             open-mu4e-view   ;open in outlook
+                        ,(kbd "<insert>")        mu4e-headers-mark-for-something   ;open in outlook
+                        ,(kbd "<kp-multiply>") bmkp-mu4e-header
+                        "@"             copy-mu4e-header
+                        ,(kbd "<f12>F")             mu4e-find-file
+                        ,(kbd "<f12>f")             mu4e-field-header
+                        "L"  	mu4e-occur-store-link))))
+
+       (dolist (binding bindings)
+         (apply #'evil-collection-define-key 'normal binding)))
+
+
+
+
+   #+end_src
+
+   #+RESULTS:

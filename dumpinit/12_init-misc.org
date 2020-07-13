@@ -4023,6 +4023,12 @@ _l_: load
               "Concise Oxford Thesaurus 2nd Ed. (Eng-Eng)"
               "Korean Medical Dic"
               "quick_english-korean"
+              "Hanja(Korean Hanzi) Dic"
+              "Korean Animal Medical Dic"
+              "Korean Dic"
+              "Korean-English Dic"
+              "Korean Law Dic"
+              "Kor-Eng Dictionary"
               ))
 
       )
@@ -4045,6 +4051,10 @@ _l_: load
 
 
   #+end_src
+
+  #+RESULTS:
+  : sdcv-pronounce-word
+
 * plantuml
   #+begin_src emacs-lisp
 

@@ -489,6 +489,7 @@
 
      (global-set-key [f3] 'mymail)
      (global-set-key [f13]  '(lambda ()  (interactive) (pop-to-buffer "*mu4e-headers*")))
+     (global-set-key [S-f3]  '(lambda ()  (interactive) (pop-to-buffer "*mu4e-headers*")))
      (global-set-key [M-f3] 'fetchmail) 
      (global-set-key [C-f3] 'mu)
 

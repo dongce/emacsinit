@@ -260,7 +260,7 @@
         (kill-new (replace-regexp-in-string "/" "\\" pathname nil t))
         )))
 
-  (setf nircmdexe "c:/centos7/nircmd.exe")
+  (setf nircmdexe "c:/centos8/nircmd-x64/nircmd.exe")
 
   (defun nircmd (cmd) 
     (interactive "MCmd " cmd) 
