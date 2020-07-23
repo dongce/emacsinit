@@ -574,3 +574,7 @@
 
 #+RESULTS:
 : An edit-server process is already running
+* modeline
+  #+begin_src emacs-lisp
+    (spacemacs/toggle-mode-line-minor-modes)
+  #+end_src

@@ -3460,3 +3460,13 @@
    #+RESULTS:
    : ((\.epdf\' . utf-8) (\.pdf\' . utf-8) (ob- . utf-8) (MERGE_MSG . utf-8) (COMMIT_EDITMSG . utf-8) (\(\`\|/\|\\\)dot-.*$ . utf-8) (\.latex\' . utf-8) (\.sql$ . utf-8) (\.tex\' . utf-8) (\.json\' . utf-8) (\.csv\' . utf-8) (\.yaml\' . utf-8) (\.yml\' . utf-8) (\.org\' . utf-8) (\.py\' . utf-8) (\.rb\' . utf-8) (itsalltext . utf-8) (\.tzst\' no-conversion . no-conversion) (\.zst\' no-conversion . no-conversion) (\.dz\' no-conversion . no-conversion) (\.txz\' no-conversion . no-conversion) (\.xz\' no-conversion . no-conversion) (\.lzma\' no-conversion . no-conversion) (\.lz\' no-conversion . no-conversion) (\.g?z\' no-conversion . no-conversion) (\.\(?:tgz\|svgz\|sifz\)\' no-conversion . no-conversion) (\.tbz2?\' no-conversion . no-conversion) (\.bz2\' no-conversion . no-conversion) (\.Z\' no-conversion . no-conversion) (\.elc\' . utf-8-emacs) (\.el\' . prefer-utf-8) (\.utf\(-8\)?\' . utf-8) (\.xml\' . xml-find-file-coding-system) (\(\`\|/\)loaddefs.el\' raw-text . raw-text-unix) (\.tar\' no-conversion . no-conversion) (\.po[tx]?\'\|\.po\. . po-find-file-coding-system) (\.\(tex\|ltx\|dtx\|drv\)\' . latexenc-find-file-coding-system) ( undecided))
 
+
+   
+* process
+  #+begin_src emacs-lisp
+    (setq confirm-kill-processes nil)
+    (setq confirm-kill-emacs nil)
+  #+end_src
+
+  #+RESULTS:
+  : t

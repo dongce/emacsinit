@@ -2222,7 +2222,7 @@ This works on the current region."
 * external
 
 #+BEGIN_SRC emacs-lisp
-  (setf processhacker "c:\\usr\\local\\editor\\emacsW32\\processhacker\\x64\\ProcessHacker.exe")
+  (setf processhacker "t:\\usr\\local\\processhacker\\processhacker-2.39-bin\\x64\\ProcessHacker.exe")
 
   (defun v3restart () 
     (interactive)
@@ -2235,13 +2235,13 @@ This works on the current region."
                  (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
               (remove-if-not 
                (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                               '(V3SP.exe 
-                                 V3Svc.exe 
-                                 V3PScan.exe 
-                                 V3Medic.exe 
-                                 ;;PaSvc.exe 
-                                 ;;PaTray.exe
-                                 )))  
+                                   '(V3SP.exe 
+                                     V3Svc.exe 
+                                     V3PScan.exe 
+                                     V3Medic.exe 
+                                     ;;PaSvc.exe 
+                                     ;;PaTray.exe
+                                     )))  
                (proced-process-attributes)))
       (w32-shell-execute 
        "" 
@@ -2265,8 +2265,8 @@ This works on the current region."
                  (format "-c -ctype process -cobject %d -caction terminate" (cdr  (assoc 'pid x )))) )
               (remove-if-not 
                (lambda (x) (member (intern ( cdr (assoc 'comm x ))) 
-                               '(rdpclip.exe
-                                 )))  
+                                   '(rdpclip.exe
+                                     )))  
                (proced-process-attributes)))
       (w32-shell-execute 
        "" 
@@ -2334,20 +2334,20 @@ This works on the current region."
     (interactive)
     (emamux:tmux-run-command nil "send-keys" "-t" "powershell" "get-process " "V3*,PA*" "C-m"))
 
-
-  (defun v3kill ()
-    (interactive)
-    (emamux:tmux-run-command nil "send-keys" "-t" "powershell" 
-  "foreach ( $id in (get-process V3*,PA*).ID) {
-    start-process -FilePath c:\\usr\\local\\editor\\emacsW32\\processhacker\\x64\\ProcessHacker.exe -ArgumentList \"-c -ctype process -cobject $ID -caction terminate\" -Verb open -WindowStyle Maximized
-  }" "C-m"))
-
   (defun kill (name)
     (interactive "S종료할프로세스명 :")
     (emamux:tmux-run-command nil "send-keys" "-t" "powershell" 
-(format  "foreach ( $id in (get-process %s).ID) {
-    start-process -FilePath c:\\usr\\local\\editor\\emacsW32\\processhacker\\x64\\ProcessHacker.exe -ArgumentList \"-c -ctype process -cobject $ID -caction terminate\" -Verb open -WindowStyle Maximized
-  }" name) "C-m"))
+                             (format  "foreach ( $id in (get-process %s).ID) {
+      start-process -FilePath %s -ArgumentList \"-c -ctype process -cobject $ID -caction terminate\" -Verb open -WindowStyle Maximized
+    }" 
+                                      name
+                                      processhacker
+                                      ) "C-m"))
+
+  (defun v3kill ()
+    (interactive)
+    (kill "V3*,PA*"))
+
 
 
   (defun iekill () 

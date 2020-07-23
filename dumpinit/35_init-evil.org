@@ -1310,6 +1310,17 @@
          (evil-define-key 'normal mu4e-headers-mode-map
            "?" mu4e-headers-mode-map)
          (evil-define-
+
+*** python
+
+     #+BEGIN_SRC emacs-lisp 
+
+       (evil-leader/set-key-for-mode 'python-mode
+         "ss" 'python-shell-send-statement)
+
+     #+END_SRC
+
+
 *** dired                 
     
 
@@ -1543,6 +1554,16 @@
    #+RESULTS:
    : iflipb-next-buffer
 
+** jump
+   #+begin_src emacs-lisp
+     (defun advice/save-imenu-jump (item)
+       (evil--jumps-push))
+
+     (advice-add 'imenu :before 'advice/save-imenu-jump)
+   #+end_src
+
+   #+RESULTS:
+
 * bind map                                                       :DEPRECATED:
 #+BEGIN_SRC emacs-lisp :tangle no
 
@@ -1568,7 +1589,6 @@
 
 #+RESULTS:
 : t
-
 
 
 * evil visual selection - evil 과 org mode 간에 상충 발생
@@ -1764,7 +1784,6 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
 #+end_quote
 
 * evil-collection
-
 ** mu4e
    #+begin_src emacs-lisp
      (evil-collection-init 'mu4e)

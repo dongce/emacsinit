@@ -183,6 +183,7 @@
 ("8triol"   "◁")
 ("8trior"   "▷")
 ("8triou"   "△")
+("8triod"   "▽")
 ("8frame"    "🜂")
      ("8rhazard"     "☢") ;;2622 radioactive sign (trefoil)
      ("8bhazard"     "☣") ;;2623 biohazard sign

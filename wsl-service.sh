@@ -3,6 +3,7 @@
 ##binddir##    mount --bind /mnt/$d /$d;
 ##binddir##done ;
 
+systemctl start sshd
 
 mount /dev/sdc /mnt/personal
 mount /dev/sdd /mnt/develop
@@ -40,7 +41,7 @@ tmux send -t  imapget "/opt/anaconda3/bin/python3 imapget.py" ENTER
 tmux new-session -s sage -d
 tmux send -t  sage "cd ~" ENTER
 tmux send -t  sage "conda activate sage" ENTER
-tmux send -t  sage "sage -n jupyter --allow-root" ENTER
+tmux send -t  sage "sage -n  jupyter  --ip '0.0.0.0'  --allow-root" ENTER
 
 
 
@@ -50,3 +51,10 @@ tmux send -t  powershell "net use \\\\10.239.23.100\\confidential /USER:di7979.k
 sleep 3
 tmux send -t  powershell "net use y: \\\\10.239.23.100\\confidential"                            ENTER
 sleep 3
+
+LOCALIP=$(ifconfig eth0 | grep "netmask" | awk '{print $2}')
+tmux send -t  powershell "c:\\usr\\local\\iputty\\putty.exe -load OPA0 -ssh root@${LOCALIP}  -pw root" ENTER
+sleep 3
+
+JUPYTERLINK=$(jupyter notebook list | grep "http" | awk -e '{print $1}' | sed -e "s/0.0.0.0/${LOCALIP}/")
+tmux send -t  powershell "t:\\usr\\local\\firefox\\firefox.exe ${JUPYTERLINK} " ENTER
