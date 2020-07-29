@@ -557,6 +557,12 @@
 #+RESULTS:
 | emacs-lock--kill-emacs-query-functions | persp-kill-emacs-query-function | server-kill-emacs-query-function |
 
+* modeline
+  #+begin_src emacs-lisp
+    ;; (spacemacs/toggle-mode-line-minor-modes)
+    (setf spaceline-minor-modes-p nil)
+    (message "toggle mode line minor modes")
+  #+end_src
 * serverstart
 #+begin_src emacs-lisp
 
@@ -574,7 +580,3 @@
 
 #+RESULTS:
 : An edit-server process is already running
-* modeline
-  #+begin_src emacs-lisp
-    (spacemacs/toggle-mode-line-minor-modes)
-  #+end_src

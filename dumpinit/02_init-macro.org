@@ -3147,6 +3147,7 @@ Version 2015-03-03"
                                       (string= btitle y)
                                     (string= btitle (elt x 1))))) (cdr  tagcontents)))
            )
+      (kill-new (elt  bookmark 1))
       (browse-url (elt  bookmark 1))
       )) 
 

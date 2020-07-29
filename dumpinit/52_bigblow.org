@@ -974,22 +974,22 @@
 
 
 * helm-org
+** deprecated 
+ #+BEGIN_SRC emacs-lisp :tangle no
+   ;;(defcustom helm-org-headings-max-depth 8)
 
-#+BEGIN_SRC emacs-lisp
-  ;;(defcustom helm-org-headings-max-depth 8)
+   (defun helm-org-headings (&optional n)
+     (interactive "p")
+     (if (> n  1)
+         (progn
+           (make-local-variable 'helm-org-headings-max-depth)
+           (setf helm-org-headings-max-depth n)))
+     (helm-org-in-buffer-headings))
 
-  (defun helm-org-headings (&optional n)
-    (interactive "p")
-    (if (> n  1)
-        (progn
-          (make-local-variable 'helm-org-headings-max-depth)
-          (setf helm-org-headings-max-depth n)))
-    (helm-org-in-buffer-headings))
+ #+END_SRC
 
-#+END_SRC
-
-#+RESULTS:
-: helm-org-headings
+ #+RESULTS:
+ : helm-org-headings
 
 * org-bullets
 
@@ -1749,7 +1749,7 @@
                                      filename))
                 (arglst (split-string org-attach-screenshot-command-line " "))
                 (cmd (car arglst))
-                linkfilename status)
+                linkfilename )
            (assert (executable-find cmd) nil
                    "Cannot find executable '%s'. Please check org-attach-screenshot-command-line"
                    cmd)
@@ -1770,11 +1770,8 @@
              (let* ((scrpath (convert-standard-filename  (expand-file-name scrfilename)))
                     (args (mapcar (lambda (x) (replace-regexp-in-string "%f" (win-path-convert-file-name scrpath) x t t))
                                   (cdr arglst))))
-               (setq status (apply 'call-process cmd nil nil nil args))
+               (powershell (s-join " " (cons cmd  args)))
                (if prfx (make-frame-visible))
-               (unless (equal status 0)
-                 (error "screenshot command exited with status %d: %s" status
-                        (mapconcat 'identity (cons cmd args) " ")) )
                (message "wrote screenshot to %s" scrpath))
              (when (or (eq org-attach-screenshot-auto-refresh 'always)
                        (and (eq org-attach-screenshot-auto-refresh 'ask)
