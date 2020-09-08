@@ -3,11 +3,23 @@
 ##binddir##    mount --bind /mnt/$d /$d;
 ##binddir##done ;
 
+
+for i in $(pstree -np -s $$ | grep -o -E '[0-9]+'); do
+    if [[ -e "/run/WSL/${i}_interop" ]]; then
+        export WSL_INTEROP=/run/WSL/${i}_interop
+    fi
+done
+
+wsl.exe -d sdc-drive
+wsl.exe -d sdd-drive
+
 systemctl start sshd
 
 
 mount /dev/sdc /mnt/personal
 mount /dev/sdd /mnt/develop
+mount -t cifs //10.239.23.100/confidential /mnt/y/ -ousername=di7979.kim,pass=1q2w3e4r%,iocharset=utf8
+
 
 cat /etc/resolv.conf | grep "nameserver" | awk '{print $2"\t"$1}' >> /etc/hosts
 
@@ -48,10 +60,10 @@ tmux send -t  sage "sage -n  jupyter  --ip '0.0.0.0'  --allow-root" ENTER
 
 
 ##tmux send -t  powershell "net use * /del"                                                        ENTER
-tmux send -t  powershell "net use \\\\10.239.23.100\\confidential /USER:di7979.kim 1q2w3e4r%" ENTER
-sleep 3
-tmux send -t  powershell "net use y: \\\\10.239.23.100\\confidential"                            ENTER
-sleep 3
+##too-slow##tmux send -t  powershell "net use \\\\10.239.23.100\\confidential /USER:di7979.kim 1q2w3e4r%" ENTER
+##too-slow##sleep 3
+##too-slow##tmux send -t  powershell "net use y: \\\\10.239.23.100\\confidential"                            ENTER
+##too-slow##sleep 3
 
 LOCALIP=$(ifconfig eth0 | grep "netmask" | awk '{print $2}')
 #usewindowterminal#tmux send -t  powershell "c:\\usr\\local\\iputty\\putty.exe -load OPA0 -ssh root@${LOCALIP}  -pw root" ENTER

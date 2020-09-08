@@ -4,6 +4,6 @@ After=sshd.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/bash /opt/site-lisp/init/wsl-service.sh 2>&1 > /dev/null
+ExecStart=/opt/site-lisp/init/wslenvstart.sh
 
 [Install]

@@ -90,6 +90,7 @@
         "o4b" 'switch-window-then-display-buffer
         "o40" 'switch-window-then-kill-buffer
 
+        "d" 'dired
         "," 'smex
         "." 'embrace-commander
         "/" 'evil-replace-word-selection
@@ -1528,6 +1529,18 @@
        :evil-states (normal lisp)
        :major-modes (emacs-lisp-mode))) )
    #+END_SRC
+
+   #+RESULTS:
+   : t
+
+** enriched mode
+   #+begin_src emacs-lisp
+       (spacemacs/set-leader-keys-for-minor-mode 'enriched-mode
+         "o" facemenu-keymap)
+   #+end_src
+
+   #+RESULTS:
+
 ** evil start
 
    #+BEGIN_SRC emacs-lisp
@@ -1786,7 +1799,15 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
 * evil-collection
 ** mu4e
    #+begin_src emacs-lisp
-     (evil-collection-init 'mu4e)
+
+     (add-to-list 'load-path "/opt/site-lisp/elpa/evil-collection-20200711.2026")
+
+     (use-package evil-collection
+       :demand 
+       :config (evil-collection-init 'mu4e)
+       )
+
+
 
      (let ((bindings `((mu4e-view-mode-map 
                         "*"             bmkp-mu4e-view

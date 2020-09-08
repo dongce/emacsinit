@@ -580,7 +580,12 @@
   (global-set-key [f21] 'xah-clear-register)
 
   (global-set-key [f15] 'ivy-resume)
+  (global-set-key [S-f5] 'ivy-resume)
   (global-set-key [mouse-8] 'resume)
+
+  (global-unset-key "\M-o" )
+  (global-set-key "\M-o" 'other-window)
+  ;; facemenu-keymap  [[file:35_init-evil.org::*enriched mode][enriched mode]] 
 
 #+END_SRC
 
@@ -744,8 +749,8 @@
    #+BEGIN_SRC emacs-lisp
    (ace-link-setup-default)
    #+END_SRC
-** toggle maximize-buffer 
-#+begin_src emacs-lisp
+** toggle maximize-buffer :deprecated:
+#+begin_src emacs-lisp :tangle on 
 
   (global-set-key [f14] 'spacemacs/toggle-maximize-buffer)
   (global-set-key [S-f14] (lambda () (interactive) (save-mark-and-excursion (switch-to-buffer-other-window "*Occur*") (other-window 1))))

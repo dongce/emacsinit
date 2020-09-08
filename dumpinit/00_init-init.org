@@ -216,26 +216,43 @@
 * WSL path converter
 
 ** win → wsl 
- #+begin_src emacs-lisp
- (require 'wsl-path)
+*** wsl-path package 
+  #+begin_src emacs-lisp 
+  (require 'wsl-path)
 
- ;;(wsl-path-convert-file-name "/mnt/c/xxx")
- #+end_src
+  ;;(wsl-path-convert-file-name "/mnt/c/xxx")
+  #+end_src
 
- #+RESULTS:
- : wsl-path
+*** elisp + wslpath 
+       #+begin_src  emacs-lisp :tangle no
+         (defun wsl-path-convert-file-name (p)
+          (shell-command-to-string (format "wslpath -u \"%s\"" p )))
+       #+end_src
+
+  #+RESULTS:
+  : wsl-path-convert-file-name
 
 ** wsl → win
 
-   #+begin_src  emacs-lisp
-     (defun win-path-convert-file-name (p)
-       (decode-coding-string
-        (base64-decode-string
-         (pyutil-wslpath
-          (base64-encode-string
-           (encode-coding-string p 'utf-8)))) 'utf-8))
+*** pymacs 
+    #+begin_src  emacs-lisp :tangle no
+      (defun win-path-convert-file-name (p)
+        (decode-coding-string
+         (base64-decode-string
+          (pyutil-wslpath
+           (base64-encode-string
+            (encode-coding-string p 'utf-8)))) 'utf-8))
 
-   #+end_src
+    #+end_src
 
-   #+RESULTS:
-   : win-path-convert-file-name
+*** elisp + wslpath
+
+     #+begin_src emacs-lisp 
+       (defun win-path-convert-file-name (p)
+        (shell-command-to-string (format "wslpath -w \"%s\"" p )))
+     #+end_src
+
+
+
+    #+RESULTS:
+    : win-path-convert-file-name

@@ -2959,8 +2959,8 @@
 
 *** katakana table
     
-    [[file:u:/orgdir/misc/Japanese%20Keyboard%20Layouts.maff][file:u:/orgdir/misc/Japanese Keyboard Layouts.maff]]
-    [[file:u:/orgdir/misc/Japanese_kana_derivation_44270.png][file:u:/orgdir/misc/Japanese_kana_derivation_44270.png]]
+    [[file:/mnt/develop/orgdir/misc/Japanese%20Keyboard%20Layouts.maff][file:/mnt/develop/orgdir/misc/Japanese Keyboard Layouts.maff]]
+    [[file:/mnt/develop/orgdir/misc/Japanese_kana_derivation_44270.png][file:/mnt/develop/orgdir/misc/Japanese_kana_derivation_44270.png]]
 
 
     #+BEGIN_SRC emacs-lisp

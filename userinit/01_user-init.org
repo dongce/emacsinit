@@ -580,3 +580,9 @@
 
 #+RESULTS:
 : An edit-server process is already running
+* localvariable
+  #+begin_src emacs-lisp
+ 
+(setf helm-org-headings-max-depth 4)
+(setf lsp-ui-doc-enable nil)
+  #+end_src
