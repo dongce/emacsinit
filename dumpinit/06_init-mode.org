@@ -653,3 +653,11 @@
   #+end_src
 
   #+RESULTS:
+
+* enriched-mode
+  #+begin_src emacs-lisp
+    (require 'enriched)
+  #+end_src
+
+  #+RESULTS:
+  : enriched

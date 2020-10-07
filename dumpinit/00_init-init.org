@@ -235,7 +235,7 @@
 ** wsl → win
 
 *** pymacs 
-    #+begin_src  emacs-lisp :tangle no
+    #+begin_src  emacs-lisp 
       (defun win-path-convert-file-name (p)
         (decode-coding-string
          (base64-decode-string
@@ -245,11 +245,12 @@
 
     #+end_src
 
-*** elisp + wslpath
-
-     #+begin_src emacs-lisp 
+*** CANCELED elisp + wslpath
+    - State "CANCELED"   from              [2020-09-11 금 09:46] \\
+      느리고 마운트된 것을 처리하지 못함
+     #+begin_src emacs-lisp :tangle no
        (defun win-path-convert-file-name (p)
-        (shell-command-to-string (format "wslpath -w \"%s\"" p )))
+        (s-trim (shell-command-to-string (format "wslpath -w \"%s\"" (encode-coding-string p 'utf-8) ))))
      #+end_src
 
 

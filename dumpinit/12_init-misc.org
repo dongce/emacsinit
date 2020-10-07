@@ -794,7 +794,7 @@ is run).
    #+END_SRC
 
 * secret
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle on
 
     (use-package simple-secrets
       :demand

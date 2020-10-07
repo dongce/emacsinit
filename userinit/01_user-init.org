@@ -586,3 +586,78 @@
 (setf helm-org-headings-max-depth 4)
 (setf lsp-ui-doc-enable nil)
   #+end_src
+* lsp
+   
+** checker, dap
+   #+begin_src emacs-lisp
+     (setq lsp-diagnostics-provider :none) 
+     (setq dap-python-terminal "xterm -e ")
+
+     (setq lsp-signature-auto-activate nil)
+   #+end_src
+
+   #+RESULTS:
+   
+   
+
+* yankpad
+  
+** yankpad
+  #+BEGIN_SRC emacs-lisp 
+
+    (use-package yankpad
+      :ensure t
+      ;;:defer 10
+      :init
+      (setq yankpad-file "/mnt/develop/orgdir/yankpad.org")
+      :config
+      (add-to-list 'hippie-expand-try-functions-list #'yankpad-expand)
+      (add-to-list 'company-backends #'company-yankpad)
+      )
+
+    (define-key read-expression-map [(tab)] 'hippie-expand)
+    (define-key read-expression-map [(shift tab)] 'hippie-unexpand)
+
+
+
+ #+END_SRC
+
+ #+RESULTS:
+ : hippie-unexpand
+
+ 
+
+* newline
+  #+begin_src emacs-lisp
+    (use-hard-newlines 0)
+  #+end_src
+
+
+* flychecker
+  #+begin_src emacs-lisp
+    (remove-from-list 'flycheck-checkers 'python-pycompile )
+    (add-to-list 'flycheck-checkers 'python-pycompile )
+  #+end_src
+
+  
+
+* history
+  #+begin_src  emacs-lisp
+    (save-place-mode t)
+    (savehist-mode t)
+  #+end_src
+  
+
+* temp macro
+  #+begin_src emacs-lisp
+    (defun iffm5logfileline ()
+      (interactive)
+      (while (re-search-forward "--iffm5logfileline.*")
+        (replace-match
+         (format "--iffm5logfileline--text_io.put_line(\"%s:%d\" );"
+                 (file-name-nondirectory (buffer-file-name))
+                 (line-number-at-pos)))))
+  #+end_src
+
+  #+RESULTS:
+  : iffm5logfileline

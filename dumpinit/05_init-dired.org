@@ -843,16 +843,6 @@ open and unsaved."
 
 ** 유용한 폴더 
    C:\Users\dongil\AppData\Local\Microsoft\Windows\Temporary Internet Files\Content.Outlook
-* sorting
-  #+BEGIN_SRC emacs-lisp
-    (use-package dired-quick-sort
-     :demand
-      :config
-      (dired-quick-sort-setup)) 
-  #+END_SRC
-
-  #+RESULTS:
-  : t
 * dired+
   
 #+begin_src emacs-lisp
@@ -868,3 +858,14 @@ open and unsaved."
   :bind (:map dired-mode-map
               ("/" . dired-narrow)))
 #+end_src
+
+* sorting
+  #+BEGIN_SRC emacs-lisp
+    (use-package dired-quick-sort
+     :demand
+      :config
+      (dired-quick-sort-setup)) 
+  #+END_SRC
+
+  #+RESULTS:
+  : t

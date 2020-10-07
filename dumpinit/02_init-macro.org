@@ -2,54 +2,56 @@
 
 * compatability 
 #+BEGIN_SRC emacs-lisp
-(defmacro w32-unix-eval ( w32 unix )
-  (if (eq window-system 'w32)
-      `(progn ,@w32)
-    `(progn ,@unix)))
+  (defmacro w32-unix-eval ( w32 unix )
+    (if (eq window-system 'w32)
+        `(progn ,@w32)
+      `(progn ,@unix)))
 
-(defmacro when-os (os &rest body)
-  (declare (indent defun)
-           (debug t))
-  `(when (if (listp ,os) (memq system-type ,os) (eq system-type ,os))
-     ,@body))
-
-
-
-(w32-unix-eval
- (
-  (defun append-path (p)
-    (let (( path (file-truename p)))
-      (progn 
-        (setq exec-path (remove-duplicates (append  exec-path (list path) )))
-        (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path))))))
+  (defmacro when-os (os &rest body)
+    (declare (indent defun)
+             (debug t))
+    `(when (if (listp ,os) (memq system-type ,os) (eq system-type ,os))
+       ,@body))
 
 
-  (defun prepend-path (p)
-    (let (( path (file-truename p)))
-      (progn 
-        (setq exec-path (remove-duplicates (append   (list path) exec-path)))
-        (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path))))))
-  )
 
- (
-  (defun append-path (p)
-    (let (( path (file-truename p)))
-      (progn 
-        (setq exec-path (remove-duplicates (append  exec-path (list path) )))
-        (setenv "PATH" (s-join ":" exec-path)))))
+  (w32-unix-eval
+   (
+    (defun append-path (p)
+      (let (( path (file-truename p)))
+        (progn 
+          (setq exec-path (remove-duplicates (append  exec-path (list path) )))
+          (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path))))))
 
 
-  (defun prepend-path (p)
-    (let (( path (file-truename p)))
-      (progn 
-        (setq exec-path (remove-duplicates (append   (list path) exec-path)))
-        (setenv "PATH" (s-join ";"  exec-path)))))
+    (defun prepend-path (p)
+      (let (( path (file-truename p)))
+        (progn 
+          (setq exec-path (remove-duplicates (append   (list path) exec-path)))
+          (setenv "PATH" (s-join ";" (mapcar (lambda (x) (replace-regexp-in-string "/" "\\" x nil t )) exec-path))))))
+    )
+
+   (
+    (defun append-path (p)
+      (let (( path (file-truename p)))
+        (progn 
+          (setq exec-path (remove-duplicates (append  exec-path (list path) )))
+          (setenv "PATH" (s-join ":" exec-path)))))
 
 
-  )
+    (defun prepend-path (p)
+      (let (( path (file-truename p)))
+        (progn 
+          (setq exec-path (remove-duplicates (append   (list path) exec-path)))
+          (setenv "PATH" (s-join ";"  exec-path)))))
 
- )
 
+    )
+
+   )
+
+  (when-os 'gnu/linux
+    (defun w32-set-clipboard-data (x) ))
 
 
 #+END_SRC

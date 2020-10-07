@@ -8,8 +8,7 @@
    #+END_SRC
 ** smerge
    #+BEGIN_SRC emacs-lisp
-
- (require 'smerge-mode)
+     (require 'smerge-mode)
    #+END_SRC 
 
 ** excommand
@@ -90,7 +89,7 @@
         "o4b" 'switch-window-then-display-buffer
         "o40" 'switch-window-then-kill-buffer
 
-        "d" 'dired
+        ;; "d" 'dired
         "," 'smex
         "." 'embrace-commander
         "/" 'evil-replace-word-selection
@@ -1652,7 +1651,7 @@
   (setq switch-window-shortcut-style 'qwerty)
   (setq switch-window-querty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "i" "o"))
   :config
-  (global-set-key (kbd "<f12>") 'vterm-toggle)
+  (global-set-key (kbd "<f12>") 'dired)
   (global-set-key (kbd "<f22>") 'switch-to-buffer)
   ;;(global-set-key (kbd "<S-f12>") 'switch-window-then-find-file)
   (global-set-key (kbd "<M-f12>") 'switch-window-then-dired)

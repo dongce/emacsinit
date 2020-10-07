@@ -2,9 +2,10 @@
 
 * babel
 #+begin_src emacs-lisp
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((restclient . t)))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((restclient . t)
+     (latex . t)))
 #+end_src
 
 #+RESULTS:
@@ -44,7 +45,6 @@
 
    #+RESULTS:
    : /opt/ccls/bin/ccls
-
 * magit
   #+begin_src emacs-lisp
     (setf magit-repository-directories
