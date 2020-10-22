@@ -1189,6 +1189,8 @@
         (use-package evil-org :demand)
         (evil-define-key '(normal insert visual ) 'evil-org-mode
           (kbd "<f2>") 'org-insert-structure-template
+          (kbd "<kp-multiply>") 'org-insert-star
+          (kbd "<kp-subtract>") 'wsl-open-org-link
           )
 
         (evil-define-key 'normal outline-mode-map

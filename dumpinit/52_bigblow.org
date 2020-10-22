@@ -38,7 +38,7 @@
      (add-hook 'org-mode-hook 'turn-on-font-lock) ; Org buffers only
 
 
-          ;;; https://github.com/keelerm84/.emacs.d
+               ;;; https://github.com/keelerm84/.emacs.d
                                              ; Make sure the code in begin_src blocks is colorized both when
                                              ; editing and when exporting.
      ;;(require 'ox-latex)
@@ -48,7 +48,7 @@
 
 
      (setq org-log-done 'time)
-     (setq org-default-notes-file "/mnt/u/orgdir/notes.org")
+     (setq org-default-notes-file "/mnt/develop/orgdir/notes.org")
 
      ;; (setq org-directory "~/Documents/Dropbox/OrgFiles/")
      ;; (setq org-agenda-files `(,org-directory))
@@ -103,17 +103,15 @@
 
 
 
-     (use-package ox-reveal
-       :demand
-       )
-     (use-package ox-html5presentation
-       :demand
-       )
-     (use-package org-protocol
-       :demand
+     (use-package ox-reveal :demand)
+     (use-package ox-html5presentation :demand)
+     (use-package org-protocol :demand)
+
+     (use-package company-org-block
+       :config
+       (spacemacs|add-company-backends :backends company-org-block :modes org-mode))
 
 
-       )
    #+END_SRC
 
 ** custom insert heading
@@ -895,83 +893,6 @@
   ;;
 #+END_SRC
 
-* org-evil 
-
-
- #+BEGIN_SRC emacs-lisp
-   (use-package org-evil)
- #+END_SRC
- 
-  different evil-org 
-  [[https://github.com/GuiltyDolphin/org-evil][GitHub - GuiltyDolphin/org-evil: Evil extensions for Org-mode.]]
-
-** org-evil
-
- Evil extensions for Org-mode.
-
-** Getting Started
-
-*** Moving Around
-
- =org-evil= aims to make motion in Org intuitive for Evil users,
- so you can expect motions such as ~$~ to be similar to ~evil-end-of-line~,
- ~^~ to ~evil-first-non-blank~, and so on and so forth.
-
-**** General Motions
-
- The following are the default motion bindings for =org-evil-motion=, use
- ~M-x describe-function BINDING~ for more information on each motion.
-
- - ~gH~ :: ~org-evil-motion-up-heading-top~
- - ~gh~ :: ~org-evil-motion-up-heading~
- - ~{~  :: ~org-evil-motion-backward-heading~
- - ~}~  :: ~org-evil-motion-forward-heading~
-
-**** Block Motions
-
- The following bindings apply when inside an Org block:
-
- - ~(~ :: ~org-evil-block-beginning-of-block~
- - ~)~ :: ~org-evil-block-end-of-block~
-
-**** Table Motions
-
- The following bindings apply when inside an Org table:
-
- - ~gR~ :: ~org-evil-table-goto-line-from-bottom~
- - ~gc~ :: ~org-evil-table-goto-column~
- - ~gr~ :: ~org-evil-table-goto-line~
- - ~|~  :: ~org-evil-table-goto-column~
-
-*** Operators
-
-**** Heading Operators
-
- The following bindings apply when at a heading:
-
- - ~<~ :: ~org-evil-promote~
- - ~>~ :: ~org-evil-demote~
-
-**** Table Operators
-
- The following bindings apply when inside an Org table:
-
- - ~<~ :: ~org-evil-table-move-column-left~
- - ~>~ :: ~org-evil-table-move-column-right~
- - ~D~ :: ~org-evil-table-kill-row-to-end~
- - ~O~ :: ~org-evil-table-insert-row-above~
- - ~o~ :: ~org-evil-table-insert-row-below~
-
-*** Text Objects
-
-**** Block Text Objects
-
- The following text objects are enabled within an Org block:
-
- - ~ab~ :: ~org-evil-block-a-block~
- - ~ib~ :: ~org-evil-block-inner-block~
-
-
 
 * helm-org
 ** deprecated 
@@ -1572,7 +1493,7 @@
        (switch-to-buffer ξbuf)
        (org-mode)
        (setq buffer-offer-save t)
-       (setq default-directory "t:/orgdir/")
+       (setq default-directory "/mnt/develop/orgdir/")
        (write-file "" t)
        ))
 
@@ -1669,7 +1590,7 @@
       org-caldav-url "http://localhost:1080/users"
       org-caldav-calendar-id "di7979.kim@hanwhasystems.com/calendar"
       org-caldav-uuid-extension ".EML"
-      org-caldav-inbox "/mnt/u/orgdir/caldav.org"
+      org-caldav-inbox "/mnt/develop/orgdir/caldav.org"
       )
    #+END_SRC
 * evil conflict

@@ -33,10 +33,10 @@ sleep 3
 tmux send -t  powershell "echo DONE" ENTER
 
 
-#/opt/local/bin/mu init  --my-address=di7979.kim@hanwhasystems.com --maildir=/mnt/f/PERSONAL/2020/$(date +%m)
+#/opt/local/bin/mu init  --my-address=di7979.kim@hanwhasystems.com --maildir=/mnt/personal/mail/
 /opt/local/bin/mu index --nocleanup --lazy-check
 tmux new-session -s imapget -d
-tmux send -t  imapget "cd /mnt/develop/misc/eaglemail" ENTER
+tmux send -t  imapget "cd /mnt/develop/misc/hanwhamail" ENTER
 tmux send -t  imapget "export TMPDIR=/tmp/" ENTER
 tmux send -t  imapget "/opt/anaconda3/bin/python3 imapget.py" ENTER
 

@@ -800,7 +800,7 @@ is run).
       :demand
       ;; :commands secret-lookup-clipboard secret-new
       :init 
-      (setq secret-password-file "/mnt/u/orgdir/secrets.gpg")
+      (setq secret-password-file "/mnt/develop/orgdir/secrets.gpg")
       :config
       (secret-load-keys))
   #+END_SRC
@@ -4002,11 +4002,11 @@ _l_: load
   : openfile
 * password file
   #+BEGIN_SRC emacs-lisp
-  (setq espy-password-file "u:/orgdir/password.org.gpg")
+  (setq espy-password-file "/mnt/develop/orgdir/password.org.gpg")
   #+END_SRC
 
   #+RESULTS:
-  : u:/orgdir/password.org.gpg
+  : /mnt/develop/orgdir/password.org.gpg
 * SDCV dictionary
 
   #+begin_src emacs-lisp

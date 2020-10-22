@@ -58,7 +58,7 @@
             ("~/" . 0 )
             ("/opt/site-lisp/init/" . 0 )
             ;; org progject
-            ("/mnt/u/orgdir/" . 0 )
+            ("/mnt/develop/orgdir/" . 0 )
             ("/mnt/e/kdxbuild/" . 0 )
             ;; LTS
             ("/mnt/t/iff/src/kdxbuild-pdf2pda/" . 0 )
@@ -68,4 +68,4 @@
   #+end_src
 
   #+RESULTS:
-  : ((/mnt/t/gitdir/DLP_LINK11/ . 0) (/mnt/t/gitdir/DLP_ISDL/ . 0) (/mnt/t/gitdir/ltslph1iffmode5 . 0) (/mnt/t/KSS3/HCI_LINK11/ . 0) (/mnt/t/KSS3/HCI_ISDL/ . 0) (~/ . 0) (/opt/site-lisp/init/ . 0) (/mnt/u/orgdir/ . 0) (/mnt/e/kdxbuild/ . 0) (/mnt/t/LTS/LPH-I/IFFMODE5 . 1))
+  : ((/mnt/t/gitdir/DLP_LINK11/ . 0) (/mnt/t/gitdir/DLP_ISDL/ . 0) (/mnt/t/gitdir/ltslph1iffmode5 . 0) (/mnt/t/KSS3/HCI_LINK11/ . 0) (/mnt/t/KSS3/HCI_ISDL/ . 0) (~/ . 0) (/opt/site-lisp/init/ . 0) (/mnt/develop/orgdir/ . 0) (/mnt/e/kdxbuild/ . 0) (/mnt/t/LTS/LPH-I/IFFMODE5 . 1))
