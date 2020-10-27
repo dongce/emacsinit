@@ -3,6 +3,8 @@
 ##binddir##    mount --bind /mnt/$d /$d;
 ##binddir##done ;
 
+LOCALIP=$(ifconfig eth0 | grep "netmask" | awk '{print $2}')
+
 systemctl start sshd
 
 
@@ -20,7 +22,8 @@ sleep 3
 tmux send -t  powershell "./powershell.exe -NoExit -Command  Remove-Module -Name PSReadline" ENTER
 sleep 3
 
-
+tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -RemoveHost -hostname centos8.wsl" ENTER
+tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -AddHost -ip ${LOCALIP} -hostnam centos8.wsl" ENTER
 
 tmux send -t  powershell  "start-process -filepath \"C:/program files/Elecom_Mouse_Driver/ElcMouseApl.exe\"" ENTER
 sleep 3
@@ -55,7 +58,6 @@ tmux send -t  sage "sage -n  jupyter  --ip '0.0.0.0'  --allow-root" ENTER
 ##too-slow##tmux send -t  powershell "net use y: \\\\10.239.23.100\\confidential"                            ENTER
 ##too-slow##sleep 3
 
-LOCALIP=$(ifconfig eth0 | grep "netmask" | awk '{print $2}')
 #usewindowterminal#tmux send -t  powershell "c:\\usr\\local\\iputty\\putty.exe -load OPA0 -ssh root@${LOCALIP}  -pw root" ENTER
 #usewindowterminal#sleep 3
 
