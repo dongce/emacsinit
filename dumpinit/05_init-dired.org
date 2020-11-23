@@ -122,7 +122,7 @@
        (apply
         #'async-start-process
         "7zip" "7za" nil "a" "-r" 
-        (format "%s.7z" zipfilename)
+        (format "%s.7z" (if (string-equal "" zipfilename) (car fileNames) zipfilename ))
         fileNames)))
 
 
@@ -260,7 +260,7 @@
         (kill-new (replace-regexp-in-string "/" "\\" pathname nil t))
         )))
 
-  (setf nircmdexe "c:/centos8/nircmd-x64/nircmd.exe")
+  (setf nircmdexe "v:/centos8/nircmd-x64/nircmd.exe")
 
   (defun nircmd (cmd) 
     (interactive "MCmd " cmd) 
@@ -397,7 +397,7 @@
             (epydoc "c:/usr/local/python27/pythonw.exe" "c:/usr/local/python27/Scripts/epydocgui")
             (pinta "c:/Program Files/Pinta/Pinta.exe")
             (momat "t:/momat/momat.exe")
-            (putty "c:/usr/local/editor/emacsW32/iputty/putty.exe")
+            (putty "d:/usr/local/iputty/putty.exe")
             (eclipsejee "t:/usr/local/eclipsejee/eclipse.exe")
             (vs2005 "C:/usr/microsoft/vs2005/IDE/Common7/IDE/devenv.exe")
             (filesplit   "t:/usr/local/filesplitter/Free-File-Splitter-v5.0.1189.exe")

@@ -486,6 +486,8 @@
     (setenv "DISPLAY" "nameserver:0.0")
     (append-path  "/opt/local/bin"))
 
+
+  (setenv "TEXINPUTS" ".:/usr/share/texlive/texmf-dist//:/opt/latex//")
   (when-os 'windows-nt
     (setenv "MAGICK_CODER_MODULE_PATH" "c:\\msys264\\mingw64\\lib\\ImageMagick-7.0.8\\modules-Q16HDRI\\coders")
     (setenv "MAGICK_HOME" "c:\\msys264\\mingw64")
@@ -647,7 +649,10 @@
     (savehist-mode t)
   #+end_src
   
-
+* dim other window
+ #+begin_src emacs-lisp
+   (auto-dim-other-buffers-mode t)
+ #+end_src 
 * temp macro
   #+begin_src emacs-lisp
     (defun iffm5logfileline ()

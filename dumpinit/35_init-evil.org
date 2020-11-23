@@ -462,44 +462,44 @@
 
 ** kp map
    #+BEGIN_SRC emacs-lisp
-  ;; kp-map 
-  (define-key evil-normal-state-map [kp-0] 'helm-smex)
-  (define-key evil-normal-state-map [kp-1] 'select-window-1)
-  (define-key evil-normal-state-map [kp-2] 'select-window-2)
-  (define-key evil-normal-state-map [kp-3] 'select-window-3)
-  (define-key evil-normal-state-map [kp-4] 'evil-prev-buffer)
-  (define-key evil-normal-state-map [kp-5] 'helm-mini)
-  (define-key evil-normal-state-map [kp-6] 'evil-next-buffer)
-  (define-key evil-normal-state-map [kp-8] 'split-window-below)
-  (define-key evil-normal-state-map [kp-add] 'evil-paste-after)
-  (define-key evil-normal-state-map [kp-enter] 'kmacro-end-and-call-macro)
-  (define-key evil-normal-state-map [kp-decimal] 'winexe)
-  (define-key evil-normal-state-map [kp-divide] 'twin)
-  (define-key evil-normal-state-map [kp-subtract] 'recenter-top-bottom)
-  (define-key evil-normal-state-map [kp-7] 'copy-to-register-1)
-  (define-key evil-normal-state-map [kp-9] 'paste-from-register-1)
+     ;; kp-map 
+     ;; (define-key evil-normal-state-map [kp-0]     'helm-smex)
+     (define-key evil-normal-state-map [kp-0]        'copy-region-strip-left)
+     (define-key evil-normal-state-map [kp-1]        'select-window-1)
+     (define-key evil-normal-state-map [kp-2]        'select-window-2)
+     (define-key evil-normal-state-map [kp-3]        'select-window-3)
+     (define-key evil-normal-state-map [kp-4]        'evil-prev-buffer)
+     (define-key evil-normal-state-map [kp-5]        'helm-mini)
+     (define-key evil-normal-state-map [kp-6]        'evil-next-buffer)
+     (define-key evil-normal-state-map [kp-8]        'split-window-below)
+     (define-key evil-normal-state-map [kp-add]      'evil-paste-after)
+     (define-key evil-normal-state-map [kp-enter]    'kmacro-end-and-call-macro)
+     (define-key evil-normal-state-map [kp-decimal]  'winexe)
+     (define-key evil-normal-state-map [kp-subtract] 'recenter-top-bottom)
+     (define-key evil-normal-state-map [kp-7]        'copy-to-register-1)
+     (define-key evil-normal-state-map [kp-9]        'paste-from-register-1)
+     (define-key evil-normal-state-map [kp-divide]   'ibuffer)
 
-  (define-key evil-visual-state-map [kp-0] 'helm-smex)
-  (define-key evil-visual-state-map [kp-1] 'select-window-1)
-  (define-key evil-visual-state-map [kp-2] 'select-window-2)
-  (define-key evil-visual-state-map [kp-3] 'select-window-3)
-  (define-key evil-visual-state-map [kp-4] 'evil-prev-buffer)
-  (define-key evil-visual-state-map [kp-5] 'helm-mini)
-  (define-key evil-visual-state-map [kp-6] 'evil-next-buffer)
-  (define-key evil-visual-state-map [kp-add] 'evil-yank)
-  (define-key evil-visual-state-map [kp-enter] 'evil-paste-after)
-  (define-key evil-visual-state-map [kp-decimal] 'winexe)
-  (define-key evil-visual-state-map [kp-divide] 'twin)
-  (define-key evil-visual-state-map [kp-8] 'split-window-below)
-  (define-key evil-visual-state-map [kp-subtract] 'recenter-top-bottom)
-  (define-key evil-visual-state-map [kp-7] 'copy-to-register-1)
-  (define-key evil-visual-state-map [kp-9] 'paste-from-register-1)
-
-
+     ;; (define-key evil-visual-state-map [kp-0]     'helm-smex)
+     (define-key evil-visual-state-map [kp-0]        'copy-region-strip-left) 
+     (define-key evil-visual-state-map [kp-1]        'select-window-1)
+     (define-key evil-visual-state-map [kp-2]        'select-window-2)
+     (define-key evil-visual-state-map [kp-3]        'select-window-3)
+     (define-key evil-visual-state-map [kp-4]        'evil-prev-buffer)
+     (define-key evil-visual-state-map [kp-5]        'helm-mini)
+     (define-key evil-visual-state-map [kp-6]        'evil-next-buffer)
+     (define-key evil-visual-state-map [kp-add]      'evil-yank)
+     (define-key evil-visual-state-map [kp-enter]    'evil-paste-after)
+     (define-key evil-visual-state-map [kp-decimal]  'winexe)
+     (define-key evil-visual-state-map [kp-8]        'split-window-below)
+     (define-key evil-visual-state-map [kp-subtract] 'recenter-top-bottom)
+     (define-key evil-visual-state-map [kp-7]        'copy-to-register-1)
+     (define-key evil-visual-state-map [kp-9]        'paste-from-register-1)
+     (define-key evil-visual-state-map [kp-divide]   'ibuffer)
    #+END_SRC
 
    #+RESULTS:
-   : paste-from-register-1
+   : ibuffer
 
 ** evil surround
    #+BEGIN_SRC emacs-lisp
@@ -1782,8 +1782,9 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
 
      (use-package evil-collection
        :demand 
-       :config (evil-collection-init 'mu4e)
-       )
+       :config
+
+       (evil-collection-init '(scroll-lock mu4e)))
 
 
 
@@ -1810,7 +1811,6 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
 
        (dolist (binding bindings)
          (apply #'evil-collection-define-key 'normal binding)))
-
 
 
 

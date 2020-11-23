@@ -61,7 +61,10 @@
    (use-package  company
      :demand
      :init
-     (setq company-backends (delete 'company-semantic company-backends))
+     (remove-from-list 'company-backends 'company-semantic )
+     (add-to-list 'company-backends 'company-manually)
+
+
      (add-hook 'after-init-hook 'global-company-mode)
      (define-key c-mode-map  [(backtab)] 'company-complete)
      (define-key c++-mode-map  [(backtab)] 'company-complete)
@@ -102,7 +105,13 @@
     (define-key company-active-map [return]    nil)
     (define-key company-active-map (kbd "RET") nil)
     (define-key  company-active-map [end] 'company-abort))
+
+
+  (use-package  company-manually
+    :init
+    (global-set-key [(f2)] 'company-manually)
+    (global-set-key [(S-f2)] 'company-manually-add-candidate-at-point))
 #+END_SRC
 
 #+RESULTS:
-| lambda | nil | (interactive) | (company-abort) | (evil-normal-state) |
+: t

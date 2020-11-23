@@ -6,9 +6,27 @@
    'org-babel-load-languages
    '((restclient . t)
      (latex . t)))
+  (append-to-list
+   'org-src-lang-modes
+   '(("dot" . graphviz-dot)
+     ("translate" . text)
+     ("ocaml" . tuareg)
+     ("elisp" . emacs-lisp)
+     ("ditaa" . artist)
+     ("asymptote" . asy)
+     ("sqlite" . sql)
+     ("calc" . fundamental)
+     ("C" . c)
+     ("cpp" . c++)
+     ("C++" . c++)
+     ("screen" . shell-script)
+     ("shell" . sh)
+     ("bash" . sh)
+     ("plantuml" . puml)))
 #+end_src
 
 #+RESULTS:
+: ((http . ob-http) (dot . graphviz-dot) (redis . redis) (php . php) (arduino . arduino) (dot . graphviz-dot) (C . c) (C++ . c++) (asymptote . asy) (bash . sh) (beamer . latex) (calc . fundamental) (cpp . c++) (ditaa . artist) (elisp . emacs-lisp) (ocaml . tuareg) (screen . shell-script) (shell . sh) (sqlite . sql) (dot . graphviz-dot) (translate . text) (ocaml . tuareg) (elisp . emacs-lisp) (ditaa . artist) (asymptote . asy) (sqlite . sql) (calc . fundamental) (C . c) (cpp . c++) (C++ . c++) (screen . shell-script) (shell . sh) (bash . sh) (plantuml . puml))
 
 * lsp
 
@@ -69,3 +87,12 @@
 
   #+RESULTS:
   : ((/mnt/t/gitdir/DLP_LINK11/ . 0) (/mnt/t/gitdir/DLP_ISDL/ . 0) (/mnt/t/gitdir/ltslph1iffmode5 . 0) (/mnt/t/KSS3/HCI_LINK11/ . 0) (/mnt/t/KSS3/HCI_ISDL/ . 0) (~/ . 0) (/opt/site-lisp/init/ . 0) (/mnt/develop/orgdir/ . 0) (/mnt/e/kdxbuild/ . 0) (/mnt/t/LTS/LPH-I/IFFMODE5 . 1))
+
+  
+* ob-latex-as-png
+  #+begin_src emacs-lisp
+     (use-package ob-latex-as-png)
+  #+end_src
+
+  #+RESULTS:
+  : t
