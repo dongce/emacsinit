@@ -91,7 +91,9 @@
   
 * ob-latex-as-png
   #+begin_src emacs-lisp
-     (use-package ob-latex-as-png)
+      (use-package ob-latex-as-png
+        :config
+        (add-to-list  'ob-latex-as-png-header "\\usepackage{amsmath}"))
   #+end_src
 
   #+RESULTS:

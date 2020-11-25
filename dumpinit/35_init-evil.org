@@ -1778,13 +1778,11 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
 ** mu4e
    #+begin_src emacs-lisp
 
-     (add-to-list 'load-path "/opt/site-lisp/elpa/evil-collection-20200711.2026")
-
      (use-package evil-collection
        :demand 
        :config
 
-       (evil-collection-init '(scroll-lock mu4e)))
+       (evil-collection-init '( mu4e)))
 
 
 

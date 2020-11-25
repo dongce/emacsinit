@@ -21,6 +21,11 @@
   (global-set-key [(shift kana)] 'toggle-input-method)
   (global-set-key [(control kanji)] 'set-mark-command)
 
+
+  (global-set-key [(Scroll_Lock)] 'centered-cursor-mode)
+
+
+
 #+END_SRC
 
 * ELPA server 
