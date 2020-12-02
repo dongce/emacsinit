@@ -137,3 +137,27 @@ This function is derived from org-export-visible."
 
 #+RESULTS:
 : outline-find-invisible
+
+* emacs patch
+** scroll all mode
+   #+begin_src emacs-lisp
+     (defun scroll-all-function-all (func arg)
+       "Apply function FUNC with argument ARG to all visible windows."
+       (let ((num-windows (count-windows))
+             (count 1))
+         (when (> num-windows 1)
+           (other-window 1)
+           (while (< count num-windows)
+             (condition-case nil
+                 (funcall func arg)
+               (error nil))
+             (ccm-position-cursor)
+             (global-hl-line-highlight)
+             (other-window 1)
+             (setq count (1+ count))))))
+   #+end_src
+
+   #+RESULTS:
+   : scroll-all-function-all
+  
+

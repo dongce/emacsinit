@@ -826,6 +826,18 @@
 
     #+END_SRC
 
+    
+*** ada-mode
+    #+begin_src emacs-lisp
+      (evil-define-key
+        '(normal insert visual replace operator motion emacs)
+        ada-mode-map
+        (kbd "<f12>" ) 'toggle-parse-wisi)
+
+    #+end_src
+
+    #+RESULTS:
+
 ** sexp
 
 **** paredit
@@ -1782,7 +1794,7 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
        :demand 
        :config
 
-       (evil-collection-init '( mu4e)))
+       (evil-collection-init '( diff-mode mu4e)))
 
 
 
