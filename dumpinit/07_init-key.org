@@ -496,10 +496,10 @@
     :global-minor-mode helm-descbinds-mode)
 
   (leaf proced
-    :demand
+    :ensure t
     :bind ((:proced-mode-map
-            (";" . #'proced-gdb)))
-    :config
+            (";" . proced-gdb)))
+    :config 
     (defun proced-gdb ()
       (interactive)
       (let ((pid (proced-pid-at-point)))

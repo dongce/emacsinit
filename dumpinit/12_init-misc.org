@@ -793,19 +793,6 @@
           (switch-to-buffer-other-window (current-buffer)))))
   #+END_SRC
 
-* secret
-  #+BEGIN_SRC emacs-lisp :tangle on
-
-    (leaf simple-secrets
-      :ensure t
-      ;; :commands secret-lookup-clipboard secret-new
-      :custom ((secret-password-file . "/mnt/develop/orgdir/secrets.gpg"))
-      :config (secret-load-keys))
-  #+END_SRC
-
-  #+RESULTS:
-  : t
-
 * SCM
   #+BEGIN_SRC emacs-lisp
 
@@ -995,8 +982,8 @@
 
 
     ;; compile 확장 버젼
-    (leaf compile- :ensure t )
-    (leaf compile :ensure t )
+    ;; (leaf compile- :ensure t )
+    ;; (leaf compile :ensure t )
 
     ;; 특정파일만 컴파일 할 수 있습니다.
     (defun compile-file (option-file)
@@ -2270,11 +2257,7 @@ to the symbol at point."
        :ensure t
        :global-minor-mode delete-selection-mode)
 
-
-     (leaf hide-region+
-       :ensure t
-       ;; :commands hide-region-hide hide-region-unhide
-       )
+     (require 'hide-region+)
 
    #+END_SRC
 
@@ -3355,8 +3338,8 @@ When called from Lisp code, ARG may be a prefix string to copy."
    : ace-link-custom
 
 * documentation
+  
   #+BEGIN_SRC emacs-lisp
-
 
     ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Building-Emacs.html#Building-Emacs
     (if (> 10 (length build-files))
@@ -3388,12 +3371,11 @@ When called from Lisp code, ARG may be a prefix string to copy."
     (setq common-lisp-hyperspec-root
           "filc:U:/usr/local/clisp-2.37/hyperspec/HyperSpec/" )
 
+    (require 'irfc)
     (leaf irfc
-      :ensure t
-      :init
       :custom
-      ((irfc-directory . (fullpath "../rfcdoc"))
-       (irfc-assoc-mode. t))
+      (`(irfc-directory . ,(fullpath "../rfcdoc") ) 
+       (irfc-assoc-mode . t))
       :config
       (defun rfcsearch ()
         (interactive)
