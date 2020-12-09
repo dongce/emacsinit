@@ -755,20 +755,20 @@ open and unsaved."
 #+END_SRC
 * dired-x omit files
 
-#+BEGIN_SRC emacs-lisp 
-  (leaf dired-x
-     :demand
+#+BEGIN_SRC emacs-lisp
+  (leaf  dired-x
     :config
-    (progn
-      (setq dired-omit-verbose nil)
-      ;; toggle `dired-omit-mode' with C-x M-o
-      (add-hook 'dired-mode-hook #'dired-omit-mode)
-      (setq dired-omit-files
-            (concat dired-omit-files "\\|^.~$\\|^.projectile$"))))
+    (require 'dired-x)
+    (setq dired-omit-verbose nil)
+    ;; toggle `dired-omit-mode' with C-x M-o
+    (add-hook 'dired-mode-hook #'dired-omit-mode)
+    (setq dired-omit-files
+          (concat dired-omit-files "\\|^.~$\\|^.projectile$")))
 #+END_SRC
 
 #+RESULTS:
-: t
+: ^\.?#\|^\.$\|^\.\.$\|^.~$\|^.projectile$\|^.~$\|^.projectile$\|^~\|^.~$\|^.projectile$\|^.~$\|^.projectile$\|^.~$\|^.projectile$
+
 
 * dired-hacks
 ** PKX 분컴
@@ -779,10 +779,11 @@ open and unsaved."
 * dired+
   
 #+begin_src emacs-lisp
-(leaf dired+ :demand)
+(leaf dired+ :config (require 'dired+))
 #+end_src
 
 #+RESULTS:
+: dired+
 
 * dired-narrow
 #+begin_src emacs-lisp
@@ -791,6 +792,9 @@ open and unsaved."
     :bind ((dired-mode-map
             ("/" . dired-narrow))))
 #+end_src
+
+#+RESULTS:
+: dired-narrow
 
 * sorting
   #+BEGIN_SRC emacs-lisp
@@ -801,4 +805,4 @@ open and unsaved."
   #+END_SRC
 
   #+RESULTS:
-  : t
+  : dired-quick-sort
