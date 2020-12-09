@@ -279,74 +279,6 @@
 
      #+RESULTS:
 
-** evil mode line 
-   #+BEGIN_SRC emacs-lisp :tangle no
-     (if (eq window-system nil)
-         (use-package powerline-evil
-     :demand
-           :config
-           (defpowerline powerline-lcl current-input-method-title)
-
-           (setq-default 
-            mode-line-format
-            '("%e"
-              (:eval
-               (let* ((active (powerline-selected-window-active))
-                      (mode-line (if active 'mode-line 'mode-line-inactive))
-                      (face1 (if active 'powerline-active1 'powerline-inactive1))
-                      (face2 (if active 'powerline-active2 'powerline-inactive2))
-                      (separator-left (intern (format "powerline-%s-%s"
-                                                      powerline-default-separator
-                                                      (car powerline-default-separator-dir))))
-                      (separator-right (intern (format "powerline-%s-%s"
-                                                       powerline-default-separator
-                                                       (cdr powerline-default-separator-dir))))
-                      (lhs (list 
-                            (powerline-lcl mode-line)
-                            ;; (powerline-raw "≡ " mode-line) 
-                            (powerline-raw "『" mode-line) 
-                            (powerline-raw  (window-numbering-get-number-string))
-                            (powerline-raw "』" mode-line) 
-
-                            (let ((evil-face (powerline-evil-face)))
-                              (if evil-mode
-                                  (powerline-raw (powerline-evil-tag) evil-face)))
-                            (when (buffer-modified-p) (powerline-raw "[+]" mode-line))
-                            (when buffer-read-only (powerline-raw "[RO]" mode-line))
-                            (powerline-buffer-id `(mode-line-buffer-id ,mode-line) 'l)
-                            (powerline-raw "[" mode-line 'l)
-                            (powerline-major-mode mode-line)
-                            (powerline-process mode-line)
-                            (powerline-raw "]" mode-line)
-                            (powerline-raw "[%z]" mode-line)
-                            ;; (powerline-raw (concat "[" (mode-line-eol-desc) "]") mode-line)
-                            (when (boundp 'erc-modified-channels-object)
-                              (powerline-raw erc-modified-channels-object face1 'l))
-                            ;; (powerline-raw "[" mode-line 'l)
-                            ;; (powerline-minor-modes mode-line)
-                            ;; (powerline-raw "%n" mode-line)
-                            ;; (powerline-raw "]" mode-line)
-                            (when (and vc-mode buffer-file-name)
-                              (let ((backend (vc-backend buffer-file-name)))
-                                (when backend
-                                  (concat (powerline-raw "[" mode-line 'l)
-                                          (powerline-raw (format "%s / %s" backend (vc-working-revision buffer-file-name backend)))
-                                          (powerline-raw "]" mode-line)))))))
-                      (rhs (list (powerline-raw '(10 "%i"))
-                                 (powerline-raw global-mode-string mode-line 'r)
-                                 (powerline-raw "%l," mode-line 'l)
-                                 (powerline-raw (format-mode-line '(10 "%c")))
-                                 (powerline-raw (replace-regexp-in-string  "%" "%%" (format-mode-line '(-3 "%p"))) mode-line 'r)
-                                 (when (and (boundp 'which-func-mode) which-func-mode) (powerline-raw which-func-format nil 'l))
-                                 )))
-                 (concat (powerline-render lhs)
-                         (powerline-fill mode-line (powerline-width rhs))
-                         (powerline-render rhs))))))))
-     (use-package evil-mode-line
-     :demand
-     )
-
-   #+END_SRC
 
 ** evil default override 
 
@@ -506,193 +438,72 @@
 
 ** evil surround
    #+BEGIN_SRC emacs-lisp
-  (use-package evil-surround
-     :demand
-    :config
-    (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
-    (global-evil-surround-mode 1))
+     (leaf evil-surround
+       :ensure t
+       :global-minor-mode global-evil-surround-mode 
+       :config
+       (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
+       )
 
-  (use-package evil-embrace
-     :demand
-    :config
-    (add-hook 'org-mode-hook 'embrace-org-mode-hook)
-    (evil-embrace-enable-evil-surround-integration))
-
-   #+END_SRC
-** use other window
-   suspend owdriver
-   #+BEGIN_SRC emacs-lisp :tangle no 
-  (use-package owdriver
-     :demand
-    :config
-    (owdriver-define-command scroll-up               t)
-    (owdriver-define-command scroll-down             t)
-    (owdriver-define-command move-beginning-of-line  t)
-    (owdriver-define-command move-end-of-line        t)
-    (owdriver-define-command beginning-of-buffer     t)
-    (owdriver-define-command end-of-buffer           t)
-    (owdriver-define-command isearch-forward         t (isearch-forward))
-    (owdriver-define-command isearch-backward        t (isearch-backward))
-    (owdriver-define-command set-mark-command        t)
-
-    (evil-leader/set-key 
-
-      "Oo" #'owdriver-next-window
-      "Ok" #'owdriver-do-scroll-up
-      "Oj" #'owdriver-do-scroll-down
-      "Os" #'owdriver-do-isearch-forward
-      "Or" #'owdriver-do-isearch-backward
-      "O<" #'owdriver-do-beginning-of-buffer
-      "O>" #'owdriver-do-end-of-buffer))
-
-   #+END_SRC
-
-   #+RESULTS:
-   : t
-
-** search override                                               :DEPRECATED:
-
-   #+BEGIN_SRC emacs-lisp
-;;;* vim keys -  http://www.tuxfiles.org/linuxhelp/vimcheat.html  
-
-;; http://stackoverflow.com/questions/11052678/emacs-combine-iseach-forward-and-recenter-top-bottom
-;; http://stackoverflow.com/questions/11052678/emacs-combine-iseach-forward-and-recenter-top-bottom
-
-;; / 한글 
-;; (defvar evil-search-norm-state nil)
-;; (make-variable-buffer-local 'evil-search-norm-state)
-
-;; (defadvice
-;;     evil-search-forward
-;;     (before evil-search-insert-state activate)
-;;     (if (evil-normal-state-p) (progn (setq evil-search-norm-state t) (evil-insert-state))))
-
-;; (defadvice
-;;     evil-search-forward
-;;     (after evil-search-normal-state activate)
-;;     (if evil-search-norm-state  (evil-normal-state))
-;;     (setf evil-search-norm-state nil))
-;; (ad-activate 'evil-search-forward)
-
-
-;;deprecated;;(defun evil-search-incrementally (forward regexp-p)
-;;deprecated;;  "Search incrementally for user-entered text."
-;;deprecated;;  (let ((evil-search-prompt (evil-search-prompt forward))
-;;deprecated;;        (isearch-search-fun-function 'evil-isearch-function)
-;;deprecated;;        (point (point))
-;;deprecated;;        isearch-success search-nonincremental-instead)
-;;deprecated;;    (setq isearch-forward forward)
-;;deprecated;;    (evil-save-echo-area
-;;deprecated;;      ;; set the input method locally rather than globally to ensure that
-;;deprecated;;      ;; isearch clears the input method when it's finished
-;;deprecated;;      (evil-insert-state)
-;;deprecated;;      (if forward
-;;deprecated;;          (isearch-forward regexp-p)
-;;deprecated;;        (isearch-backward regexp-p))
-;;deprecated;;      (evil-normal-state)
-;;deprecated;;      (if (not isearch-success)
-;;deprecated;;          (goto-char point)
-;;deprecated;;        ;; always position point at the beginning of the match
-;;deprecated;;        (when (and forward isearch-other-end)
-;;deprecated;;          (goto-char isearch-other-end))
-;;deprecated;;        (when (and (eq point (point))
-;;deprecated;;                   (not (string= isearch-string "")))
-;;deprecated;;          (if forward
-;;deprecated;;              (isearch-repeat-forward)
-;;deprecated;;            (isearch-repeat-backward))
-;;deprecated;;          (isearch-exit)
-;;deprecated;;          (when (and forward isearch-other-end)
-;;deprecated;;            (goto-char isearch-other-end)))
-;;deprecated;;        (evil-flash-search-pattern
-;;deprecated;;         (evil-search-message isearch-string forward))))))
-
-;;deprecated;;(evil-define-motion evil-search-forward ()
-;;deprecated;;  (format "Search forward for user-entered text.
-;;deprecated;;Searches for regular expression if `evil-regexp-search' is t.%s"
-;;deprecated;;          (if (and (fboundp 'isearch-forward)
-;;deprecated;;                   (documentation 'isearch-forward))
-;;deprecated;;              (format "\n\nBelow is the documentation string \
-;;deprecated;;for `isearch-forward',\nwhich lists available keys:\n\n%s"
-;;deprecated;;                      (documentation 'isearch-forward)) ""))
-;;deprecated;;  :jump t
-;;deprecated;;  :type exclusive
-;;deprecated;;  :repeat evil-repeat-search
-;;deprecated;;    (progn                 ;MADE CHANGES HERE
-;;deprecated;;      (evil-insert-state)
-;;deprecated;;      (evil-search-incrementally t evil-regexp-search)
-;;deprecated;;      (evil-normal-state)
-;;deprecated;;    ))
-;;deprecated;;
-;;deprecated;;(evil-define-motion evil-search-backward ()
-;;deprecated;;  (format "Search forward for user-entered text.
-;;deprecated;;Searches for regular expression if `evil-regexp-search' is t.%s"
-;;deprecated;;          (if (and (fboundp 'isearch-forward)
-;;deprecated;;                   (documentation 'isearch-forward))
-;;deprecated;;              (format "\n\nBelow is the documentation string \
-;;deprecated;;for `isearch-forward',\nwhich lists available keys:\n\n%s"
-;;deprecated;;                      (documentation 'isearch-forward)) ""))
-;;deprecated;;  :jump t
-;;deprecated;;  :type exclusive
-;;deprecated;;  :repeat evil-repeat-search
-;;deprecated;;    (progn                 ;MADE CHANGES HERE
-;;deprecated;;      (evil-insert-state)
-;;deprecated;;      (evil-search-incrementally nil evil-regexp-search)
-;;deprecated;;      (evil-normal-state)
-;;deprecated;;    ))
+     (leaf evil-embrace
+       :ensure t
+       :hook    (org-mode-hook . embrace-org-mode-hook)
+       :config
+       (evil-embrace-enable-evil-surround-integration))
 
    #+END_SRC
 
 ** auto complete
 
    #+BEGIN_SRC emacs-lisp
-;;; Auto-complete
-(use-package auto-complete
-     :demand
-  :config
-  (evil-add-command-properties 'ac-complete :repeat 'evil-ac-repeat)
-  (evil-add-command-properties 'ac-expand :repeat 'evil-ac-repeat)
-  (evil-add-command-properties 'ac-next :repeat 'ignore)
-  (evil-add-command-properties 'ac-previous :repeat 'ignore)
+     ;;; Auto-complete
+     (leaf auto-complete
+       :ensure t
+       :config
+       (evil-add-command-properties 'ac-complete :repeat 'evil-ac-repeat)
+       (evil-add-command-properties 'ac-expand :repeat 'evil-ac-repeat)
+       (evil-add-command-properties 'ac-next :repeat 'ignore)
+       (evil-add-command-properties 'ac-previous :repeat 'ignore)
 
-  (defvar evil-ac-prefix-len nil
-    "The length of the prefix of the current item to be completed.")
+       (defvar evil-ac-prefix-len nil
+         "The length of the prefix of the current item to be completed.")
 
-  (defun evil-ac-repeat (flag)
-    "Record the changes for auto-completion."
-    (cond
-     ((eq flag 'pre)
-      (setq evil-ac-prefix-len (length ac-prefix))
-      (evil-repeat-start-record-changes))
-     ((eq flag 'post)
-      ;; Add change to remove the prefix
-      (evil-repeat-record-change (- evil-ac-prefix-len)
-                                 ""
-                                 evil-ac-prefix-len)
-      ;; Add change to insert the full completed text
-      (evil-repeat-record-change
-       (- evil-ac-prefix-len)
-       (buffer-substring-no-properties (- evil-repeat-pos
-                                          evil-ac-prefix-len)
-                                       (point))
-       0)
-      ;; Finish repeation
-      (evil-repeat-finish-record-changes)))))
+       (defun evil-ac-repeat (flag)
+         "Record the changes for auto-completion."
+         (cond
+          ((eq flag 'pre)
+           (setq evil-ac-prefix-len (length ac-prefix))
+           (evil-repeat-start-record-changes))
+          ((eq flag 'post)
+           ;; Add change to remove the prefix
+           (evil-repeat-record-change (- evil-ac-prefix-len)
+                                      ""
+                                      evil-ac-prefix-len)
+           ;; Add change to insert the full completed text
+           (evil-repeat-record-change
+            (- evil-ac-prefix-len)
+            (buffer-substring-no-properties (- evil-repeat-pos
+                                               evil-ac-prefix-len)
+                                            (point))
+            0)
+           ;; Finish repeation
+           (evil-repeat-finish-record-changes)))))
 
    #+END_SRC
 
 ** evil extra operator
    #+BEGIN_SRC emacs-lisp
      ;; https://github.com/redguardtoo/evil-matchit/blob/master/README.org
-     (use-package evil-matchit
-     :demand
+     (leaf evil-matchit
+       :ensure t
+       :global-minor-mode global-evil-matchit-mode
        :config
-       (global-evil-matchit-mode 1 )
        (plist-put evilmi-plugins 'xah-html-mode '((evilmi-html-get-tag evilmi-html-jump)))
        (plist-put evilmi-plugins 'web-mode '((evilmi-html-get-tag evilmi-html-jump))))
 
 
-     (use-package evil-args
-     :demand
+     (leaf evil-args
+       :ensure t
        :config
        ;; bind evil-args text objects
        (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
@@ -705,27 +516,24 @@
        (define-key evil-motion-state-map "H" 'evil-backward-arg)
 
        ;; bind evil-jump-out-args
-       (define-key evil-normal-state-map "K" 'evil-jump-out-args))
+       (define-key evil-normal-state-map "K" 'evil-jump-out-args)
 
-     (define-key evil-normal-state-map (kbd "<S-return>")
-       (lambda ()
-         (interactive)
-         (call-interactively 'spacemacs/evil-insert-line-below)
-         (evil-next-line)))
+       (define-key evil-normal-state-map (kbd "<S-return>")
+         (lambda ()
+           (interactive)
+           (call-interactively 'spacemacs/evil-insert-line-below)
+           (evil-next-line)))
 
+       (define-key evil-normal-state-map (kbd "<S-backspace>") 'split-line-indent))
 
-     (define-key evil-normal-state-map (kbd "<S-backspace>") 'split-line-indent)
-
-     (use-package evil-extra-operator
-     :demand
-       :config
-       (global-evil-extra-operator-mode 1))
+     (leaf evil-extra-operator
+       :ensure t
+       :global-minor-mode global-evil-extra-operator-mode )
 
 
-     (use-package evil-visualstar
-     :demand
-       :config
-       (global-evil-visualstar-mode t))
+     (leaf evil-visualstar
+       :ensure t
+       :global-minor-mode global-evil-visualstar-mode )
 
 
    #+END_SRC
@@ -746,85 +554,85 @@
 *** w related mode 
 
     #+BEGIN_SRC emacs-lisp
-  (progn
-    (add-hook 'wdired-mode-hook #'evil-change-to-initial-state)
-    (defadvice wdired-change-to-dired-mode (after evil activate)
-      (evil-change-to-initial-state nil t)))
+      (progn
+        (add-hook 'wdired-mode-hook #'evil-change-to-initial-state)
+        (defadvice wdired-change-to-dired-mode (after evil activate)
+          (evil-change-to-initial-state nil t)))
 
 
 
-  ;; https://github.com/glynnforrest/emacs.d/blob/master/setup-occur-grep-ack.el
+      ;; https://github.com/glynnforrest/emacs.d/blob/master/setup-occur-grep-ack.el
 
-  (defun get-buffers-matching-mode (mode)
-    "Returns a list of buffers where their major-mode is equal to MODE"
-    (let ((buffer-mode-matches '()))
-      (dolist (buf (buffer-list))
-        (with-current-buffer buf
-          (if (eq mode major-mode)
-              (add-to-list 'buffer-mode-matches buf))))
-      buffer-mode-matches))
+      (defun get-buffers-matching-mode (mode)
+        "Returns a list of buffers where their major-mode is equal to MODE"
+        (let ((buffer-mode-matches '()))
+          (dolist (buf (buffer-list))
+            (with-current-buffer buf
+              (if (eq mode major-mode)
+                  (add-to-list 'buffer-mode-matches buf))))
+          buffer-mode-matches))
 
-  (defun multi-occur-in-this-mode ()
-    "Show all lines matching REGEXP in buffers with this major mode."
-    (interactive)
-    (multi-occur
-     (get-buffers-matching-mode major-mode)
-     (car (occur-read-primary-args))))
+      (defun multi-occur-in-this-mode ()
+        "Show all lines matching REGEXP in buffers with this major mode."
+        (interactive)
+        (multi-occur
+         (get-buffers-matching-mode major-mode)
+         (car (occur-read-primary-args))))
 
-  (defun occur-goto-occurrence-recenter ()
-    "Go to the occurrence on the current line and recenter."
-    (interactive)
-    (occur-mode-goto-occurrence)
-    (recenter))
+      (defun occur-goto-occurrence-recenter ()
+        "Go to the occurrence on the current line and recenter."
+        (interactive)
+        (occur-mode-goto-occurrence)
+        (recenter))
 
-  ;; Preview occurrences in occur without leaving the buffer
-  (defun occur-display-occurrence-recenter ()
-    "Display the occurrence on the current line in another window and recenter."
-    (interactive)
-    (occur-goto-occurrence-recenter)
-    (other-window 1))
-
-
-  ;; Grep mode
-  (defun grep-goto-occurrence-recenter ()
-    "Go to the occurrence on the current line and recenter."
-    (interactive)
-    (compile-goto-error)
-    (recenter))
-
-  (defun grep-display-occurrence-recenter ()
-    "Display the grep result of the current line in another window and recenter."
-    (interactive)
-    (grep-goto-occurrence-recenter)
-    (other-window 1))
+      ;; Preview occurrences in occur without leaving the buffer
+      (defun occur-display-occurrence-recenter ()
+        "Display the occurrence on the current line in another window and recenter."
+        (interactive)
+        (occur-goto-occurrence-recenter)
+        (other-window 1))
 
 
-  (use-package wgrep
-     :demand
-    :config
+      ;; Grep mode
+      (defun grep-goto-occurrence-recenter ()
+        "Go to the occurrence on the current line and recenter."
+        (interactive)
+        (compile-goto-error)
+        (recenter))
 
-    (w32-unix-eval
-     ((evil-declare-key 'motion occur-mode-map (kbd "<return>")   'occur-goto-occurrence-recenter)
-      (evil-declare-key 'motion grep-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
-      (evil-declare-key 'motion occur-mode-map (kbd "<S-return>") 'occur-display-occurrence-recenter)
-      (evil-declare-key 'motion grep-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter)
-      (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
-      (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter))
-     ((evil-declare-key 'motion occur-mode-map (kbd "RET")   'occur-goto-occurrence-recenter)
-      (evil-declare-key 'motion grep-mode-map (kbd "RET") 'grep-goto-occurrence-recenter)
-      (evil-declare-key 'motion occur-mode-map (kbd "<S-RET>") 'occur-display-occurrence-recenter)
-      (evil-declare-key 'motion grep-mode-map (kbd "<S-RET>") 'grep-display-occurrence-recenter)
-      (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "RET") 'grep-goto-occurrence-recenter)
-      (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<S-RET>") 'grep-display-occurrence-recenter)))
+      (defun grep-display-occurrence-recenter ()
+        "Display the grep result of the current line in another window and recenter."
+        (interactive)
+        (grep-goto-occurrence-recenter)
+        (other-window 1))
 
-    (evil-declare-key 'motion occur-mode-map "e" 'occur-edit-mode)
-    (evil-declare-key 'motion occur-edit-mode-map "e" 'occur-cease-edit)
-    (evil-declare-key 'motion grep-mode-map "e" 'wgrep-change-to-wgrep-mode)
-    (evil-declare-key 'motion grep-mode-map "w" 'wgrep-save-all-buffers)
-    ;;notuse;;(evil-declare-key 'motion ack-and-a-half-mode-map ",e" 'wgrep-change-to-wgrep-mode)
-    ;;notuse;;(evil-declare-key 'motion ack-and-a-half-mode-map ",w" 'wgrep-save-all-buffers)
-    (evil-declare-key 'motion wgrep-mode-map "e" 'wgrep-finish-edit)
-    (evil-declare-key 'motion wgrep-mode-map "x" 'wgrep-abort-changes))
+
+      (leaf wgrep
+        :ensure t
+        :config
+
+        (w32-unix-eval
+         ((evil-declare-key 'motion occur-mode-map (kbd "<return>")   'occur-goto-occurrence-recenter)
+          (evil-declare-key 'motion grep-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
+          (evil-declare-key 'motion occur-mode-map (kbd "<S-return>") 'occur-display-occurrence-recenter)
+          (evil-declare-key 'motion grep-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter)
+          (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<return>") 'grep-goto-occurrence-recenter)
+          (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<S-return>") 'grep-display-occurrence-recenter))
+         ((evil-declare-key 'motion occur-mode-map (kbd "RET")   'occur-goto-occurrence-recenter)
+          (evil-declare-key 'motion grep-mode-map (kbd "RET") 'grep-goto-occurrence-recenter)
+          (evil-declare-key 'motion occur-mode-map (kbd "<S-RET>") 'occur-display-occurrence-recenter)
+          (evil-declare-key 'motion grep-mode-map (kbd "<S-RET>") 'grep-display-occurrence-recenter)
+          (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "RET") 'grep-goto-occurrence-recenter)
+          (evil-declare-key 'motion ack-and-a-half-mode-map (kbd "<S-RET>") 'grep-display-occurrence-recenter)))
+
+        (evil-declare-key 'motion occur-mode-map "e" 'occur-edit-mode)
+        (evil-declare-key 'motion occur-edit-mode-map "e" 'occur-cease-edit)
+        (evil-declare-key 'motion grep-mode-map "e" 'wgrep-change-to-wgrep-mode)
+        (evil-declare-key 'motion grep-mode-map "w" 'wgrep-save-all-buffers)
+        ;;notuse;;(evil-declare-key 'motion ack-and-a-half-mode-map ",e" 'wgrep-change-to-wgrep-mode)
+        ;;notuse;;(evil-declare-key 'motion ack-and-a-half-mode-map ",w" 'wgrep-save-all-buffers)
+        (evil-declare-key 'motion wgrep-mode-map "e" 'wgrep-finish-edit)
+        (evil-declare-key 'motion wgrep-mode-map "x" 'wgrep-abort-changes))
 
 
     #+END_SRC
@@ -845,129 +653,131 @@
 
 **** paredit
      #+BEGIN_SRC emacs-lisp :tanble no
-   ;;; https://github.com/laynor/emacs-conf/blob/master/site-lisp/evil-sexp/evil-sexp.el
+       ;;; https://github.com/laynor/emacs-conf/blob/master/site-lisp/evil-sexp/evil-sexp.el
 
-   (defun beginning-and-end-of-sexp ()
-     (destructuring-bind (b . e)
-         (save-excursion
-           (forward-char)
-           (bounds-of-thing-at-point 'sexp))
-       (cons b e)))
+       (defun beginning-and-end-of-sexp ()
+         (destructuring-bind (b . e)
+             (save-excursion
+               (forward-char)
+               (bounds-of-thing-at-point 'sexp))
+           (cons b e)))
 
-   (evil-define-motion evil-forward-sexp (count)
-     :type inclusive
-     (dotimes (i (or count 1))
-       (let ((lookahead-1 (char-syntax (char-after (point))))
-             (lookahead-2 (char-syntax (char-after (1+ (point)))))
-             (new-point (point)))
-         (condition-case nil
-             (progn (save-excursion
-                      (message "lookahead1 = %S, lookahead-2 = %S"
-                               (string lookahead-1) (string lookahead-2))
-                      (cond ((or (memq lookahead-2 '(?\ ?>))
-                                 (member lookahead-1 '(?\ ?>)))
-                             (forward-char)
-                             (skip-syntax-forward "->")
-                             (setq new-point (point)))
-                            (t (unless (memq lookahead-1 '(?\" ?\())
-                                 (forward-char))
-                               (sp-forward-sexp)
-                               (backward-char)
-                               (setq new-point (point)))))
-                    (goto-char new-point))
-           (error (error "End of sexp"))))))
+       (evil-define-motion evil-forward-sexp (count)
+         :type inclusive
+         (dotimes (i (or count 1))
+           (let ((lookahead-1 (char-syntax (char-after (point))))
+                 (lookahead-2 (char-syntax (char-after (1+ (point)))))
+                 (new-point (point)))
+             (condition-case nil
+                 (progn (save-excursion
+                          (message "lookahead1 = %S, lookahead-2 = %S"
+                                   (string lookahead-1) (string lookahead-2))
+                          (cond ((or (memq lookahead-2 '(?\ ?>))
+                                     (member lookahead-1 '(?\ ?>)))
+                                 (forward-char)
+                                 (skip-syntax-forward "->")
+                                 (setq new-point (point)))
+                                (t (unless (memq lookahead-1 '(?\" ?\())
+                                     (forward-char))
+                                   (sp-forward-sexp)
+                                   (backward-char)
+                                   (setq new-point (point)))))
+                        (goto-char new-point))
+               (error (error "End of sexp"))))))
 
-   (evil-define-motion evil-backward-sexp (count)
-     :type inclusive
-     (dotimes (i (or count 1))
-       (let ((lookahead (char-syntax (char-after (point))))
-             (new-point (point)))
-         (condition-case nil
-             (progn (save-excursion
-                      (when (memq lookahead '(?\) ?\"))
-                        (forward-char))
-                      (sp-backward-sexp)
-                      (setq new-point (point)))
-                    (goto-char new-point))
-           (error (error "Beginning of sexp"))))))
+       (evil-define-motion evil-backward-sexp (count)
+         :type inclusive
+         (dotimes (i (or count 1))
+           (let ((lookahead (char-syntax (char-after (point))))
+                 (new-point (point)))
+             (condition-case nil
+                 (progn (save-excursion
+                          (when (memq lookahead '(?\) ?\"))
+                            (forward-char))
+                          (sp-backward-sexp)
+                          (setq new-point (point)))
+                        (goto-char new-point))
+               (error (error "Beginning of sexp"))))))
 
-   (evil-define-motion evil-enter-sexp (count)
-     :type inclusive
-     (dotimes (i (or count 1))
-       (let ((lookahead-1 (char-syntax (char-after (point))))
-             (lookahead-2 (char-syntax (char-after (1+ (point)))))
-             (lookbehind-1 (char-syntax (char-before (point))))
-             (lookbehind-2 (char-syntax (char-before (1- (point))))))
-         (cond ((and (= lookahead-1 ?\()
-                     (/= lookbehind-1 ?\\)
-                     (= (char-after (1+ (point))) ?\n))
-                (forward-char)
-                (skip-syntax-forward "-"))
-               ((and (= lookahead-1 ?\()
-                     (/= lookbehind-1 ?\\)
-                     (/= lookahead-2 ?\)))
-                ;; do not move the cursor if it's on the opening paren of ()
-                (forward-char)
-                (skip-syntax-forward "-"))
-               ((and (= lookahead-1 ?\))
-                     (or (/= lookbehind-1 ?\( )
-                         (= lookbehind-2 ?\\)))
-                ;; do not move the cursor if it's on the closing paren of ()
-                (skip-syntax-backward "-")
-                (backward-char))
-               (t (error "Already at the deepest level"))))))
-
-
-
-   ;; Does not work correctly when there are spaces after parens
-   ;; does not work correctly when inside a string, check paredit.
-   ;; check when there are spaces before parens
-   ;; When the cursor is on an open paren, go up one level on an open paren
-   (use-package paredit ;  (smartparens)
-     :demand
-     :config
-     (evil-define-motion evil-exit-sexp (count)
-       :type inclusive
-       (dotimes (i (or count 1))
-         (let (op-pos cl-pos)
-           (condition-case nil
-               (progn (save-excursion
-                        (sp-backward-up-sexp)
-                        (setq op-pos (point))
-                        (sp-forward-sexp)
-                        (setq cl-pos (point)))
-                      (let ((lookahead (char-syntax (char-after (point)))))
-                        (case lookahead
-                          (?\( (goto-char op-pos))
-                          (?\) (goto-char cl-pos))
-                          (otherwise (goto-char (if (> (abs (- (point) cl-pos))
-                                                       (abs (- (point) op-pos)))
-                                                    op-pos
-                                                  cl-pos))))))
-             (error (error "Already at top-level."))))) )
-
-     ;; (provide 'evil-sexp)
+       (evil-define-motion evil-enter-sexp (count)
+         :type inclusive
+         (dotimes (i (or count 1))
+           (let ((lookahead-1 (char-syntax (char-after (point))))
+                 (lookahead-2 (char-syntax (char-after (1+ (point)))))
+                 (lookbehind-1 (char-syntax (char-before (point))))
+                 (lookbehind-2 (char-syntax (char-before (1- (point))))))
+             (cond ((and (= lookahead-1 ?\()
+                         (/= lookbehind-1 ?\\)
+                         (= (char-after (1+ (point))) ?\n))
+                    (forward-char)
+                    (skip-syntax-forward "-"))
+                   ((and (= lookahead-1 ?\()
+                         (/= lookbehind-1 ?\\)
+                         (/= lookahead-2 ?\)))
+                    ;; do not move the cursor if it's on the opening paren of ()
+                    (forward-char)
+                    (skip-syntax-forward "-"))
+                   ((and (= lookahead-1 ?\))
+                         (or (/= lookbehind-1 ?\( )
+                             (= lookbehind-2 ?\\)))
+                    ;; do not move the cursor if it's on the closing paren of ()
+                    (skip-syntax-backward "-")
+                    (backward-char))
+                   (t (error "Already at the deepest level"))))))
 
 
-     (define-key evil-motion-state-map (kbd "H-j") 'evil-enter-sexp)
-     (define-key evil-motion-state-map (kbd "H-k") 'evil-exit-sexp)
-     (define-key evil-motion-state-map (kbd "H-h") 'evil-backward-sexp)
-     (define-key evil-motion-state-map (kbd "H-l") 'evil-forward-sexp)
-     (define-key evil-motion-state-map (kbd "<C-H-up>")     'buf-move-up)
-     (define-key evil-motion-state-map (kbd "<C-H-down>")   'buf-move-down)
-     (define-key evil-motion-state-map (kbd "<C-H-left>")   'buf-move-left)
-     (define-key evil-motion-state-map (kbd "<C-H-right>")  'buf-move-right)
-     (define-key evil-motion-state-map "zl" 'evil-forward-sexp)
-     (define-key evil-motion-state-map "zh" 'evil-backward-sexp)
-     (define-key evil-motion-state-map "zj" 'evil-enter-sexp)
-     (define-key evil-motion-state-map "zk" 'evil-exit-sexp))
+
+       ;; Does not work correctly when there are spaces after parens
+       ;; does not work correctly when inside a string, check paredit.
+       ;; check when there are spaces before parens
+       ;; When the cursor is on an open paren, go up one level on an open paren
+       (leaf paredit ;  (smartparens)
+         :ensure t
+         :config
+         (evil-define-motion evil-exit-sexp (count)
+           :type inclusive
+           (dotimes (i (or count 1))
+             (let (op-pos cl-pos)
+               (condition-case nil
+                   (progn (save-excursion
+                            (sp-backward-up-sexp)
+                            (setq op-pos (point))
+                            (sp-forward-sexp)
+                            (setq cl-pos (point)))
+                          (let ((lookahead (char-syntax (char-after (point)))))
+                            (case lookahead
+                              (?\( (goto-char op-pos))
+                              (?\) (goto-char cl-pos))
+                              (otherwise (goto-char (if (> (abs (- (point) cl-pos))
+                                                           (abs (- (point) op-pos)))
+                                                        op-pos
+                                                      cl-pos))))))
+                 (error (error "Already at top-level."))))) )
+
+         ;; (provide 'evil-sexp)
 
 
-   ;;; http://blog.binchen.org/?p=782
-   (eval-after-load "evil" '(setq expand-region-contract-fast-key "z"))
-   (evil-define-key 'normal paredit-mode-map "\C-k" 'paredit-kill)
-   (evil-define-key 'visual paredit-mode-map "\C-k" 'paredit-kill)
-   (evil-define-key 'insert paredit-mode-map "\C-k" 'paredit-kill)
+         (define-key evil-motion-state-map (kbd "H-j") 'evil-enter-sexp)
+         (define-key evil-motion-state-map (kbd "H-k") 'evil-exit-sexp)
+         (define-key evil-motion-state-map (kbd "H-h") 'evil-backward-sexp)
+         (define-key evil-motion-state-map (kbd "H-l") 'evil-forward-sexp)
+         (define-key evil-motion-state-map (kbd "<C-H-up>")     'buf-move-up)
+         (define-key evil-motion-state-map (kbd "<C-H-down>")   'buf-move-down)
+         (define-key evil-motion-state-map (kbd "<C-H-left>")   'buf-move-left)
+         (define-key evil-motion-state-map (kbd "<C-H-right>")  'buf-move-right)
+         (define-key evil-motion-state-map "zl" 'evil-forward-sexp)
+         (define-key evil-motion-state-map "zh" 'evil-backward-sexp)
+         (define-key evil-motion-state-map "zj" 'evil-enter-sexp)
+         (define-key evil-motion-state-map "zk" 'evil-exit-sexp)
+
+         (evil-define-key 'normal paredit-mode-map "\C-k" 'paredit-kill)
+         (evil-define-key 'visual paredit-mode-map "\C-k" 'paredit-kill)
+         (evil-define-key 'insert paredit-mode-map "\C-k" 'paredit-kill)
+         )
+
+
+       ;;; http://blog.binchen.org/?p=782
+       (eval-after-load "evil" '(setq expand-region-contract-fast-key "z"))
 
      #+END_SRC
 **** evil-cleverparens
@@ -1093,8 +903,8 @@
               "w" 'org-archive-subtree-default
               )
 
-            (use-package evil-org
-              :demand
+            (leaf evil-org
+              :ensure t
               :config
               (evil-define-key 'normal evil-org-mode
                 "=" 'org-show-current-heading-tidily
@@ -1201,12 +1011,13 @@
 
       #+BEGIN_SRC emacs-lisp
 
-        (use-package evil-org :demand)
-        (evil-define-key '(normal insert visual ) 'evil-org-mode
-          (kbd "<f2>") 'org-insert-structure-template
-          (kbd "<kp-multiply>") 'org-insert-star
-          (kbd "<kp-subtract>") 'wsl-open-org-link
-          )
+        (leaf evil-org
+          :ensure t
+          :config
+          (evil-define-key '(normal insert visual ) 'evil-org-mode
+            (kbd "<f2>") 'org-insert-structure-template
+            (kbd "<kp-multiply>") 'org-insert-star
+            (kbd "<kp-subtract>") 'wsl-open-org-link))
 
         (evil-define-key 'normal outline-mode-map
           "gh"    'outline-up-heading
@@ -1254,8 +1065,8 @@
      - il
 **** deprecated
      #+BEGIN_SRC emacs-lisp :tangle no
-       (use-package evil-mu4e
-         :demand
+       (leaf evil-mu4e
+         :ensure t
          :config
          (mapcar 
           (lambda (x)
@@ -1365,115 +1176,111 @@
 *** key combo
 
     #+BEGIN_SRC emacs-lisp
-(use-package key-combo
-     :demand
-  :config
-  ;;   (global-key-combo-mode t)
-  ;;   (key-combo-define evil-insert-state-map (kbd "=") '(" = " " == " "=" " === "))
-  ;;   (key-combo-define evil-insert-state-map (kbd "+") '(" + " "+" " += " "++"))
-  ;;   (key-combo-define evil-insert-state-map (kbd "-") '("-" " - " " -= " "--"))
-  ;;   (key-combo-define evil-insert-state-map (kbd "*") '(" * " "*" " *= "))
-  ;;   (key-combo-define evil-normal-state-map (kbd "/") 'key-combo-execute-orignal)
-  ;;   (key-combo-define evil-insert-state-map (kbd "/") '("/" " / " " /= " "/* `!!' */" "//"))
-  ;;   (key-combo-define evil-insert-state-map (kbd "%") '("%" " % " " %= "))
-  ;;   (key-combo-define evil-insert-state-map (kbd "!") '("!" " != "))
-  ;;   (key-combo-define evil-insert-state-map (kbd "&") '(" && " "&"))
-  ;;   (key-combo-define evil-insert-state-map (kbd "|") '(" || " "|"))
-  ;;   (key-combo-define evil-insert-state-map (kbd "?") '(" ? " "?"))
-  ;;   (key-combo-define evil-insert-state-map (kbd ",") '(", " "," ",\n"))
-  ;;   (key-combo-define evil-insert-state-map (kbd "{") '("{\n`!!'\n}" "{" "{`!!'}" "{}"))
-  ;;   (key-combo-define evil-insert-state-map (kbd "(") '("(`!!')" "(" "()"))
-  ;;   (key-combo-define evil-insert-state-map (kbd "[") '("[`!!']" "[" "[]"))
-  ;;   (key-combo-define evil-insert-state-map (kbd "<")  '(" < " " <= " " < " " << " "<<" "<`!!'>"))
-  ;;   (key-combo-define evil-insert-state-map (kbd ">")  '(" > " " >= " " > " " >> " ">>"))
-  ;;   (key-combo-define evil-insert-state-map (kbd "\"") '("\"`!!'\""  "\""  "\"\"\"`!!'\"\"\""))
-  ;;   (key-combo-define evil-insert-state-map (kbd ";") '(";\n" ";"))
-  ;;   (add-hook 'web-mode-hook (lambda()
-  ;;     (key-combo-define evil-insert-state-map (kbd "<")  '("<" "<`!!'>"))
-  ;;     (key-combo-define evil-insert-state-map (kbd "/")  '("/" "</`!!'>"))
-  ;;     (key-combo-define evil-insert-state-map (kbd ">")  '(">"))
-  ;;     (key-combo-define evil-insert-state-map (kbd "=")  '("="))
-  ;;     (key-combo-define evil-insert-state-map (kbd "*")  '("*"))
-  ;;     (key-combo-define evil-insert-state-map (kbd "!")  '("!" "<!-- `!!' -->"))
-  ;;   ))
+      (leaf key-combo
+        :ensure t
+        :hook
+        (c++-mode-hook .
+                       (lambda ()
+                         (key-combo-mode t)
+                         (key-combo-define evil-insert-state-map (kbd "-")  '("-" "_"))))
+        :config
+        ;;   (global-key-combo-mode t)
+        ;;   (key-combo-define evil-insert-state-map (kbd "=") '(" = " " == " "=" " === "))
+        ;;   (key-combo-define evil-insert-state-map (kbd "+") '(" + " "+" " += " "++"))
+        ;;   (key-combo-define evil-insert-state-map (kbd "-") '("-" " - " " -= " "--"))
+        ;;   (key-combo-define evil-insert-state-map (kbd "*") '(" * " "*" " *= "))
+        ;;   (key-combo-define evil-normal-state-map (kbd "/") 'key-combo-execute-orignal)
+        ;;   (key-combo-define evil-insert-state-map (kbd "/") '("/" " / " " /= " "/* `!!' */" "//"))
+        ;;   (key-combo-define evil-insert-state-map (kbd "%") '("%" " % " " %= "))
+        ;;   (key-combo-define evil-insert-state-map (kbd "!") '("!" " != "))
+        ;;   (key-combo-define evil-insert-state-map (kbd "&") '(" && " "&"))
+        ;;   (key-combo-define evil-insert-state-map (kbd "|") '(" || " "|"))
+        ;;   (key-combo-define evil-insert-state-map (kbd "?") '(" ? " "?"))
+        ;;   (key-combo-define evil-insert-state-map (kbd ",") '(", " "," ",\n"))
+        ;;   (key-combo-define evil-insert-state-map (kbd "{") '("{\n`!!'\n}" "{" "{`!!'}" "{}"))
+        ;;   (key-combo-define evil-insert-state-map (kbd "(") '("(`!!')" "(" "()"))
+        ;;   (key-combo-define evil-insert-state-map (kbd "[") '("[`!!']" "[" "[]"))
+        ;;   (key-combo-define evil-insert-state-map (kbd "<")  '(" < " " <= " " < " " << " "<<" "<`!!'>"))
+        ;;   (key-combo-define evil-insert-state-map (kbd ">")  '(" > " " >= " " > " " >> " ">>"))
+        ;;   (key-combo-define evil-insert-state-map (kbd "\"") '("\"`!!'\""  "\""  "\"\"\"`!!'\"\"\""))
+        ;;   (key-combo-define evil-insert-state-map (kbd ";") '(";\n" ";"))
+        ;;   (add-hook 'web-mode-hook (lambda()
+        ;;     (key-combo-define evil-insert-state-map (kbd "<")  '("<" "<`!!'>"))
+        ;;     (key-combo-define evil-insert-state-map (kbd "/")  '("/" "</`!!'>"))
+        ;;     (key-combo-define evil-insert-state-map (kbd ">")  '(">"))
+        ;;     (key-combo-define evil-insert-state-map (kbd "=")  '("="))
+        ;;     (key-combo-define evil-insert-state-map (kbd "*")  '("*"))
+        ;;     (key-combo-define evil-insert-state-map (kbd "!")  '("!" "<!-- `!!' -->"))
+        ;;   ))
 
-  (add-hook
-   'c++-mode-hook
-   '(lambda ()
-      (key-combo-mode t)
-      (key-combo-define evil-insert-state-map (kbd "-")  '("-" "_"))))
-  )
+        )
 
     #+END_SRC
 *** key guide
 
     #+BEGIN_SRC emacs-lisp
-;;; guide-key 
-;; @see https://bitbucket.org/lyro/evil/issue/511/let-certain-minor-modes-key-bindings
+      ;;; guide-key 
+      ;; @see https://bitbucket.org/lyro/evil/issue/511/let-certain-minor-modes-key-bindings
 
 
-;; [[file:t:/gitdir/dot-emacs/etc/hyone-key-combo.el::(defun%20evil-key-combo-define%20(state%20keymap%20key%20commands)][combo for evil]]
+      ;; [[file:t:/gitdir/dot-emacs/etc/hyone-key-combo.el::(defun%20evil-key-combo-define%20(state%20keymap%20key%20commands)][combo for evil]]
 
-;; (use-package guide-key
-;;   :config
-;;   (guide-key-mode)
-;;   (defun guide-key-hook-function-for-org-mode ()
-;;     (guide-key/add-local-guide-key-sequence "C-c")
-;;     (guide-key/add-local-guide-key-sequence "C-c C-x")
-;;     (guide-key/add-local-highlight-command-regexp "org-"))
-;;   (add-hook 'org-mode-hook 'guide-key-hook-function-for-org-mode))
+      ;; (use-package guide-key
+      ;;   :config
+      ;;   (guide-key-mode)
+      ;;   (defun guide-key-hook-function-for-org-mode ()
+      ;;     (guide-key/add-local-guide-key-sequence "C-c")
+      ;;     (guide-key/add-local-guide-key-sequence "C-c C-x")
+      ;;     (guide-key/add-local-highlight-command-regexp "org-"))
+      ;;   (add-hook 'org-mode-hook 'guide-key-hook-function-for-org-mode))
 
-(use-package which-key
-     :demand
-  :config
-  (which-key-mode)
-  ( which-key-setup-side-window-right)
-  (setq which-key-popup-type 'side-window)
-  (setq which-key-side-window-max-width 0.5)
-  )
+      (leaf which-key
+        :ensure t
+        :global-minor-mode which-key-mode
+        :custom ((which-key-popup-type . 'side-window)
+                 (which-key-side-window-max-width . 0.5))
+        :config 
+        ( which-key-setup-side-window-right))
 
     #+END_SRC
 
 *** magit
     #+BEGIN_SRC emacs-lisp
 
-;; (use-package magit
-;;   :commands magit-status magit-diff magit-log magit-blame-mode
-;;   :init
-;;   (evil-leader/set-key
-;;     "g t" 'magit-status
-;;     "g b" 'magit-blame-mode
-;;     "g l" 'magit-log
-;;     "g d" 'magit-diff)
-;;   :config
-;;   (progn
-;;     (evil-make-overriding-map magit-mode-map 'emacs)
-;;     (define-key magit-mode-map "\C-w" 'evil-window-map)
-;;     (evil-define-key 'emacs magit-mode-map "j" 'magit-goto-next-section)
-;;     (evil-define-key 'emacs magit-mode-map "k" 'magit-goto-previous-section)
-;;     (evil-define-key 'emacs magit-mode-map "K" 'magit-discard-item))) 
+      ;; (use-package magit
+      ;;   :commands magit-status magit-diff magit-log magit-blame-mode
+      ;;   :init
+      ;;   (evil-leader/set-key
+      ;;     "g t" 'magit-status
+      ;;     "g b" 'magit-blame-mode
+      ;;     "g l" 'magit-log
+      ;;     "g d" 'magit-diff)
+      ;;   :config
+      ;;   (progn
+      ;;     (evil-make-overriding-map magit-mode-map 'emacs)
+      ;;     (define-key magit-mode-map "\C-w" 'evil-window-map)
+      ;;     (evil-define-key 'emacs magit-mode-map "j" 'magit-goto-next-section)
+      ;;     (evil-define-key 'emacs magit-mode-map "k" 'magit-goto-previous-section)
+      ;;     (evil-define-key 'emacs magit-mode-map "K" 'magit-discard-item))) 
 
 
-(use-package git-timemachine
-     :demand
-  :config
-  (evil-make-overriding-map git-timemachine-mode-map 'normal)
-  ;; force update evil keymaps after git-timemachine-mode loaded
-  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+      (leaf git-timemachine
+        :ensure t
+        ;; force update evil keymaps after git-timemachine-mode loaded
+        :hook
+        (git-timemachine-mode-hook . evil-normalize-keymaps)
+        :config
+        (evil-make-overriding-map git-timemachine-mode-map 'normal))
 
 
-
-(use-package evil-magit 
-     :demand
-  :commands
-  (magit-status))
+      (leaf evil-magit :ensure t)
 
     #+END_SRC
 
 *** mathinput
     #+BEGIN_SRC emacs-lisp :tangle on
-      (use-package xah-math-input-mode
-     :demand
+      (leaf xah-math-input-mode
+        :ensure t
         :config
         (evil-declare-key 'normal xah-math-input-keymap [f9] 'xah-math-input-change-to-symbol)
         (evil-declare-key 'insert xah-math-input-keymap [f9] 'xah-math-input-change-to-symbol)
@@ -1509,18 +1316,18 @@
 
 ** bind map
    #+BEGIN_SRC emacs-lisp
-(use-package evil-lisp-state
-     :demand
-  :init
-  (let ((leader ","))
-    (bind-map evil-lisp-state-map
-      :evil-keys (leader)
-      :major-modes (emacs-lisp-mode)
-      :evil-states (normal lisp))
-    (bind-map evil-lisp-state-major-mode-map
-       :evil-keys (leader)
-       :evil-states (normal lisp)
-       :major-modes (emacs-lisp-mode))) )
+     (leaf evil-lisp-state
+       :ensure t
+       :config
+       (let ((leader ","))
+         (bind-map evil-lisp-state-map
+           :evil-keys (leader)
+           :major-modes (emacs-lisp-mode)
+           :evil-states (normal lisp))
+         (bind-map evil-lisp-state-major-mode-map
+           :evil-keys (leader)
+           :evil-states (normal lisp)
+           :major-modes (emacs-lisp-mode))) )
    #+END_SRC
 
    #+RESULTS:
@@ -1573,17 +1380,8 @@
 * bind map                                                       :DEPRECATED:
 #+BEGIN_SRC emacs-lisp :tangle no
 
-  ;; (use-package bind-map
-  ;;   :config
-  ;;   (bind-map my-org-map
-  ;;             :evil-keys (",")
-  ;;             :major-modes (org-mode))
-  ;;   (bind-map-set-keys my-org-map
-  ;;                      "t" 'ido-choose-from-recentf)) 
-
-
-  (use-package bind-map
-     :demand
+  (leaf bind-map
+    :ensure t
     :config
     (bind-map-set-keys helm-ag-map
       (kbd "<f2>") 'helm-ag-edit
@@ -1597,74 +1395,44 @@
 : t
 
 
-* evil visual selection - evil 과 org mode 간에 상충 발생
-
-  #+BEGIN_SRC emacs-lisp :tangle no
-    (define-key evil-normal-state-map (kbd "S-<left>")
-      (lambda ()
-        (interactive)
-        (evil-visual-char)
-        (backward-char)))
-    (define-key evil-normal-state-map (kbd "S-<right>") 
-      (lambda ()
-        (interactive)
-        (evil-visual-char)
-        (forward-char)))
-    (define-key evil-normal-state-map (kbd "S-<up>")
-      (lambda ()
-        (interactive)
-        (evil-visual-char)
-        (previous-line)))
-    (define-key evil-normal-state-map (kbd "S-<down>") 
-      (lambda ()
-        (interactive)
-        (evil-visual-char)
-        (next-line)))
-
-  #+END_SRC
-
-  #+RESULTS:
-  | lambda | nil | (interactive) | (evil-visual-char) | (next-line) |
 
 * lion mode 
 [[https://github.com/edkolev/evil-lion][GitHub - edkolev/evil-lion: Evil align operator]]
 #+BEGIN_SRC emacs-lisp
-(use-package evil-lion
-  :demand
-  :config
-  (evil-lion-mode))
+  (leaf evil-lion
+    :ensure t
+    :global-minor-mode evil-lion-mode)
 #+END_SRC
 
 #+RESULTS:
 : t
 * switch-window
   #+BEGIN_SRC emacs-lisp
-  (use-package switch-window
-     :demand
-  :init
-  (setq switch-window-shortcut-style 'qwerty)
-  (setq switch-window-querty-shortcuts '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "i" "o"))
-  :config
-  (global-set-key (kbd "<f12>") 'dired)
-  (global-set-key (kbd "<f22>") 'switch-to-buffer)
-  ;;(global-set-key (kbd "<S-f12>") 'switch-window-then-find-file)
-  (global-set-key (kbd "<M-f12>") 'switch-window-then-dired)
-  ;;(global-set-key (kbd "C-x o") 'switch-window)
-  ;;(global-set-key (kbd "C-x 1") 'switch-window-then-maximize)
-  ;;(global-set-key (kbd "C-x 2") 'switch-window-then-split-below)
-  ;;(global-set-key (kbd "C-x 3") 'switch-window-then-split-right)
-  ;;(global-set-key (kbd "C-x 0") 'switch-window-then-delete)
-  ;;
-  ;;(global-set-key (kbd "C-x 4 d") 'switch-window-then-dired)
-  ;;(global-set-key (kbd "C-x 4 f") 'switch-window-then-find-file)
-  ;;(global-set-key (kbd "C-x 4 m") 'switch-window-then-compose-mail)
-  ;;(global-set-key (kbd "C-x 4 r") 'switch-window-then-find-file-read-only)
-  ;;
-  ;;(global-set-key (kbd "C-x 4 C-f") 'switch-window-then-find-file)
-  ;;(global-set-key (kbd "C-x 4 C-o") 'switch-window-then-display-buffer)
-  ;;
-  ;;(global-set-key (kbd "C-x 4 0") 'switch-window-then-kill-buffer)
-)
+    (leaf switch-window
+      :ensure t
+      :custom (( switch-window-shortcut-style . 'qwerty)
+               ( switch-window-querty-shortcuts . '("a" "s" "d" "f" "j" "k" "l" ";" "w" "e" "i" "o")))
+      :bind
+      (( (kbd "<f12>") . dired)
+       ( (kbd "<f22>") . switch-to-buffer)
+       ( (kbd "<M-f12>") . switch-window-then-dired))
+      ;;(global-set-key (kbd "<S-f12>") 'switch-window-then-find-file)
+      ;;(global-set-key (kbd "C-x o") 'switch-window)
+      ;;(global-set-key (kbd "C-x 1") 'switch-window-then-maximize)
+      ;;(global-set-key (kbd "C-x 2") 'switch-window-then-split-below)
+      ;;(global-set-key (kbd "C-x 3") 'switch-window-then-split-right)
+      ;;(global-set-key (kbd "C-x 0") 'switch-window-then-delete)
+      ;;
+      ;;(global-set-key (kbd "C-x 4 d") 'switch-window-then-dired)
+      ;;(global-set-key (kbd "C-x 4 f") 'switch-window-then-find-file)
+      ;;(global-set-key (kbd "C-x 4 m") 'switch-window-then-compose-mail)
+      ;;(global-set-key (kbd "C-x 4 r") 'switch-window-then-find-file-read-only)
+      ;;
+      ;;(global-set-key (kbd "C-x 4 C-f") 'switch-window-then-find-file)
+      ;;(global-set-key (kbd "C-x 4 C-o") 'switch-window-then-display-buffer)
+      ;;
+      ;;(global-set-key (kbd "C-x 4 0") 'switch-window-then-kill-buffer)
+      )
 
   #+END_SRC
 
@@ -1727,16 +1495,16 @@
 * evil-search-highlight-persist
 
   #+begin_src emacs-lisp
-    (use-package evil-search-highlight-persist
-      :ensure)
+    (leaf evil-search-highlight-persist :ensure t)
   #+end_src
 
   #+RESULTS:
 * evil-tex
   #+begin_src emacs-lisp
-    (use-package evil-tex
-      :config
-      (add-hook 'LaTeX-mode-hook #'evil-tex-mode))
+    (leaf evil-tex
+      :ensure t
+      :hook
+      (LaTeX-mode-hook . evil-tex-mode))
   #+end_src
 
   #+RESULTS:
@@ -1809,37 +1577,35 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
 ** mu4e
    #+begin_src emacs-lisp
 
-     (use-package evil-collection
-       :demand 
+     (leaf evil-collection
+       :ensure t 
        :config
 
-       (evil-collection-init '( diff-mode mu4e)))
+       (evil-collection-init '( diff-mode mu4e))
 
+       (let ((bindings `((mu4e-view-mode-map 
+                          "*"             bmkp-mu4e-view
+                          ,(kbd "<home>")             open-mu4e-view   ;open in outlook
+                          ,(kbd "<insert>")           mu4e-headers-mark-for-something   ;open in outlook
+                          ,(kbd "<kp-multiply>") bmkp-mu4e-view
+                          "@"             copy-mu4e-view
+                          ,(kbd "<f12>F")             mu4e-find-file
+                          ,(kbd "<f12>f")             mu4e-field-view
+                          "o" mu4e-view-open-attachment
+                          "O" mu4e-view-open-attachment-emacs
+                          "m"  	mu4e-view-mark-for-tag
+                          "#"  	mu4e-mark-resolve-deferred-marks)
+                         (mu4e-headers-mode-map 
+                          ,(kbd "<home>")             open-mu4e-view   ;open in outlook
+                          ,(kbd "<insert>")        mu4e-headers-mark-for-something   ;open in outlook
+                          ,(kbd "<kp-multiply>") bmkp-mu4e-header
+                          "@"             copy-mu4e-header
+                          ,(kbd "<f12>F")             mu4e-find-file
+                          ,(kbd "<f12>f")             mu4e-field-header
+                          "L"  	mu4e-occur-store-link))))
 
-
-     (let ((bindings `((mu4e-view-mode-map 
-                        "*"             bmkp-mu4e-view
-                        ,(kbd "<home>")             open-mu4e-view   ;open in outlook
-                        ,(kbd "<insert>")           mu4e-headers-mark-for-something   ;open in outlook
-                        ,(kbd "<kp-multiply>") bmkp-mu4e-view
-                        "@"             copy-mu4e-view
-                        ,(kbd "<f12>F")             mu4e-find-file
-                        ,(kbd "<f12>f")             mu4e-field-view
-                        "o" mu4e-view-open-attachment
-                        "O" mu4e-view-open-attachment-emacs
-                        "m"  	mu4e-view-mark-for-tag
-                        "#"  	mu4e-mark-resolve-deferred-marks)
-                       (mu4e-headers-mode-map 
-                        ,(kbd "<home>")             open-mu4e-view   ;open in outlook
-                        ,(kbd "<insert>")        mu4e-headers-mark-for-something   ;open in outlook
-                        ,(kbd "<kp-multiply>") bmkp-mu4e-header
-                        "@"             copy-mu4e-header
-                        ,(kbd "<f12>F")             mu4e-find-file
-                        ,(kbd "<f12>f")             mu4e-field-header
-                        "L"  	mu4e-occur-store-link))))
-
-       (dolist (binding bindings)
-         (apply #'evil-collection-define-key 'normal binding)))
+         (dolist (binding bindings)
+           (apply #'evil-collection-define-key 'normal binding))))
 
 
 
@@ -1849,7 +1615,8 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
    
 ** block-nav
    #+begin_src emacs-lisp
-     (use-package block-nav
+     (leaf block-nav
+       :ensure t
        :config
        (dolist (modemap '(python-mode-map c++-mode-map))
          (evil-collection-define-key '(normal visual) modemap

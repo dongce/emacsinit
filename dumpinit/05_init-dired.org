@@ -12,7 +12,6 @@
         If multiple files are marked, only zip the first one.
         Require unix zip commandline tool."
      (interactive "M압축파일명 :")
-     (require 'dired)
      (let ( (fileNames (dired-get-marked-files)))
        (apply
         #'async-start-process
@@ -49,7 +48,7 @@
        (if found dirname nil)))
 
    (leaf dired
-     :demand
+     :require t
      :bind ((:dired-mode-map
              ( ":c" . clip-file)
              ( ":p" . clip-paste)
@@ -63,7 +62,6 @@
         If multiple files are marked, only zip the first one.
         Require unix zip commandline tool."
      (interactive)
-     (require 'dired)
      (let ( (fileName (elt (dired-get-marked-files) 0))  )
        (shell-command (format "zip -r '%s.zip' '%s'" (file-relative-name fileName) (file-relative-name fileName)))
        ))
@@ -75,7 +73,6 @@
         If multiple files are marked, only zip the first one.
         Require unix zip commandline tool."
      (interactive (list (dired-get-marked-files) ))
-     (require 'dired)
      (mapc
       (lambda (ξf)
         (let ( newName cmdStr )
@@ -96,7 +93,6 @@
         If multiple files are marked, only zip the first one.
         Require unix zip commandline tool."
      (interactive (list (dired-get-marked-files) ))
-     (require 'dired)
      (mapc
       (lambda (ξf)
         (let ( newName cmdStr )
@@ -119,7 +115,6 @@
         If multiple files are marked, only zip the first one.
         Require unix zip commandline tool."
      (interactive "M압축파일명 :")
-     (require 'dired)
      (let ( (fileNames (dired-get-marked-files)))
        (apply
         #'async-start-process
@@ -757,17 +752,17 @@ open and unsaved."
 
 #+BEGIN_SRC emacs-lisp
   (leaf  dired-x
+    :require t
+    :hook (dired-mode-hook . dired-omit-mode)
     :config
-    (require 'dired-x)
     (setq dired-omit-verbose nil)
     ;; toggle `dired-omit-mode' with C-x M-o
-    (add-hook 'dired-mode-hook #'dired-omit-mode)
     (setq dired-omit-files
           (concat dired-omit-files "\\|^.~$\\|^.projectile$")))
 #+END_SRC
 
 #+RESULTS:
-: ^\.?#\|^\.$\|^\.\.$\|^.~$\|^.projectile$\|^.~$\|^.projectile$\|^~\|^.~$\|^.projectile$\|^.~$\|^.projectile$\|^.~$\|^.projectile$
+: dired-x
 
 
 * dired-hacks
@@ -779,7 +774,7 @@ open and unsaved."
 * dired+
   
 #+begin_src emacs-lisp
-(leaf dired+ :config (require 'dired+))
+(leaf dired+ :require t)
 #+end_src
 
 #+RESULTS:

@@ -20,23 +20,24 @@
 
      (setf mu4e-maildir (s-concat "/mnt/f/PERSONAL/" (datetime-format "%Y/%m/%d")))
 
-     (use-package mu4e
-     :demand
-       :init
-       (cond (t
-              (add-to-list 'load-path (concat emacsw32-home "local/share/emacs/site-lisp/mu4e"))
-              (append-path "/opt/local/bin")))
 
 
-
+     (leaf mu4e
+       :require t
+       :load-path "/opt/local/share/emacs/site-lisp/mu4e"
+       :init (append-path "/opt/local/bin")
+       :custom
+       ((mu4e-bookmarks .
+                        '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)
+                           ("date:1d..now"                  "오늘의 메일"     ?t)
+                           ("flag:attach"       "첨부파일있음"     ?a)
+                           ("date:8d..now"                     "Last 7 days"          ?w)
+                           ("mime:image/*"                     "Messages with images" ?p)))
+        (outlook.exe .
+          "C:\\Program Files\\Microsoft Office\\Office16\\OUTLOOK.EXE")
+        (mu4e-field-list .
+          '(:path :docid :from :to :cc :subject :date :size :message-id  :maildir :priority :flags :attachments :references )))
        :config
-       (setq mu4e-bookmarks
-             '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)
-                ("date:1d..now"                  "오늘의 메일"     ?t)
-                ("flag:attach"       "첨부파일있음"     ?a)
-                ("date:8d..now"                     "Last 7 days"          ?w)
-                ("mime:image/*"                     "Messages with images" ?p)))
-
        (defun bmkp-mu4e-helper ( subject docid)
          (let* ((bookmark-name (format "%d-%s" docid subject ))
                 (bookmark-record (bookmark-get-bookmark bookmark-name t )))
@@ -76,7 +77,6 @@
                 (docid (mu4e-message-field msg :docid)))
            (kill-new (format "%s %s : (lambda ()  (mu4e~proc-view %d nil nil))" subject path docid))))
 
-       (setf outlook.exe "C:\\Program Files\\Microsoft Office\\Office16\\OUTLOOK.EXE")
 
        (defun copy-mu4e-view ()
          (interactive)
@@ -102,8 +102,6 @@
                                         ;;(s-replace "/"  "\\" (s-replace "/mnt/f/" "f:" file))
                                         ;;(pyutil-wslpath file)
                                         )))))
-
-       (setf mu4e-field-list '(:path :docid :from :to :cc :subject :date :size :message-id  :maildir :priority :flags :attachments :references )) ;:parts
 
 
        (defun mu4e-field-header ()
@@ -193,8 +191,6 @@
        ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "F") 'mu4e-find-file)
        ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "f") 'mu4e-field-view)
 
-       ;; 메일을 볼 때 HTML 을 rendering 한다. 
-       (require 'htmlr)                        
 
        ;; (add-hook 
        ;;  'mu4e-view-mode-hook
@@ -243,13 +239,7 @@
              (delete-region (point) (point-max)))))
 
 
-       (define-key 
-         mu4e-view-mode-map "l" 
-         (lambda () 
-           (interactive)
-           (toggle-read-only 0 )
-           (htmlr-render)
-           (mu4e-view-mode)))
+
 
 
        ;;http://stackoverflow.com/questions/9942675/in-elisp-how-do-i-put-a-function-in-a-variable
@@ -424,8 +414,8 @@
        )
 
 
-     (use-package helm-mu
-     :demand
+     (leaf helm-mu
+       :ensure t
        :config 
        (defvar mucontacts-source
          (helm-build-in-buffer-source "mu를 이용하여 메일주소를 검색합니다."
@@ -620,15 +610,14 @@
 
 * filter 
   #+BEGIN_SRC emacs-lisp
-  (use-package mu4e-query-fragments
-     :demand
-    :config  
-    (setq mu4e-query-fragments-list
-      '(("%pkx" . "subject:*PKX* or *PKG")
-        ("%ffx" . "subject:*ffx*")))
-    )
+    (leaf mu4e-query-fragments
+      :ensure t
+      :custom  
+      ((mu4e-query-fragments-list .
+                                  '(("%pkx" . "subject:*PKX* or *PKG")
+                                    ("%ffx" . "subject:*ffx*")))))
 
-  
+
   #+END_SRC
 
   #+RESULTS:

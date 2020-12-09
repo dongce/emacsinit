@@ -2446,7 +2446,6 @@ The new names have “-s” appended before the file name extension.
 Requires ImageMagick shell tool."
   (interactive
    (list (dired-get-marked-files) (read-from-minibuffer "scale percentage:")))
-  (require 'dired)
 
   (mapc
      (lambda (ξf)
@@ -2467,7 +2466,6 @@ Requires ImageMagick shell tool."
 Requires ImageMagick shell tool.
 "
   (interactive (list (dired-get-marked-files) ))
-  (require 'dired)
 
   (mapc
      (lambda (ξf)
@@ -2490,7 +2488,6 @@ Requires ImageMagick shell tool.
 ;; Requires ImageMagick shell tool.
 ;; "
 ;;   (interactive (list (dired-get-marked-files) ))
-;;   (require 'dired)
 
 ;;   (mapc
 ;;    (lambda (ξf)
@@ -2526,7 +2523,6 @@ Requires ImageMagick shell tool.
 Requires ImageMagick shell tool.
 "
   (interactive (list (dired-get-marked-files) ))
-  (require 'dired)
 
   (mapc
    (lambda (ξf)
@@ -2561,7 +2557,6 @@ Requires ImageMagick shell tool.
 Requires ImageMagick shell tool.
 "
   (interactive (list (dired-get-marked-files) ))
-  (require 'dired)
 
   (mapc
    (lambda (ξf)
@@ -2592,7 +2587,6 @@ Requires ImageMagick shell tool.
 
 (defun 2fax () 
   (interactive)
-  (require 'dired)
 
   (mapcar 
    (lambda (f)
@@ -2614,7 +2608,6 @@ Requires ImageMagick shell tool.
 
 (defun image-identity () 
   (interactive)
-  (require 'dired)
 
   (mapcar 
    (lambda (f)
@@ -2881,7 +2874,6 @@ and TO-STRING is also null.)"
 If multiple files are marked, only zip the first one.
 Require unix zip commandline tool."
   (interactive (list (dired-get-marked-files)))
-  (require 'dired)
 
   (with-current-buffer (get-buffer-create "*depend-output*")
     (setq allout-primary-bullet "---*")

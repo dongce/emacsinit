@@ -707,7 +707,6 @@ Other commands call this function to do work.
 
 URL `http://ergoemacs.org/emacs/emacs_dired_convert_images.html'
 Version 2015-10-19"
-  (require 'dired)
   (mapc
    (lambda ($f)
      (let ( $newName $cmdStr )
