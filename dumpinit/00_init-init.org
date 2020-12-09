@@ -77,8 +77,19 @@
 #+BEGIN_SRC emacs-lisp
 
   (require 'use-package)
-  ;;(require 'req-package)
+  ;; (require 'req-package)
   (require 'package-helper)
+
+  (leaf leaf-keywords
+    :ensure t
+    :init
+    ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
+    (leaf hydra :ensure t)
+    ;;(leaf el-get :ensure t)
+    ;;(leaf blackout :ensure t)
+    :config
+    ;; initialize leaf-keywords.el
+    (leaf-keywords-init))
 #+END_SRC
 
 * startup setting 
@@ -100,35 +111,35 @@
 
 #+BEGIN_SRC emacs-lisp
 
-    ;;(require 'bc-mode)
-    (require 'tramp-adb)
-    (require 'grep-ed)
-    (require 'markerpen)
-    (use-package saveplace
-      :demand
-      :config
-      (setq-default save-place t))
+  ;;(require 'bc-mode)
+  (leaf tramp-adb)
+  (leaf grep-ed)
+  (leaf markerpen)
+  (leaf saveplace
+    :demand
+    :config
+    (setq-default save-place t))
 
 
-    (require 'url)
-    (require 'thingatpt)
-    ;;(require 'thingatpt+)
-    ;;(require 'thing-cmds)
-    (require 'hide-comnt)
+  (leaf url)
+  (leaf thingatpt)
+  ;;(leaf thingatpt+)
+  ;;(leaf thing-cmds)
+  (leaf hide-comnt)
 
-    ;; 다음을 이용해서 불필요한 라인을 잠시 숨길 수 있다. 
-    ;; http://www.emacswiki.org/emacs/CategoryHideStuff 참고 
-    (require 'hide-lines)
-    (global-set-key "\C-ch" 'hide-lines)
+  ;; 다음을 이용해서 불필요한 라인을 잠시 숨길 수 있다. 
+  ;; http://www.emacswiki.org/emacs/CategoryHideStuff 참고 
+  (leaf hide-lines
+    :bind ( "C-c h" . hide-lines))
 
 
-    ;;donotuse;;(use-package time-stamp
-    ;;donotuse;;  :demand
-    ;;donotuse;;  :init
-    ;;donotuse;;  (setf time-stamp-start "마지막 변경 시각:[  ]+[\"<]+")
-    ;;donotuse;;  (setf time-stamp-format "%:y년 %02m월 %02d일 %:a %02H시 %02M분 %02S초")
-    ;;donotuse;;;;(add-hook 'before-save-hook 'time-stamp) ;;TIME STAMP 의 경우 merge 하기 어렵다. 
-    ;;donotuse;;)
+  ;;donotuse;;(leaf time-stamp
+  ;;donotuse;;  :demand
+  ;;donotuse;;  :init
+  ;;donotuse;;  (setf time-stamp-start "마지막 변경 시각:[  ]+[\"<]+")
+  ;;donotuse;;  (setf time-stamp-format "%:y년 %02m월 %02d일 %:a %02H시 %02M분 %02S초")
+  ;;donotuse;;;;(add-hook 'before-save-hook 'time-stamp) ;;TIME STAMP 의 경우 merge 하기 어렵다. 
+  ;;donotuse;;)
 
 
 
@@ -139,32 +150,26 @@
     ;;;
     ;;;
 
-    ;;notexist;;(use-package nxml-mode
-    ;;notexist;;  :config
-    ;;notexist;;  (define-key nxml-mode-map  [C-right] 'forward-word )
-    ;;notexist;;  (define-key nxml-mode-map  [C-left] 'backward-word ))
+  ;;notexist;;(leaf nxml-mode
+  ;;notexist;;  :config
+  ;;notexist;;  :bind
+  ;;notexist;;  (( nxml-mode-map  
+  ;;notexist;;    ([C-right] . forward-word )
+  ;;notexist;;     ([C-left]  . backward-word))))
 
 
-    ;; 다음함수를 이용하여 파일의 로컬변수를 설정할 수 있다. 
-    ;; http://www.gnu.org/software/libtool/manual/emacs/Variables.html#Variables 메뉴얼참고 
-    ;; add-file-local-variable-prop-line' 
+  ;; 다음함수를 이용하여 파일의 로컬변수를 설정할 수 있다. 
+  ;; http://www.gnu.org/software/libtool/manual/emacs/Variables.html#Variables 메뉴얼참고 
+  ;; add-file-local-variable-prop-line' 
 
-    (require 'uniquify)
-
-
-    ;;DEPRECATED;;(require 'bbdb)
-    ;;DEPRECATED;;(bbdb-initialize)
+  (require 'uniquify)
 
 
-    (require 'wiki-nav)
-    ;;deprecated;;(use-package smex
-    ;;deprecated;;  :config  
-    ;;deprecated;;  (smex-initialize)
-    ;;deprecated;;  ;;(global-set-key (kbd "M-x") 'smex)
-    ;;deprecated;;  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-    ;;deprecated;;  ;; This is your old M-x.
-    ;;deprecated;;  ;;(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-    ;;deprecated;;  )
+  ;;DEPRECATED;;(require 'bbdb)
+  ;;DEPRECATED;;(bbdb-initialize)
+
+
+  (require 'wiki-nav)
 
 
 

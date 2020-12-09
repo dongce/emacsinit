@@ -8,202 +8,204 @@
 * theme
   #+BEGIN_SRC emacs-lisp
 
-(defun transparent(alpha-level no-focus-alpha-level)
-  "Let's you make the window transparent"
-  (interactive "nAlpha level (0-100): \nnNo focus alpha level (0-100): ")
-  (set-frame-parameter (selected-frame) 'alpha (list alpha-level no-focus-alpha-level))
-  (add-to-list 'default-frame-alist `(alpha ,alpha-level)))
+    (defun transparent(alpha-level no-focus-alpha-level)
+      "Let's you make the window transparent"
+      (interactive "nAlpha level (0-100): \nnNo focus alpha level (0-100): ")
+      (set-frame-parameter (selected-frame) 'alpha (list alpha-level no-focus-alpha-level))
+      (add-to-list 'default-frame-alist `(alpha ,alpha-level)))
 
-;; three window 
-(defun split-window-4()
- "Splite window into 4 sub-window"
- (interactive)
- (if (= 1 (length (window-list)))
-     (progn (split-window-vertically)
-	    (split-window-horizontally)
-	    (other-window 2)
-	    (split-window-horizontally)
-	    )
-   )
-)
+    ;; three window 
+    (defun split-window-4()
+     "Splite window into 4 sub-window"
+     (interactive)
+     (if (= 1 (length (window-list)))
+         (progn (split-window-vertically)
+          (split-window-horizontally)
+          (other-window 2)
+          (split-window-horizontally)
+          )
+       )
+    )
 
-(defun change-split-type (split-fn &optional arg)
-  "Change 3 window style from horizontal to vertical and vice-versa"
-  (let ((bufList (mapcar 'window-buffer (window-list))))
-    (select-window (get-largest-window))
-    (funcall split-fn arg)
-    (mapcar* 'set-window-buffer (window-list) bufList)))
+    (defun change-split-type (split-fn &optional arg)
+      "Change 3 window style from horizontal to vertical and vice-versa"
+      (let ((bufList (mapcar 'window-buffer (window-list))))
+        (select-window (get-largest-window))
+        (funcall split-fn arg)
+        (mapcar* 'set-window-buffer (window-list) bufList)))
 
-(defun change-split-type-2 (&optional arg)
-  "Changes splitting from vertical to horizontal and vice-versa"
-  (interactive "P")
-  (let ((split-type (lambda (&optional arg)
-                      (delete-other-windows-internal)
-                      (if arg (split-window-vertically)
-                        (split-window-horizontally)))))
-    (change-split-type split-type arg)))
+    (defun change-split-type-2 (&optional arg)
+      "Changes splitting from vertical to horizontal and vice-versa"
+      (interactive "P")
+      (let ((split-type (lambda (&optional arg)
+                          (delete-other-windows-internal)
+                          (if arg (split-window-vertically)
+                            (split-window-horizontally)))))
+        (change-split-type split-type arg)))
 
-(defun change-split-type-3-v (&optional arg)
-  "change 3 window style from horizon to vertical"
-  (interactive "P")
-  (change-split-type 'split-window-3-horizontally arg))
+    (defun change-split-type-3-v (&optional arg)
+      "change 3 window style from horizon to vertical"
+      (interactive "P")
+      (change-split-type 'split-window-3-horizontally arg))
 
-(defun change-split-type-3-h (&optional arg)
-  "change 3 window style from vertical to horizon"
-  (interactive "P")
-  (change-split-type 'split-window-3-vertically arg))
+    (defun change-split-type-3-h (&optional arg)
+      "change 3 window style from vertical to horizon"
+      (interactive "P")
+      (change-split-type 'split-window-3-vertically arg))
 
-(defun split-window-3-horizontally (&optional arg)
-  "Split window into 3 while largest one is in horizon"
-;  (interactive "P")
-  (delete-other-windows)
-  (split-window-horizontally)
-  (if arg (other-window 1))
-  (split-window-vertically))
+    (defun split-window-3-horizontally (&optional arg)
+      "Split window into 3 while largest one is in horizon"
+    ;  (interactive "P")
+      (delete-other-windows)
+      (split-window-horizontally)
+      (if arg (other-window 1))
+      (split-window-vertically))
 
-(defun split-window-3-vertically (&optional arg)
-  "Split window into 3 while largest one is in vertical"
-;  (interactive "P")
-  (delete-other-windows)
-  (split-window-vertically)
-  (if arg (other-window 1))
-  (split-window-horizontally))
+    (defun split-window-3-vertically (&optional arg)
+      "Split window into 3 while largest one is in vertical"
+    ;  (interactive "P")
+      (delete-other-windows)
+      (split-window-vertically)
+      (if arg (other-window 1))
+      (split-window-horizontally))
 
-;;deprecated;;;; paren
-;;deprecated;;;; http://emacswiki.org/emacs/ShowParenMode
-;;deprecated;;(require 'mic-paren)
-;;deprecated;;(paren-activate)
-;;deprecated;;(show-paren-mode t)
+    ;;deprecated;;;; paren
+    ;;deprecated;;;; http://emacswiki.org/emacs/ShowParenMode
+    ;;deprecated;;(require 'mic-paren)
+    ;;deprecated;;(paren-activate)
+    ;;deprecated;;(show-paren-mode t)
 
-;;option(setq show-paren-delay 0)           ; how long to wait?
-;;option(show-paren-mode t)                 ; turn paren-mode on
-;;option(setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'
-;;option(setq show-paren-style 'parenthesis)
-;;option(setq show-paren-style 'mixed)
+    ;;option(setq show-paren-delay 0)           ; how long to wait?
+    ;;option(show-paren-mode t)                 ; turn paren-mode on
+    ;;option(setq show-paren-style 'expression) ; alternatives are 'parenthesis' and 'mixed'
+    ;;option(setq show-paren-style 'parenthesis)
+    ;;option(setq show-paren-style 'mixed)
 
-(require 'frame-cmds)
-(define-key global-map "\C-xt." 'save-frame-config)
-(define-key global-map "\C-xt," 'jump-to-frame-config-register)
+    (require 'frame-cmds)
+    (define-key global-map "\C-xt." 'save-frame-config)
+    (define-key global-map "\C-xt," 'jump-to-frame-config-register)
 
-;;(require 'autofit-frame)
-
-
-(defun toggle-frame-split ()
-  "If the frame is split vertically, split it horizontally or vice versa.
-Assumes that the frame is only split into two."
-  (interactive)
-  (unless (= (length (window-list)) 2) (error "Can only toggle a frame split in two"))
-  (let ((split-vertically-p (window-combined-p)))
-    (delete-window) ; closes current window
-    (if split-vertically-p
-        (split-window-horizontally)
-      (split-window-vertically)) ; gives us a split with the other window twice
-    (switch-to-buffer nil))) ; restore the original window in this part of the frame
-
-;; I don't use the default binding of 'C-x 5', so use toggle-frame-split instead
-
-;;; (global-set-key (kbd "C-x 5") 'toggle-frame-split)
+    ;;(require 'autofit-frame)
 
 
-;;; modeline 
-;; http://emacs-fu.blogspot.kr/2010/05/cleaning-up-mode-line.html
+    (defun toggle-frame-split ()
+      "If the frame is split vertically, split it horizontally or vice versa.
+    Assumes that the frame is only split into two."
+      (interactive)
+      (unless (= (length (window-list)) 2) (error "Can only toggle a frame split in two"))
+      (let ((split-vertically-p (window-combined-p)))
+        (delete-window) ; closes current window
+        (if split-vertically-p
+            (split-window-horizontally)
+          (split-window-vertically)) ; gives us a split with the other window twice
+        (switch-to-buffer nil))) ; restore the original window in this part of the frame
+
+    ;; I don't use the default binding of 'C-x 5', so use toggle-frame-split instead
+
+    ;;; (global-set-key (kbd "C-x 5") 'toggle-frame-split)
 
 
-
-;;And the major-modes, for example for Emacs Lisp mode:
-;;
-;;(add-hook 'emacs-lisp-mode-hook 
-;;  (lambda()
-;;    (setq mode-name "el")))
-(require 'whitespace)
-
-
-;;customize;; (add-hook 'prog-mode-hook 'whitespace-mode)
-;;customize;; (global-whitespace-mode +1)
-
-;;dump-deprecated;;(winner-mode t )
-
-;; (with-package* (smart-mode-line) (sml-modeline-mode))
-
-(use-package diminish
-  :demand
-  :config
-  (diminish 'company-mode "Cmp")
-  (diminish 'abbrev-mode "Ab")
-  (diminish 'yas/minor-mode "Y")
-  (diminish 'yas/minor-mode "Y")
-  (diminish 'undo-tree-mode "ut")
-  (diminish 'paredit-mode "pe")
-  (diminish 'emacs-lisp-mode "EL")
-  (diminish 'elisp-mode "el")
-  (diminish 'evil-org-mode ))
-
-;;deprecated;;(use-package sml-modeline
-;;deprecated;;  :config
-;;deprecated;;  (sml-modeline-mode))
-
-;;conflictwithhelm;;(with-package* (modeline-posn)
-;;conflictwithhelm;;  (size-indication-mode t))
-
-;;deprecated;;(defun update-diff-colors ()
-;;deprecated;;  "update the colors for diff faces"
-;;deprecated;;  (set-face-attribute 'diff-added nil
-;;deprecated;;                      :foreground "white" :background "blue")
-;;deprecated;;  (set-face-attribute 'diff-removed nil
-;;deprecated;;                      :foreground "white" :background "red3")
-;;deprecated;;  (set-face-attribute 'diff-changed nil
-;;deprecated;;                      :foreground "white" :background "purple"))
-;;deprecated;;;;(eval-after-load "diff-mode" '(update-diff-colors))
+    ;;; modeline 
+    ;; http://emacs-fu.blogspot.kr/2010/05/cleaning-up-mode-line.html
 
 
 
-;; https://github.com/Bruce-Connor/smart-mode-line
-
-;;deprecated;;(require 'smart-mode-line)
-;;deprecated;;(if after-init-time (sml/setup)
-;;deprecated;;  (add-hook 'after-init-hook 'sml/setup))
-
-
-;;deprecated;;(with-package* (fringe-current-line)
-;;deprecated;;  (global-fringe-current-line-mode t))
+    ;;And the major-modes, for example for Emacs Lisp mode:
+    ;;
+    ;;(add-hook 'emacs-lisp-mode-hook 
+    ;;  (lambda()
+    ;;    (setq mode-name "el")))
+    (require 'whitespace)
 
 
-;; http://ergoemacs.org/emacs/emacs_pretty_lambda.html
-(setq prettify-symbols-alist
-      '(
-        ("lambda" . 955) ; λ
-        ("->" . 8594)    ; →
-        ("=>" . 8658)    ; ⇒
-        ("map" . 8614)    ; ↦
-        ))
+    ;;customize;; (add-hook 'prog-mode-hook 'whitespace-mode)
+    ;;customize;; (global-whitespace-mode +1)
+
+    ;;dump-deprecated;;(winner-mode t )
+
+    ;; (leaf smart-mode-line)
+    ;; (leaf sml-modeline-mode)
+
+    (use-package diminish
+      :demand
+      :config
+      (diminish 'company-mode "Cmp")
+      (diminish 'abbrev-mode "Ab")
+      (diminish 'yas/minor-mode "Y")
+      (diminish 'yas/minor-mode "Y")
+      (diminish 'undo-tree-mode "ut")
+      (diminish 'paredit-mode "pe")
+      (diminish 'emacs-lisp-mode "EL")
+      (diminish 'elisp-mode "el")
+      (diminish 'evil-org-mode ))
+
+    ;;deprecated;;(use-package sml-modeline
+    ;;deprecated;;  :config
+    ;;deprecated;;  (sml-modeline-mode))
+
+    ;;conflictwithhelm;;(leaf modeline-posn
+    ;;conflictwithhelm;;  (size-indication-mode t))
+
+    ;;deprecated;;(defun update-diff-colors ()
+    ;;deprecated;;  "update the colors for diff faces"
+    ;;deprecated;;  (set-face-attribute 'diff-added nil
+    ;;deprecated;;                      :foreground "white" :background "blue")
+    ;;deprecated;;  (set-face-attribute 'diff-removed nil
+    ;;deprecated;;                      :foreground "white" :background "red3")
+    ;;deprecated;;  (set-face-attribute 'diff-changed nil
+    ;;deprecated;;                      :foreground "white" :background "purple"))
+    ;;deprecated;;;;(eval-after-load "diff-mode" '(update-diff-colors))
 
 
-;;(defun my-add-pretty-lambda ()
-;;  "make some word or string show as pretty Unicode symbols"
-;;  (setq prettify-symbols-alist
-;;        '(
-;;          ("lambda" . 955) ; λ
-;;          ("->" . 8594)    ; →
-;;          ("=>" . 8658)    ; ⇒
-;;          ("map" . 8614)   ; ↦
-;;          )))
-;;
-;;(add-hook 'clojure-mode-hook 'my-add-pretty-lambda)
-;;(add-hook 'haskell-mode-hook 'my-add-pretty-lambda)
-;;(add-hook 'shen-mode-hook 'my-add-pretty-lambda)
-;;(add-hook 'tex-mode-hook 'my-add-pretty-lambda)
+
+    ;; https://github.com/Bruce-Connor/smart-mode-line
+
+    ;;deprecated;;(require 'smart-mode-line)
+    ;;deprecated;;(if after-init-time (sml/setup)
+    ;;deprecated;;  (add-hook 'after-init-hook 'sml/setup))
 
 
-(add-hook 'python-mode-hook 'prettify-symbols-mode )
-(add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
-(add-hook 'scheme-mode-hook 'prettify-symbols-mode)
+    ;;deprecated;;(leaf fringe-current-line
+    ;;deprecated;;  :config
+    ;;deprecated;;  (global-fringe-current-line-mode t))
 
-;;(add-hook 'c++-mode-hook        'pretty-symbols-mode)
 
-(use-package modern-cpp-font-lock
-  :demand
-  :config
-  (modern-c++-font-lock-global-mode t))
+    ;; http://ergoemacs.org/emacs/emacs_pretty_lambda.html
+    (setq prettify-symbols-alist
+          '(
+            ("lambda" . 955) ; λ
+            ("->" . 8594)    ; →
+            ("=>" . 8658)    ; ⇒
+            ("map" . 8614)    ; ↦
+            ))
+
+
+    ;;(defun my-add-pretty-lambda ()
+    ;;  "make some word or string show as pretty Unicode symbols"
+    ;;  (setq prettify-symbols-alist
+    ;;        '(
+    ;;          ("lambda" . 955) ; λ
+    ;;          ("->" . 8594)    ; →
+    ;;          ("=>" . 8658)    ; ⇒
+    ;;          ("map" . 8614)   ; ↦
+    ;;          )))
+    ;;
+    ;;(add-hook 'clojure-mode-hook 'my-add-pretty-lambda)
+    ;;(add-hook 'haskell-mode-hook 'my-add-pretty-lambda)
+    ;;(add-hook 'shen-mode-hook 'my-add-pretty-lambda)
+    ;;(add-hook 'tex-mode-hook 'my-add-pretty-lambda)
+
+
+    (add-hook 'python-mode-hook 'prettify-symbols-mode )
+    (add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
+    (add-hook 'scheme-mode-hook 'prettify-symbols-mode)
+
+    ;;(add-hook 'c++-mode-hook        'pretty-symbols-mode)
+
+    (use-package modern-cpp-font-lock
+      :demand
+      :config
+      (modern-c++-font-lock-global-mode t))
   #+END_SRC
 
   #+RESULTS:
@@ -285,10 +287,12 @@ Assumes that the frame is only split into two."
        ))
 
      ;; https://github.com/rolandwalker/unicode-fonts
-     ;; (with-package* (unicode-fonts)
+     ;; (leaf unicode-fonts
+     ;;   :config
      ;;   (unicode-fonts-setup))
 
-     ;; (with-package* (dynamic-fonts)
+     ;; (leaf dynamic-fonts
+     ;;   :config
      ;;   (dynamic-fonts-setup))
 
    #+END_SRC

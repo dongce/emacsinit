@@ -172,10 +172,11 @@
         ((define-key outline-minor-mode-map [S-tab] 'outline-cycle))
         ((define-key outline-minor-mode-map [(backtab)]'outline-cycle))))
 
-     ;; (with-package* (outshine)
+     ;; (leaf outshine
+     ;;   :config
      ;;   (add-hook  'outline-minor-mode-hook 'outshine-hook-function))
      ;; 문서형 프로그래밍에 유리 
-     ;;(require 'python-magic)
+     ;;(leaf python-magic)
 
 
      ;; python-magic 참고

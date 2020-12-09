@@ -343,8 +343,9 @@
                                 pattern-modifier
                                 build-configurations
                                 platforms)))
-  (with-package*
-    (projectile)
+  (leaf projectile
+    :custom ((projectile-enable-caching . t)) 
+    :config
     (defun projectile-serialize (data filename)
       "Serialize DATA to FILENAME.
 
@@ -363,15 +364,8 @@
           (read (buffer-string))))))
 
 
-  ;; check following
 
-  (use-package projectile
-    :demand
-    :config
-    ;;conflict-pscp-tramp;; (projectile-global-mode)
-    (setq projectile-enable-caching t))
-
-  (use-package project-explorer
+  (leaf project-explorer
     :demand
     :config
     (defun project-explorer-close ()
@@ -385,7 +379,7 @@
                   (kill-buffer))))
           (kill-buffer  "*project-explorer*")))))
 
-  (use-package  grep 
+  (leaf  grep 
     :demand
     :config
     (defun projectile-grep ()
@@ -430,7 +424,8 @@
 
   ;;C-c p C-h
 
-  (with-package* (helm helm-config))
+  (leaf helm)
+  (leaf helm-config)
   ;;(global-set-key (kbd "C-c h") 'helm-mini)
   ;;(helm-mode 1)
   ;; https://github.com/emacs-helm/helm/wiki
@@ -504,7 +499,9 @@
   ;; SPC -> turn selection into an active region
   ;; C-g -> abort
 
-  ;; (with-package* (phi-rectangle easy-kill)
+  ;; (leaf easy-kill)
+  ;; (leaf phi-rectangle 
+  ;;   :config
   ;;   (defun phi-rectangle-kill-ring-save (&optional n)
   ;;     "when region is active, copy region as usual. when rectangle-region is
   ;; active, copy rectangle. otherwise, copy whole line."
@@ -520,7 +517,7 @@
   (global-anzu-mode t)
 
 
-  (require 'loccur)
+  (leaf 'loccur)
   ;; http://www.ispl.jp/~oosaki/research/linux-tips/outline/
   (add-hook 
    'diff-mode-hook 
@@ -537,8 +534,8 @@
      (outline-minor-mode t)
      ))
 
-  (require 'nxml-mode)
-  (require 'nxml-util)
+  (leaf nxml-mode)
+  (leaf nxml-util)
 
 
 
@@ -577,37 +574,6 @@
 
    #+RESULTS:
    : t
-
-** deprecated
- #+BEGIN_SRC emacs-lisp :tangle no
-
- ;; (with-package*
- ;;   (perspective)
- ;;   (persp-mode)
- ;;   (require 'persp-projectile)
- ;;   )
-
- (with-package*
-   (window-purpose window-purpose-x)
-   ;; (if (eq window-system 'w32)  (purpose-mode))  ;;purpose blink grep , dired ..
-   (add-to-list 'purpose-user-mode-purposes '(python-mode . py))
-   (add-to-list 'purpose-user-mode-purposes '(inferior-python-mode . py-repl))
-   (add-to-list 'purpose-user-mode-purposes '(prog-mode . prog))
-   (add-to-list 'purpose-user-mode-purposes '(compilation-mode . comp))
-   (add-to-list 'purpose-user-mode-purposes '(org-mode . org))
-
-   (add-to-list 'purpose-user-mode-purposes '(mu4e:headers-mode . mu4e-header))
-   (add-to-list 'purpose-user-mode-purposes '(mu4e:view-mode  . mu4e-view))
-
-   (purpose-compile-user-configuration)
-
-
-   (purpose-x-kill-setup)
-   )
-
- #+END_SRC
-
-
 
 * perspeen
 #+BEGIN_SRC emacs-lisp :tangle no

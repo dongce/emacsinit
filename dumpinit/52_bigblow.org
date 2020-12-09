@@ -926,141 +926,140 @@
 
  #+BEGIN_SRC emacs-lisp
 
-   (use-package org-mu4e
-     :config
-     (setq org-mu4e-link-query-in-headers-mode nil)
-     (setq org-mu4e-convert-to-html t)
-     (setq mu4e-debug nil))
+     (use-package org-mu4e
+       :config
+       (setq org-mu4e-link-query-in-headers-mode nil)
+       (setq org-mu4e-convert-to-html t)
+       (setq mu4e-debug nil))
 
 
-   ;;; POLY-MODE is works but not good
-   ;;deprecated;;(with-package
-   ;;deprecated;;  (poly-mode)
-   ;;deprecated;;
-   ;;deprecated;;  (defun pm--bigblow-tail-matcher (ahead)
-   ;;deprecated;;    (when (< ahead 0)
-   ;;deprecated;;      (error "backwards tail match not implemented"))
-   ;;deprecated;;    (let ((end (buffer-end 1)))
-   ;;deprecated;;      (cons (max 1 (- end 1)) end)))
-   ;;deprecated;;
-   ;;deprecated;;  (defcustom pm-host/bigblow
-   ;;deprecated;;    (pm-bchunkmode "bigblow-message" :mode 'message-mode)
-   ;;deprecated;;    "message host chunkmode"
-   ;;deprecated;;    :group 'hostmodes
-   ;;deprecated;;    :type 'object
-   ;;deprecated;;    )
-   ;;deprecated;;
-   ;;deprecated;;  (defcustom pm-inner/bigblow
-   ;;deprecated;;    (pm-hbtchunkmode "bigblow-org"
-   ;;deprecated;;                     :mode 'poly-org-mode
-   ;;deprecated;;                     :head-reg mail-header-separator
-   ;;deprecated;;                     :tail-reg 'pm--bigblow-tail-matcher)
-   ;;deprecated;;    "bigblow typical chunk"
-   ;;deprecated;;    :group 'innermodes
-   ;;deprecated;;    :type 'object
-   ;;deprecated;;    )
-   ;;deprecated;;
-   ;;deprecated;;  (defcustom pm-poly/bigblow
-   ;;deprecated;;    (pm-polymode-one "bigblow"
-   ;;deprecated;;                     :hostmode 'pm-host/bigblow
-   ;;deprecated;;                     :innermode 'pm-inner/bigblow)
-   ;;deprecated;;    "Noweb typical polymode."
-   ;;deprecated;;    :group 'polymodes
-   ;;deprecated;;    :type 'object)
-   ;;deprecated;;
-   ;;deprecated;;  (define-polymode poly-bigblow-mode pm-poly/bigblow)
-   ;;deprecated;;  )
+     ;;; POLY-MODE is works but not good
+     ;;deprecated;;(leaf poly-mode
+     ;;deprecated;;  :config
+     ;;deprecated;;  (defun pm--bigblow-tail-matcher (ahead)
+     ;;deprecated;;    (when (< ahead 0)
+     ;;deprecated;;      (error "backwards tail match not implemented"))
+     ;;deprecated;;    (let ((end (buffer-end 1)))
+     ;;deprecated;;      (cons (max 1 (- end 1)) end)))
+     ;;deprecated;;
+     ;;deprecated;;  (defcustom pm-host/bigblow
+     ;;deprecated;;    (pm-bchunkmode "bigblow-message" :mode 'message-mode)
+     ;;deprecated;;    "message host chunkmode"
+     ;;deprecated;;    :group 'hostmodes
+     ;;deprecated;;    :type 'object
+     ;;deprecated;;    )
+     ;;deprecated;;
+     ;;deprecated;;  (defcustom pm-inner/bigblow
+     ;;deprecated;;    (pm-hbtchunkmode "bigblow-org"
+     ;;deprecated;;                     :mode 'poly-org-mode
+     ;;deprecated;;                     :head-reg mail-header-separator
+     ;;deprecated;;                     :tail-reg 'pm--bigblow-tail-matcher)
+     ;;deprecated;;    "bigblow typical chunk"
+     ;;deprecated;;    :group 'innermodes
+     ;;deprecated;;    :type 'object
+     ;;deprecated;;    )
+     ;;deprecated;;
+     ;;deprecated;;  (defcustom pm-poly/bigblow
+     ;;deprecated;;    (pm-polymode-one "bigblow"
+     ;;deprecated;;                     :hostmode 'pm-host/bigblow
+     ;;deprecated;;                     :innermode 'pm-inner/bigblow)
+     ;;deprecated;;    "Noweb typical polymode."
+     ;;deprecated;;    :group 'polymodes
+     ;;deprecated;;    :type 'object)
+     ;;deprecated;;
+     ;;deprecated;;  (define-polymode poly-bigblow-mode pm-poly/bigblow)
+     ;;deprecated;;  )
 
 
-   (defun hinfojs ()
-     (interactive) 
-     (save-excursion
-       (save-restriction
-         (narrow-to-region (point) (point))
-         (insert "#+INFOJS_OPT: view:showall toc:nil ltoc:nil\n")
-         )))
-
-
-   (defun bigblow ()
-     "DOCSTRING"
-     (interactive )
-     (let ((content
-            (if (region-active-p)
-                (concat
-                 (format  "#+begin_src %s\n"
-                          (cdr  (assoc  (intern  (s-replace "-mode" ""  (symbol-name  major-mode)))
-                                        (mapcar (lambda (x) (cons  (cdr x) (car x))) org-src-lang-modes))))
-                 (s-trim (buffer-substring-no-properties (region-beginning) (region-end)))))))
-       (mu4e-compose-new)
+     (defun hinfojs ()
+       (interactive) 
        (save-excursion
          (save-restriction
+           (narrow-to-region (point) (point))
+           (insert "#+INFOJS_OPT: view:showall toc:nil ltoc:nil\n")
+           )))
+
+
+     (defun bigblow ()
+       "DOCSTRING"
+       (interactive )
+       (let ((content
+              (if (region-active-p)
+                  (concat
+                   (format  "#+begin_src %s\n"
+                            (cdr  (assoc  (intern  (s-replace "-mode" ""  (symbol-name  major-mode)))
+                                          (mapcar (lambda (x) (cons  (cdr x) (car x))) org-src-lang-modes))))
+                   (s-trim (buffer-substring-no-properties (region-beginning) (region-end)))))))
+         (mu4e-compose-new)
+         (save-excursion
+           (save-restriction
+             (goto-char (point-min))
+             (search-forward mail-header-separator)
+             (next-line)
+             ;;(org~mu4e-mime-switch-headers-or-body)
+             (narrow-to-region (point) (point))
+             ;; (insert-line "#+TITLE: 무제")
+             (insert-line 
+             "#+HTML_HEAD_EXTRA: <script type=\"text/javascript\"> var HS_SHOW_ALL_OPEN_DONE_TREES = false; </script> ")
+             (insert-line "#+OPTIONS: toc:nil num:nil p:t ^:{} <:t \\n:t H:6")
+             (insert-line "#+STARTUP: showeverything")
+             (insert-line "")
+             (insert-line "")
+             (if content
+                 (progn
+
+                   (insert-line content)
+                   (insert-line "#+end_src")))
+
+             ))(end-of-buffer)))
+
+     (defun orgmail ()
+       "DOCSTRING"
+       (interactive )
+       (save-excursion
+         (save-restriction
+           (if (region-active-p)
+               (narrow-to-region (region-beginning) (region-end))
+             (progn
+               (org-back-to-heading)
+               (narrow-to-region (point ) (org-end-of-subtree ))))
            (goto-char (point-min))
-           (search-forward mail-header-separator)
-           (next-line)
-           ;;(org~mu4e-mime-switch-headers-or-body)
-           (narrow-to-region (point) (point))
-           ;; (insert-line "#+TITLE: 무제")
-           (insert-line 
-           "#+HTML_HEAD_EXTRA: <script type=\"text/javascript\"> var HS_SHOW_ALL_OPEN_DONE_TREES = false; </script> ")
-           (insert-line "#+OPTIONS: toc:nil num:nil p:t ^:{} <:t \\n:t H:6")
-           (insert-line "#+STARTUP: showeverything")
-           (insert-line "")
-           (insert-line "")
-           (if content
-               (progn
+           (let* ((content (buffer-substring-no-properties (point-min) (point-max)))
+                  (proptitle (car (plist-get (org-export-get-environment ) ':title)))
+                  (title
+                   (if (stringp proptitle)
+                       (substring-no-properties proptitle)
+                     (condition-case nil (nth 4  (org-heading-components)) (error "무제")) )))
+         (mu4e-compose-new)
+         (save-excursion
+           (save-restriction
+             ;; (goto-char (point-min))
+             ;; (end-of-line 2)
+             (message-goto-to )
+             (insert "di7979.kim@hanwhasystems.com")
+             (message-goto-subject )
+             (if title (insert title) (insert "무제"))
+             ;; (search-forward mail-header-separator)
+             ;; (next-line)
 
-                 (insert-line content)
-                 (insert-line "#+end_src")))
+             (message-goto-body)
+             ;;byadvice;;(org~mu4e-mime-switch-headers-or-body)           
+             (narrow-to-region (point) (point))
+             ;; (if (and  title subregion)
+             ;;     (insert-line (format  "#+TITLE: %s" title))
+             ;;   (if (not title ) ( insert-line "#+TITLE: 무제"  ))
+             ;;   )
+             (insert-line "#+HTML_HEAD_EXTRA: <script type=\"text/javascript\"> var HS_SHOW_ALL_OPEN_DONE_TREES = false; </script> ")
+             (insert-line "#+OPTIONS: toc:nil num:nil p:t ^:{} <:t \\n:t H:6")
+             (insert-line "#+STARTUP: showeverything")
+             (insert-line "")
+             (insert-line "")
+             (insert-line content)
 
-           ))(end-of-buffer)))
+             )) (end-of-buffer)))))
 
-   (defun orgmail ()
-     "DOCSTRING"
-     (interactive )
-     (save-excursion
-       (save-restriction
-         (if (region-active-p)
-             (narrow-to-region (region-beginning) (region-end))
-           (progn
-             (org-back-to-heading)
-             (narrow-to-region (point ) (org-end-of-subtree ))))
-         (goto-char (point-min))
-         (let* ((content (buffer-substring-no-properties (point-min) (point-max)))
-                (proptitle (car (plist-get (org-export-get-environment ) ':title)))
-                (title
-                 (if (stringp proptitle)
-                     (substring-no-properties proptitle)
-                   (condition-case nil (nth 4  (org-heading-components)) (error "무제")) )))
-       (mu4e-compose-new)
-       (save-excursion
-         (save-restriction
-           ;; (goto-char (point-min))
-           ;; (end-of-line 2)
-           (message-goto-to )
-           (insert "di7979.kim@hanwhasystems.com")
-           (message-goto-subject )
-           (if title (insert title) (insert "무제"))
-           ;; (search-forward mail-header-separator)
-           ;; (next-line)
-
-           (message-goto-body)
-           ;;byadvice;;(org~mu4e-mime-switch-headers-or-body)           
-           (narrow-to-region (point) (point))
-           ;; (if (and  title subregion)
-           ;;     (insert-line (format  "#+TITLE: %s" title))
-           ;;   (if (not title ) ( insert-line "#+TITLE: 무제"  ))
-           ;;   )
-           (insert-line "#+HTML_HEAD_EXTRA: <script type=\"text/javascript\"> var HS_SHOW_ALL_OPEN_DONE_TREES = false; </script> ")
-           (insert-line "#+OPTIONS: toc:nil num:nil p:t ^:{} <:t \\n:t H:6")
-           (insert-line "#+STARTUP: showeverything")
-           (insert-line "")
-           (insert-line "")
-           (insert-line content)
-
-           )) (end-of-buffer)))))
-
- (defadvice mu4e~compose-handler (after org-mu4e-compose-handler activate)
-  (org~mu4e-mime-switch-headers-or-body))    
+   (defadvice mu4e~compose-handler (after org-mu4e-compose-handler activate)
+    (org~mu4e-mime-switch-headers-or-body))    
 #+END_SRC
 
 ** html head

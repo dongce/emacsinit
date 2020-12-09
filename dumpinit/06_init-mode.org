@@ -12,19 +12,15 @@
    ;; http://mumble.net/~campbell/emacs/
    ;; https://github.com/joelittlejohn/paredit-cheatsheet
 
-   (use-package paredit
-     ;;  "Minor mode for pseudo-structurally editing Lisp code."
-      :demand
-      :commands paredit-mode 
-     )
 
-   ;;(use-package evil-paredit
+   ;;(leaf evil-paredit
    ;;  ;;"Minor mode for pseudo-structurally editing Lisp code."
    ;;   :demand
    ;;  ;; :commands evil-paredit-mode 
    ;;  )
 
-   ;; (with-package (smartparen )
+   ;; (leaf smartparen 
+   ;;   :config
    ;;   (sp-pair "`" nil :actions :rem)
    ;;   (sp-pair "'" nil :actions :rem)
 
@@ -37,37 +33,37 @@
    ;;   (add-hook 'scheme-mode-hook           (lambda () (turn-on-eldoc-mode) (smartparens-mode +1) )))
 
    ;;;_ paredit key 
-   (use-package paredit
+   (leaf paredit
       :demand
-     :config
-     (progn (setq paredit-commands
-                  `(
-                    "Basic Insertion Commands"
-                    "Movement & Navigation"
-                    (("M-S-<up>" "ESC <up>")
-                     paredit-splice-sexp-killing-backward
-                     ("(foo (let ((x 5)) |(sqrt n)) bar)"
-                      "(foo (sqrt n) bar)"))
-                    (("M-S-<down>" "ESC <down>")
-                     paredit-splice-sexp-killing-forward
-                     ("(a (b c| d e) f)"
-                      "(a b c f)"))
-                    "Barfage & Slurpage"
-                    (("M-S-<right>" ) ;;"C-<right>")
-                     paredit-forward-slurp-sexp
-                     ("(foo (bar |baz) quux zot)"
-                      "(foo (bar |baz quux) zot)")
-                     ("(a b ((c| d)) e f)"
-                      "(a b ((c| d) e) f)"))
-                    (("M-S-<left>"  ) ;;"C-<left>")
-                     paredit-forward-barf-sexp
-                     ("(foo (bar |baz quux) zot)"
-                      "(foo (bar |baz) quux zot)"))
-                    ))
-            nil)                             ; end of PROGN
+      :commands paredit-mode 
+      :custom ((paredit-commands .
+                 `(
+                   "Basic Insertion Commands"
+                   "Movement & Navigation"
+                   (("M-S-<up>" "ESC <up>")
+                    paredit-splice-sexp-killing-backward
+                    ("(foo (let ((x 5)) |(sqrt n)) bar)"
+                     "(foo (sqrt n) bar)"))
+                   (("M-S-<down>" "ESC <down>")
+                    paredit-splice-sexp-killing-forward
+                    ("(a (b c| d e) f)"
+                     "(a b c f)"))
+                   "Barfage & Slurpage"
+                   (("M-S-<right>" ) ;;"C-<right>")
+                    paredit-forward-slurp-sexp
+                    ("(foo (bar |baz) quux zot)"
+                     "(foo (bar |baz quux) zot)")
+                    ("(a b ((c| d)) e f)"
+                     "(a b ((c| d) e) f)"))
+                   (("M-S-<left>"  ) ;;"C-<left>")
+                    paredit-forward-barf-sexp
+                    ("(foo (bar |baz quux) zot)"
+                     "(foo (bar |baz) quux zot)"))
+                   ))))
 
 
-   (use-package repl-toggle
+
+   (leaf repl-toggle
      ;; "Switch to the repl asscociated with the major mode of the
      ;; current buffer. If in a repl already switch back to the buffer we
      ;; came from.\(fn)"
@@ -94,137 +90,135 @@
 
 ** misc
    #+BEGIN_SRC emacs-lisp
-       ;;;
-       ;;;
-       ;;; ※ 파일모드 설정
-       ;;;
-       ;;;
-   ;; 다음과 같이 파일 헤더 부분을 이용하여 mode 를 결정할 수도 있다. 
-   ;;(add-to-list 'magic-mode-alist '("<!DOCTYPE html .+DTD XHTML .+>" . nxml-mode))
+         ;;;
+         ;;;
+         ;;; ※ 파일모드 설정
+         ;;;
+         ;;;
+     ;; 다음과 같이 파일 헤더 부분을 이용하여 mode 를 결정할 수도 있다. 
+     ;;(add-to-list 'magic-mode-alist '("<!DOCTYPE html .+DTD XHTML .+>" . nxml-mode))
 
-   ;;(setq auto-mode-alist
-   ;;      (append (mapcar 
-   ;;         (lambda ( x ) 
-   ;;     ( if (equal (cdr x)  (car '(c-mode) )) 
-   ;;         ( cons (car x ) (car '(c++-mode) )) 
-   ;;       (car (list x) ) ) ) auto-mode-alist)))
-
-
-   (with-package*
-     (
-      ;; xah-elisp-mode
-      xah-css-mode
-      xah-html-mode)
-     ;; (replace-auto-mode-alist 'emacs-lisp-mode 'xah-elisp-mode )
-     (replace-auto-mode-alist 'css-mode        'xah-css-mode )
-     (replace-auto-mode-alist 'html-mode       'xah-html-mode )
-     )
-
-   (add-to-list 'auto-mode-alist '("\\.topic\\'"  . scheme-mode  ))  
-   (add-to-list 'auto-mode-alist '("\\.vcproj\\'" . xah-html-mode))
-   (add-to-list 'auto-mode-alist '("\\.grep\\'"   . grep-mode    ))
-   (add-to-list 'auto-mode-alist '("\\.py\\'"     . python-mode  ))
-   (add-to-list 'auto-mode-alist '("\\.pyw\\'"    . python-mode  ))
-   (add-to-list 'auto-mode-alist '("\\.tex\\'"    . latex-mode   ))
-   (add-to-list 'auto-mode-alist '("\\.a\\'"      . ada-mode     ))
-   (add-to-list 'auto-mode-alist '("\\.tst\\'"    . scheme-mode  ))
-   (add-to-list 'auto-mode-alist '("Makefile*"    . makefile-mode))
-   (add-to-list 'auto-mode-alist '("\\.bin\\'"    . hexl-mode    ))
-   (add-to-list 'auto-mode-alist '("\\.text*"     . markdown-mode))
-   (add-to-list 'auto-mode-alist '("\\.md*"       . markdown-mode))
-   (add-to-list 'auto-mode-alist '("\\.dlog\\'"   . scheme-mode  ))
-   (add-to-list 'auto-mode-alist '("\\.ins\\'"   . sh-mode  ))
-   (add-to-list 'auto-mode-alist '("\\.i\\'"   . fundamental-mode  ))
-   (add-to-list 'auto-mode-alist '("\\.mak\\'"    . makefile-mode  ))
-   (add-to-list 'auto-mode-alist '("\\.mo\\'"     . mo-mode     ))
-   (add-to-list 'auto-mode-alist '("\\.i\\'"     . uimx-mode     ))
-
-   ;; ("vxWorks*" . hexl-mode)                     )
+     ;;(setq auto-mode-alist
+     ;;      (append (mapcar 
+     ;;         (lambda ( x ) 
+     ;;     ( if (equal (cdr x)  (car '(c-mode) )) 
+     ;;         ( cons (car x ) (car '(c++-mode) )) 
+     ;;       (car (list x) ) ) ) auto-mode-alist)))
 
 
+     (leaf  xah-css-mode
+       :config 
+       (replace-auto-mode-alist 'css-mode  'xah-css-mode ))
 
-   (use-package markdown-mode 
-     ;;"Major mode for editing Markdown files"
-     :demand
-     ;; :commands markdown-mode
-     )
+     (leaf  xah-html-mode
+       :config
+       (replace-auto-mode-alist 'html-mode 'xah-html-mode ))
+
+     ;;(leaf   xah-elisp-mode
+     ;;  :config
+     ;;  (replace-auto-mode-alist 'emacs-lisp-mode 'xah-elisp-mode ))
+
+     (add-to-list 'auto-mode-alist '("\\.topic\\'"  . scheme-mode  ))  
+     (add-to-list 'auto-mode-alist '("\\.vcproj\\'" . xah-html-mode))
+     (add-to-list 'auto-mode-alist '("\\.grep\\'"   . grep-mode    ))
+     (add-to-list 'auto-mode-alist '("\\.py\\'"     . python-mode  ))
+     (add-to-list 'auto-mode-alist '("\\.pyw\\'"    . python-mode  ))
+     (add-to-list 'auto-mode-alist '("\\.tex\\'"    . latex-mode   ))
+     (add-to-list 'auto-mode-alist '("\\.a\\'"      . ada-mode     ))
+     (add-to-list 'auto-mode-alist '("\\.tst\\'"    . scheme-mode  ))
+     (add-to-list 'auto-mode-alist '("Makefile*"    . makefile-mode))
+     (add-to-list 'auto-mode-alist '("\\.bin\\'"    . hexl-mode    ))
+     (add-to-list 'auto-mode-alist '("\\.text*"     . markdown-mode))
+     (add-to-list 'auto-mode-alist '("\\.md*"       . markdown-mode))
+     (add-to-list 'auto-mode-alist '("\\.dlog\\'"   . scheme-mode  ))
+     (add-to-list 'auto-mode-alist '("\\.ins\\'"   . sh-mode  ))
+     (add-to-list 'auto-mode-alist '("\\.i\\'"   . fundamental-mode  ))
+     (add-to-list 'auto-mode-alist '("\\.mak\\'"    . makefile-mode  ))
+     (add-to-list 'auto-mode-alist '("\\.mo\\'"     . mo-mode     ))
+     (add-to-list 'auto-mode-alist '("\\.i\\'"     . uimx-mode     ))
+
+     ;; ("vxWorks*" . hexl-mode)                     )
 
 
-   (use-package js2-mode
-     :config
-     (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
-   ;;;
-   ;;;
-   ;;; ※ 파일모드 설정
-   ;;;
-   ;;;
-   ;; 다음과 같이 파일 헤더 부분을 이용하여 mode 를 결정할 수도 있다. 
-   ;;(add-to-list 'magic-mode-alist '("<!DOCTYPE html .+DTD XHTML .+>" . nxml-mode))
+
+     (leaf markdown-mode :demand)
+
+
+     (leaf js2-mode
+       :config
+       (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
+     ;;;
+     ;;;
+     ;;; ※ 파일모드 설정
+     ;;;
+     ;;;
+     ;; 다음과 같이 파일 헤더 부분을 이용하여 mode 를 결정할 수도 있다. 
+     ;;(add-to-list 'magic-mode-alist '("<!DOCTYPE html .+DTD XHTML .+>" . nxml-mode))
 
 
 
 
-   (use-package yaml-mode :ensure)
+     (leaf yaml-mode :ensure t)
 
 
-   ;;(autoload 'dos-mode "dos" "Edit Dos scripts." t)
+     ;;(autoload 'dos-mode "dos" "Edit Dos scripts." t)
 
 
-   ;;If your template extension is tpl, "\\.phtml" becomes "\\.tpl"
-   ;;
-   ;;Using web-mode for editing plain HTML files can be done this way 
-   ;;Customisation
-   ;;The following customisations (except the last one) can be put in a hook this way 
-   ;;
-   ;;(defun web-mode-hook () "Hooks for Web mode." (setq web-mode-html-offset 2) ) (add-hook 'web-mode-hook 'web-mode-hook)
+     ;;If your template extension is tpl, "\\.phtml" becomes "\\.tpl"
+     ;;
+     ;;Using web-mode for editing plain HTML files can be done this way 
+     ;;Customisation
+     ;;The following customisations (except the last one) can be put in a hook this way 
+     ;;
+     ;;(defun web-mode-hook () "Hooks for Web mode." (setq web-mode-html-offset 2) ) (add-hook 'web-mode-hook 'web-mode-hook)
 
-   ;;sp-offset. 
+     ;;sp-offset. 
 
-   ;;Syntax Highlighting Change face color (set-face-attribute 'web-mode-css-rule-face nil :foreground "Pink3") Available faces:
-   ;;web-mode-doctype-face, web-mode-html-tag-face, web-mode-html-attr-name-face, web-mode-html-attr-value-face
-   ;;web-mode-css-rule-face, web-mode-css-prop-face, web-mode-css-pseudo-class-face, web-mode-css-at-rule-face
-   ;;web-mode-preprocessor-face, web-mode-string-face, web-mode-comment-face
-   ;;web-mode-variable-name-face, web-mode-function-name-face, web-mode-constant-face, web-mode-type-face, web-mode-keyword-face
-   ;;web-mode-folded-face
-   ;;Shortcuts Change the shortcut for element navigation (define-key web-mode-map (kbd "C-n") 'web-mode-match-tag)
-   ;;Snippets Add a snippet (add-to-list 'web-mode-snippets '("mydiv" "<div>" "</div>")) name, beg, end (if region exists, the content is inserted between beg and end)
-   ;;Autocompletes Disable autocomplete (setq web-mode-autocompletes-flag nil)
-   ;;Keywords Add PHP constants (setq web-mode-extra-php-constants '("constant1" "constant2")) Also available : web-mode-extra-php-keywords, web-mode-extra-js-keywords, web-mode-extra-jsp-keywords, web-mode-extra-asp-keywords
-   ;;(Note: do not put this line in the hook)
+     ;;Syntax Highlighting Change face color (set-face-attribute 'web-mode-css-rule-face nil :foreground "Pink3") Available faces:
+     ;;web-mode-doctype-face, web-mode-html-tag-face, web-mode-html-attr-name-face, web-mode-html-attr-value-face
+     ;;web-mode-css-rule-face, web-mode-css-prop-face, web-mode-css-pseudo-class-face, web-mode-css-at-rule-face
+     ;;web-mode-preprocessor-face, web-mode-string-face, web-mode-comment-face
+     ;;web-mode-variable-name-face, web-mode-function-name-face, web-mode-constant-face, web-mode-type-face, web-mode-keyword-face
+     ;;web-mode-folded-face
+     ;;Shortcuts Change the shortcut for element navigation (define-key web-mode-map (kbd "C-n") 'web-mode-match-tag)
+     ;;Snippets Add a snippet (add-to-list 'web-mode-snippets '("mydiv" "<div>" "</div>")) name, beg, end (if region exists, the content is inserted between beg and end)
+     ;;Autocompletes Disable autocomplete (setq web-mode-autocompletes-flag nil)
+     ;;Keywords Add PHP constants (setq web-mode-extra-php-constants '("constant1" "constant2")) Also available : web-mode-extra-php-keywords, web-mode-extra-js-keywords, web-mode-extra-jsp-keywords, web-mode-extra-asp-keywords
+     ;;(Note: do not put this line in the hook)
 
 
 
-   ;; · C-c C-; : comment / uncomment line(s)
-   ;; · C-c C-a : indent all buffer
-   ;; · C-c C-d : delete current HTML element
-   ;; · C-c C-f : toggle folding on a block
-   ;; · C-c C-i : insert snippet
-   ;; · C-c C-j : duplicate current HTML element
-   ;; · C-c C-n : jump to opening/closing tag
-   ;; · C-c C-p : jump to parent HTML element
-   ;; · C-c C-s : select current HTML element
+     ;; · C-c C-; : comment / uncomment line(s)
+     ;; · C-c C-a : indent all buffer
+     ;; · C-c C-d : delete current HTML element
+     ;; · C-c C-f : toggle folding on a block
+     ;; · C-c C-i : insert snippet
+     ;; · C-c C-j : duplicate current HTML element
+     ;; · C-c C-n : jump to opening/closing tag
+     ;; · C-c C-p : jump to parent HTML element
+     ;; · C-c C-s : select current HTML element
 
-   (use-package web-mode
-     :demand
-     :config
-     (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode)) 
-     (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode)) 
-     (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode)) 
-     (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode)) 
-     ;;deprecatedby-xah-html-mode;;(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-     (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+     (leaf web-mode
+       :demand
 
-     (setq web-mode-html-offset 2)
-     (setq web-mode-css-offset 2)
-     (setq web-mode-html-offset 2)
-     (setq web-mode-javascript-offset 2)
-     (setq web-mode-java-offset 2)
-     )
-   (use-package mmm-auto
-     :demand
-     :config
-     (setq mmm-global-mode 'maybe)
-     (mmm-add-mode-ext-class 'html-mode nil 'html-js))
+       :custom ((web-mode-html-offset . 2)
+                (web-mode-css-offset . 2)
+                (web-mode-html-offset . 2)
+                (web-mode-javascript-offset . 2)
+                (web-mode-java-offset . 2))
+       :config
+       (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode)) 
+       (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode)) 
+       (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode)) 
+       (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode)) 
+       ;;deprecatedby-xah-html-mode;;(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode)))
+
+     (leaf mmm-auto
+       :demand
+       :custom ((mmm-global-mode . 'maybe))
+       :config
+       (mmm-add-mode-ext-class 'html-mode nil 'html-js))
 
  #+END_SRC
 
@@ -232,7 +226,7 @@
 ** ada-mode
    #+begin_src emacs-lisp
 
-     (use-package ada-mode
+     (leaf ada-mode
        :config 
        (ada-add-extensions "_s.a" "_b.a")
        (ada-add-extensions ".abd" ".asp")
@@ -350,78 +344,84 @@
 * yaml , dos
 
 #+BEGIN_SRC emacs-lisp
-(require 'yaml-mode)
+  (leaf yaml-mode)
 
 
-;;(autoload 'dos-mode "dos" "Edit Dos scripts." t)
+  ;;(autoload 'dos-mode "dos" "Edit Dos scripts." t)
 
-(if (eq window-system 'w32)
-    (use-package dos
-    :config
-    (add-to-list 'auto-mode-alist '("\\.bat$" . dos-mode))
-    (add-to-list 'auto-mode-alist '("\\.cmd$" . dos-mode))
-    (define-key dos-mode-map [?\C-c ?\C-e]
-      (lambda () "Run Dos script." (interactive)(save-buffer) (w32-shell-execute nil (buffer-file-name))))))
+  (if (eq window-system 'w32)
+      (leaf dos
+        :bind
+        ((:dos-mode-map
+          ("C-c C-e"
+           . (lambda () "Run Dos script." (interactive)(save-buffer) (w32-shell-execute nil (buffer-file-name))))))
+      :config
+      (add-to-list 'auto-mode-alist '("\\.bat$" . dos-mode))
+      (add-to-list 'auto-mode-alist '("\\.cmd$" . dos-mode))
+      ) 
+    )
 
 #+END_SRC
 * utf-8
 #+BEGIN_SRC emacs-lisp
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode)) 
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode)) 
-(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode)) 
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode)) 
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-;;deprecatedby-xah-html-mode;;(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-
-(setq web-mode-html-offset 2)
-(setq web-mode-css-offset 2)
-(setq web-mode-html-offset 2)
-(setq web-mode-javascript-offset 2)
-(setq web-mode-java-offset 2)
-
-(require 'mmm-auto)
-(setq mmm-global-mode 'maybe)
-(mmm-add-mode-ext-class 'html-mode nil 'html-js)
+  (leaf web-mode
+    :custom ((web-mode-html-offset . 2)
+             (web-mode-css-offset . 2)
+             (web-mode-html-offset . 2)
+             (web-mode-javascript-offset . 2)
+             (web-mode-java-offset . 2))
+    :config
+    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode)) 
+    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode)) 
+    (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode)) 
+    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode)) 
+    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode)))
+  ;;deprecatedby-xah-html-mode;;(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 
-;;If your template extension is tpl, "\\.phtml" becomes "\\.tpl"
-;;
-;;Using web-mode for editing plain HTML files can be done this way 
-;;Customisation
-;;The following customisations (except the last one) can be put in a hook this way 
-;;
-;;(defun web-mode-hook () "Hooks for Web mode." (setq web-mode-html-offset 2) ) (add-hook 'web-mode-hook 'web-mode-hook)
-
-;;sp-offset. 
-
-;;Syntax Highlighting Change face color (set-face-attribute 'web-mode-css-rule-face nil :foreground "Pink3") Available faces:
-;;web-mode-doctype-face, web-mode-html-tag-face, web-mode-html-attr-name-face, web-mode-html-attr-value-face
-;;web-mode-css-rule-face, web-mode-css-prop-face, web-mode-css-pseudo-class-face, web-mode-css-at-rule-face
-;;web-mode-preprocessor-face, web-mode-string-face, web-mode-comment-face
-;;web-mode-variable-name-face, web-mode-function-name-face, web-mode-constant-face, web-mode-type-face, web-mode-keyword-face
-;;web-mode-folded-face
-;;Shortcuts Change the shortcut for element navigation (define-key web-mode-map (kbd "C-n") 'web-mode-match-tag)
-;;Snippets Add a snippet (add-to-list 'web-mode-snippets '("mydiv" "<div>" "</div>")) name, beg, end (if region exists, the content is inserted between beg and end)
-;;Autocompletes Disable autocomplete (setq web-mode-autocompletes-flag nil)
-;;Keywords Add PHP constants (setq web-mode-extra-php-constants '("constant1" "constant2")) Also available : web-mode-extra-php-keywords, web-mode-extra-js-keywords, web-mode-extra-jsp-keywords, web-mode-extra-asp-keywords
-;;(Note: do not put this line in the hook)
+  (leaf mmm-auto
+    :custom ((mmm-global-mode . 'maybe))
+    :config
+    (mmm-add-mode-ext-class 'html-mode nil 'html-js))
 
 
+  ;;If your template extension is tpl, "\\.phtml" becomes "\\.tpl"
+  ;;
+  ;;Using web-mode for editing plain HTML files can be done this way 
+  ;;Customisation
+  ;;The following customisations (except the last one) can be put in a hook this way 
+  ;;
+  ;;(defun web-mode-hook () "Hooks for Web mode." (setq web-mode-html-offset 2) ) (add-hook 'web-mode-hook 'web-mode-hook)
 
-;; · C-c C-; : comment / uncomment line(s)
-;; · C-c C-a : indent all buffer
-;; · C-c C-d : delete current HTML element
-;; · C-c C-f : toggle folding on a block
-;; · C-c C-i : insert snippet
-;; · C-c C-j : duplicate current HTML element
-;; · C-c C-n : jump to opening/closing tag
-;; · C-c C-p : jump to parent HTML element
-;; · C-c C-s : select current HTML element
+  ;;sp-offset. 
 
-(require 'xub-mode)
-(defalias 'utf8-browser 'xub-mode)
-(defalias 'unicode-browser 'xub-mode)
+  ;;Syntax Highlighting Change face color (set-face-attribute 'web-mode-css-rule-face nil :foreground "Pink3") Available faces:
+  ;;web-mode-doctype-face, web-mode-html-tag-face, web-mode-html-attr-name-face, web-mode-html-attr-value-face
+  ;;web-mode-css-rule-face, web-mode-css-prop-face, web-mode-css-pseudo-class-face, web-mode-css-at-rule-face
+  ;;web-mode-preprocessor-face, web-mode-string-face, web-mode-comment-face
+  ;;web-mode-variable-name-face, web-mode-function-name-face, web-mode-constant-face, web-mode-type-face, web-mode-keyword-face
+  ;;web-mode-folded-face
+  ;;Shortcuts Change the shortcut for element navigation (define-key web-mode-map (kbd "C-n") 'web-mode-match-tag)
+  ;;Snippets Add a snippet (add-to-list 'web-mode-snippets '("mydiv" "<div>" "</div>")) name, beg, end (if region exists, the content is inserted between beg and end)
+  ;;Autocompletes Disable autocomplete (setq web-mode-autocompletes-flag nil)
+  ;;Keywords Add PHP constants (setq web-mode-extra-php-constants '("constant1" "constant2")) Also available : web-mode-extra-php-keywords, web-mode-extra-js-keywords, web-mode-extra-jsp-keywords, web-mode-extra-asp-keywords
+  ;;(Note: do not put this line in the hook)
+
+
+
+  ;; · C-c C-; : comment / uncomment line(s)
+  ;; · C-c C-a : indent all buffer
+  ;; · C-c C-d : delete current HTML element
+  ;; · C-c C-f : toggle folding on a block
+  ;; · C-c C-i : insert snippet
+  ;; · C-c C-j : duplicate current HTML element
+  ;; · C-c C-n : jump to opening/closing tag
+  ;; · C-c C-p : jump to parent HTML element
+  ;; · C-c C-s : select current HTML element
+
+  (require 'xub-mode)
+  (defalias 'utf8-browser 'xub-mode)
+  (defalias 'unicode-browser 'xub-mode)
 #+END_SRC
 
 * KDX BUILD 
@@ -453,45 +453,43 @@
 
 * emacs eval
 #+BEGIN_SRC emacs-lisp
-(with-package*
- (eval-in-repl
-
-  eval-in-repl-ielm
-  ;; eval-in-repl-slime
-  eval-in-repl-scheme
-  eval-in-repl-python
-  )
-
- (defun eval-dwim ()
-   (interactive)
-   (case major-mode
-     ( (emacs-lisp-mode lisp-interaction-mode Info-mode-map)  (eir-eval-in-ielm) )
-     ( (slime-mode)  (eir-eval-in-slime)  )
-     ( (scheme-mode) (eir-eval-in-scheme)  )
-     ( (python-mode) (eir-eval-in-python)  ))))
+  (leaf eval-in-repl       )
+  (leaf eval-in-repl-ielm  )
+  ;;(leaf eval-in-repl-slime )
+  (leaf eval-in-repl-scheme)
+  (leaf eval-in-repl-python)
 
 
-(use-package geiser
-     :demand
-  :config
-  (defun geiser-autodoc--autodoc (path &optional signs)
-    (ignore-errors 
-      (let ((signs (or signs (geiser-autodoc--get-signatures (mapcar 'car path))))
-            (p (car path))
-            (s))
-        (while (and p (not s))
-          (unless (setq s (cdr (assoc (car p) signs)))
-            (setq p (car path))
-            (setq path (cdr path))))
-        (when s (geiser-autodoc--str p s))))
-    ;; (mode-line-color-update)
+  (defun eval-dwim ()
+    (interactive)
+    (case major-mode
+      ( (emacs-lisp-mode lisp-interaction-mode Info-mode-map)  (eir-eval-in-ielm) )
+      ( (slime-mode)  (eir-eval-in-slime)  )
+      ( (scheme-mode) (eir-eval-in-scheme)  )
+      ( (python-mode) (eir-eval-in-python)  ))))
+
+
+  (leaf geiser
+    :demand
+    :config
+    (defun geiser-autodoc--autodoc (path &optional signs)
+      (ignore-errors 
+        (let ((signs (or signs (geiser-autodoc--get-signatures (mapcar 'car path))))
+              (p (car path))
+              (s))
+          (while (and p (not s))
+            (unless (setq s (cdr (assoc (car p) signs)))
+              (setq p (car path))
+              (setq path (cdr path))))
+          (when s (geiser-autodoc--str p s))))
+      ;; (mode-line-color-update)
+      )
     )
-  )
 #+END_SRC
 
 * tmux
 #+BEGIN_SRC emacs-lisp
-(use-package emamux
+(leaf emamux
      :demand
   :config
   (defun emamux:read-dwim (prompt )
@@ -529,9 +527,8 @@
 
 * lentic 
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package lentic-mode
-    :config (global-lentic-mode)
-    )
+  (leaf lentic-mode
+    :global-minor-mode global-lentic-mode)
 #+END_SRC
 * html
 #+BEGIN_SRC emacs-lisp
@@ -584,7 +581,7 @@
   (add-hook 'xah-html-mode-hook #'imp-toggle-htmlize)
 
 
-  (use-package rng-loc
+  (leaf rng-loc
     :config
     (add-to-list 'rng-schema-locating-files (fullpath "../html5-el/schemas.xml")))
 
@@ -594,7 +591,7 @@
 * dot
 
   #+BEGIN_SRC emacs-lisp
-    (use-package graphviz-dot-mode :demand)
+    (leaf graphviz-dot-mode :demand)
   #+END_SRC
 * which-function-mode
   #+BEGIN_SRC emacs-lisp
@@ -613,7 +610,7 @@
   : enable-wfm
 * batfile mode 
   #+BEGIN_SRC emacs-lisp
-  (use-package bmx-mode
+  (leaf bmx-mode
      :demand
   :config 
   (bmx-mode-setup-defaults))
@@ -630,46 +627,39 @@
   #+END_SRC
 * beacon
   #+BEGIN_SRC emacs-lisp
-  (use-package beacon :ensure :config (beacon-mode))
+  (leaf beacon :ensure t :config (beacon-mode))
   #+END_SRC
 * undo-tree
   #+begin_src emacs-lisp :tangle no
-(use-package undo-tree
-  :ensure t
-  :init
-  (setq undo-limit 78643200)
-  (setq undo-outer-limit 104857600)
-  (setq undo-strong-limit 157286400)
-  (setq undo-tree-mode-lighter " UN")
-  ;;veryslow;;(setq undo-tree-auto-save-history t)
-  (setq undo-tree-enable-undo-in-region nil)
-  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
-  (add-hook 'undo-tree-visualizer-mode-hook (lambda ()
-                                              (undo-tree-visualizer-selection-mode)
-                                              (setq display-line-numbers nil)))
-  :config
-  (global-undo-tree-mode nil)
-  )
+    (leaf undo-tree
+      :ensure t
+      :custom ((undo-limit . 78643200)
+               (undo-outer-limit .  104857600)
+               (undo-strong-limit .  157286400)
+               (undo-tree-mode-lighter  . " UN")
+               ;;veryslow;;(undo-tree-auto-save-history  . t)
+               (undo-tree-enable-undo-in-region  . nil)
+               (undo-tree-history-directory-alist  . '(("." . "~/.emacs.d/undo"))))
+      :config
+      (add-hook 'undo-tree-visualizer-mode-hook (lambda ()
+                                                  (undo-tree-visualizer-selection-mode)
+                                                  (setq display-line-numbers nil)))
+      (global-undo-tree-mode nil))
   #+end_src
 
   #+RESULTS:
   : t
 * searcher
   #+begin_src emacs-lisp
-    (use-package ag
-      :ensure
-      )
-
-    (use-package pt
-      :ensure
-    )
+    (leaf ag :ensure t)
+    (leaf pt :ensure t)
   #+end_src
 
   #+RESULTS:
 
 * enriched-mode
   #+begin_src emacs-lisp
-    (require 'enriched)
+    (leaf enriched :ensure t)
   #+end_src
 
   #+RESULTS:
