@@ -70,7 +70,8 @@
         "obc" 'xah-close-current-buffer
         "of"   'helm-resume
         "iu"   nil
-        "<home>" 'ibuffer
+        ;; "<home>" 'ibuffer
+        "<home>" 'bufler
         "<end>" 'tmpscratch
         "<prior>" 'beginning-of-defun
         "<next>" 'end-of-defun
@@ -244,7 +245,9 @@
          "&"   'org-mark-ring-goto
          "nx"  'zz-narrow-repeat
          "nz"  narrow-map
-         "bb"  'ivy-switch-buffer
+         ;; "bb"  'ivy-switch-buffer
+         "bb"  'bufler-switch-buffer
+         "bf"  'bufler-workspace-frame-set
          "si"  'spacemacs/search-project-auto-region-or-symbol
          ;;sdcv dictionary
          "sV" 'sdcv-search-pointer+
@@ -1695,7 +1698,7 @@
    #+BEGIN_SRC emacs-lisp
      (append-to-list
       'evil-emacs-state-modes
-      '(magit-show-branches-mode
+      '(
         svn-status-mode
         dvc-log-edit-mode
         project-buffer-mode
@@ -1703,8 +1706,14 @@
         speedbar-mode
         picpocket-mode
         vterm-mode
-        elfeed-mode))
+        elfeed-mode
+        bufler-mode
+        bufler-list-mode
+        ))
    #+END_SRC
+
+   #+RESULTS:
+   | org-brain-visualize-mode | 5x5-mode | bbdb-mode | biblio-selection-mode | blackbox-mode | bookmark-bmenu-mode | bookmark-edit-annotation-mode | browse-kill-ring-mode | bubbles-mode | bzr-annotate-mode | calc-mode | cfw:calendar-mode | completion-list-mode | custom-theme-choose-mode | debugger-mode | delicious-search-mode | desktop-menu-blist-mode | desktop-menu-mode | dun-mode | dvc-bookmarks-mode | dvc-diff-mode | dvc-info-buffer-mode | dvc-log-buffer-mode | dvc-revlist-mode | dvc-revlog-mode | dvc-status-mode | dvc-tips-mode | ediff-mode | ediff-meta-mode | efs-mode | Electric-buffer-menu-mode | emms-browser-mode | emms-mark-mode | emms-metaplaylist-mode | emms-playlist-mode | ess-help-mode | etags-select-mode | fj-mode | gc-issues-mode | gdb-breakpoints-mode | gdb-disassembly-mode | gdb-frames-mode | gdb-locals-mode | gdb-memory-mode | gdb-registers-mode | gdb-threads-mode | gist-list-mode | gnus-article-mode | gnus-browse-mode | gnus-group-mode | gnus-server-mode | gnus-summary-mode | gomoku-mode | google-maps-static-mode | jde-javadoc-checker-report-mode | magit-popup-mode | magit-popup-sequence-mode | mh-folder-mode | monky-mode | mpuz-mode | notmuch-hello-mode | notmuch-search-mode | notmuch-show-mode | notmuch-tree-mode | pdf-outline-buffer-mode | pdf-view-mode | proced-mode | rcirc-mode | rebase-mode | recentf-dialog-mode | reftex-select-bib-mode | reftex-select-label-mode | reftex-toc-mode | sldb-mode | slime-inspector-mode | slime-thread-control-mode | slime-xref-mode | snake-mode | solitaire-mode | sr-buttons-mode | sr-mode | sr-tree-mode | sr-virtual-mode | tetris-mode | tla-annotate-mode | tla-archive-list-mode | tla-bconfig-mode | tla-bookmarks-mode | tla-branch-list-mode | tla-browse-mode | tla-category-list-mode | tla-changelog-mode | tla-follow-symlinks-mode | tla-inventory-file-mode | tla-inventory-mode | tla-lint-mode | tla-logs-mode | tla-revision-list-mode | tla-revlog-mode | tla-tree-lint-mode | tla-version-list-mode | twittering-mode | urlview-mode | vm-mode | vm-summary-mode | w3m-mode | wab-compilation-mode | xgit-annotate-mode | xgit-changelog-mode | xgit-diff-mode | xgit-revlog-mode | xhg-annotate-mode | xhg-log-mode | xhg-mode | xhg-mq-mode | xhg-mq-sub-mode | xhg-status-extra-mode | magit-show-branches-mode | svn-status-mode | dvc-log-edit-mode | project-buffer-mode | gtags-selection-mode | speedbar-mode | picpocket-mode | vterm-mode | elfeed-mode | magit-show-branches-mode | svn-status-mode | dvc-log-edit-mode | project-buffer-mode | gtags-selection-mode | speedbar-mode | picpocket-mode | vterm-mode | elfeed-mode | bufler-mode | svn-status-mode | dvc-log-edit-mode | project-buffer-mode | gtags-selection-mode | speedbar-mode | picpocket-mode | vterm-mode | elfeed-mode | bufler-mode | bufler-list-mode |
 
 ** emacs-motion state 
    #+BEGIN_SRC emacs-lisp
@@ -1723,6 +1732,16 @@
   #+end_src
 
   #+RESULTS:
+* evil-tex
+  #+begin_src emacs-lisp
+    (use-package evil-tex
+      :config
+      (add-hook 'LaTeX-mode-hook #'evil-tex-mode))
+  #+end_src
+
+  #+RESULTS:
+  : t
+
 * text-object
 Update: evil-regexp-range was recently replaced with evil-select-paren. This works on current evil and has the same usage as the old one:
 
@@ -1827,3 +1846,19 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
    #+end_src
 
    #+RESULTS:
+   
+** block-nav
+   #+begin_src emacs-lisp
+     (use-package block-nav
+       :config
+       (dolist (modemap '(python-mode-map c++-mode-map))
+         (evil-collection-define-key '(normal visual) modemap
+           [kp-6] 'block-nav-next-block
+           [kp-4] 'block-nav-previous-block
+           [kp-2] 'block-nav-next-indentation-level
+           [kp-4] 'block-nav-previous-indentation-level
+           [kp-5] 'block-nav-move-indentation-level)))
+   #+end_src
+
+   #+RESULTS:
+   

@@ -48,13 +48,15 @@
                                            ; return statement
        (if found dirname nil)))
 
-   (use-package dired
+   (leaf dired
      :demand
-     :config
-     (define-key dired-mode-map ":c" 'clip-file)
-     (define-key dired-mode-map ":p" 'clip-paste)
-     (define-key dired-mode-map ":;" 'revert-buffer)
-     (define-key dired-mode-map ":i" 'clip-image))
+     :bind ((dired-mode-map
+             ( ":c" . clip-file)
+             ( ":p" . clip-paste)
+             ( ":;" . revert-buffer)
+             ( ":o" . dired-omit-mode)
+             ( ":i" . clip-image))))
+
 
    (defun 2-zip ()
      "Zip the current file/dir in `dired'.

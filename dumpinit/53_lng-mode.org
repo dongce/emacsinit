@@ -88,13 +88,32 @@
   #+RESULTS:
   : ((/mnt/t/gitdir/DLP_LINK11/ . 0) (/mnt/t/gitdir/DLP_ISDL/ . 0) (/mnt/t/gitdir/ltslph1iffmode5 . 0) (/mnt/t/KSS3/HCI_LINK11/ . 0) (/mnt/t/KSS3/HCI_ISDL/ . 0) (~/ . 0) (/opt/site-lisp/init/ . 0) (/mnt/develop/orgdir/ . 0) (/mnt/e/kdxbuild/ . 0) (/mnt/t/LTS/LPH-I/IFFMODE5 . 1))
 
-  
-* ob-latex-as-png
-  #+begin_src emacs-lisp
-      (use-package ob-latex-as-png
-        :config
-        (add-to-list  'ob-latex-as-png-header "\\usepackage{amsmath}"))
-  #+end_src
 
-  #+RESULTS:
-  : t
+  
+* latex
+** ob-latex-as-png
+   #+begin_src emacs-lisp
+       (use-package ob-latex-as-png
+         :config
+         (add-to-list  'ob-latex-as-png-header "\\usepackage{amsmath}"))
+   #+end_src
+
+   #+RESULTS:
+   : t
+
+   
+** company-math, cdlatex
+
+  #+begin_src emacs-lisp
+    (use-package company-math
+      :config
+      (setf company-math-allow-latex-symbols-in-faces t )
+      (spacemacs|add-company-backends :backends (company-math-symbols-latex company-latex-commands) :modes org-mode)
+      )
+
+    (use-package cdlatex
+      :hook
+      ((org-mode . turn-on-org-cdlatex)
+       (LaTeX-mode . turn-on-cdlatex)))
+
+  #+end_src

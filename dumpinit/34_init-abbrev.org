@@ -23,7 +23,7 @@
 
   (defalias 'g 'grep)
   (defalias 'gf 'grep-find)
-  (defalias 'fd 'find-dired)
+  (defalias 'fd 'fd-dired)
 
   (defalias 'rb 'revert-buffer)
 

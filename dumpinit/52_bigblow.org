@@ -1812,20 +1812,6 @@
       :menu-entry '(?h "Export to HTML" ((?m "As MHTML file and open" org-html-export-to-mhtml))))
   #+end_src
 
-  #+begin_src emacs-lisp
-         (use-package company-math
-           :config
-           (setf company-math-allow-latex-symbols-in-faces t )
-           (spacemacs|add-company-backends :backends (company-math-symbols-latex company-latex-commands) :modes org-mode)
-           )
-
-        (use-package cdlatex
-          :hook
-          ((org-mode . turn-on-org-cdlatex)
-           (LaTeX-mode . turn-on-cdlatex)))
-
-
-  #+end_src
 
   #+RESULTS:
   | turn-on-cdlatex | preview-mode-setup | er/add-latex-mode-expansions |

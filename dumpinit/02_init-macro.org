@@ -189,7 +189,7 @@ Test cases
 
   (defun soft-wrap-lines ()
     "Make lines wrap at window edge and on word boundary,
-  in current buffer."
+    in current buffer."
     (interactive)
     (setq truncate-lines nil)
     (setq word-wrap t)
@@ -242,16 +242,23 @@ Test cases
     (yank)
     (insert "\n"))
 
-  (use-package xah-get-thing
+
+
+
+
+  (leaf xah-get-thing
     :demand
     :commands xah-get-thing-or-selection)
 
+
+
+
   (defun sort-lines-length (reverse beg end)
     "Sort lines in region alphabetically; argument means descending order.
-  Called from a program, there are three arguments:
-  REVERSE (non-nil means reverse order), BEG and END (region to sort).
-  The variable `sort-fold-case' determines whether alphabetic case affects
-  the sort order."
+    Called from a program, there are three arguments:
+    REVERSE (non-nil means reverse order), BEG and END (region to sort).
+    The variable `sort-fold-case' determines whether alphabetic case affects
+    the sort order."
     (interactive "P\nr")
     (save-excursion
       (save-restriction
@@ -269,16 +276,16 @@ Test cases
   (defun wrap-html-tag (tagName &optional className ξid)
     "Add a HTML tag to beginning and ending of current word or text selection.
 
-  When preceded with `universal-argument',
-  no arg = prompt for tag, class.
-  2 = prompt for tag, id.
-  any = prompt for tag, id, class.
+    When preceded with `universal-argument',
+    no arg = prompt for tag, class.
+    2 = prompt for tag, id.
+    any = prompt for tag, id, class.
 
-  When called interactively,
-  Default id value is [id<random number>].
-  Default class value is [xy].
+    When called interactively,
+    Default id value is [id<random number>].
+    Default class value is [xy].
 
-  When called in lisp program, if className is nil or empty string, don't add the attribute. Same for ξid."
+    When called in lisp program, if className is nil or empty string, don't add the attribute. Same for ξid."
     (interactive
      (cond
       ((equal current-prefix-arg nil)     ; universal-argument not called
@@ -316,10 +323,10 @@ Test cases
   ;;http://ergoemacs.org/emacs/elisp_idioms_batch.html
   (defun make-backup ()
     "Make a backup copy of current buffer's file.
-  Create a backup of current buffer's file.
-  The new file name is the old file name postfixed with “~”, in the same dir.
-  If such a file already exist, append more “~”.
-  If the current buffer is not associated with a file, its a error."
+    Create a backup of current buffer's file.
+    The new file name is the old file name postfixed with “~”, in the same dir.
+    If such a file already exist, append more “~”.
+    If the current buffer is not associated with a file, its a error."
     (interactive)
     (let (cfile bfilename)
       (setq cfile (buffer-file-name))
@@ -335,7 +342,7 @@ Test cases
 
   ;; http://ergoemacs.org/emacs/emacs_unfill-paragraph.html
 
-  ;;; package unfill
+    ;;; package unfill
   ;; (defun unfill-paragraph ()
   ;;   "Replace newline chars in current paragraph by single spaces.
   ;; This command does the reverse of `fill-paragraph'."
@@ -352,8 +359,8 @@ Test cases
 
   (defun compact-uncompact-block ()
     "Remove or add line ending chars on current paragraph.
-  This command is similar to a toggle of `fill-paragraph'.
-  When there is a text selection, act on the region."
+    This command is similar to a toggle of `fill-paragraph'.
+    When there is a text selection, act on the region."
     (interactive)
 
     ;; This command symbol has a property “'stateIsCompact-p”.
@@ -386,10 +393,10 @@ Test cases
       (insert-file-contents fPath)
       (split-string (buffer-string) "\n" t)))
 
-  ;;; File and Dir Manipulation
-  ;;; Filename Manipulation
-  ;;; 
-  ;;; Commonly used functions to manipulate file names.
+    ;;; File and Dir Manipulation
+    ;;; Filename Manipulation
+    ;;; 
+    ;;; Commonly used functions to manipulate file names.
 
   ;;doc;;(file-name-directory f)      ; get dir path
   ;;doc;;(file-name-nondirectory f)   ; get file name
@@ -402,9 +409,9 @@ Test cases
   ;;doc;;
   ;;doc;;default-directory       ; get the current dir (this is a variable)
 
-  ;;; File and Dir Manipulation
-  ;;; 
-  ;;; Commonly used functions to manipulate files and dirs.
+    ;;; File and Dir Manipulation
+    ;;; 
+    ;;; Commonly used functions to manipulate files and dirs.
 
   ;;doc;; (file-exists-p FILENAME)
   ;;doc;; 
@@ -427,10 +434,10 @@ Test cases
   ;;doc;; (copy-directory DIR NEWNAME &optional KEEP-TIME PARENTS) ; new in emacs 23.2
 
 
-  ;;;_ Reading and Writing to Files
-  ;;;_ Reading Files Only
-  ;;;_ 
-  ;;;_ To process thousands of files, read only, use with-temp-buffer.
+    ;;;_ Reading and Writing to Files
+    ;;;_ Reading Files Only
+    ;;;_ 
+    ;;;_ To process thousands of files, read only, use with-temp-buffer.
 
   ;;doc;; (defun my-process-file (fPath)
   ;;doc;;   "Process the file at path FPATH …"
@@ -439,9 +446,9 @@ Test cases
   ;;doc;;     ;; process it …
   ;;doc;;     ) )
 
-  ;;;_ Modifying Files
-  ;;;_ 
-  ;;;_ If you want to write to file ONLY when you actually changed the file, you can create flag variable and call write-region, like this:
+    ;;;_ Modifying Files
+    ;;;_ 
+    ;;;_ If you want to write to file ONLY when you actually changed the file, you can create flag variable and call write-region, like this:
 
   ;;doc;; (defun my-process-file (fPath)
   ;;doc;;   "Process the file at path FPATH …"
@@ -454,11 +461,11 @@ Test cases
   ;;doc;; 
   ;;doc;;       (when fileChanged-p (write-region 1 (point-max) fPath) ) ) ) )
 
-  ;;;_ http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html
+    ;;;_ http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html
 
   (defun cycle-hyphen-underscore-space ()
     "Cyclically replace {underscore, space, hypen} chars current line or text selection.
-  When called repeatedly, this command cycles the {“ ”, “_”, “-”} characters."
+    When called repeatedly, this command cycles the {“ ”, “_”, “-”} characters."
     (interactive)
     ;; this function sets a property 「'state」. Possible values are 0 to length of charArray.
     (let (mainText charArray p1 p2 currentState nextState changeFrom
@@ -508,7 +515,7 @@ Test cases
     (insert-line "** 버려")
     (org-mode))
 
-  ;;; http://sachachua.com/notebook/emacs/small-functions.el
+    ;;; http://sachachua.com/notebook/emacs/small-functions.el
 
   ;; small-functions.el --- Small function definitions that are usefull.
   ;;
@@ -523,12 +530,12 @@ Test cases
   ;;
   ;; Tue Aug 17 15:51:03 1999
   ;;
-  ;;;;
+    ;;;;
 
   ;;
-  ;;;;  Make sure I don't accidentally kill emacs.
-  ;;;; This will force emacs to ask me if I'm sure that I want to quit.
-  ;;;; Bind the function to C-c C-x
+    ;;;;  Make sure I don't accidentally kill emacs.
+    ;;;; This will force emacs to ask me if I'm sure that I want to quit.
+    ;;;; Bind the function to C-c C-x
   ;;(global-set-key "\C-x\C-c" '(lambda () 
   ;;            (interactive)
   ;;            (if (y-or-n-p-with-timeout "Do you want to exit " 4 nil)
@@ -617,8 +624,8 @@ Test cases
   ;;
   (defun variable-apropos (string)
     "Like apropos, but lists only symbols that are names of user
-  modifiable variables.  Argument REGEXP is a regular expression.
-     Returns a list of symbols, and documentation found"
+    modifiable variables.  Argument REGEXP is a regular expression.
+       Returns a list of symbols, and documentation found"
     (interactive "sVariable apropos (regexp): ")
     (let ((message
            (let ((standard-output (get-buffer-create "*Help*")))
@@ -681,7 +688,7 @@ Test cases
 
   (defun strip-html ()
     "Remove HTML tags from the current buffer, 
-     (this will affect the whole buffer regardless of the restrictions in effect)."
+       (this will affect the whole buffer regardless of the restrictions in effect)."
     (interactive "*")
     (save-excursion
       (save-restriction
@@ -701,14 +708,14 @@ Test cases
 
   (defun unfill-paragraph ()
     "Replace newline chars in current paragraph by single spaces.
-  This command does the inverse of `fill-paragraph'."
+    This command does the inverse of `fill-paragraph'."
     (interactive)
     (let ((fill-column 90002000)) ; 90002000 is just random. you can use `most-positive-fixnum'
       (fill-paragraph nil)))
 
   (defun unfill-region (start end)
     "Replace newline chars in region by single spaces.
-  This command does the inverse of `fill-region'."
+    This command does the inverse of `fill-region'."
     (interactive "r")
     (let ((fill-column 90002000))
       (fill-region start end)))
@@ -733,7 +740,7 @@ Test cases
 
   (defun delete-header-cruft (P)
     "Delete lines which appear to be RFC-822 cruft, mail or news.
-  With prefix arg, start from point; otherwise do whole buffer."
+    With prefix arg, start from point; otherwise do whole buffer."
     (interactive "P")
     (or P (goto-char (point-min)))
     (while (re-search-forward
@@ -831,24 +838,24 @@ Test cases
 
   (defun unfill-paragraph ()
     "Replace newline chars in current paragraph by single spaces.
-  This command does the inverse of `fill-paragraph'."
+    This command does the inverse of `fill-paragraph'."
     (interactive)
     (let ((fill-column 90002000)) ; 90002000 is just random. you can use `most-positive-fixnum'
       (fill-paragraph nil)))
 
   (defun unfill-region (start end)
     "Replace newline chars in region by single spaces.
-  This command does the inverse of `fill-region'."
+    This command does the inverse of `fill-region'."
     (interactive "r")
     (let ((fill-column 90002000))
       (fill-region start end)))
 
   (defun xah-cycle-hyphen-underscore-space ()
     "Cycle {underscore, space, hypen} chars of current word or text selection.
-  When called repeatedly, this command cycles the {“_”, “-”, “ ”} characters, in that order.
+    When called repeatedly, this command cycles the {“_”, “-”, “ ”} characters, in that order.
 
-  URL `http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html'
-  Version 2016-01-14"
+    URL `http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html'
+    Version 2016-01-14"
     (interactive)
     ;; this function sets a property 「'state」. Possible values are 0 to length of ξcharArray.
     (let (ξp1 ξp2)
@@ -893,8 +900,8 @@ Test cases
 
   (defun xah-underscore-to-space-region (φbegin φend)
     "Change  underscore char to space.
-  URL `http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html'
-  Version 2015-08-18"
+    URL `http://ergoemacs.org/emacs/elisp_change_space-hyphen_underscore.html'
+    Version 2015-08-18"
     (interactive "r")
     (save-excursion
       (save-restriction
@@ -906,12 +913,12 @@ Test cases
 
   (defun xah-clean-whitespace-and-save (φbegin φend)
     "Delete trailing whitespace, and replace repeated blank lines into just 2.
-  Only space and tab is considered whitespace here.
-  Works on whole buffer or text selection, respects `narrow-to-region'.
-  Saves the file if it is a file.
+    Only space and tab is considered whitespace here.
+    Works on whole buffer or text selection, respects `narrow-to-region'.
+    Saves the file if it is a file.
 
-  URL `http://ergoemacs.org/emacs/elisp_compact_empty_lines.html'
-  Version 2016-03-02"
+    URL `http://ergoemacs.org/emacs/elisp_compact_empty_lines.html'
+    Version 2016-03-02"
     (interactive
      (if (region-active-p)
          (list (region-beginning) (region-end))
@@ -2038,12 +2045,12 @@ This works on the current region."
 
 ** dpaste
 #+BEGIN_SRC emacs-lisp
- (use-package dpaste_de
-  :demand
-  :config
- (defun vdpaste (name)
-   (interactive "Spaste 이름을 입력해 주세요 :")  ; ask for the name of the macro
-   (eww (format "http://10.239.12.181:8000/dpaste/%s/raw" name))))
+  (leaf dpaste_de
+    :demand
+    :config
+    (defun vdpaste (name)
+      (interactive "Spaste 이름을 입력해 주세요 :")  ; ask for the name of the macro
+      (eww (format "http://10.239.12.181:8000/dpaste/%s/raw" name))))
 
 #+END_SRC
 
