@@ -4,493 +4,493 @@
 * header
 
   #+BEGIN_SRC emacs-lisp
-;; -*-modc: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
+    ;; -*-modc: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
   #+END_SRC
 
 
 * print
   #+BEGIN_SRC emacs-lisp
 
-(setq ps-lpr-switches '("-query"))
-(setq ps-printer-name t)
+    (setq ps-lpr-switches '("-query"))
+    (setq ps-printer-name t)
 
-;; 헤더가 붙지 않도록 설정한다.
-(setq ps-print-header nil )
+    ;; 헤더가 붙지 않도록 설정한다.
+    (setq ps-print-header nil )
 
-(w32-unix-eval
- (
-  ;; WIN32 설정
-  (setq ps-lpr-command "t:/usr/local/postscript/gsview/gsview/gsprint.exe")
-  (setq preview-gs-command "t:/usr/local/postscript/gs910/bin/gswin32c.exe")
-  (require 'w32-winprint)
-  )
- (
-  ;; 다음을 이용하용 ENSCRIPT 사용 가능
-  ;; 언어에 때라 특정한 옵션 사용가능
-  (defvar *enscript-syntax*
-    '( (c++-mode . "-Ecpp")
-       (c-mode . "-Ecpp" )
-       (ada-mode . "-Eada" )
-       (sh-mode . "-Ebash" )
-       (diff-mode . "-Ediff" )
-       (emacs-lisp-mode ."-Eelisp" )
-       (idl-mode . "-Eidl")
-       (makefile-mode ."-Emakefile")
-       (python-mode ."-Epython") ) )
+    (w32-unix-eval
+     (
+      ;; WIN32 설정
+      (setq ps-lpr-command "t:/usr/local/postscript/gsview/gsview/gsprint.exe")
+      (setq preview-gs-command "t:/usr/local/postscript/gs910/bin/gswin32c.exe")
+      (require 'w32-winprint)
+      )
+     (
+      ;; 다음을 이용하용 ENSCRIPT 사용 가능
+      ;; 언어에 때라 특정한 옵션 사용가능
+      (defvar *enscript-syntax*
+        '( (c++-mode . "-Ecpp")
+           (c-mode . "-Ecpp" )
+           (ada-mode . "-Eada" )
+           (sh-mode . "-Ebash" )
+           (diff-mode . "-Ediff" )
+           (emacs-lisp-mode ."-Eelisp" )
+           (idl-mode . "-Eidl")
+           (makefile-mode ."-Emakefile")
+           (python-mode ."-Epython") ) )
 
-  (defun enscript()
-    (interactive)
-    (print
-     (with-output-to-string
-       (call-process-region
-        (point-min)
-        (point-max)
-        "/opt/sfw/bin/enscript"
-        nil
-        standard-output
-        nil
-        "-Plplpx"
-        (cdr (assoc major-mode *enscript-syntax* ) ) ) ) )  )
+      (defun enscript()
+        (interactive)
+        (print
+         (with-output-to-string
+           (call-process-region
+            (point-min)
+            (point-max)
+            "/opt/sfw/bin/enscript"
+            nil
+            standard-output
+            nil
+            "-Plplpx"
+            (cdr (assoc major-mode *enscript-syntax* ) ) ) ) )  )
 
-  (defun enscript-region()
-    (interactive)
-    (print
-     (with-output-to-string
-       (call-process-region
-        (region-beginning)
-        (region-end)
-        "enscript"
-        nil
-        standard-output
-        nil
-        "-Plplpx"
-        (cdr (assoc major-mode *enscript-syntax* ) ) ) ) )  )))
+      (defun enscript-region()
+        (interactive)
+        (print
+         (with-output-to-string
+           (call-process-region
+            (region-beginning)
+            (region-end)
+            "enscript"
+            nil
+            standard-output
+            nil
+            "-Plplpx"
+            (cdr (assoc major-mode *enscript-syntax* ) ) ) ) )  )))
 
-;; 한글 프린팅이 가능하다.
-(require 'ps-print)
-(require 'ps-mule)
-(require 'ps-bdf)
-(require 'ps2pdf)
-
-
-;; latex listings 를 이용합니다.
-;; http://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
-
-;; Supported languages
-;; It supports the following programming languages:
-;; ABAP2,4 	IDL4 	PL/I
-;; ACSL 	inform 	Plasm
-;; Ada4 	Java4 	POV
-;; Algol4 	JVMIS 	Prolog
-;; Ant 	ksh 	Promela
-;; Assembler2,4 	Lisp4 	Python
-;; Awk4 	Logo 	R
-;; bash 	make4 	Reduce
-;; Basic2,4 	Mathematica1,4 	Rexx
-;; C4 	Matlab 	RSL
-;; C++4 	Mercury 	Ruby
-;; Caml4 	MetaPost 	S4
-;; Clean 	Miranda 	SAS
-;; Cobol4 	Mizar 	Scilab
-;; Comal 	ML 	sh
-;; csh 	Modelica3 	SHELXL
-;; Delphi 	Modula-2 	Simula4
-;; Eiffel 	MuPAD 	SQL
-;; Elan 	NASTRAN 	tcl4
-;; erlang 	Oberon-2 	TeX4
-;; Euphoria 	OCL4 	VBScript
-;; Fortran4 	Octave 	Verilog
-;; GCL 	Oz 	VHDL4
-;; Gnuplot 	Pascal4 	VRML
-;; Haskell 	Perl 	XML
-;; HTML 	PHP 	XSLT
+    ;; 한글 프린팅이 가능하다.
+    (require 'ps-print)
+    (require 'ps-mule)
+    (require 'ps-bdf)
+    (require 'ps2pdf)
 
 
-;; breakindent=0em,
-;; language=XML,
-;; basicstyle=\\footnotesize,
-;; numbers=left,
-;; numberstyle=\\footnotesize,
-;; stepnumber=2,
-;; numbersep=5pt,
-;; backgroundcolor=\\color{white},
-;; showspaces=false,
-;; showstringspaces=false,
-;; showtabs=false,
-;; frame=single,
-;; tabsize=2,
-;; captionpos=b,
-;; escapeinside={\\%*}{*)},
-;; linewidth=\\textwidth
-;; http://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
-;; http://www.personal.ceu.hu/tex/docclass.htm
-;; http://stackoverflow.com/questions/1965702/how-to-mark-line-breaking-of-long-lines
-;; http://en.wikibooks.org/wiki/LaTeX/Page_Layout
-;; http://stackoverflow.com/questions/1116266/listings-in-latex-with-utf-8-or-at-least-german-umlauts kim dong il
+    ;; latex listings 를 이용합니다.
+    ;; http://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+
+    ;; Supported languages
+    ;; It supports the following programming languages:
+    ;; ABAP2,4 	IDL4 	PL/I
+    ;; ACSL 	inform 	Plasm
+    ;; Ada4 	Java4 	POV
+    ;; Algol4 	JVMIS 	Prolog
+    ;; Ant 	ksh 	Promela
+    ;; Assembler2,4 	Lisp4 	Python
+    ;; Awk4 	Logo 	R
+    ;; bash 	make4 	Reduce
+    ;; Basic2,4 	Mathematica1,4 	Rexx
+    ;; C4 	Matlab 	RSL
+    ;; C++4 	Mercury 	Ruby
+    ;; Caml4 	MetaPost 	S4
+    ;; Clean 	Miranda 	SAS
+    ;; Cobol4 	Mizar 	Scilab
+    ;; Comal 	ML 	sh
+    ;; csh 	Modelica3 	SHELXL
+    ;; Delphi 	Modula-2 	Simula4
+    ;; Eiffel 	MuPAD 	SQL
+    ;; Elan 	NASTRAN 	tcl4
+    ;; erlang 	Oberon-2 	TeX4
+    ;; Euphoria 	OCL4 	VBScript
+    ;; Fortran4 	Octave 	Verilog
+    ;; GCL 	Oz 	VHDL4
+    ;; Gnuplot 	Pascal4 	VRML
+    ;; Haskell 	Perl 	XML
+    ;; HTML 	PHP 	XSLT
 
 
-;; \documentclass [10pt ,a4paper, oneside]{article}
-
-;; \usepackage{listings}   %per la stampa del codice
-
-;; \newenvironment{C}
-;; {\lstset{language=[ANSI]C++,
-;; basicstyle=\small\ttfamily,
-;; %numbers=left,
-;; showspaces=false,
-;; numberstyle=\tiny,
-;; stepnumber=2,
-;; tabsize=2,
-;; numbersep=5pt,
-;; numberfirstline = false,
-;; framexleftmargin=5mm, frame=shadowbox,
-;; breaklines = true}
-;; }
-;; {}
-
-;; \begin{document}
-
-;; \begin{C}
-;; \begin{lstlisting}
-;; void initIrqVectors(void) {
-;;    // IVPR = address base used with IVOR's
-;;    asm ("lis r5, IV_ADDR@h");
-;;    for (int i = 0; i < 5 ; i++) { ... }
-;; }
-;; \end{lstlisting}
-;; \end{C}
-;; \end{document}
+    ;; breakindent=0em,
+    ;; language=XML,
+    ;; basicstyle=\\footnotesize,
+    ;; numbers=left,
+    ;; numberstyle=\\footnotesize,
+    ;; stepnumber=2,
+    ;; numbersep=5pt,
+    ;; backgroundcolor=\\color{white},
+    ;; showspaces=false,
+    ;; showstringspaces=false,
+    ;; showtabs=false,
+    ;; frame=single,
+    ;; tabsize=2,
+    ;; captionpos=b,
+    ;; escapeinside={\\%*}{*)},
+    ;; linewidth=\\textwidth
+    ;; http://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+    ;; http://www.personal.ceu.hu/tex/docclass.htm
+    ;; http://stackoverflow.com/questions/1965702/how-to-mark-line-breaking-of-long-lines
+    ;; http://en.wikibooks.org/wiki/LaTeX/Page_Layout
+    ;; http://stackoverflow.com/questions/1116266/listings-in-latex-with-utf-8-or-at-least-german-umlauts kim dong il
 
 
-(defcustom lstlngnames
-  '((python-mode . python)
-                     (c++-mode . c++)
-                     (c-mode . c++)
-                     (sh-mode . sh)
-                     (idl-mode . idl)
-                     (emacs-lisp-mode . lisp)
-                     (lisp-mode . lisp)
-                     (ruby-mode . ruby)
-                     (web-mode . html)
-                     (java-mode . java)
-                     )
-  "latex listings 언어 목록"
-  )
+    ;; \documentclass [10pt ,a4paper, oneside]{article}
+
+    ;; \usepackage{listings}   %per la stampa del codice
+
+    ;; \newenvironment{C}
+    ;; {\lstset{language=[ANSI]C++,
+    ;; basicstyle=\small\ttfamily,
+    ;; %numbers=left,
+    ;; showspaces=false,
+    ;; numberstyle=\tiny,
+    ;; stepnumber=2,
+    ;; tabsize=2,
+    ;; numbersep=5pt,
+    ;; numberfirstline = false,
+    ;; framexleftmargin=5mm, frame=shadowbox,
+    ;; breaklines = true}
+    ;; }
+    ;; {}
+
+    ;; \begin{document}
+
+    ;; \begin{C}
+    ;; \begin{lstlisting}
+    ;; void initIrqVectors(void) {
+    ;;    // IVPR = address base used with IVOR's
+    ;;    asm ("lis r5, IV_ADDR@h");
+    ;;    for (int i = 0; i < 5 ; i++) { ... }
+    ;; }
+    ;; \end{lstlisting}
+    ;; \end{C}
+    ;; \end{document}
 
 
-(defmacro listing-template (fontsize &rest forms)
-  `(progn
-      ;; http://en.wikibooks.org/wiki/LaTeX/Page_Layout
-      ;; (insert-line "\\documentclass[a4paper, landscape, 11pt]{article}")
-      ;; http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
-     ;; http://tex.stackexchange.com/questions/33685/set-the-font-family-for-lstlisting
-  (insert-line (format "\\documentclass[a4paper, %dpt]{extarticle}" (if (member ,fontsize '(8 9 10 11 12 14 17 20)) ,fontsize 10 )))
-  (insert-line "\\usepackage{extsizes}") ;http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
-  (insert-line "\\usepackage[utf8]{inputenc}")
-  (insert-line "\\usepackage{fullpage}")
-  (insert-line "\\usepackage{courier}")
-  (insert-line "\\usepackage{listings}")
-  (insert-line "\\usepackage{color}")
-  (insert-line "\\usepackage{MnSymbol}")
-  (insert-line "\\usepackage[hangul]{kotex}")
-  ;; http://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
-  ;; http://stackoverflow.com/questions/981020/how-to-force-line-wrapping-in-listings-package
-  (insert  "\\lstset{
-%inputencoding=utf8
-%showspaces=false,
-showstringspaces=false,
-extendedchars=\\true,
-breaklines=true,
-breakatwhitespace=true,
-breakautoindent=false,
-basicstyle=\\footnotesize\\ttfamily,
-}
-")
-  ;; http://stackoverflow.com/questions/1965702/how-to-mark-line-breaking-of-long-lines
-  (insert "
-\\lstset{prebreak=\\raisebox{0ex}[0ex][0ex]
-        {\\ensuremath{\\rhookswarrow}}}
-\\lstset{postbreak=\\raisebox{0ex}[0ex][0ex]
-        {\\ensuremath{\\rcurvearrowse\\space}}}\n" )
-  (mapcar #'insert-line '("\\usepackage {fancyhdr}" "\\pagestyle{fancy}"))
+    (defcustom lstlngnames
+      '((python-mode . python)
+        (c++-mode . c++)
+        (c-mode . c++)
+        (sh-mode . sh)
+        (idl-mode . idl)
+        (emacs-lisp-mode . lisp)
+        (lisp-mode . lisp)
+        (ruby-mode . ruby)
+        (web-mode . html)
+        (java-mode . java)
+        )
+      "latex listings 언어 목록"
+      )
 
 
-  ,@forms
-))
-
-(defmacro verbatim-template (fontsize &rest forms)
-  `(progn
-  (insert-line (format "\\documentclass[a4paper, %dpt]{extarticle}" (if (member ,fontsize '(8 9 10 11 12 14 17 20)) ,fontsize 10 )))
-  (insert-line "\\usepackage{extsizes}") ;http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
-  (insert-line "\\usepackage[utf8]{inputenc}")
-  (insert-line "\\usepackage{fullpage}")
-  (insert-line "\\usepackage{courier}")
-  (insert-line "\\usepackage{lmodern}")
-  (insert-line "\\usepackage{spverbatim}")
-  (insert-line "\\usepackage{listings}")
-  (insert-line "\\usepackage{color}")
-  (insert-line "\\usepackage{MnSymbol}")
-  (insert-line "\\usepackage[hangul]{kotex}")
-  (mapcar #'insert-line '("\\usepackage {fancyhdr}" "\\pagestyle{fancy}"))
-  ,@forms))
-
-(defun listings (&optional  fontsize)
-  (interactive "p")
-  (save-some-buffers)
-  (let* ((fname (file-truename  (make-temp-file "listings")))
-         (lexical-binding t)
-         (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
-         (inputlisting (format  "\\lstinputlisting[language=%s]{%s}" language (buffer-file-name)))
-         (filename  (buffer-file-name))
-         (jobname (file-name-base filename))
-         )
-    (with-temp-file fname
-      (listing-template
-       fontsize
-       (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
-
-       (insert-line "\\begin{document}")
-       (insert-line "\\newline")
-       (insert-line "\\newline")
-       (insert-line "\\newline")
-       (insert-line inputlisting)
-       (insert-line "\\end{document}")
-
-       ))
-
-    ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-no-file-line-error" "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
-    (async-start-process "pdflatex" "pdflatexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)
-    ))
+    (defmacro listing-template (fontsize &rest forms)
+      `(progn
+         ;; http://en.wikibooks.org/wiki/LaTeX/Page_Layout
+         ;; (insert-line "\\documentclass[a4paper, landscape, 11pt]{article}")
+         ;; http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
+         ;; http://tex.stackexchange.com/questions/33685/set-the-font-family-for-lstlisting
+         (insert-line (format "\\documentclass[a4paper, %dpt]{extarticle}" (if (member ,fontsize '(8 9 10 11 12 14 17 20)) ,fontsize 10 )))
+         (insert-line "\\usepackage{extsizes}") ;http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
+         (insert-line "\\usepackage[utf8]{inputenc}")
+         (insert-line "\\usepackage{fullpage}")
+         (insert-line "\\usepackage{courier}")
+         (insert-line "\\usepackage{listings}")
+         (insert-line "\\usepackage{color}")
+         (insert-line "\\usepackage{MnSymbol}")
+         (insert-line "\\usepackage[hangul]{kotex}")
+         ;; http://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings
+         ;; http://stackoverflow.com/questions/981020/how-to-force-line-wrapping-in-listings-package
+         (insert  "\\lstset{
+    %inputencoding=utf8
+    %showspaces=false,
+    showstringspaces=false,
+    extendedchars=\\true,
+    breaklines=true,
+    breakatwhitespace=true,
+    breakautoindent=false,
+    basicstyle=\\footnotesize\\ttfamily,
+    }
+    ")
+         ;; http://stackoverflow.com/questions/1965702/how-to-mark-line-breaking-of-long-lines
+         (insert "
+    \\lstset{prebreak=\\raisebox{0ex}[0ex][0ex]
+            {\\ensuremath{\\rhookswarrow}}}
+    \\lstset{postbreak=\\raisebox{0ex}[0ex][0ex]
+            {\\ensuremath{\\rcurvearrowse\\space}}}\n" )
+         (mapcar #'insert-line '("\\usepackage {fancyhdr}" "\\pagestyle{fancy}"))
 
 
+         ,@forms
+         ))
 
-(defun listing-region (b e &optional  fontsize)
-  (interactive "r\np")
-  (save-some-buffers)
-  (let* ((fname (file-truename  (make-temp-file "listings")))
-         (lexical-binding t)
-         (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
-         (bufstring (buffer-substring b e ))
-         (filename  (buffer-file-name))
-         (jobname (file-name-base filename))
-         )
-    (with-temp-file fname
-      (set-buffer-file-coding-system 'utf-8)
-      (listing-template
-       fontsize
-       (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
-       ;; (insert-line "\\lstset{language=}")
-       (insert-line "\\begin{document}")
-       (insert-line "\\newline")
-       (insert-line "\\begin{lstlisting}"  )
-       (insert bufstring)
-       (insert-line "\\end{lstlisting}")
-       (insert-line "\\end{document}")))
+    (defmacro verbatim-template (fontsize &rest forms)
+      `(progn
+         (insert-line (format "\\documentclass[a4paper, %dpt]{extarticle}" (if (member ,fontsize '(8 9 10 11 12 14 17 20)) ,fontsize 10 )))
+         (insert-line "\\usepackage{extsizes}") ;http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
+         (insert-line "\\usepackage[utf8]{inputenc}")
+         (insert-line "\\usepackage{fullpage}")
+         (insert-line "\\usepackage{courier}")
+         (insert-line "\\usepackage{lmodern}")
+         (insert-line "\\usepackage{spverbatim}")
+         (insert-line "\\usepackage{listings}")
+         (insert-line "\\usepackage{color}")
+         (insert-line "\\usepackage{MnSymbol}")
+         (insert-line "\\usepackage[hangul]{kotex}")
+         (mapcar #'insert-line '("\\usepackage {fancyhdr}" "\\pagestyle{fancy}"))
+         ,@forms))
 
-    ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
-    (async-start-process "pdflatex" "pdflatexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)
-))
+    (defun listings (&optional  fontsize)
+      (interactive "p")
+      (save-some-buffers)
+      (let* ((fname (file-truename  (make-temp-file "listings")))
+             (lexical-binding t)
+             (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
+             (inputlisting (format  "\\lstinputlisting[language=%s]{%s}" language (buffer-file-name)))
+             (filename  (buffer-file-name))
+             (jobname (file-name-base filename))
+             )
+        (with-temp-file fname
+          (listing-template
+           fontsize
+           (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
+
+           (insert-line "\\begin{document}")
+           (insert-line "\\newline")
+           (insert-line "\\newline")
+           (insert-line "\\newline")
+           (insert-line inputlisting)
+           (insert-line "\\end{document}")
+
+           ))
+
+        ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-no-file-line-error" "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
+        (async-start-process "pdflatex" "pdflatexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)
+        ))
 
 
 
+    (defun listing-region (b e &optional  fontsize)
+      (interactive "r\np")
+      (save-some-buffers)
+      (let* ((fname (file-truename  (make-temp-file "listings")))
+             (lexical-binding t)
+             (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
+             (bufstring (buffer-substring b e ))
+             (filename  (buffer-file-name))
+             (jobname (file-name-base filename))
+             )
+        (with-temp-file fname
+          (set-buffer-file-coding-system 'utf-8)
+          (listing-template
+           fontsize
+           (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
+           ;; (insert-line "\\lstset{language=}")
+           (insert-line "\\begin{document}")
+           (insert-line "\\newline")
+           (insert-line "\\begin{lstlisting}"  )
+           (insert bufstring)
+           (insert-line "\\end{lstlisting}")
+           (insert-line "\\end{document}")))
 
-(defun verbatim-region (b e &optional  fontsize)
-  (interactive "r\np")
-  (save-some-buffers)
-  (let* ((fname (file-truename  (make-temp-file "verbatim")))
-         (lexical-binding t)
-         (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
-         (bufstring (buffer-substring b e ))
-         (filename  (buffer-file-name))
-         (jobname (file-name-base filename))
-         )
-    (with-temp-file fname
-      (set-buffer-file-coding-system 'utf-8)
-      (verbatim-template
-       fontsize
-       (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
-
-       (insert-line "\\begin{document}")
-       (insert-line "\\newline")
-       (insert-line "\\begin{spverbatim}" )
-       (insert bufstring)
-       (insert-line "\\end{spverbatim}")
-       (insert-line "\\end{document}")))
-
-    ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
-    (async-start-process "pdflatex" "pdflatexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)
-))
-(defmacro pytex-template (fontsize &rest forms)
-  `(progn
-  (insert-line (format "\\documentclass[a4paper, %dpt]{extarticle}" (if (member ,fontsize '(8 9 10 11 12 14 17 20)) ,fontsize 10 )))
-  (insert-line "\\usepackage{extsizes}") ;http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
-  (insert-line "\\usepackage[margin=2cm]{geometry}")
-  (insert-line "\\usepackage{courier}")
-  (insert-line "\\usepackage{kotex}")
-  (mapcar #'insert-line '("\\usepackage {fancyhdr}" "\\pagestyle{fancy}"))
-  (insert "
-\\usepackage[utf8]{inputenc}
-\\usepackage[T1]{fontenc}
-\\usepackage{pythontex}
-")
+        ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
+        (async-start-process "pdflatex" "pdflatexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)
+        ))
 
 
-  ,@forms
-))
 
-(defun pytex-region (b e &optional  fontsize)
-  (interactive "r\np")
-  (save-some-buffers)
-  (let* ((fname (file-truename  (make-temp-file "pytex")))
-         (lexical-binding t)
-         (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
-         (bufstring (buffer-substring b e ))
-         (filename  (buffer-file-name))
-         (jobname (file-name-base filename))
-         )
-    (with-temp-file fname
-      (set-buffer-file-coding-system 'utf-8)
-      (pytex-template
-       fontsize
-       (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
 
-       (insert-line "\\begin{document}")
-       (insert-line (format  "\\begin{pygments}{%s}" language))
-       (insert-line bufstring)
-       (insert-line "\\end{pygments}")
-       (insert-line "\\end{document}")))
+    (defun verbatim-region (b e &optional  fontsize)
+      (interactive "r\np")
+      (save-some-buffers)
+      (let* ((fname (file-truename  (make-temp-file "verbatim")))
+             (lexical-binding t)
+             (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
+             (bufstring (buffer-substring b e ))
+             (filename  (buffer-file-name))
+             (jobname (file-name-base filename))
+             )
+        (with-temp-file fname
+          (set-buffer-file-coding-system 'utf-8)
+          (verbatim-template
+           fontsize
+           (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
 
-    ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
-    (async-start-process "pytex" "pytexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)
-))
+           (insert-line "\\begin{document}")
+           (insert-line "\\newline")
+           (insert-line "\\begin{spverbatim}" )
+           (insert bufstring)
+           (insert-line "\\end{spverbatim}")
+           (insert-line "\\end{document}")))
+
+        ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
+        (async-start-process "pdflatex" "pdflatexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)
+        ))
+    (defmacro pytex-template (fontsize &rest forms)
+      `(progn
+         (insert-line (format "\\documentclass[a4paper, %dpt]{extarticle}" (if (member ,fontsize '(8 9 10 11 12 14 17 20)) ,fontsize 10 )))
+         (insert-line "\\usepackage{extsizes}") ;http://texblog.org/2012/08/29/changing-the-font-size-in-latex/
+         (insert-line "\\usepackage[margin=2cm]{geometry}")
+         (insert-line "\\usepackage{courier}")
+         (insert-line "\\usepackage{kotex}")
+         (mapcar #'insert-line '("\\usepackage {fancyhdr}" "\\pagestyle{fancy}"))
+         (insert "
+    \\usepackage[utf8]{inputenc}
+    \\usepackage[T1]{fontenc}
+    \\usepackage{pythontex}
+    ")
+
+
+         ,@forms
+         ))
+
+    (defun pytex-region (b e &optional  fontsize)
+      (interactive "r\np")
+      (save-some-buffers)
+      (let* ((fname (file-truename  (make-temp-file "pytex")))
+             (lexical-binding t)
+             (language (symbol-name  (cdr  (assoc major-mode lstlngnames ))))
+             (bufstring (buffer-substring b e ))
+             (filename  (buffer-file-name))
+             (jobname (file-name-base filename))
+             )
+        (with-temp-file fname
+          (set-buffer-file-coding-system 'utf-8)
+          (pytex-template
+           fontsize
+           (insert-line (format  "\\markboth{%s}{%s}"   language   (file-name-nondirectory  filename)))
+
+           (insert-line "\\begin{document}")
+           (insert-line (format  "\\begin{pygments}{%s}" language))
+           (insert-line bufstring)
+           (insert-line "\\end{pygments}")
+           (insert-line "\\end{document}")))
+
+        ;; (async-start-process "pdflatex" "pdflatex" (lambda (p) (message "pdflatex 완료")) "-shell-escape" "-interaction" "nonstopmode" "-jobname" jobname fname)
+        (async-start-process "pytex" "pytexwrap" (lambda (p) (w32-shell-execute "" (file-truename  (format "%s.pdf" jobname)) ))     jobname fname)
+        ))
 
   #+END_SRC
 * external
   #+BEGIN_SRC emacs-lisp
-;; (use-package :ensure calc-ext)
-(use-package sqlite
-     :demand
-  :config
-  (setq  sqlite-program "sqlite3"))
+    ;; (leaf :ensure calc-ext)
+    (leaf sqlite
+      :ensure t
+      :custom
+      ((sqlite-program . "sqlite3")))
 
 
-;;; http://www.mikusa.com/python-mysql-docs/index.html
-;;; pymacs 등을 이용하여 emacs -> sql 이 가능하다.
-
-
-
-(require 'cmuscheme )
-(defun socket-scheme ()
-  "Run an inferior Scheme process, input and output via buffer `*scheme*'.
-If there is a process already running in `*scheme*', switch to that buffer.
-With argument, allows you to edit the command line (default is value
-of `scheme-program-name').
-If the file `~/.emacs_SCHEMENAME' or `~/.emacs.d/init_SCHEMENAME.scm' exists,
-it is given as initial input.
-Note that this may lose due to a timing error if the Scheme processor
-discards input when it starts up.
-Runs the hook `inferior-scheme-mode-hook' \(after the `comint-mode-hook'
-is run).
-\(Type \\[describe-mode] in the process buffer for a list of commands.)"
-
-  (interactive )
-  (if (not (comint-check-proc "*scheme*"))
-      (progn (set-buffer (make-comint "scheme" (cons "localhost" 7979 )))
-             (inferior-scheme-mode)))
-  (setq scheme-buffer "*scheme*")
-  (pop-to-buffer "*scheme*"))
-
-
-;;한글을 사용하는데 어려움이 전혀 없음을 알 수 있다.
-
-;; package auto load next line
-;;(require 'slime)
-;;(slime-setup)
-
-;;; SMILE 설정
-;;(setq inferior-lisp-program "clisp")
-(setq slime-multiprocessing t )
-(setq inferior-lisp-program "c:\\usr\\local\\lisp\\allegro\\mlisp.exe")
-(setq *slime-lisp* "c:\\usr\\local\\lisp\\allegro\\mlisp.exe")
-(setq *slime-port* 4006 )
-(defun aslime ()
-  (print "Allegro slime...")
-  (interactive)
-  (shell-command
-   (format
-    "%s +B +cm -L %s\\slime.lisp -- -p %s --ef %s &"
-    *slime-lisp*
-    (getenv "HOME")
-    *slime-port*
-    slime-net-coding-system))
-  (delete-other-windows)
-  (while (not (ignore-errors ( slime-connect "localhost" *slime-port*)))
-    (sleep-for 0.2 )))
-
-;;(require 'dedicated)
-;; (require 'quack)
-
-;;(require 'comint-popup)
-;;(setq comint-popup-idle-threshold -1)
-;; (add-hook 'comint-mode-hook (lambda () (dedicated-mode )))
-;;(add-hook 'comint-output-filter-functions 'comint-popup-buffer)
-
-(require 'telnet)
-
-(defun start-telnet (host)
-  "Open a network login connection to host named HOST (a string).
-   Communication with HOST is recorded in a buffer `*termx*'.
-   Normally input is edited in Emacs and sent a line at a time."
-  (interactive "sOpen telnet connection to host: ")
-  (let* ((comint-delimiter-argument-list '(?\  ?\t))
-         (name "termx")
-         (buffer (get-buffer "*termx*"))
-         process)
-    (setq telnet-new-line (char-to-string 13))
-
-    (if (and buffer (get-buffer-process buffer))
-        (pop-to-buffer buffer)
-      (pop-to-buffer (make-comint name "c:\\usr\\local\\guile\\bin\\plink.exe" nil "-telnet" host))
-      (setq process (get-buffer-process (current-buffer)))
-      (set-process-filter process 'telnet-initial-filter)
-      (accept-process-output process)
-      (telnet-mode)
-      (setq comint-input-sender 'telnet-simple-send)
-      (setq telnet-count telnet-initial-count))))
-
-(defun start-rs232 (host)
-  "Open a network login connection to host named HOST (a string).
-   Communication with HOST is recorded in a buffer `*termx*'.
-   Normally input is edited in Emacs and sent a line at a time."
-  (interactive "sOpen telnet connection to host: ")
-  (let* ((comint-delimiter-argument-list '(?\  ?\t))
-         (buffer (get-buffer "*rs232-term*"))
-         process)
-    (setq telnet-new-line (char-to-string 13))
-
-    (if (and buffer (get-buffer-process buffer))
-        (pop-to-buffer buffer)
-      (pop-to-buffer (make-comint "rs232-term" "c:\\usr\\local\\guile\\bin\\plink.exe" nil "-load" host))
-      (setq process (get-buffer-process (current-buffer)))
-      ;;(set-process-filter process 'telnet-initial-filter)
-      (telnet-mode)
-      (setq comint-input-sender 'telnet-simple-send)
-      ;;(setq telnet-count telnet-initial-count)
-      )))
+    ;;; http://www.mikusa.com/python-mysql-docs/index.html
+    ;;; pymacs 등을 이용하여 emacs -> sql 이 가능하다.
 
 
 
-(defun num-list (start end  )
-  (interactive)
-  (let ((result '()))
-    (while
-        (not (= start end ))
-      (setq result (cons start result))
-      (setq start (+ start 1 )))
-    (reverse result)))
+    (require 'cmuscheme )
+    (defun socket-scheme ()
+      "Run an inferior Scheme process, input and output via buffer `*scheme*'.
+    If there is a process already running in `*scheme*', switch to that buffer.
+    With argument, allows you to edit the command line (default is value
+    of `scheme-program-name').
+    If the file `~/.emacs_SCHEMENAME' or `~/.emacs.d/init_SCHEMENAME.scm' exists,
+    it is given as initial input.
+    Note that this may lose due to a timing error if the Scheme processor
+    discards input when it starts up.
+    Runs the hook `inferior-scheme-mode-hook' \(after the `comint-mode-hook'
+    is run).
+    \(Type \\[describe-mode] in the process buffer for a list of commands.)"
+
+      (interactive )
+      (if (not (comint-check-proc "*scheme*"))
+          (progn (set-buffer (make-comint "scheme" (cons "localhost" 7979 )))
+                 (inferior-scheme-mode)))
+      (setq scheme-buffer "*scheme*")
+      (pop-to-buffer "*scheme*"))
 
 
-(setf comint-input-sender-no-newline t )
+    ;;한글을 사용하는데 어려움이 전혀 없음을 알 수 있다.
+
+    ;; package auto load next line
+    ;;(require 'slime)
+    ;;(slime-setup)
+
+    ;;; SMILE 설정
+    ;;(setq inferior-lisp-program "clisp")
+    (setq slime-multiprocessing t )
+    (setq inferior-lisp-program "c:\\usr\\local\\lisp\\allegro\\mlisp.exe")
+    (setq *slime-lisp* "c:\\usr\\local\\lisp\\allegro\\mlisp.exe")
+    (setq *slime-port* 4006 )
+    (defun aslime ()
+      (print "Allegro slime...")
+      (interactive)
+      (shell-command
+       (format
+        "%s +B +cm -L %s\\slime.lisp -- -p %s --ef %s &"
+        ,*slime-lisp*
+        (getenv "HOME")
+        ,*slime-port*
+        slime-net-coding-system))
+      (delete-other-windows)
+      (while (not (ignore-errors ( slime-connect "localhost" *slime-port*)))
+        (sleep-for 0.2 )))
+
+    ;;(require 'dedicated)
+    ;; (require 'quack)
+
+    ;;(require 'comint-popup)
+    ;;(setq comint-popup-idle-threshold -1)
+    ;; (add-hook 'comint-mode-hook (lambda () (dedicated-mode )))
+    ;;(add-hook 'comint-output-filter-functions 'comint-popup-buffer)
+
+    (require 'telnet)
+
+    (defun start-telnet (host)
+      "Open a network login connection to host named HOST (a string).
+       Communication with HOST is recorded in a buffer `*termx*'.
+       Normally input is edited in Emacs and sent a line at a time."
+      (interactive "sOpen telnet connection to host: ")
+      (let* ((comint-delimiter-argument-list '(?\  ?\t))
+             (name "termx")
+             (buffer (get-buffer "*termx*"))
+             process)
+        (setq telnet-new-line (char-to-string 13))
+
+        (if (and buffer (get-buffer-process buffer))
+            (pop-to-buffer buffer)
+          (pop-to-buffer (make-comint name "c:\\usr\\local\\guile\\bin\\plink.exe" nil "-telnet" host))
+          (setq process (get-buffer-process (current-buffer)))
+          (set-process-filter process 'telnet-initial-filter)
+          (accept-process-output process)
+          (telnet-mode)
+          (setq comint-input-sender 'telnet-simple-send)
+          (setq telnet-count telnet-initial-count))))
+
+    (defun start-rs232 (host)
+      "Open a network login connection to host named HOST (a string).
+       Communication with HOST is recorded in a buffer `*termx*'.
+       Normally input is edited in Emacs and sent a line at a time."
+      (interactive "sOpen telnet connection to host: ")
+      (let* ((comint-delimiter-argument-list '(?\  ?\t))
+             (buffer (get-buffer "*rs232-term*"))
+             process)
+        (setq telnet-new-line (char-to-string 13))
+
+        (if (and buffer (get-buffer-process buffer))
+            (pop-to-buffer buffer)
+          (pop-to-buffer (make-comint "rs232-term" "c:\\usr\\local\\guile\\bin\\plink.exe" nil "-load" host))
+          (setq process (get-buffer-process (current-buffer)))
+          ;;(set-process-filter process 'telnet-initial-filter)
+          (telnet-mode)
+          (setq comint-input-sender 'telnet-simple-send)
+          ;;(setq telnet-count telnet-initial-count)
+          )))
+
+
+
+    (defun num-list (start end  )
+      (interactive)
+      (let ((result '()))
+        (while
+            (not (= start end ))
+          (setq result (cons start result))
+          (setq start (+ start 1 )))
+        (reverse result)))
+
+
+    (setf comint-input-sender-no-newline t )
 
   #+END_SRC
 
@@ -518,132 +518,132 @@ is run).
 
 ** move to emacs src
 
- #+begin_src emacs-lisp :tangle no
- (defun epg--start (context args)
-     "Start `epg-gpg-program' in a subprocess with given ARGS."
-     (if (and (epg-context-process context)
-              (eq (process-status (epg-context-process context)) 'run))
-         (error "%s is already running in this context"
-                (epg-context-program context)))
-     (let* ((agent-info (getenv "GPG_AGENT_INFO"))
-            (args (append (list "--no-tty"
-                                "--status-fd" "1"
-                                "--yes")
-                          (if (and (not (eq (epg-context-protocol context) 'CMS))
-                                   (string-match ":" (or agent-info "")))
-                              '("--use-agent"))
-                          (if (and (not (eq (epg-context-protocol context) 'CMS))
-                                   (epg-context-progress-callback context))
-                              '("--enable-progress-filter"))
-                          (if (epg-context-home-directory context)
-                              (list "--homedir"
-                                    (epg-context-home-directory context)))
-                          (unless (eq (epg-context-protocol context) 'CMS)
-                            '("--command-fd" "0"))
-                          (if (epg-context-armor context) '("--armor"))
-                          (if (epg-context-textmode context) '("--textmode"))
-                          (if (epg-context-output-file context)
-                              (list "--output" (epg-context-output-file context)))
-                          (if (epg-context-pinentry-mode context)
-                              (list "--pinentry-mode"
-                                    (symbol-name (epg-context-pinentry-mode
-                                                  context))))
-                          args))
-            (process-environment process-environment)
-            (buffer (generate-new-buffer " *epg*"))
-            error-process
-            process
-            terminal-name
-            agent-file
-            (agent-mtime '(0 0 0 0)))
-       ;; Set GPG_TTY and TERM for pinentry-curses.  Note that we can't
-       ;; use `terminal-name' here to get the real pty name for the child
-       ;; process, though /dev/fd/0" is not portable.
-       (unless (memq system-type '(ms-dos windows-nt))
-         (with-temp-buffer
-           (condition-case nil
-               (when (= (call-process "tty" "/dev/fd/0" t) 0)
-                 (delete-char -1)
-                 (setq terminal-name (buffer-string)))
-             (file-error))))
-       (when terminal-name
+   #+begin_src emacs-lisp :tangle no
+     (defun epg--start (context args)
+       "Start `epg-gpg-program' in a subprocess with given ARGS."
+       (if (and (epg-context-process context)
+                (eq (process-status (epg-context-process context)) 'run))
+           (error "%s is already running in this context"
+                  (epg-context-program context)))
+       (let* ((agent-info (getenv "GPG_AGENT_INFO"))
+              (args (append (list "--no-tty"
+                                  "--status-fd" "1"
+                                  "--yes")
+                            (if (and (not (eq (epg-context-protocol context) 'CMS))
+                                     (string-match ":" (or agent-info "")))
+                                '("--use-agent"))
+                            (if (and (not (eq (epg-context-protocol context) 'CMS))
+                                     (epg-context-progress-callback context))
+                                '("--enable-progress-filter"))
+                            (if (epg-context-home-directory context)
+                                (list "--homedir"
+                                      (epg-context-home-directory context)))
+                            (unless (eq (epg-context-protocol context) 'CMS)
+                              '("--command-fd" "0"))
+                            (if (epg-context-armor context) '("--armor"))
+                            (if (epg-context-textmode context) '("--textmode"))
+                            (if (epg-context-output-file context)
+                                (list "--output" (epg-context-output-file context)))
+                            (if (epg-context-pinentry-mode context)
+                                (list "--pinentry-mode"
+                                      (symbol-name (epg-context-pinentry-mode
+                                                    context))))
+                            args))
+              (process-environment process-environment)
+              (buffer (generate-new-buffer " *epg*"))
+              error-process
+              process
+              terminal-name
+              agent-file
+              (agent-mtime '(0 0 0 0)))
+         ;; Set GPG_TTY and TERM for pinentry-curses.  Note that we can't
+         ;; use `terminal-name' here to get the real pty name for the child
+         ;; process, though /dev/fd/0" is not portable.
+         (unless (memq system-type '(ms-dos windows-nt))
+           (with-temp-buffer
+             (condition-case nil
+                 (when (= (call-process "tty" "/dev/fd/0" t) 0)
+                   (delete-char -1)
+                   (setq terminal-name (buffer-string)))
+               (file-error))))
+         (when terminal-name
+           (setq process-environment
+                 (cons (concat "GPG_TTY=" terminal-name)
+                       (cons "TERM=xterm" process-environment))))
+         ;; Start the Emacs Pinentry server if allow-emacs-pinentry is set
+         ;; in ~/.gnupg/gpg-agent.conf.
+         (when (and (fboundp 'pinentry-start)
+                    (executable-find epg-gpgconf-program)
+                    (with-temp-buffer
+                      (when (= (call-process epg-gpgconf-program nil t nil
+                                             "--list-options" "gpg-agent")
+                               0)
+                        (goto-char (point-min))
+                        (re-search-forward
+                         "^allow-emacs-pinentry:\\(?:.*:\\)\\{8\\}1"
+                         nil t))))
+           (pinentry-start))
          (setq process-environment
-               (cons (concat "GPG_TTY=" terminal-name)
-                     (cons "TERM=xterm" process-environment))))
-       ;; Start the Emacs Pinentry server if allow-emacs-pinentry is set
-       ;; in ~/.gnupg/gpg-agent.conf.
-       (when (and (fboundp 'pinentry-start)
-                  (executable-find epg-gpgconf-program)
-                  (with-temp-buffer
-                    (when (= (call-process epg-gpgconf-program nil t nil
-                                           "--list-options" "gpg-agent")
-                             0)
-                      (goto-char (point-min))
-                      (re-search-forward
-                       "^allow-emacs-pinentry:\\(?:.*:\\)\\{8\\}1"
-                       nil t))))
-         (pinentry-start))
-       (setq process-environment
-             (cons (format "INSIDE_EMACS=%s,epg" emacs-version)
-                   process-environment))
-       ;; Record modified time of gpg-agent socket to restore the Emacs
-       ;; frame on text terminal in `epg-wait-for-completion'.
-       ;; See
-       ;; <http://lists.gnu.org/archive/html/emacs-devel/2007-02/msg00755.html>
-       ;; for more details.
-       (when (and agent-info (string-match "\\(.*\\):[0-9]+:[0-9]+" agent-info))
-         (setq agent-file (match-string 1 agent-info)
-               agent-mtime (or (nth 5 (file-attributes agent-file)) '(0 0 0 0))))
-       (if epg-debug
-           (save-excursion
-             (unless epg-debug-buffer
-               (setq epg-debug-buffer (generate-new-buffer " *epg-debug*")))
-             (set-buffer epg-debug-buffer)
-             (goto-char (point-max))
-             (insert (if agent-info
-                         (format "GPG_AGENT_INFO=%s\n" agent-info)
-                       "GPG_AGENT_INFO is not set\n")
-                     (format "%s %s\n"
-                             (epg-context-program context)
-                             (mapconcat #'identity args " ")))))
-       (with-current-buffer buffer
-         (if (fboundp 'set-buffer-multibyte)
-             (set-buffer-multibyte nil))
-         (make-local-variable 'epg-last-status)
-         (setq epg-last-status nil)
-         (make-local-variable 'epg-read-point)
-         (setq epg-read-point (point-min))
-         (make-local-variable 'epg-process-filter-running)
-         (setq epg-process-filter-running nil)
-         (make-local-variable 'epg-pending-status-list)
-         (setq epg-pending-status-list nil)
-         (make-local-variable 'epg-key-id)
-         (setq epg-key-id nil)
-         (make-local-variable 'epg-context)
-         (setq epg-context context)
-         (make-local-variable 'epg-agent-file)
-         (setq epg-agent-file agent-file)
-         (make-local-variable 'epg-agent-mtime)
-         (setq epg-agent-mtime agent-mtime))
-       (setq error-process
-             (make-pipe-process :name "epg-error"
-                                :buffer (generate-new-buffer " *epg-error*")
-                                ;; Suppress "XXX finished" line.
-                                :sentinel #'ignore
-                                :noquery t))
-       (setf (epg-context-error-buffer context) (process-buffer error-process))
-       (with-file-modes 448
-         (setq process (make-process :name "epg"
-                                     :buffer buffer
-                                     :command (cons (epg-context-program context)
-                                                    args)
-                                     :connection-type 'pipe
-                                     :coding '(cp949 . cp949) ;; → this critical
-                                     :filter #'epg--process-filter
-                                     :stderr error-process
-                                     :noquery t)))
-       (setf (epg-context-process context) process)))
- #+end_src
+               (cons (format "INSIDE_EMACS=%s,epg" emacs-version)
+                     process-environment))
+         ;; Record modified time of gpg-agent socket to restore the Emacs
+         ;; frame on text terminal in `epg-wait-for-completion'.
+         ;; See
+         ;; <http://lists.gnu.org/archive/html/emacs-devel/2007-02/msg00755.html>
+         ;; for more details.
+         (when (and agent-info (string-match "\\(.*\\):[0-9]+:[0-9]+" agent-info))
+           (setq agent-file (match-string 1 agent-info)
+                 agent-mtime (or (nth 5 (file-attributes agent-file)) '(0 0 0 0))))
+         (if epg-debug
+             (save-excursion
+               (unless epg-debug-buffer
+                 (setq epg-debug-buffer (generate-new-buffer " *epg-debug*")))
+               (set-buffer epg-debug-buffer)
+               (goto-char (point-max))
+               (insert (if agent-info
+                           (format "GPG_AGENT_INFO=%s\n" agent-info)
+                         "GPG_AGENT_INFO is not set\n")
+                       (format "%s %s\n"
+                               (epg-context-program context)
+                               (mapconcat #'identity args " ")))))
+         (with-current-buffer buffer
+           (if (fboundp 'set-buffer-multibyte)
+               (set-buffer-multibyte nil))
+           (make-local-variable 'epg-last-status)
+           (setq epg-last-status nil)
+           (make-local-variable 'epg-read-point)
+           (setq epg-read-point (point-min))
+           (make-local-variable 'epg-process-filter-running)
+           (setq epg-process-filter-running nil)
+           (make-local-variable 'epg-pending-status-list)
+           (setq epg-pending-status-list nil)
+           (make-local-variable 'epg-key-id)
+           (setq epg-key-id nil)
+           (make-local-variable 'epg-context)
+           (setq epg-context context)
+           (make-local-variable 'epg-agent-file)
+           (setq epg-agent-file agent-file)
+           (make-local-variable 'epg-agent-mtime)
+           (setq epg-agent-mtime agent-mtime))
+         (setq error-process
+               (make-pipe-process :name "epg-error"
+                                  :buffer (generate-new-buffer " *epg-error*")
+                                  ;; Suppress "XXX finished" line.
+                                  :sentinel #'ignore
+                                  :noquery t))
+         (setf (epg-context-error-buffer context) (process-buffer error-process))
+         (with-file-modes 448
+           (setq process (make-process :name "epg"
+                                       :buffer buffer
+                                       :command (cons (epg-context-program context)
+                                                      args)
+                                       :connection-type 'pipe
+                                       :coding '(cp949 . cp949) ;; → this critical
+                                       :filter #'epg--process-filter
+                                       :stderr error-process
+                                       :noquery t)))
+         (setf (epg-context-process context) process)))
+   #+end_src
 * personal
   #+BEGIN_SRC emacs-lisp
     (defun tjcode (code1 code2 securitycard )
@@ -691,7 +691,7 @@ is run).
          (lambda (x)
            (kill-append (replace-regexp-in-string "\+82\-" "0" (symbol-name (cadr x)) ) nil )
            (kill-append "\n" nil ))
-           result)))
+         result)))
 
 
 
@@ -759,50 +759,48 @@ is run).
 
   조직도 소스보기에 서 생성할 수 있다.
 
-   #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
 
-     (defun sw-name ()
-       (apply
-        #'append
-        (mapcar
-         (lambda (b)
-           (mapcar
-            (lambda (v)
-              (cdr  (assoc 'userName v )))
-            (json-read-file (car  b))))
-         (directory-files-and-attributes "t:/MISC/single-mail/swaddress" t ".json$"))))
+    (defun sw-name ()
+      (apply
+       #'append
+       (mapcar
+        (lambda (b)
+          (mapcar
+           (lambda (v)
+             (cdr  (assoc 'userName v )))
+           (json-read-file (car  b))))
+        (directory-files-and-attributes "t:/MISC/single-mail/swaddress" t ".json$"))))
 
-     (defun sw-content (name )
-       (let ((result nil))
-         (dolist (json (directory-files-and-attributes "t:/MISC/single-mail/swaddress" t ".json$") result)
-           (mapcar
-            (lambda (v)
-              (if (string-equal name (cdr (assoc 'userName v )))  (setf result  (cons v result))))
-            (json-read-file (car  json))))))
-     (defun swnc()
-       (interactive)
-       (let ((ntag (helm-comp-read "성명을 입력하세요 : " (sw-name))))
-         (with-current-buffer (get-buffer-create "*name-card*")
-           (outline-mode)
-           (goto-char (point-max))
-           (insert (format "* %s\n" ntag))
-           (mapcar
-            (lambda (n)
-              (insert (format "%s : %s\n" (car n) (cdr n))))
-              (car (sw-content ntag )))
-           (switch-to-buffer-other-window (current-buffer)))))
-   #+END_SRC
+    (defun sw-content (name )
+      (let ((result nil))
+        (dolist (json (directory-files-and-attributes "t:/MISC/single-mail/swaddress" t ".json$") result)
+          (mapcar
+           (lambda (v)
+             (if (string-equal name (cdr (assoc 'userName v )))  (setf result  (cons v result))))
+           (json-read-file (car  json))))))
+    (defun swnc()
+      (interactive)
+      (let ((ntag (helm-comp-read "성명을 입력하세요 : " (sw-name))))
+        (with-current-buffer (get-buffer-create "*name-card*")
+          (outline-mode)
+          (goto-char (point-max))
+          (insert (format "* %s\n" ntag))
+          (mapcar
+           (lambda (n)
+             (insert (format "%s : %s\n" (car n) (cdr n))))
+           (car (sw-content ntag )))
+          (switch-to-buffer-other-window (current-buffer)))))
+  #+END_SRC
 
 * secret
   #+BEGIN_SRC emacs-lisp :tangle on
 
-    (use-package simple-secrets
-      :demand
+    (leaf simple-secrets
+      :ensure t
       ;; :commands secret-lookup-clipboard secret-new
-      :init
-      (setq secret-password-file "/mnt/develop/orgdir/secrets.gpg")
-      :config
-      (secret-load-keys))
+      :custom ((secret-password-file . "/mnt/develop/orgdir/secrets.gpg"))
+      :config (secret-load-keys))
   #+END_SRC
 
   #+RESULTS:
@@ -811,184 +809,184 @@ is run).
 * SCM
   #+BEGIN_SRC emacs-lisp
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; SVN 관련
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; svn-status-toggle-svn-verbose-flag 함수를 이용하여 변경가능하다.
-;;(setq svn-status-verbose t)
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;; SVN 관련
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;; svn-status-toggle-svn-verbose-flag 함수를 이용하여 변경가능하다.
+    ;;(setq svn-status-verbose t)
 
-;; 다음을 이용해 바로 commit 이 가능하지만 필요없다.
-;;(defun svn-commit-dir ( dir )
-;;  "Commit selected files.
-;;If some files have been marked, commit those non-recursively;
-;;this is because marking a directory with \\[svn-status-set-user-mark]
-;;normally marks all of its files as well.
-;;If no files have been marked, commit recursively the file at point."
-;;  (interactive (list (svn-read-directory-name "SVN status directory: "
-;;                                              nil default-directory nil)))
-;;
-;;  (switch-to-buffer (dired-noselect dir ""))
-;;  (svn-status-commit))
-;;(global-set-key (kbd "C-.") 'svn-commit-dir)
-
-
-;; (use-package psvn )
-;;(load-library "dsvn" )                  ;; subversion 1.7 이상
-;;(setq svn-call-process-function 'call-process )
-;;(setq svn-start-process-function 'start-process )
-
-(defun link11-commit ()
-  (interactive)
-  (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_LINK11"))
-  (svn-status-commit))
-
-(defun isdl-commit ()
-  (interactive)
-  (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_ISDL"))
-  (svn-status-commit))
-
-(add-hook 'svn-log-edit-mode-hook
-	  '(lambda () (set-buffer-file-coding-system 'cp949)))
+    ;; 다음을 이용해 바로 commit 이 가능하지만 필요없다.
+    ;;(defun svn-commit-dir ( dir )
+    ;;  "Commit selected files.
+    ;;If some files have been marked, commit those non-recursively;
+    ;;this is because marking a directory with \\[svn-status-set-user-mark]
+    ;;normally marks all of its files as well.
+    ;;If no files have been marked, commit recursively the file at point."
+    ;;  (interactive (list (svn-read-directory-name "SVN status directory: "
+    ;;                                              nil default-directory nil)))
+    ;;
+    ;;  (switch-to-buffer (dired-noselect dir ""))
+    ;;  (svn-status-commit))
+    ;;(global-set-key (kbd "C-.") 'svn-commit-dir)
 
 
-(defvar ticket-history nil
-  "History list for some commands that read regular expressions.
+    ;; (leaf psvn )
+    ;;(load-library "dsvn" )                  ;; subversion 1.7 이상
+    ;;(setq svn-call-process-function 'call-process )
+    ;;(setq svn-start-process-function 'start-process )
 
-Maximum length of the history list is determined by the value
-of `history-length', which see.")
+    (defun link11-commit ()
+      (interactive)
+      (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_LINK11"))
+      (svn-status-commit))
 
+    (defun isdl-commit ()
+      (interactive)
+      (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_ISDL"))
+      (svn-status-commit))
 
-(defun read-ticket-number (prompt &optional default)
-  "Read a numeric value in the minibuffer, prompting with PROMPT.
-DEFAULT specifies a default value to return if the user just types RET.
-The value of DEFAULT is inserted into PROMPT."
-  (let* ((n nil)
-         (history-delete-duplicates t )
-         (history-add-new-input nil)     ;;수동으로 history 에 포함 필요
-        )
-    (when default
-      (setq prompt
-            (if (string-match "\\(\\):[ \t]*\\'" prompt)
-                (replace-match (format " (기본값 %s)" default) t t prompt 1)
-              (replace-regexp-in-string "[ \t]*\\'"
-                                        (format " (기본값 %s) " default)
-                                        prompt t t))))
-    (while
-        (progn
-          (let ((str (read-from-minibuffer prompt nil nil nil 'ticket-history default)))
-            (condition-case nil
-                (setq n (cond
-                         ((zerop (length str)) default)
-                         ((stringp str) (prog1 (read str) (add-to-history 'ticket-history str))))) ;number-to-string
-              (error nil)))
-          (unless (numberp n)
-            (message "숫자를 입력해 주세요.")
-            (sit-for 1)
-            t)))
-    n))
+    (add-hook 'svn-log-edit-mode-hook
+              '(lambda () (set-buffer-file-coding-system 'cp949)))
 
 
-(defun ticket (tn)
-  (interactive (list (read-ticket-number "티켓번호를 입력해 주세요 : " (car ticket-history))))
-  (insert ( format "//!!!ticket:%d %s 김동일 | " tn (format-time-string "%Y%m%d"))))
+    (defvar ticket-history nil
+      "History list for some commands that read regular expressions.
 
-(defun nticket (tn)
-  (interactive (list (read-ticket-number "티켓번호를 입력해 주세요 : " (car ticket-history))))
-  (insert ( format "%d" tn )))
-
-(defun dticket (tn)
-  (interactive (list (read-ticket-number "티켓번호를 입력해 주세요 : " (car ticket-history))))
-  (insert ( format "//DEPRECATEDBY-ticket:%d//" tn )))
-
-(defun lticket (tn)
-  (interactive (list (read-ticket-number "티켓번호를 입력해 주세요 : " (car ticket-history))))
-  (insert ( format "//!!!lst-ticket:%d %s 김동일 | " tn (format-time-string "%Y%m%d"))))
+    Maximum length of the history list is determined by the value
+    of `history-length', which see.")
 
 
+    (defun read-ticket-number (prompt &optional default)
+      "Read a numeric value in the minibuffer, prompting with PROMPT.
+    DEFAULT specifies a default value to return if the user just types RET.
+    The value of DEFAULT is inserted into PROMPT."
+      (let* ((n nil)
+             (history-delete-duplicates t )
+             (history-add-new-input nil)     ;;수동으로 history 에 포함 필요
+             )
+        (when default
+          (setq prompt
+                (if (string-match "\\(\\):[ \t]*\\'" prompt)
+                    (replace-match (format " (기본값 %s)" default) t t prompt 1)
+                  (replace-regexp-in-string "[ \t]*\\'"
+                                            (format " (기본값 %s) " default)
+                                            prompt t t))))
+        (while
+            (progn
+              (let ((str (read-from-minibuffer prompt nil nil nil 'ticket-history default)))
+                (condition-case nil
+                    (setq n (cond
+                             ((zerop (length str)) default)
+                             ((stringp str) (prog1 (read str) (add-to-history 'ticket-history str))))) ;number-to-string
+                  (error nil)))
+              (unless (numberp n)
+                (message "숫자를 입력해 주세요.")
+                (sit-for 1)
+                t)))
+        n))
 
 
-(defun ffxlog ()
-  (interactive)
-  (insert-file "t:/usr/local/ffxsvn-dev/log-template.txt"))
+    (defun ticket (tn)
+      (interactive (list (read-ticket-number "티켓번호를 입력해 주세요 : " (car ticket-history))))
+      (insert ( format "//!!!ticket:%d %s 김동일 | " tn (format-time-string "%Y%m%d"))))
+
+    (defun nticket (tn)
+      (interactive (list (read-ticket-number "티켓번호를 입력해 주세요 : " (car ticket-history))))
+      (insert ( format "%d" tn )))
+
+    (defun dticket (tn)
+      (interactive (list (read-ticket-number "티켓번호를 입력해 주세요 : " (car ticket-history))))
+      (insert ( format "//DEPRECATEDBY-ticket:%d//" tn )))
+
+    (defun lticket (tn)
+      (interactive (list (read-ticket-number "티켓번호를 입력해 주세요 : " (car ticket-history))))
+      (insert ( format "//!!!lst-ticket:%d %s 김동일 | " tn (format-time-string "%Y%m%d"))))
 
 
 
-;;deprecated-tooslow;;;;(setq semantic-load-turn-useful-things-on t)
-;;deprecated-tooslow;;(require 'cedet)
-;;deprecated-tooslow;;(require 'ecb)
-;;deprecated-tooslow;;;; 에러시에 trace 윈도우 생성
-;;deprecated-tooslow;;(setq stack-trace-on-error nil )
-;;deprecated-tooslow;;(setq ecb-tip-of-the-day nil)
-;;deprecated-tooslow;;(setq ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
-;;deprecated-tooslow;;;;(ecb-activate)
-;;deprecated-tooslow;;(ecb-toggle-ecb-windows -1 )
 
-(defun smerge ()
-  (interactive)
-  (let ((cmd
-         (completing-read "명령을 입력하세요: "
-                          (mapcar (function (lambda (x) (list x t)))
-                                  `(
-                                    next
-                                    prev
-                                    resolve
-                                    all-keep
-                                    base-keep
-                                    other-keep
-                                    mine-keep
-                                    keep-current
-                                    ediff
-                                    combine-with-next
-                                    refine
-                                    diff-base-mine
-                                    diff-base-other
-                                    diff-mine-other
-                                    ))
-                          nil t nil nil "next")))
-    (funcall
-     (cdr
-      (assoc
-       (intern cmd )
-       '(
-         (next                . smerge-next              )
-         (prev                . smerge-prev              )
-         (resolve             . smerge-resolve           )
-         (all-keep            . smerge-keep-all          )
-         (base-keep           . smerge-keep-base         )
-         (other-keep          . smerge-keep-other        )
-         (mine-keep           . smerge-keep-mine         )
-         (keep-current        . smerge-keep-current      )
-         (ediff               . smerge-ediff             )
-         (combine-with-next   . smerge-combine-with-next )
-         (refine              . smerge-refine            )
-         (diff-base-mine      . smerge-diff-base-mine    )
-         (diff-base-other     . smerge-diff-base-other   )
-         (diff-mine-other     . smerge-diff-mine-other   )))))))
-
-(global-set-key (kbd "M-n") 'smerge)
+    (defun ffxlog ()
+      (interactive)
+      (insert-file "t:/usr/local/ffxsvn-dev/log-template.txt"))
 
 
-(use-package git-timemachine
-     :demand
-  :config
-  (defun my-git-timemachine-show-selected-revision ()
-    "Show last (current) revision of file."
-    (interactive)
-    (let (collection)
-      (setq collection
-            (mapcar (lambda (rev)
-                      ;; re-shape list for the ivy-read
-                      (cons (concat (substring (nth 0 rev) 0 7) "|" (nth 5 rev) "|" (nth 6 rev)) rev))
-                    (git-timemachine--revisions)))
-      (ivy-read "commits:"
-                collection
-                :action (lambda (rev)
-                          (git-timemachine-show-revision rev)))))
 
-  (defun my-git-timemachine ()
-    "Open git snapshot with the selected version.  Based on ivy-mode."
-    (interactive)
-    (git-timemachine--start #'my-git-timemachine-show-selected-revision)))
+    ;;deprecated-tooslow;;;;(setq semantic-load-turn-useful-things-on t)
+    ;;deprecated-tooslow;;(require 'cedet)
+    ;;deprecated-tooslow;;(require 'ecb)
+    ;;deprecated-tooslow;;;; 에러시에 trace 윈도우 생성
+    ;;deprecated-tooslow;;(setq stack-trace-on-error nil )
+    ;;deprecated-tooslow;;(setq ecb-tip-of-the-day nil)
+    ;;deprecated-tooslow;;(setq ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
+    ;;deprecated-tooslow;;;;(ecb-activate)
+    ;;deprecated-tooslow;;(ecb-toggle-ecb-windows -1 )
+
+    (defun smerge ()
+      (interactive)
+      (let ((cmd
+             (completing-read "명령을 입력하세요: "
+                              (mapcar (function (lambda (x) (list x t)))
+                                      `(
+                                        next
+                                        prev
+                                        resolve
+                                        all-keep
+                                        base-keep
+                                        other-keep
+                                        mine-keep
+                                        keep-current
+                                        ediff
+                                        combine-with-next
+                                        refine
+                                        diff-base-mine
+                                        diff-base-other
+                                        diff-mine-other
+                                        ))
+                              nil t nil nil "next")))
+        (funcall
+         (cdr
+          (assoc
+           (intern cmd )
+           '(
+             (next                . smerge-next              )
+             (prev                . smerge-prev              )
+             (resolve             . smerge-resolve           )
+             (all-keep            . smerge-keep-all          )
+             (base-keep           . smerge-keep-base         )
+             (other-keep          . smerge-keep-other        )
+             (mine-keep           . smerge-keep-mine         )
+             (keep-current        . smerge-keep-current      )
+             (ediff               . smerge-ediff             )
+             (combine-with-next   . smerge-combine-with-next )
+             (refine              . smerge-refine            )
+             (diff-base-mine      . smerge-diff-base-mine    )
+             (diff-base-other     . smerge-diff-base-other   )
+             (diff-mine-other     . smerge-diff-mine-other   )))))))
+
+    (global-set-key (kbd "M-n") 'smerge)
+
+
+    (leaf git-timemachine
+      :ensure t
+      :config
+      (defun my-git-timemachine-show-selected-revision ()
+        "Show last (current) revision of file."
+        (interactive)
+        (let (collection)
+          (setq collection
+                (mapcar (lambda (rev)
+                          ;; re-shape list for the ivy-read
+                          (cons (concat (substring (nth 0 rev) 0 7) "|" (nth 5 rev) "|" (nth 6 rev)) rev))
+                        (git-timemachine--revisions)))
+          (ivy-read "commits:"
+                    collection
+                    :action (lambda (rev)
+                              (git-timemachine-show-revision rev)))))
+
+      (defun my-git-timemachine ()
+        "Open git snapshot with the selected version.  Based on ivy-mode."
+        (interactive)
+        (git-timemachine--start #'my-git-timemachine-show-selected-revision)))
 
   #+END_SRC
 
@@ -996,614 +994,614 @@ The value of DEFAULT is inserted into PROMPT."
   #+BEGIN_SRC emacs-lisp
 
 
-;; compile 확장 버젼
-(use-package compile- :demand )
-(use-package compile :demand )
+    ;; compile 확장 버젼
+    (leaf compile- :ensure t )
+    (leaf compile :ensure t )
 
-;; 특정파일만 컴파일 할 수 있습니다.
-(defun compile-file (option-file)
-  (interactive)
-  (compile
-   (format "cl %s %s" (with-temp-buffer (insert-file-contents option-file) (replace-string "\n" " " ) (buffer-substring (point-min) (point-max)))
-           (replace-regexp-in-string "\\.h" ".cpp" (buffer-file-name) ))))
-
-
+    ;; 특정파일만 컴파일 할 수 있습니다.
+    (defun compile-file (option-file)
+      (interactive)
+      (compile
+       (format "cl %s %s" (with-temp-buffer (insert-file-contents option-file) (replace-string "\n" " " ) (buffer-substring (point-min) (point-max)))
+               (replace-regexp-in-string "\\.h" ".cpp" (buffer-file-name) ))))
 
 
 
-(defun build-link11 (&optional vxworks)
-  (interactive
-   (list current-prefix-arg))
-  (if vxworks
-      (progn
-        (dired "c:/FFX/CFCS/DLP_LINK11/proj/makeproj")
-        (compile "c:/vxworks/tornado/host/x86-win32/bin/torVars.bat & make -f makefile.vxworks all "))
-      (compile "vcbuild C:\\FFX\\CFCS\\DLP_LINK11\\proj\\winproj\\winproj.vcproj  Debug")))
 
 
-(defun build-isdl (&optional vxworks)
-  (interactive
-   (list current-prefix-arg))
-  (if vxworks
-      (progn
-        (dired "c:/FFX/CFCS/DLP_ISDL/proj/makeproj")
-        (compile "c:/vxworks/tornado/host/x86-win32/bin/torVars.bat & make -f makefile.vxworks all "))
-      (compile "vcbuild  C:\\FFX\\CFCS\\DLP_ISDL\\proj\\winproj\\winproj.vcproj  Debug")))
+    (defun build-link11 (&optional vxworks)
+      (interactive
+       (list current-prefix-arg))
+      (if vxworks
+          (progn
+            (dired "c:/FFX/CFCS/DLP_LINK11/proj/makeproj")
+            (compile "c:/vxworks/tornado/host/x86-win32/bin/torVars.bat & make -f makefile.vxworks all "))
+        (compile "vcbuild C:\\FFX\\CFCS\\DLP_LINK11\\proj\\winproj\\winproj.vcproj  Debug")))
 
 
-(defun build-dlp (&optional vxworks)
-  (interactive
-   (list current-prefix-arg))
-
-  (if (not (null (scheme-get-process)))
-      (comint-send-string (scheme-proc) "(quit)\n"))
-  (if (eq nil (buffer-file-name)) (build-isdl vxworks)
-    (if (eq nil (string-match "isdl" (buffer-file-name)))
-        (build-link11 vxworks)
-      (build-isdl vxworks))))
+    (defun build-isdl (&optional vxworks)
+      (interactive
+       (list current-prefix-arg))
+      (if vxworks
+          (progn
+            (dired "c:/FFX/CFCS/DLP_ISDL/proj/makeproj")
+            (compile "c:/vxworks/tornado/host/x86-win32/bin/torVars.bat & make -f makefile.vxworks all "))
+        (compile "vcbuild  C:\\FFX\\CFCS\\DLP_ISDL\\proj\\winproj\\winproj.vcproj  Debug")))
 
 
-;;(global-set-key (kbd "C-,") 'build-dlp)
+    (defun build-dlp (&optional vxworks)
+      (interactive
+       (list current-prefix-arg))
+
+      (if (not (null (scheme-get-process)))
+          (comint-send-string (scheme-proc) "(quit)\n"))
+      (if (eq nil (buffer-file-name)) (build-isdl vxworks)
+        (if (eq nil (string-match "isdl" (buffer-file-name)))
+            (build-link11 vxworks)
+          (build-isdl vxworks))))
 
 
-
-(define-key global-map [(f4)] 'next-error)
-(define-key global-map [(shift f4)] 'previous-error)
-
-;; 특정 변수를 버퍼에게 종속적으로 만드는 함수
-;;(make-variable-buffer-local 'next-error-function)
-
-
-;; Command to point VS.NET at our current file & line
-(defun my-current-line ()
-  "Return the current buffer line at point.  The first line is 0."
-  (save-excursion
-    (beginning-of-line)
-    (count-lines (point-min) (point))))
-(defun devenv-cmd (&rest args)
-  "Send a command-line to a running VS.NET process.  'devenv' comes from devenv.exe"
-  (call-process "DevEnvCommand" nil nil nil (apply 'concat args)))
-(defun switch-to-devenv ()
-  "Jump to VS.NET, at the same file & line as in emacs"
-  (interactive)
-  (save-some-buffers)
-  (let ((val1
-	   (devenv-cmd "File.OpenFile \"" (buffer-file-name (current-buffer)) "\""))
-	(val2
-	   (devenv-cmd "Edit.GoTo " (int-to-string (+ (my-current-line) 1)))))
-    (cond ((zerop (+ val1 val2))
-	      ;(iconify-frame)  ;; what I really want here is to raise the VS.NET window
-	         t)
-	    ((or (= val1 1) (= val2 1))
-	        (error "command failed"))  ;; hm, how do I get the output of the command?
-	      (t
-	          (error "couldn't run DevEnvCommand")))))
-
-;; Command to toggle a VS.NET breakpoint at the current line.
-(defun devenv-toggle-breakpoint ()
-  "Toggle a breakpoint at the current line"
-  (interactive)
-  (switch-to-devenv)
-  (devenv-cmd "Debug.ToggleBreakpoint"))
-;;(global-set-key [f9] 'devenv-toggle-breakpoint)
-
-;; Run the debugger.
-(defun devenv-debug ()
-  "Run the debugger in VS.NET"
-  (interactive)
-  (devenv-cmd "Debug.Start"))
-
-;;(global-set-key [(f2)] (lambda () (interactive) (switch-to-devenv) (devenv-cmd "Edit.GoToDefinition")))
-
-;;(global-set-key [(f3)] 'switch-to-devenv)
-;;(global-set-key [(shift f3)] (lambda () (interactive) (switch-to-devenv) (devenv-cmd "Build.Compile")))
-;;(global-set-key [(shift f5)] (lambda () (interactive) (devenv-cmd "Debug.AttachtoProcess")))
-(global-set-key [(M f4)] (lambda () (interactive) (devenv-cmd "Window.CloseAllDocuments")))
-
-
-;;(global-set-key [shift f3] (lambda () (interactive) (switch-to-dev) (devenv-cmd "Build.Compile")))
-;;(global-set-key [shift f5] (lambda () (interactive) (devenv-cmd "Debug.AttachtoProcess")))
-
-
-(defun recompile-quietly ()
-  "Re-compile without changing the window configuration."
-  (interactive)
-  (save-window-excursion
-    (recompile)))
-
-(defun eval-env (x)
-  (let ((result x))
-    (setf result  (s-replace "$(GUILE_HOME)" "t:\\\\usr\\\\local\\\\guile\\\\" result  ))
-    (setf result  (s-replace "$(NDDS_HOME)"  "t:\\\\rti\\\\waveworks\\\\ndds.4.5c\\\\" result ))
-    (setf result  (s-replace "$(DSFHOME)"  "t:\\\\kss\\\\devenv\\\\util\\\\dsf\\\\" result ))
-    (if (not result) x result )))
-
-(defun project-compile-file ()
-  (interactive)
-  (let ((file (buffer-file-name)))
-    (with-current-buffer (project-buffer-mode-p-get-attached-project-buffer)
-      (let ((coption
-             (cadr (find-if                   ;첫번째 ELEMENT 만 리턴합니다.
-                    (lambda (x)
-                      (string-equal "VCCLCompilerTool" (cdr (assoc 'Name (cadr x )))))
-                    (edom-by-tag-name (car (xml-parse-file (project-buffer-get-project-path (car project-buffer-master-project)))) 'Tool )))))
-        (compile
-         (eval-env (format
-                    "cl /c %s %s %s"
-                    (concat "-I" (string-replace-match ";" (cdr (assoc 'AdditionalIncludeDirectories coption)) " -I" nil t ))
-                    (concat "-D" (string-replace-match ";" (cdr (assoc 'PreprocessorDefinitions coption)) " -D" nil t ))
-                    file)))))))
-
-;; F6 에 의해서 파일을 찾을 때 디렉토리를 찾습니다.
-(setq
- cc-search-directories
-      '(
-        "."
-;;"c:/FFX/CFCS/DLP_LINK11/src/bridge"
-;;"c:/FFX/CFCS/DLP_LINK11/src/common"
-;;"c:/FFX/CFCS/DLP_LINK11/src/include"
-;;"c:/FFX/CFCS/DLP_LINK11/src/track_input"
-;;"c:/FFX/CFCS/DLP_LINK11/src/dts_controller"
-;;"c:/FFX/CFCS/DLP_LINK11/src/db_access_main"
-;;"c:/FFX/CFCS/DLP_LINK11/src/db_access_main/cache"
-;;"c:/FFX/CFCS/DLP_LINK11/src/remote_control"
-;;"c:/FFX/CFCS/DLP_LINK11/src/db_access_main/DLRL"
-;;"c:/FFX/CFCS/DLP_LINK11/src/general_in_out"
-;;"c:/FFX/CFCS/DLP_LINK11/src/network_tx"
-;;"c:/FFX/CFCS/DLP_LINK11/src/track_output"
-;;"c:/FFX/CFCS/DLP_LINK11/src/parameter_adapt"
-;;"c:/FFX/CFCS/DLP_LINK11/src/status_checker"
-;;"c:/FFX/CFCS/DLP_LINK11/src/network_rx"
-;;"c:/FFX/CFCS/DLP_LINK11/DLP_L11_L11IP_COMMON"
-;;"c:/FFX/CFCS/DLP_ISDL/common"
-;;"c:/FFX/CFCS/DLP_ISDL/src"
-;;"c:/FFX/CFCS/DLP_ISDL/common/cache"
-;;"c:/usr/local/guile/include"
-;;"c:/usr/local/guile/include/vxwrap"
-;;"c:/FFX/devenv/ndds/csds/include"
-;;"c:/FFX/devenv/ndds/include"
-;;"c:/FFX/devenv/ndds/include/ndds"
-;;"c:/FFX/devenv/ffxlib/include"
-
-))
-
-
-;; QAC
-(add-to-list
- 'compilation-error-regexp-alist
- '("^\\([^,\n\t]+\\),\\([0-9]+\\),\\([0-9]+\\)," 1 2 3))
-
-;; tcf 와 CPP 파일을 연결합니다.
-;;(setf cc-other-file-alist (cons '("\\.tcf\\'" (".cpp" )) cc-other-file-alist))
-
-
-(defun release ()
-  (interactive)
-  (switch-to-buffer "*compilation*")
-  (compile "release.cmd"))
-
-
-(defun next-error-buffer-hl-line ()
-  "Turn on `hl-line-mode' in buffer `next-error-last-buffer'.
-To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
- (ignore-errors
-  (when (and next-error-last-buffer  (buffer-live-p next-error-last-buffer))
-    (with-current-buffer next-error-last-buffer
-      (hl-line-mode 1)
-      (recenter-top-bottom)
-      ))))
-
-(add-hook 'next-error-hook 'next-error-buffer-hl-line)
-
-;;; * compile environment
-(defun vs2005env ()
-  (interactive)
-  (setenv "VSINSTALLDIR"     "c:\\usr\\microsoft\\vs2005\\IDE" t )
-  (setenv "VCINSTALLDIR"     "c:\\usr\\microsoft\\vs2005\\IDE\\VC" t )
-  (setenv "FrameworkDir"     "C:\\Windows\\Microsoft.NET\\Framework" t )
-  (setenv "FrameworkVersion" "v2.0.50727" t )
-  (setenv "FrameworkSDKDir"  "c:\\usr\\microsoft\\vs2005\\IDE\\SDK\\v2.0" t )
-  (setenv "DevEnvDir" "c:\\usr\\microsoft\\vs2005\\IDE\\Common7\\IDE" t )
-  (setenv  "PATH" "c:\\usr\\microsoft\\vs2005\\IDE\\Common7\\IDE;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\BIN;c:\\usr\\microsoft\\vs2005\\IDE\\Common7\\Tools;c:\\usr\\microsoft\\vs2005\\IDE\\Common7\\Tools\\bin;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\PlatformSDK\\bin;c:\\usr\\microsoft\\vs2005\\IDE\\SDK\\v2.0\\bin;C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\VCPackages;$PATH" t )
-  (setenv "INCLUDE" "c:\\usr\\microsoft\\vs2005\\IDE\\VC\\ATLMFC\\INCLUDE;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\INCLUDE;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\PlatformSDK\\include;c:\\usr\\microsoft\\vs2005\\IDE\\SDK\\v2.0\\include;$INCLUDE" t )
-  (setenv "LIB" "c:\\usr\\microsoft\\vs2005\\IDE\\VC\\ATLMFC\\LIB;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\LIB;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\PlatformSDK\\lib;c:\\usr\\microsoft\\vs2005\\IDE\\SDK\\v2.0\\lib;$LIB" t )
-  (setenv "LIBPATH" "C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\ATLMFC\\LIB" t ))
-
-
-(defun vs2008env ()
-  (interactive)
-  (setenv "VSINSTALLDIR"     "c:\\usr\\microsoft\\vs2008\\IDE" t )
-  (setenv "VCINSTALLDIR"     "c:\\usr\\microsoft\\vs2008\\IDE\\VC" t )
-  (setenv "FrameworkDir"     "C:\\Windows\\Microsoft.NET\\Framework" t )
-  (setenv "FrameworkVersion" "v2.0.50727" t )
-  (setenv "Framework35Version" "v3.5" t )
-  (setenv "FrameworkSDKDir"  "c:\\usr\\microsoft\\vs2008\\IDE\\SDK\\v3.5" t )
-  (setenv "DevEnvDir" "c:\\usr\\microsoft\\vs2008\\IDE\\Common7\\IDE" t )
-  (setenv  "PATH" "c:\\usr\\microsoft\\vs2008\\IDE\\Common7\\IDE;c:\\usr\\microsoft\\vs2008\\IDE\\VC\\BIN;c:\\usr\\microsoft\\vs2008\\IDE\\Common7\\Tools;c:\\usr\\microsoft\\vs2008\\IDE\\Common7\\Tools\\bin;C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A\\bin;c:\\usr\\microsoft\\vs2008\\IDE\\SDK\\v3.5\\bin;C:\\Windows\\Microsoft.NET\\Framework\\v3.5.50727;c:\\usr\\microsoft\\vs2008\\IDE\\VC\\VCPackages;$PATH" t )
-  (setenv "INCLUDE" "c:\\usr\\microsoft\\vs2008\\IDE\\VC\\ATLMFC\\INCLUDE;c:\\usr\\microsoft\\vs2008\\IDE\\VC\\INCLUDE;C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A\\include;c:\\usr\\microsoft\\vs2008\\IDE\\SDK\\v3.5\\include;$INCLUDE" t )
-  (setenv "LIB" "c:\\usr\\microsoft\\vs2008\\IDE\\VC\\ATLMFC\\LIB;c:\\usr\\microsoft\\vs2008\\IDE\\VC\\LIB;C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A\\lib;c:\\usr\\microsoft\\vs2008\\IDE\\SDK\\v3.5\\lib;$LIB" t )
-  (setenv "LIBPATH" "C:\\Windows\\Microsoft.NET\\Framework\\v3.5;c:\\usr\\microsoft\\vs2008\\IDE\\VC\\ATLMFC\\LIB" t ))
+    ;;(global-set-key (kbd "C-,") 'build-dlp)
 
 
 
-(defun torEnv ()
-  (interactive)
-  (setenv "WIND_HOST_TYPE" "x86-win32"                                    t )
-  (setenv "WIND_BASE"      "T:\\T22PPC"                                   t )
-  (setenv "PATH"           "$WIND_BASE\\host\\$WIND_HOST_TYPE\\bin;$PATH" t )
-  (setenv "DIABLIB"        "$WIND_BASE\\host\\diab"                       t )
-  (setenv "PATH"           "$DIABLIB\\WIN32\\bin;$PATH"                   t ))
+    (define-key global-map [(f4)] 'next-error)
+    (define-key global-map [(shift f4)] 'previous-error)
+
+    ;; 특정 변수를 버퍼에게 종속적으로 만드는 함수
+    ;;(make-variable-buffer-local 'next-error-function)
+
+
+    ;; Command to point VS.NET at our current file & line
+    (defun my-current-line ()
+      "Return the current buffer line at point.  The first line is 0."
+      (save-excursion
+        (beginning-of-line)
+        (count-lines (point-min) (point))))
+    (defun devenv-cmd (&rest args)
+      "Send a command-line to a running VS.NET process.  'devenv' comes from devenv.exe"
+      (call-process "DevEnvCommand" nil nil nil (apply 'concat args)))
+    (defun switch-to-devenv ()
+      "Jump to VS.NET, at the same file & line as in emacs"
+      (interactive)
+      (save-some-buffers)
+      (let ((val1
+             (devenv-cmd "File.OpenFile \"" (buffer-file-name (current-buffer)) "\""))
+            (val2
+             (devenv-cmd "Edit.GoTo " (int-to-string (+ (my-current-line) 1)))))
+        (cond ((zerop (+ val1 val2))
+                                            ;(iconify-frame)  ;; what I really want here is to raise the VS.NET window
+               t)
+              ((or (= val1 1) (= val2 1))
+               (error "command failed"))  ;; hm, how do I get the output of the command?
+              (t
+               (error "couldn't run DevEnvCommand")))))
+
+    ;; Command to toggle a VS.NET breakpoint at the current line.
+    (defun devenv-toggle-breakpoint ()
+      "Toggle a breakpoint at the current line"
+      (interactive)
+      (switch-to-devenv)
+      (devenv-cmd "Debug.ToggleBreakpoint"))
+    ;;(global-set-key [f9] 'devenv-toggle-breakpoint)
+
+    ;; Run the debugger.
+    (defun devenv-debug ()
+      "Run the debugger in VS.NET"
+      (interactive)
+      (devenv-cmd "Debug.Start"))
+
+    ;;(global-set-key [(f2)] (lambda () (interactive) (switch-to-devenv) (devenv-cmd "Edit.GoToDefinition")))
+
+    ;;(global-set-key [(f3)] 'switch-to-devenv)
+    ;;(global-set-key [(shift f3)] (lambda () (interactive) (switch-to-devenv) (devenv-cmd "Build.Compile")))
+    ;;(global-set-key [(shift f5)] (lambda () (interactive) (devenv-cmd "Debug.AttachtoProcess")))
+    (global-set-key [(M f4)] (lambda () (interactive) (devenv-cmd "Window.CloseAllDocuments")))
+
+
+    ;;(global-set-key [shift f3] (lambda () (interactive) (switch-to-dev) (devenv-cmd "Build.Compile")))
+    ;;(global-set-key [shift f5] (lambda () (interactive) (devenv-cmd "Debug.AttachtoProcess")))
+
+
+    (defun recompile-quietly ()
+      "Re-compile without changing the window configuration."
+      (interactive)
+      (save-window-excursion
+        (recompile)))
+
+    (defun eval-env (x)
+      (let ((result x))
+        (setf result  (s-replace "$(GUILE_HOME)" "t:\\\\usr\\\\local\\\\guile\\\\" result  ))
+        (setf result  (s-replace "$(NDDS_HOME)"  "t:\\\\rti\\\\waveworks\\\\ndds.4.5c\\\\" result ))
+        (setf result  (s-replace "$(DSFHOME)"  "t:\\\\kss\\\\devenv\\\\util\\\\dsf\\\\" result ))
+        (if (not result) x result )))
+
+    (defun project-compile-file ()
+      (interactive)
+      (let ((file (buffer-file-name)))
+        (with-current-buffer (project-buffer-mode-p-get-attached-project-buffer)
+          (let ((coption
+                 (cadr (find-if                   ;첫번째 ELEMENT 만 리턴합니다.
+                        (lambda (x)
+                          (string-equal "VCCLCompilerTool" (cdr (assoc 'Name (cadr x )))))
+                        (edom-by-tag-name (car (xml-parse-file (project-buffer-get-project-path (car project-buffer-master-project)))) 'Tool )))))
+            (compile
+             (eval-env (format
+                        "cl /c %s %s %s"
+                        (concat "-I" (string-replace-match ";" (cdr (assoc 'AdditionalIncludeDirectories coption)) " -I" nil t ))
+                        (concat "-D" (string-replace-match ";" (cdr (assoc 'PreprocessorDefinitions coption)) " -D" nil t ))
+                        file)))))))
+
+    ;; F6 에 의해서 파일을 찾을 때 디렉토리를 찾습니다.
+    (setq
+     cc-search-directories
+     '(
+       "."
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/bridge"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/common"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/include"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/track_input"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/dts_controller"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/db_access_main"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/db_access_main/cache"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/remote_control"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/db_access_main/DLRL"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/general_in_out"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/network_tx"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/track_output"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/parameter_adapt"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/status_checker"
+       ;;"c:/FFX/CFCS/DLP_LINK11/src/network_rx"
+       ;;"c:/FFX/CFCS/DLP_LINK11/DLP_L11_L11IP_COMMON"
+       ;;"c:/FFX/CFCS/DLP_ISDL/common"
+       ;;"c:/FFX/CFCS/DLP_ISDL/src"
+       ;;"c:/FFX/CFCS/DLP_ISDL/common/cache"
+       ;;"c:/usr/local/guile/include"
+       ;;"c:/usr/local/guile/include/vxwrap"
+       ;;"c:/FFX/devenv/ndds/csds/include"
+       ;;"c:/FFX/devenv/ndds/include"
+       ;;"c:/FFX/devenv/ndds/include/ndds"
+       ;;"c:/FFX/devenv/ffxlib/include"
+
+       ))
+
+
+    ;; QAC
+    (add-to-list
+     'compilation-error-regexp-alist
+     '("^\\([^,\n\t]+\\),\\([0-9]+\\),\\([0-9]+\\)," 1 2 3))
+
+    ;; tcf 와 CPP 파일을 연결합니다.
+    ;;(setf cc-other-file-alist (cons '("\\.tcf\\'" (".cpp" )) cc-other-file-alist))
+
+
+    (defun release ()
+      (interactive)
+      (switch-to-buffer "*compilation*")
+      (compile "release.cmd"))
+
+
+    (defun next-error-buffer-hl-line ()
+      "Turn on `hl-line-mode' in buffer `next-error-last-buffer'.
+    To turn it off: `M-x hl-line-mode' in the compilation/grep buffer."
+      (ignore-errors
+        (when (and next-error-last-buffer  (buffer-live-p next-error-last-buffer))
+          (with-current-buffer next-error-last-buffer
+            (hl-line-mode 1)
+            (recenter-top-bottom)
+            ))))
+
+    (add-hook 'next-error-hook 'next-error-buffer-hl-line)
+
+    ;;; * compile environment
+    (defun vs2005env ()
+      (interactive)
+      (setenv "VSINSTALLDIR"     "c:\\usr\\microsoft\\vs2005\\IDE" t )
+      (setenv "VCINSTALLDIR"     "c:\\usr\\microsoft\\vs2005\\IDE\\VC" t )
+      (setenv "FrameworkDir"     "C:\\Windows\\Microsoft.NET\\Framework" t )
+      (setenv "FrameworkVersion" "v2.0.50727" t )
+      (setenv "FrameworkSDKDir"  "c:\\usr\\microsoft\\vs2005\\IDE\\SDK\\v2.0" t )
+      (setenv "DevEnvDir" "c:\\usr\\microsoft\\vs2005\\IDE\\Common7\\IDE" t )
+      (setenv  "PATH" "c:\\usr\\microsoft\\vs2005\\IDE\\Common7\\IDE;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\BIN;c:\\usr\\microsoft\\vs2005\\IDE\\Common7\\Tools;c:\\usr\\microsoft\\vs2005\\IDE\\Common7\\Tools\\bin;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\PlatformSDK\\bin;c:\\usr\\microsoft\\vs2005\\IDE\\SDK\\v2.0\\bin;C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\VCPackages;$PATH" t )
+      (setenv "INCLUDE" "c:\\usr\\microsoft\\vs2005\\IDE\\VC\\ATLMFC\\INCLUDE;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\INCLUDE;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\PlatformSDK\\include;c:\\usr\\microsoft\\vs2005\\IDE\\SDK\\v2.0\\include;$INCLUDE" t )
+      (setenv "LIB" "c:\\usr\\microsoft\\vs2005\\IDE\\VC\\ATLMFC\\LIB;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\LIB;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\PlatformSDK\\lib;c:\\usr\\microsoft\\vs2005\\IDE\\SDK\\v2.0\\lib;$LIB" t )
+      (setenv "LIBPATH" "C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727;c:\\usr\\microsoft\\vs2005\\IDE\\VC\\ATLMFC\\LIB" t ))
+
+
+    (defun vs2008env ()
+      (interactive)
+      (setenv "VSINSTALLDIR"     "c:\\usr\\microsoft\\vs2008\\IDE" t )
+      (setenv "VCINSTALLDIR"     "c:\\usr\\microsoft\\vs2008\\IDE\\VC" t )
+      (setenv "FrameworkDir"     "C:\\Windows\\Microsoft.NET\\Framework" t )
+      (setenv "FrameworkVersion" "v2.0.50727" t )
+      (setenv "Framework35Version" "v3.5" t )
+      (setenv "FrameworkSDKDir"  "c:\\usr\\microsoft\\vs2008\\IDE\\SDK\\v3.5" t )
+      (setenv "DevEnvDir" "c:\\usr\\microsoft\\vs2008\\IDE\\Common7\\IDE" t )
+      (setenv  "PATH" "c:\\usr\\microsoft\\vs2008\\IDE\\Common7\\IDE;c:\\usr\\microsoft\\vs2008\\IDE\\VC\\BIN;c:\\usr\\microsoft\\vs2008\\IDE\\Common7\\Tools;c:\\usr\\microsoft\\vs2008\\IDE\\Common7\\Tools\\bin;C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A\\bin;c:\\usr\\microsoft\\vs2008\\IDE\\SDK\\v3.5\\bin;C:\\Windows\\Microsoft.NET\\Framework\\v3.5.50727;c:\\usr\\microsoft\\vs2008\\IDE\\VC\\VCPackages;$PATH" t )
+      (setenv "INCLUDE" "c:\\usr\\microsoft\\vs2008\\IDE\\VC\\ATLMFC\\INCLUDE;c:\\usr\\microsoft\\vs2008\\IDE\\VC\\INCLUDE;C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A\\include;c:\\usr\\microsoft\\vs2008\\IDE\\SDK\\v3.5\\include;$INCLUDE" t )
+      (setenv "LIB" "c:\\usr\\microsoft\\vs2008\\IDE\\VC\\ATLMFC\\LIB;c:\\usr\\microsoft\\vs2008\\IDE\\VC\\LIB;C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A\\lib;c:\\usr\\microsoft\\vs2008\\IDE\\SDK\\v3.5\\lib;$LIB" t )
+      (setenv "LIBPATH" "C:\\Windows\\Microsoft.NET\\Framework\\v3.5;c:\\usr\\microsoft\\vs2008\\IDE\\VC\\ATLMFC\\LIB" t ))
+
+
+
+    (defun torEnv ()
+      (interactive)
+      (setenv "WIND_HOST_TYPE" "x86-win32"                                    t )
+      (setenv "WIND_BASE"      "T:\\T22PPC"                                   t )
+      (setenv "PATH"           "$WIND_BASE\\host\\$WIND_HOST_TYPE\\bin;$PATH" t )
+      (setenv "DIABLIB"        "$WIND_BASE\\host\\diab"                       t )
+      (setenv "PATH"           "$DIABLIB\\WIN32\\bin;$PATH"                   t ))
   #+END_SRC
 
 * search
 
 ** origin
-  #+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 
-    (defun link11-grep (word &optional case-senstive )
-      "현제커서 위치의 단어를 검색한다."
-      (interactive
-       (list (read-string "찾을 단어: " (current-word)) current-prefix-arg ))
+     (defun link11-grep (word &optional case-senstive )
+       "현제커서 위치의 단어를 검색한다."
+       (interactive
+        (list (read-string "찾을 단어: " (current-word)) current-prefix-arg ))
 
-      (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_LINK11"))
-      (grep (if case-senstive
-                (format "%s \"%s\" *" grep-command word )
-              (format "%s --smart-case   \"%s\" *" grep-command word ))))
+       (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_LINK11"))
+       (grep (if case-senstive
+                 (format "%s \"%s\" *" grep-command word )
+               (format "%s --smart-case   \"%s\" *" grep-command word ))))
 
-    (defun isdl-grep (word &optional case-senstive )
-      "현제커서 위치의 단어를 검색한다."
-      (interactive
-       (list (read-string "찾을 단어: " (current-word)) current-prefix-arg ))
+     (defun isdl-grep (word &optional case-senstive )
+       "현제커서 위치의 단어를 검색한다."
+       (interactive
+        (list (read-string "찾을 단어: " (current-word)) current-prefix-arg ))
 
-      (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_ISDL"))
-      (grep (if case-senstive
-                (format "%s \"%s\" *" grep-command word )
-              (format "%s  \"%s\" *" grep-command word ))))
+       (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_ISDL"))
+       (grep (if case-senstive
+                 (format "%s \"%s\" *" grep-command word )
+               (format "%s  \"%s\" *" grep-command word ))))
 
-    (defun dlp-grep (word &optional case-senstive )
-      "현제커서 위치의 단어를 검색한다."
-      (interactive
-       (list (read-string "찾을 단어: " (current-word)) current-prefix-arg ))
-      (if (not (eq nil (string-match "isdl" (buffer-file-name))))
-          (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_ISDL"))
-        (if (not (eq nil (string-match "link11" (buffer-file-name))))
-            (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_LINK11"))))
-      (grep (if case-senstive (format " \"%s\" *" grep-command word ) (format "%s  \"%s\" *" grep-command word ))))
+     (defun dlp-grep (word &optional case-senstive )
+       "현제커서 위치의 단어를 검색한다."
+       (interactive
+        (list (read-string "찾을 단어: " (current-word)) current-prefix-arg ))
+       (if (not (eq nil (string-match "isdl" (buffer-file-name))))
+           (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_ISDL"))
+         (if (not (eq nil (string-match "link11" (buffer-file-name))))
+             (set-buffer (dired-noselect "c:/FFX/CFCS/DLP_LINK11"))))
+       (grep (if case-senstive (format " \"%s\" *" grep-command word ) (format "%s  \"%s\" *" grep-command word ))))
 
-    (defun grep-dired-marked (word)
-      "Display Windows context menu on selected files"
-      (interactive
-       (list (read-string "찾을 단어: " (current-word)) ))
-      (let* ((files (dired-get-marked-files))
-             (files (if (null files)
-                        (list (dired-current-directory) )
-                      files)))
-        ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
-        (grep (format "%s \"%s\" %s" grep-command word
-                      (s-join " "  (mapcar (lambda (x) (format "\"%s\" " x)) files))))))
-
-
-    (global-set-key "\C-cu" 'dlp-grep)
-
-    (autoload 'ioccur "ioccur"
-      "점진적 occur" t)
+     (defun grep-dired-marked (word)
+       "Display Windows context menu on selected files"
+       (interactive
+        (list (read-string "찾을 단어: " (current-word)) ))
+       (let* ((files (dired-get-marked-files))
+              (files (if (null files)
+                         (list (dired-current-directory) )
+                       files)))
+         ;; http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html
+         (grep (format "%s \"%s\" %s" grep-command word
+                       (s-join " "  (mapcar (lambda (x) (format "\"%s\" " x)) files))))))
 
 
-    (defun grep-word (word &optional case-senstive )
-      "현제커서 위치의 단어를 검색한다."
-      (interactive
-       (list (read-string "grep 찾을 단어: " (current-word)) current-prefix-arg ))
+     (global-set-key "\C-cu" 'dlp-grep)
 
-      (let ((directory-name-backup default-directory))
-
-        (if case-senstive
-            (setq default-directory
-                  (mapconcat (lambda (x) x ) (reverse (cdr (nthcdr case-senstive (reverse (split-string default-directory "/"))))) "/")))
-        (grep (format "%s  -E \"%s\" " grep-command word ))
-        (setq default-directory directory-name-backup)))
+     (autoload 'ioccur "ioccur"
+       "점진적 occur" t)
 
 
+     (defun grep-word (word &optional case-senstive )
+       "현제커서 위치의 단어를 검색한다."
+       (interactive
+        (list (read-string "grep 찾을 단어: " (current-word)) current-prefix-arg ))
 
-    (defun woccur (word &optional nlines )
-      "현제커서 위치의 단어를 OCCUR한다."
-      (interactive
-       (list (read-string "occur 찾을 단어: " (current-word))
-             (prefix-numeric-value current-prefix-arg) ))
-      (occur word nlines ))
+       (let ((directory-name-backup default-directory))
 
-    (defun occur-region( beg end &optional lines )
-      "Check occurence of string which is selected by markejr."
-      (interactive "r\nP")
-      (occur (buffer-substring-no-properties beg end) lines ))
-    (defun occur-compile-region( beg end &optional lines )
-      "Check occurence of string which is selected by marker."
-      (interactive "r\nP")
-      (occur-compile (buffer-substring-no-properties beg end) lines ))
-
-
-    (defun occur-xml ( regexp &optional nlines)
-      "Show all lines matching REGEXP in buffers specified by BUFREGEXP.
-        Normally BUFREGEXP matches against each buffer's visited file name,
-        but if you specify a prefix argument, it matches against the buffer name.
-        See also `multi-occur'."
-      (interactive (occur-read-primary-args))
-      (occur-1 regexp nlines
-               (delq nil (mapcar
-                          (lambda (buf)
-                            (when (and
-                                   (buffer-file-name buf)
-                                   (string-match ".*xml" (buffer-file-name buf))) buf))
-                          (buffer-list)))))
-
-    (global-set-key "\C-co" 'occur)
-
-    ;; 쓰기 좋은 키 바인딩 입니다.
-    ;;(global-set-key "\C-ci" 'isdl-grep)
-    ;;(global-set-key (kbd "C-M-,") '(lambda ()  (interactive) (run-scheme "winprojcd")))
+         (if case-senstive
+             (setq default-directory
+                   (mapconcat (lambda (x) x ) (reverse (cdr (nthcdr case-senstive (reverse (split-string default-directory "/"))))) "/")))
+         (grep (format "%s  -E \"%s\" " grep-command word ))
+         (setq default-directory directory-name-backup)))
 
 
 
-    ;; dictionary
-    (autoload 'dictionary-search "dictionary"
-      "Ask for a word and search it in all dictionaries" t)
-    (autoload 'dictionary-match-words "dictionary"
-      "Ask for a word and search all matching words in the dictionaries" t)
-    (autoload 'dictionary-lookup-definition "dictionary"
-      "Unconditionally lookup the word at point." t)
-    (autoload 'dictionary "dictionary"
-      "Create a new dictionary buffer" t)
-    (autoload 'dictionary-mouse-popup-matching-words "dictionary"
-      "Display entries matching the word at the cursor" t)
-    (autoload 'dictionary-popup-matching-words "dictionary"
-      "Display entries matching the word at the point" t)
-    (autoload 'dictionary-tooltip-mode "dictionary"
-      "Display tooltips for the current word" t)
-    (autoload 'global-dictionary-tooltip-mode "dictionary"
-      "Enable/disable dictionary-tooltip-mode for all buffers" t)
-    ;; 사전기능을 사용
-    (require 'dictionary)
+     (defun woccur (word &optional nlines )
+       "현제커서 위치의 단어를 OCCUR한다."
+       (interactive
+        (list (read-string "occur 찾을 단어: " (current-word))
+              (prefix-numeric-value current-prefix-arg) ))
+       (occur word nlines ))
 
-    (global-set-key "\C-ci" 'woccur)
-    (global-set-key "\C-cu" 'grep-word)
-    (global-set-key "\C-cs" 'dictionary-search)
-    (global-set-key "\C-cm" 'dictionary-match-words)
+     (defun occur-region( beg end &optional lines )
+       "Check occurence of string which is selected by markejr."
+       (interactive "r\nP")
+       (occur (buffer-substring-no-properties beg end) lines ))
+     (defun occur-compile-region( beg end &optional lines )
+       "Check occurence of string which is selected by marker."
+       (interactive "r\nP")
+       (occur-compile (buffer-substring-no-properties beg end) lines ))
 
 
-    (require 'misearch)
+     (defun occur-xml ( regexp &optional nlines)
+       "Show all lines matching REGEXP in buffers specified by BUFREGEXP.
+         Normally BUFREGEXP matches against each buffer's visited file name,
+         but if you specify a prefix argument, it matches against the buffer name.
+         See also `multi-occur'."
+       (interactive (occur-read-primary-args))
+       (occur-1 regexp nlines
+                (delq nil (mapcar
+                           (lambda (buf)
+                             (when (and
+                                    (buffer-file-name buf)
+                                    (string-match ".*xml" (buffer-file-name buf))) buf))
+                           (buffer-list)))))
 
-    (defun misearch-next-buffer (buffer wrap)
-      (catch 'found
-        (let ((mode (buffer-local-value 'major-mode buffer)))
-          (dolist (next-buffer (if isearch-forward
-                                   (cdr (buffer-list))
-                                 (reverse (cdr (buffer-list)))))
-            (when (eq mode (buffer-local-value 'major-mode next-buffer))
-              (throw 'found next-buffer))))))
+     (global-set-key "\C-co" 'occur)
 
-    (defun toggle-misearch ()
-      (interactive)
-      (if (equal multi-isearch-next-buffer-function nil)
-          (setq multi-isearch-next-buffer-function 'misearch-next-buffer)
-        (setq multi-isearch-next-buffer-function nil)))
+     ;; 쓰기 좋은 키 바인딩 입니다.
+     ;;(global-set-key "\C-ci" 'isdl-grep)
+     ;;(global-set-key (kbd "C-M-,") '(lambda ()  (interactive) (run-scheme "winprojcd")))
 
 
 
-    ;;ISEARCH HOOK;;(require 'thingatpt)
-    ;;ISEARCH HOOK;;
-    ;;ISEARCH HOOK;;(defun my-isearch-yank-word-or-char-from-beginning ()
-    ;;ISEARCH HOOK;;  "Move to beginning of word before yanking word in isearch-mode."
-    ;;ISEARCH HOOK;;  (interactive)
-    ;;ISEARCH HOOK;;  ;; Making this work after a search string is entered by user
-    ;;ISEARCH HOOK;;  ;; is too hard to do, so work only when search string is empty.
-    ;;ISEARCH HOOK;;  (if (= 0 (length isearch-string))
-    ;;ISEARCH HOOK;;      (beginning-of-thing 'word))
-    ;;ISEARCH HOOK;;  (isearch-yank-word-or-char)
-    ;;ISEARCH HOOK;;  ;; Revert to 'isearch-yank-word-or-char for subsequent calls
-    ;;ISEARCH HOOK;;  (substitute-key-definition 'my-isearch-yank-word-or-char-from-beginning
-    ;;ISEARCH HOOK;;			     'isearch-yank-word-or-char
-    ;;ISEARCH HOOK;;			     isearch-mode-map))
-    ;;ISEARCH HOOK;;
-    ;;ISEARCH HOOK;;(add-hook 'isearch-mode-hook
-    ;;ISEARCH HOOK;; (lambda ()
-    ;;ISEARCH HOOK;;   "Activate my customized Isearch word yank command."
-    ;;ISEARCH HOOK;;   (substitute-key-definition 'isearch-yank-word-or-char
-    ;;ISEARCH HOOK;;			      'my-isearch-yank-word-or-char-from-beginning
-    ;;ISEARCH HOOK;;			      isearch-mode-map)))
+     ;; dictionary
+     (autoload 'dictionary-search "dictionary"
+       "Ask for a word and search it in all dictionaries" t)
+     (autoload 'dictionary-match-words "dictionary"
+       "Ask for a word and search all matching words in the dictionaries" t)
+     (autoload 'dictionary-lookup-definition "dictionary"
+       "Unconditionally lookup the word at point." t)
+     (autoload 'dictionary "dictionary"
+       "Create a new dictionary buffer" t)
+     (autoload 'dictionary-mouse-popup-matching-words "dictionary"
+       "Display entries matching the word at the cursor" t)
+     (autoload 'dictionary-popup-matching-words "dictionary"
+       "Display entries matching the word at the point" t)
+     (autoload 'dictionary-tooltip-mode "dictionary"
+       "Display tooltips for the current word" t)
+     (autoload 'global-dictionary-tooltip-mode "dictionary"
+       "Enable/disable dictionary-tooltip-mode for all buffers" t)
+     ;; 사전기능을 사용
+     (require 'dictionary)
+
+     (global-set-key "\C-ci" 'woccur)
+     (global-set-key "\C-cu" 'grep-word)
+     (global-set-key "\C-cs" 'dictionary-search)
+     (global-set-key "\C-cm" 'dictionary-match-words)
 
 
-        ;;; GNU GLOBAL incremental update It’s possible to use GNU GLOBAL
-        ;;; incremental update feature in after-save-hook in order to keep
-        ;;; synchronized the changes you made in source code and gtags
-        ;;; databasc:
+     (require 'misearch)
 
-    (append-path (fullpath "../../global/bin/"))
-    (append-path (fullpath "../../cscope-15.8a/"))
+     (defun misearch-next-buffer (buffer wrap)
+       (catch 'found
+         (let ((mode (buffer-local-value 'major-mode buffer)))
+           (dolist (next-buffer (if isearch-forward
+                                    (cdr (buffer-list))
+                                  (reverse (cdr (buffer-list)))))
+             (when (eq mode (buffer-local-value 'major-mode next-buffer))
+               (throw 'found next-buffer))))))
 
-    (require 'xcscope)
-
-    ;; I-search with initial contents.
-    ;; original sourcc: http://platypope.org/blog/2007/8/5/a-compendium-of-awesomeness
-    (defvar isearch-initial-string nil)
-
-    (defun isearch-set-initial-string ()
-      (remove-hook 'isearch-mode-hook 'isearch-set-initial-string)
-      (setq isearch-string isearch-initial-string)
-      (isearch-search-and-update))
-
-    (defun isearch-forward-at-point (&optional regexp-p no-recursive-edit)
-      "Interactive search forward for the symbol at point."
-      (interactive "P\np")
-      (if regexp-p (isearch-forward regexp-p no-recursive-edit)
-        (let* ((end (progn (skip-syntax-forward "w_") (point)))
-               (begin (progn (skip-syntax-backward "w_") (point))))
-          (if (eq begin end)
-              (isearch-forward regexp-p no-recursive-edit)
-            (setq isearch-initial-string (buffer-substring begin end))
-            (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
-            (isearch-forward regexp-p no-recursive-edit)))))
-
-    ;; (use-package company
-    ;;   :config
-    ;;   (add-hook 'after-init-hook (lambda () (global-company-mode '(not gud-mode))))
-    ;;   (delete 'company-semantic company-backends)
-    ;;   (define-key c-mode-map    (kbd "<backtab>"  ) 'company-complete)
-    ;;   (define-key c++-mode-map  (kbd "<backtab>"  ) 'company-complete))
-
-
-    (helm-flx-mode +1)
-
-    ;;(use-package smartscan
-    ;;  :ensure
-    ;;  :config
-    ;;  (global-smartscan-mode t)
-    ;;  (unbind-key "M-n" smartscan-map)
-    ;;  (unbind-key "M-p" smartscan-map)
-    ;;  )
+     (defun toggle-misearch ()
+       (interactive)
+       (if (equal multi-isearch-next-buffer-function nil)
+           (setq multi-isearch-next-buffer-function 'misearch-next-buffer)
+         (setq multi-isearch-next-buffer-function nil)))
 
 
 
-    ;; Uncomment the below line to use eww (Emacs Web Wowser)
-    ;; (setq xah-lookup-browser-function 'eww)
+     ;;ISEARCH HOOK;;(require 'thingatpt)
+     ;;ISEARCH HOOK;;
+     ;;ISEARCH HOOK;;(defun my-isearch-yank-word-or-char-from-beginning ()
+     ;;ISEARCH HOOK;;  "Move to beginning of word before yanking word in isearch-mode."
+     ;;ISEARCH HOOK;;  (interactive)
+     ;;ISEARCH HOOK;;  ;; Making this work after a search string is entered by user
+     ;;ISEARCH HOOK;;  ;; is too hard to do, so work only when search string is empty.
+     ;;ISEARCH HOOK;;  (if (= 0 (length isearch-string))
+     ;;ISEARCH HOOK;;      (beginning-of-thing 'word))
+     ;;ISEARCH HOOK;;  (isearch-yank-word-or-char)
+     ;;ISEARCH HOOK;;  ;; Revert to 'isearch-yank-word-or-char for subsequent calls
+     ;;ISEARCH HOOK;;  (substitute-key-definition 'my-isearch-yank-word-or-char-from-beginning
+     ;;ISEARCH HOOK;;			     'isearch-yank-word-or-char
+     ;;ISEARCH HOOK;;			     isearch-mode-map))
+     ;;ISEARCH HOOK;;
+     ;;ISEARCH HOOK;;(add-hook 'isearch-mode-hook
+     ;;ISEARCH HOOK;; (lambda ()
+     ;;ISEARCH HOOK;;   "Activate my customized Isearch word yank command."
+     ;;ISEARCH HOOK;;   (substitute-key-definition 'isearch-yank-word-or-char
+     ;;ISEARCH HOOK;;			      'my-isearch-yank-word-or-char-from-beginning
+     ;;ISEARCH HOOK;;			      isearch-mode-map)))
 
-    ;;(req-package xah-lookup
-    ;;  :force t
-    ;;  :config
-    ;;  (defun xah-lookup-cppreference (&optional word)
-    ;;    "Lookup definition of current word or text selection in URL."
-    ;;    (interactive)
-    ;;    (xah-lookup-word-on-internet
-    ;;     word
-    ;;     ;; Use � as a placeholder in the query URL.
-    ;;     "http://en.cppreference.com/mwiki/index.php?search=�"
-    ;;     xah-lookup-browser-function)))
-  #+END_SRC
 
-  #+RESULTS:
-  : t
+         ;;; GNU GLOBAL incremental update It’s possible to use GNU GLOBAL
+         ;;; incremental update feature in after-save-hook in order to keep
+         ;;; synchronized the changes you made in source code and gtags
+         ;;; databasc:
+
+     (append-path (fullpath "../../global/bin/"))
+     (append-path (fullpath "../../cscope-15.8a/"))
+
+     (require 'xcscope)
+
+     ;; I-search with initial contents.
+     ;; original sourcc: http://platypope.org/blog/2007/8/5/a-compendium-of-awesomeness
+     (defvar isearch-initial-string nil)
+
+     (defun isearch-set-initial-string ()
+       (remove-hook 'isearch-mode-hook 'isearch-set-initial-string)
+       (setq isearch-string isearch-initial-string)
+       (isearch-search-and-update))
+
+     (defun isearch-forward-at-point (&optional regexp-p no-recursive-edit)
+       "Interactive search forward for the symbol at point."
+       (interactive "P\np")
+       (if regexp-p (isearch-forward regexp-p no-recursive-edit)
+         (let* ((end (progn (skip-syntax-forward "w_") (point)))
+                (begin (progn (skip-syntax-backward "w_") (point))))
+           (if (eq begin end)
+               (isearch-forward regexp-p no-recursive-edit)
+             (setq isearch-initial-string (buffer-substring begin end))
+             (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
+             (isearch-forward regexp-p no-recursive-edit)))))
+
+     ;; (leaf company
+     ;;   :config
+     ;;   (add-hook 'after-init-hook (lambda () (global-company-mode '(not gud-mode))))
+     ;;   (delete 'company-semantic company-backends)
+     ;;   (define-key c-mode-map    (kbd "<backtab>"  ) 'company-complete)
+     ;;   (define-key c++-mode-map  (kbd "<backtab>"  ) 'company-complete))
+
+
+     (helm-flx-mode +1)
+
+     ;;(leaf smartscan
+     ;;  :ensure
+     ;;  :config
+     ;;  (global-smartscan-mode t)
+     ;;  (unbind-key "M-n" smartscan-map)
+     ;;  (unbind-key "M-p" smartscan-map)
+     ;;  )
+
+
+
+     ;; Uncomment the below line to use eww (Emacs Web Wowser)
+     ;; (setq xah-lookup-browser-function 'eww)
+
+     ;;(req-package xah-lookup
+     ;;  :force t
+     ;;  :config
+     ;;  (defun xah-lookup-cppreference (&optional word)
+     ;;    "Lookup definition of current word or text selection in URL."
+     ;;    (interactive)
+     ;;    (xah-lookup-word-on-internet
+     ;;     word
+     ;;     ;; Use � as a placeholder in the query URL.
+     ;;     "http://en.cppreference.com/mwiki/index.php?search=�"
+     ;;     xah-lookup-browser-function)))
+   #+END_SRC
+
+   #+RESULTS:
+   : t
 
 ** gtag
- #+BEGIN_SRC emacs-lisp :tangle  no
- (remove-hook 'c++-mode-hook 'semantic-default-c-setup)
- (add-hook 'c++-mode-hook '(lambda () (gtags-mode 1)))
- (setq gtags-mode-hook '(lambda () (setq gtags-pop-delete t) (setq gtags-path-style 'relative)))
- (setq gtags-select-mode-hook '(lambda () (setq hl-line-face 'underline) (hl-line-mode 1)))
+   #+BEGIN_SRC emacs-lisp :tangle  no
+     (remove-hook 'c++-mode-hook 'semantic-default-c-setup)
+     (add-hook 'c++-mode-hook '(lambda () (gtags-mode 1)))
+     (setq gtags-mode-hook '(lambda () (setq gtags-pop-delete t) (setq gtags-path-style 'relative)))
+     (setq gtags-select-mode-hook '(lambda () (setq hl-line-face 'underline) (hl-line-mode 1)))
 
-(require 'gtags)
-(w32-unix-eval
- ((setq gtags-global-command (file-truename (fullpath "../../global/bin/global.exe"))))
- ((setq gtags-global-command  "/usr/local/misctools/default/bin/global")))
-
-
+     (require 'gtags)
+     (w32-unix-eval
+      ((setq gtags-global-command (file-truename (fullpath "../../global/bin/global.exe"))))
+      ((setq gtags-global-command  "/usr/local/misctools/default/bin/global")))
 
 
-(defun gtag ()
-  (interactive)
-  (let ((default-directory (read-directory-name "GTAG를 생성·갱신 할 폴더 :")))
-    (if (file-exists-p "GTAGS")
-        (async-shell-command  (concat gtags-global-command " -u"))
-      (async-shell-command "gtags"))))
-
-(defun ww-next-gtag ()
-  "Find next matching tag, for GTAGS."
-  (interactive)
-  (let ((latest-gtags-buffer
-         (car (delq nil  (mapcar (lambda (x) (and (string-match "GTAGS SELECT" (buffer-name x)) (buffer-name x)) )
-                                 (buffer-list)) ))))
-    (cond (latest-gtags-buffer
-           (switch-to-buffer latest-gtags-buffer)
-           (forward-line)
-           (gtags-select-it nil))
-          ) ))
 
 
-(defun find-tag-dwim(&optional prefix)
-  "union of `find-tag' alternatives. decides upon major-mode"
-  (interactive "P")
-  (if (and (boundp 'gtags-mode)
-           gtags-mode)
-      (progn
-        (ring-insert find-tag-marker-ring (point-marker))
-        (call-interactively (if prefix   'ww-next-gtag 'gtags-find-tag)))
-    (if (and (boundp 'cscope-minor-mode)
-             cscope-minor-mode)
-        (progn
-          (ring-insert find-tag-marker-ring (point-marker))
-          (call-interactively
-           (if prefix
-               'cscope-find-this-symbol
-             'cscope-find-global-definition-no-prompting
-             )))
-      (call-interactively 'find-tag))))
+     (defun gtag ()
+       (interactive)
+       (let ((default-directory (read-directory-name "GTAG를 생성·갱신 할 폴더 :")))
+         (if (file-exists-p "GTAGS")
+             (async-shell-command  (concat gtags-global-command " -u"))
+           (async-shell-command "gtags"))))
 
-(substitute-key-definition 'find-tag 'find-tag-dwim  global-map)
-
-(global-set-key
- (kbd "H-.")
- '(lambda (&optional prefix)
-    (interactive "P")
-    (call-interactively (if prefix  'gtags-find-tag ;; H-, find all usages of symbol.
-                          'ww-next-gtag)) ;; H-. find all references of tag
-    ))
-
-(global-set-key
- (kbd "H-,")
- '(lambda (&optional prefix)
-    (interactive "P")
-   (call-interactively (if prefix  'gtags-find-symbol ;; H-, find all usages of symbol.
-                         'gtags-find-rtag)) ;; H-. find all references of tag
-   ))
+     (defun ww-next-gtag ()
+       "Find next matching tag, for GTAGS."
+       (interactive)
+       (let ((latest-gtags-buffer
+              (car (delq nil  (mapcar (lambda (x) (and (string-match "GTAGS SELECT" (buffer-name x)) (buffer-name x)) )
+                                      (buffer-list)) ))))
+         (cond (latest-gtags-buffer
+                (switch-to-buffer latest-gtags-buffer)
+                (forward-line)
+                (gtags-select-it nil))
+               ) ))
 
 
-;;deprecatedby-gtag.el gtag-mode;;(defun gtags-root-dir ()
-;;deprecatedby-gtag.el gtag-mode;;  "Returns GTAGS root directory or nil if doesn't exist."
-;;deprecatedby-gtag.el gtag-mode;;  (with-temp-buffer
-;;deprecatedby-gtag.el gtag-mode;;    (if (zerop (call-process gtags-global-command nil t nil "-pr"))
-;;deprecatedby-gtag.el gtag-mode;;        (buffer-substring (point-min) (1- (point-max)))
-;;deprecatedby-gtag.el gtag-mode;;      nil)))
-;;deprecatedby-gtag.el gtag-mode;;
-;;deprecatedby-gtag.el gtag-mode;;(defun gtags-update ()
-;;deprecatedby-gtag.el gtag-mode;;  "Make GTAGS incremental update"
-;;deprecatedby-gtag.el gtag-mode;;  (call-process gtags-global-command nil nil nil "-u"))
-;;deprecatedby-gtag.el gtag-mode;;
-;;deprecatedby-gtag.el gtag-mode;;(defun gtags-update-hook ()
-;;deprecatedby-gtag.el gtag-mode;;  (when (gtags-root-dir)
-;;deprecatedby-gtag.el gtag-mode;;    (gtags-update)))
-;;deprecatedby-gtag.el gtag-mode;;
-;;deprecatedby-gtag.el gtag-mode;;;;(add-hook 'after-save-hook #'gtags-update-hook)
-;;deprecatedby-gtag.el gtag-mode;;
-;;deprecatedby-gtag.el gtag-mode;;;;;GNU GLOBAL update for a single file
-;;deprecatedby-gtag.el gtag-mode;;;;;
-;;deprecatedby-gtag.el gtag-mode;;;;;For projects with a huge amount of files, “global -u” can take a
-;;deprecatedby-gtag.el gtag-mode;;;;;very long time to complete. For changes in a single file, we can
-;;deprecatedby-gtag.el gtag-mode;;;;;update the tags with “gtags --single-update” and do it in the
-;;deprecatedby-gtag.el gtag-mode;;;;;background:
-;;deprecatedby-gtag.el gtag-mode;;
-;;deprecatedby-gtag.el gtag-mode;;
-;;deprecatedby-gtag.el gtag-mode;;(defun gtags-update-single(filename)
-;;deprecatedby-gtag.el gtag-mode;;  "Update Gtags database for changes in a single file"
-;;deprecatedby-gtag.el gtag-mode;;  (interactive)
-;;deprecatedby-gtag.el gtag-mode;;  (start-process "update-gtags" "update-gtags" "bash" "-c" (concat "cd " (gtags-root-dir) " ; gtags --single-update " filename )))
-;;deprecatedby-gtag.el gtag-mode;;
-;;deprecatedby-gtag.el gtag-mode;;(defun gtags-update-current-file()
-;;deprecatedby-gtag.el gtag-mode;;  (interactive)
-;;deprecatedby-gtag.el gtag-mode;;  (defvar filename)
-;;deprecatedby-gtag.el gtag-mode;;  (setq filename (replace-regexp-in-string (gtags-root-dir) "." (buffer-file-name (current-buffer))))
-;;deprecatedby-gtag.el gtag-mode;;  (gtags-update-single filename)
-;;deprecatedby-gtag.el gtag-mode;;  (message "Gtags updated for %s" filename))
-;;deprecatedby-gtag.el gtag-mode;;
-;;deprecatedby-gtag.el gtag-mode;;(defun gtags-update-hook()
-;;deprecatedby-gtag.el gtag-mode;;  "Update GTAGS file incrementally upon saving a file"
-;;deprecatedby-gtag.el gtag-mode;;  (when gtags-mode
-;;deprecatedby-gtag.el gtag-mode;;    (when (gtags-root-dir)
-;;deprecatedby-gtag.el gtag-mode;;      (gtags-update-current-file))))
-;;deprecatedby-gtag.el gtag-mode;;
-;;deprecatedby-gtag.el gtag-mode;;;;(add-hook 'after-save-hook 'gtags-update-hook)
+     (defun find-tag-dwim(&optional prefix)
+       "union of `find-tag' alternatives. decides upon major-mode"
+       (interactive "P")
+       (if (and (boundp 'gtags-mode)
+                gtags-mode)
+           (progn
+             (ring-insert find-tag-marker-ring (point-marker))
+             (call-interactively (if prefix   'ww-next-gtag 'gtags-find-tag)))
+         (if (and (boundp 'cscope-minor-mode)
+                  cscope-minor-mode)
+             (progn
+               (ring-insert find-tag-marker-ring (point-marker))
+               (call-interactively
+                (if prefix
+                    'cscope-find-this-symbol
+                  'cscope-find-global-definition-no-prompting
+                  )))
+           (call-interactively 'find-tag))))
+
+     (substitute-key-definition 'find-tag 'find-tag-dwim  global-map)
+
+     (global-set-key
+      (kbd "H-.")
+      '(lambda (&optional prefix)
+         (interactive "P")
+         (call-interactively (if prefix  'gtags-find-tag ;; H-, find all usages of symbol.
+                               'ww-next-gtag)) ;; H-. find all references of tag
+         ))
+
+     (global-set-key
+      (kbd "H-,")
+      '(lambda (&optional prefix)
+         (interactive "P")
+         (call-interactively (if prefix  'gtags-find-symbol ;; H-, find all usages of symbol.
+                               'gtags-find-rtag)) ;; H-. find all references of tag
+         ))
 
 
- #+END_SRC
+     ;;deprecatedby-gtag.el gtag-mode;;(defun gtags-root-dir ()
+     ;;deprecatedby-gtag.el gtag-mode;;  "Returns GTAGS root directory or nil if doesn't exist."
+     ;;deprecatedby-gtag.el gtag-mode;;  (with-temp-buffer
+     ;;deprecatedby-gtag.el gtag-mode;;    (if (zerop (call-process gtags-global-command nil t nil "-pr"))
+     ;;deprecatedby-gtag.el gtag-mode;;        (buffer-substring (point-min) (1- (point-max)))
+     ;;deprecatedby-gtag.el gtag-mode;;      nil)))
+     ;;deprecatedby-gtag.el gtag-mode;;
+     ;;deprecatedby-gtag.el gtag-mode;;(defun gtags-update ()
+     ;;deprecatedby-gtag.el gtag-mode;;  "Make GTAGS incremental update"
+     ;;deprecatedby-gtag.el gtag-mode;;  (call-process gtags-global-command nil nil nil "-u"))
+     ;;deprecatedby-gtag.el gtag-mode;;
+     ;;deprecatedby-gtag.el gtag-mode;;(defun gtags-update-hook ()
+     ;;deprecatedby-gtag.el gtag-mode;;  (when (gtags-root-dir)
+     ;;deprecatedby-gtag.el gtag-mode;;    (gtags-update)))
+     ;;deprecatedby-gtag.el gtag-mode;;
+     ;;deprecatedby-gtag.el gtag-mode;;;;(add-hook 'after-save-hook #'gtags-update-hook)
+     ;;deprecatedby-gtag.el gtag-mode;;
+     ;;deprecatedby-gtag.el gtag-mode;;;;;GNU GLOBAL update for a single file
+     ;;deprecatedby-gtag.el gtag-mode;;;;;
+     ;;deprecatedby-gtag.el gtag-mode;;;;;For projects with a huge amount of files, “global -u” can take a
+     ;;deprecatedby-gtag.el gtag-mode;;;;;very long time to complete. For changes in a single file, we can
+     ;;deprecatedby-gtag.el gtag-mode;;;;;update the tags with “gtags --single-update” and do it in the
+     ;;deprecatedby-gtag.el gtag-mode;;;;;background:
+     ;;deprecatedby-gtag.el gtag-mode;;
+     ;;deprecatedby-gtag.el gtag-mode;;
+     ;;deprecatedby-gtag.el gtag-mode;;(defun gtags-update-single(filename)
+     ;;deprecatedby-gtag.el gtag-mode;;  "Update Gtags database for changes in a single file"
+     ;;deprecatedby-gtag.el gtag-mode;;  (interactive)
+     ;;deprecatedby-gtag.el gtag-mode;;  (start-process "update-gtags" "update-gtags" "bash" "-c" (concat "cd " (gtags-root-dir) " ; gtags --single-update " filename )))
+     ;;deprecatedby-gtag.el gtag-mode;;
+     ;;deprecatedby-gtag.el gtag-mode;;(defun gtags-update-current-file()
+     ;;deprecatedby-gtag.el gtag-mode;;  (interactive)
+     ;;deprecatedby-gtag.el gtag-mode;;  (defvar filename)
+     ;;deprecatedby-gtag.el gtag-mode;;  (setq filename (replace-regexp-in-string (gtags-root-dir) "." (buffer-file-name (current-buffer))))
+     ;;deprecatedby-gtag.el gtag-mode;;  (gtags-update-single filename)
+     ;;deprecatedby-gtag.el gtag-mode;;  (message "Gtags updated for %s" filename))
+     ;;deprecatedby-gtag.el gtag-mode;;
+     ;;deprecatedby-gtag.el gtag-mode;;(defun gtags-update-hook()
+     ;;deprecatedby-gtag.el gtag-mode;;  "Update GTAGS file incrementally upon saving a file"
+     ;;deprecatedby-gtag.el gtag-mode;;  (when gtags-mode
+     ;;deprecatedby-gtag.el gtag-mode;;    (when (gtags-root-dir)
+     ;;deprecatedby-gtag.el gtag-mode;;      (gtags-update-current-file))))
+     ;;deprecatedby-gtag.el gtag-mode;;
+     ;;deprecatedby-gtag.el gtag-mode;;;;(add-hook 'after-save-hook 'gtags-update-hook)
 
- #+RESULTS:
- | lambda | (&optional prefix) | (interactive P) | (call-interactively (if prefix (quote gtags-find-symbol) (quote gtags-find-rtag))) |
+
+   #+END_SRC
+
+   #+RESULTS:
+   | lambda | (&optional prefix) | (interactive P) | (call-interactively (if prefix (quote gtags-find-symbol) (quote gtags-find-rtag))) |
 
 * edit
 
@@ -2260,22 +2258,21 @@ to the symbol at point."
          (setq line-move-visual t))
        )
 
-     (use-package expand-region :ensure)
+     (leaf expand-region :ensure t)
 
-     (use-package mwim
-       :demand
+     (leaf mwim
+       :ensure t
        :config
        (global-set-key (kbd "<home>") 'mwim-beginning-of-code-or-line)
        (global-set-key (kbd "<end>")  'mwim-end-of-code-or-line))
 
-     (use-package delsel
-       :demand
-       :config
-       (delete-selection-mode 1))
+     (leaf delsel
+       :ensure t
+       :global-minor-mode delete-selection-mode)
 
 
-     (use-package hide-region+
-       :demand
+     (leaf hide-region+
+       :ensure t
        ;; :commands hide-region-hide hide-region-unhide
        )
 
@@ -2284,14 +2281,17 @@ to the symbol at point."
 ** auto complete
 
    #+BEGIN_SRC emacs-lisp :tangle no
-;;; _ AUTO COMPLETE
-(use-package auto-complete
-     :demand
-:config
-(define-key ac-completing-map (kbd "C-j") 'ac-next)
-(define-key ac-completing-map (kbd "C-p") 'ac-previous)
-(define-key ac-completing-map (kbd "C-o") 'ac-expand))
+     ;;; _ AUTO COMPLETE
+     (leaf auto-complete
+       :ensure t
+       :bind ((:ac-completing-map
+               ((kbd "C-j") . ac-next)
+               ((kbd "C-p") . ac-previous)
+               ((kbd "C-o") . ac-expand)))) 
    #+END_SRC
+
+   #+RESULTS:
+   : auto-complete
 
 ** file change
    #+BEGIN_SRC emacs-lisp
@@ -2444,149 +2444,6 @@ to the symbol at point."
 
    #+RESULTS:
    : dwim-copy-region-as-kill
-
-** block operation                                               :DEPRECATED:
-
-   #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package mark-more-like-this
-     :demand
-    :config
-    (global-set-key (kbd "C-<") 'mark-previous-like-this)
-    (global-set-key (kbd "C->") 'mark-next-like-this)
-    (global-set-key (kbd "C-M-m") 'mark-more-like-this) ; like the other two, but takes an argument (negative is previous)
-    (global-set-key (kbd "C-*") 'mark-all-like-this))
-
-  (add-hook
-   'sgml-mode-hook
-   (lambda ()
-     (require 'rename-sgml-tag)
-     (define-key sgml-mode-map (kbd "C-c C-r") 'rename-sgml-tag)))
-
-   #+END_SRC
-
-** not work                                                      :DEPRECATED:
-   #+BEGIN_SRC emacs-lisp :tangle no
-(defun w32-fontified-region-to-clipboard (START END)
-  "Htmlizes region, saves it as a html file, scripts Microsoft Word to
-open in the background and to copy all text to the clipboard, then
-quits. Useful if you want to send fontified source code snippets to
-your friends using RTF-formatted e-mails.
-
-Version: 0.1
-
-Author:
-
-Mathias Dahl, <mathias@cucumber.dahl.net>. Remove the big, green
-vegetable from my e-mail address...
-
-Requirements:
-
- * htmlize.el
- * wscript.exe must be installed and enabled
- * Microsoft Word must be installed
-
-Usagc:
-
-Mark a region of fontified text, run this function and in a number of
-seconds you have the whole colorful text on your clipboard, ready to
-be pasted into a RTF-enabled application.
-
-"
-  (interactive "r")
-  (let ((snippet (buffer-substring START END))
-        (buf (get-buffer-create "*htmlized_to_clipboard*"))
-        (script-file-name (expand-file-name "~/htmlized_to_clipboard.vbs"))
-        (htmlized-file-name (expand-file-name "~/htmlized.html")))
-    (set-buffer buf)
-    (delete-region (point-min) (point-max))
-    (insert snippet)
-    (htmlize-buffer)
-    (write-file htmlized-file-name)
-    (delete-region (point-min) (point-max))
-    (setq htmlized-file-name
-          (substitute ?\\ ?/ htmlized-file-name))
-    (insert
-     (concat
-      "Set oWord = CreateObject(\"Word.Application\")\n"
-      "oWord.Documents.Open(\"" htmlized-file-name "\")\n"
-      "oWord.Selection.HomeKey 6\n"
-      "oWord.Selection.EndKey 6,1\n"
-      "oWord.Selection.Copy\n"
-      "oWord.Quit\n"
-      "Set oWord = Nothing\n"))
-    (write-file script-file-name)
-    (kill-buffer "htmlized_to_clipboard.vbs")
-    (setq script-file-name
-          (substitute ?\\ ?/ script-file-name))
-    (w32-shell-execute nil "wscript.exe"
-                       script-file-name)))
-   #+END_SRC
-** line operation                                                :DEPRECATED:
-   #+BEGIN_SRC emacs-lisp :tangle no
-;;; Take the line from the cursor and move it up a line.
-(defun move-line-up ()
-  (interactive)
-  (let ((beg (point)))
-    (previous-line)
-    (delete-region beg (point))))
-
-(defun pg-kill-this-line (n)
-  "Kill the line point is on.
-  With prefix arg, kill this many lines starting at the line point is on."
-  (interactive "p")
-  (kill-region (line-beginning-position)
-               (progn (forward-line n) (point))))
-
-(defun pg-duplicate-this-line (n)
-  "Duplicates the line point is on.
- With prefix arg, duplicate current line this many times."
-  (interactive "p")
-  (save-excursion
-    (copy-region-as-kill (line-beginning-position)
-                         (progn (forward-line 1) (point)))
-    (while (< 0 n)
-      (yank)
-      (setq n (1- n)))))
-
-
-(defun kill-line-retain-column ()
-  (interactive)
-  (let ((goal-column (truncate temporary-goal-column))
-        (column (current-column)))
-    ;; Are we on a blank line?
-    (if (= (line-beginning-position) (line-end-position))
-        (progn (if (= (point) (buffer-end 1))
-                   ;; Just delete the newline character.
-                   (backward-delete-char-untabify 1)
-                 (kill-line))
-               (move-to-column goal-column))
-      (progn
-        ;; Are we on the last line of the buffer?
-        (if (= (line-number-at-pos)
-               (line-number-at-pos (buffer-end 1)))
-            ;; We are, so delete the line and move up.
-            (kill-whole-line -1)
-          (kill-whole-line))
-        ;; Assign a new temporary goal column.
-        (setq temporary-goal-column column)
-        ;; Retain the column.
-        (move-to-column column)))))
-
-;;(global-set-key [delete] 'kill-line-retain-column)
-
-
-(define-key global-map (kbd "s-i") 'move-line-up)      ;;; A line killing function vaguely similar to vim's dd.
-(define-key global-map (kbd "s-k") 'pg-kill-this-line)
-(define-key global-map (kbd "s-o") 'pg-duplicate-this-line)
-   #+END_SRC
-
-
-
-
-
-
-   #+RESULTS:
-   : crux
 
 
 * coding standard
@@ -3282,25 +3139,23 @@ When called from Lisp code, ARG may be a prefix string to copy."
 ** intranet
    #+BEGIN_SRC emacs-lisp
 
- ;; https://github.com/skeeto/skewer-mode
+     ;; https://github.com/skeeto/skewer-mode
 
 
- (use-package httprepl
-      :demand
- )
- (use-package skewer-mode
-      :demand
-   :config
-   ( skewer-setup ))
+     (leaf httprepl :ensure t)
+     (leaf skewer-mode 
+       :ensure t
+       :config
+       ( skewer-setup ))
 
 
- (defun httpget (url)
-   (interactive "sURL: ")
-   (let ((url-request-method "GET")
-         ;;(arg-stuff (concat "?query=" (url-hexify-string str)
-         ;;                   "&filter=" (url-hexify-string type)))
-         )
-     (url-retrieve url (lambda (status) (switch-to-buffer (current-buffer))))))
+     (defun httpget (url)
+       (interactive "sURL: ")
+       (let ((url-request-method "GET")
+             ;;(arg-stuff (concat "?query=" (url-hexify-string str)
+             ;;                   "&filter=" (url-hexify-string type)))
+             )
+         (url-retrieve url (lambda (status) (switch-to-buffer (current-buffer))))))
 
 
 
@@ -3310,16 +3165,16 @@ When called from Lisp code, ARG may be a prefix string to copy."
    #+END_SRC
 ** internet
  #+begin_src emacs-lisp :tangle no
- (use-package  google-contacts
- :demand
- :commands google-contacts)
+   (leaf  google-contacts
+     :ensure t
+     :commands google-contacts)
 
- ;; http://pragmaticemacs.com/emacs/weather-in-emacs/
- (use-package wttrin
-   :demand
-   :commands wttrin
-   :init
-   (setq wttrin-default-cities '("gumi-si" "Daegu")))
+   ;; http://pragmaticemacs.com/emacs/weather-in-emacs/
+   (leaf wttrin
+     :ensure t
+     :commands wttrin
+     :custom
+     (wttrin-default-cities . '("gumi-si" "Daegu")))
  #+end_src
 
 
@@ -3533,11 +3388,12 @@ When called from Lisp code, ARG may be a prefix string to copy."
     (setq common-lisp-hyperspec-root
           "filc:U:/usr/local/clisp-2.37/hyperspec/HyperSpec/" )
 
-    (use-package irfc
-      :demand
+    (leaf irfc
+      :ensure t
       :init
-      (setq irfc-directory (fullpath "../rfcdoc"))
-      (setq irfc-assoc-mode t)
+      :custom
+      ((irfc-directory . (fullpath "../rfcdoc"))
+       (irfc-assoc-mode. t))
       :config
       (defun rfcsearch ()
         (interactive)
@@ -4123,50 +3979,48 @@ _l_: load
 * SDCV dictionary
 
   #+begin_src emacs-lisp
-    (use-package sdcv
-      :ensure
-      :init
-      (setq sdcv-dictionary-simple-list        ;; a simple dictionary list
-            '(
-              "quick_english-korean"
-              ))
-      (setq sdcv-dictionary-complete-list      ;; a complete dictionary list
-            '(
-              "Concise Oxford English Dictionary (En-En)"
-              "Concise Oxford Thesaurus 2nd Ed. (Eng-Eng)"
-              "Korean Medical Dic"
-              "quick_english-korean"
-              "Hanja(Korean Hanzi) Dic"
-              "Korean Animal Medical Dic"
-              "Korean Dic"
-              "Korean-English Dic"
-              "Korean Law Dic"
-              "Kor-Eng Dictionary"
-              ))
-
-      )
-
-    ;; 패키지 내부에 있는 함수 변경
-    (defun sdcv-pronounce-word (&optional word)
-      "Pronounce `WORD' after querying."
-      (apply
-       #'async-start-process
-       "espeak"
-       sdcv-word-pronounce-command
-       (lambda (proc ) (delete-process proc ))
-       (cons (shell-quote-argument word) (s-split " " sdcv-word-pronounce-command-args)))
-      ;;(call-process-shell-command
-      ;; sdcv-word-pronounce-command
-      ;; nil nil nil
-      ;; sdcv-word-pronounce-command-args
-      ;; (shell-quote-argument word))
-      )
+    (leaf sdcv
+      :ensure t
+      :custom (
+               (sdcv-dictionary-simple-list  .      ;; a simple dictionary list
+                                             '(
+                                               "quick_english-korean"
+                                               ))
+               (sdcv-dictionary-complete-list  .    ;; a complete dictionary list
+                                               '(
+                                                 "Concise Oxford English Dictionary (En-En)"
+                                                 "Concise Oxford Thesaurus 2nd Ed. (Eng-Eng)"
+                                                 "Korean Medical Dic"
+                                                 "quick_english-korean"
+                                                 "Hanja(Korean Hanzi) Dic"
+                                                 "Korean Animal Medical Dic"
+                                                 "Korean Dic"
+                                                 "Korean-English Dic"
+                                                 "Korean Law Dic"
+                                                 "Kor-Eng Dictionary"
+                                                 )))
+      :config
+      ;; 패키지 내부에 있는 함수 변경
+      (defun sdcv-pronounce-word (&optional word)
+        "Pronounce `WORD' after querying."
+        (apply
+         #'async-start-process
+         "espeak"
+         sdcv-word-pronounce-command
+         (lambda (proc ) (delete-process proc ))
+         (cons (shell-quote-argument word) (s-split " " sdcv-word-pronounce-command-args)))
+        ;;(call-process-shell-command
+        ;; sdcv-word-pronounce-command
+        ;; nil nil nil
+        ;; sdcv-word-pronounce-command-args
+        ;; (shell-quote-argument word))
+        ))
 
 
   #+end_src
 
   #+RESULTS:
-  : sdcv-pronounce-word
+  : sdcv
 
 * plantuml
   #+begin_src emacs-lisp

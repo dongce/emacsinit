@@ -314,7 +314,7 @@
    (define-key ctl-x-r-map "p" 'copy-rectangle-to-clipboard )
 
 
-   ;;deprecated;;(use-package zygospore
+   ;;deprecated;;(leaf zygospore
    ;;deprecated;;  :config
    ;;deprecated;;  (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows))
 
@@ -429,106 +429,6 @@
 #+END_SRC
 
 
-** win-switch                                                   :deprecated:
-#+BEGIN_SRC emacs-lisp :tangle no
-
-   (use-package win-switch
-     :demand
-     :config 
-     (defun win-switch-setup-keys-hjkl (&rest dispatch-keys)
-       "Restore default key commands and bind global dispatch keys.
-   Under this setup, keys i, j, k, and l will switch windows,
-   respectively, up, left, down, and right, with other functionality
-   bound to nearby keys. The arguments DISPATCH-KEYS, if non-nil,
-   should be a list of keys that will be bound globally to
-   `win-switch-dispatch'."
-       (interactive)
-       (win-switch-set-keys '("h") 'left)
-       (win-switch-set-keys '("k") 'up)
-       (win-switch-set-keys '("j") 'down)
-       (win-switch-set-keys '("l") 'right)
-       (win-switch-set-keys '("o") 'next-window)
-       (win-switch-set-keys '("p") 'previous-window)
-       (win-switch-set-keys '("J") 'shrink-vertically)
-       (win-switch-set-keys '("K") 'enlarge-vertically)
-       (win-switch-set-keys '("H") 'shrink-horizontally)
-       (win-switch-set-keys '("L") 'enlarge-horizontally)
-       (win-switch-set-keys '(" ") 'other-frame)
-       (win-switch-set-keys '("u" [return]) 'exit)
-       (win-switch-set-keys '(";") 'split-horizontally)
-       (win-switch-set-keys '("i") 'split-vertically) ; visual not letter mnemonic
-       (win-switch-set-keys '("0") 'delete-window)
-       (win-switch-set-keys '("\M-\C-g") 'emergency-exit)
-       (dolist (key dispatch-keys)
-         (global-set-key key 'win-switch-dispatch)))
-
-   ;;;###autoload
-     (defun win-switch-setup-keys-hjkl-minimal (&rest dispatch-keys)
-       "Restore default key commands and bind global dispatch keys.
-   Split and delete keys are excluded from the map for simplicity.
-   Under this setup, keys i, j, k, and l will switch windows,
-   respectively, up, left, down, and right, with other functionality
-   bound to nearby keys. The arguments DISPATCH-KEYS, if non-nil,
-   should be a list of keys that will be bound globally to
-   `win-switch-dispatch'."
-       (interactive)
-       (apply 'win-switch-setup-keys-hjkl dispatch-keys)
-       (win-switch-remove-split-and-delete-keys))
-
-
-     ;;(global-set-key "\C-xo" 'win-switch-dispatch)
-
-     (win-switch-setup-keys-hjkl  "\C-xo" (kbd "H-o") ))
-
-   (global-set-key (kbd "C-x x") 'delete-other-windows)
-   (global-set-key (kbd "C-x c") 'delete-window)
-
-   (global-set-key [(control meta ?y)]     'secondary-dwim)
-
-   ;;eprecatedbyevil##(global-set-key [M-up]   'win-switch-up)
-   ;;eprecatedbyevil##(global-set-key [M-down] 'win-switch-down)
-   ;;eprecatedbyevil##(global-set-key [M-left] 'win-switch-left)
-   ;;eprecatedbyevil##(global-set-key [M-right] 'win-switch-right)
-   ;;eprecatedbyevil##(global-set-key [H-down] 'win-switch-down)
-   ;;eprecatedbyevil##(global-set-key [H-up] 'win-switch-up)
-
-   ;;(global-set-key (kbd "C-c <left>")  'windmove-left)
-   ;;(global-set-key (kbd "C-c <right>") 'windmove-right)
-   ;;(global-set-key (kbd "C-c <up>")    'windmove-up)
-   ;;(global-set-key (kbd "C-c <down>")  'windmove-down)
-
-   ;;(windmove-default-keybindings)
-   ;;(win-switch-setup-keys-arrow-meta)
-   ;;(global-set-key (vector (list 'shift 'left))  'delete-window)
-   ;;(global-set-key (vector (list 'shift 'right)) 'delete-other-windows)
-   ;;(global-set-key (vector (list 'shift 'up))   
-   ;;                #'(lambda ()
-   ;;                    (interactive)
-   ;;                    (append-next-kill)
-   ;;                    (if mark-active
-   ;;                        (kill-ring-save (region-beginning) (region-end))
-   ;;                      (progn
-   ;;                        (message "Current line is copied.")
-   ;;                        (kill-ring-save (line-beginning-position) (line-beginning-position 2)) ) )))
-   ;;
-   ;;(global-set-key (vector (list 'shift 'down))   
-   ;;                #'(lambda ()
-   ;;                    (interactive)
-   ;;                    (append-next-kill)
-   ;;                    (if mark-active
-   ;;                        (kill-ring-save (region-beginning) (region-end))
-   ;;                      (progn
-   ;;                        (message "Current line is copied.")
-   ;;                        (kill-ring-save (line-beginning-position) (line-beginning-position 2)) ) )))
-   ;;
-   ;;
-   ;;;;;
-   ;;;; Move to beginning of word before yanking word in isearch-mode.
-   ;;;; Make C-s C-w and C-r C-w act like Vim's g* and g#, keeping Emacs'
-   ;;;; C-s C-w [C-w] [C-w]... behaviour.
-
-#+END_SRC
-
 ** misc
 #+BEGIN_SRC emacs-lisp
 
@@ -592,94 +492,89 @@
 ** package gdb/helm etc
 #+BEGIN_SRC emacs-lisp
 
-   (use-package helm-descbinds
-     :demand
-     :config
-     (helm-descbinds-mode))
+  (leaf helm-descbinds
+    :global-minor-mode helm-descbinds-mode)
 
-   (use-package proced
-     :demand
-     :config
+  (leaf proced
+    :demand
+    :bind ((:proced-mode-map
+            (";" . #'proced-gdb)))
+    :config
     (defun proced-gdb ()
       (interactive)
       (let ((pid (proced-pid-at-point)))
         ;; (gdb  (format "gdb -i=mi /proc/%d/exe %d" pid pid))))
-        (gdb  (format "/usr/bin/gdb -i=mi /proc/%d/exe %d" pid pid))))
-    (define-key proced-mode-map ";" #'proced-gdb))
+        (gdb  (format "/usr/bin/gdb -i=mi /proc/%d/exe %d" pid pid)))))
 
 
 
-   (use-package gdb-mi
-     :demand
-     :config
-     (defun gud-key ()
-       (interactive)
-       (global-set-key [f5] 'gud-cont)
-       (global-set-key [f15] 'gud-stop-subjob)
-       (global-set-key [f9] 'gud-break)
-       (global-set-key [f19] 'gud-remove)
-       (global-set-key [f10] 'gud-next)
-       (global-set-key [C-f10] 'gud-finish)
-       (global-set-key [f20] 'gud-until)
-       (global-set-key [f11] 'gud-step)
-       (global-set-key [f14] 'gdb-restore-windows)
-       (global-set-key [f12] 'emamux:send-dwim)
-       )
+  (leaf gdb-mi
+    :ensure t
+    :bind ((:gud-minor-mode-map
+            ([left-margin mouse-1] . gdb-mouse-toggle-breakpoint-margin)
+            ([left-fringe mouse-1] . gdb-mouse-toggle-breakpoint-fringe)))
+
+    :config
+    (defun gud-key ()
+      (interactive)
+      (global-set-key [f5] 'gud-cont)
+      (global-set-key [f15] 'gud-stop-subjob)
+      (global-set-key [f9] 'gud-break)
+      (global-set-key [f19] 'gud-remove)
+      (global-set-key [f10] 'gud-next)
+      (global-set-key [C-f10] 'gud-finish)
+      (global-set-key [f20] 'gud-until)
+      (global-set-key [f11] 'gud-step)
+      (global-set-key [f14] 'gdb-restore-windows)
+      (global-set-key [f12] 'emamux:send-dwim))
+
+    (defvar gud-overlay
+      (let* ((ov (make-overlay (point-min) (point-min))))
+        (overlay-put ov 'face 'dvc-highlight );;secondary-selection 
+        ov)
+      "Overlay variable for GUD highlighting.")
+
+    (defadvice gud-display-line (after my-gud-highlight act)
+      "Highlight current line."
+      (let* ((ov gud-overlay)
+             (bf (gud-find-file true-file)))
+        (save-excursion
+          (set-buffer bf)
+          (move-overlay ov (line-beginning-position) (line-end-position)
+                        (current-buffer)))))
+
+    (defun gud-kill-buffer ()
+      (if (eq major-mode 'gud-mode)
+          (delete-overlay gud-overlay)))
+
+    (add-hook 'kill-buffer-hook 'gud-kill-buffer)
 
 
-     (define-key gud-minor-mode-map [left-margin mouse-1]
-       'gdb-mouse-toggle-breakpoint-margin)
-     (define-key gud-minor-mode-map [left-fringe mouse-1]
-       'gdb-mouse-toggle-breakpoint-fringe)
+    ;; (defadvice pop-to-buffer (before cancel-other-window first)
+    ;;   (ad-set-arg 1 nil))
+
+    ;; (ad-activate 'pop-to-buffer)
 
 
-     (defvar gud-overlay
-       (let* ((ov (make-overlay (point-min) (point-min))))
-         (overlay-put ov 'face 'dvc-highlight );;secondary-selection 
-         ov)
-       "Overlay variable for GUD highlighting.")
-
-     (defadvice gud-display-line (after my-gud-highlight act)
-       "Highlight current line."
-       (let* ((ov gud-overlay)
-              (bf (gud-find-file true-file)))
-         (save-excursion
-           (set-buffer bf)
-           (move-overlay ov (line-beginning-position) (line-end-position)
-                         (current-buffer)))))
-
-     (defun gud-kill-buffer ()
-       (if (eq major-mode 'gud-mode)
-           (delete-overlay gud-overlay)))
-
-     (add-hook 'kill-buffer-hook 'gud-kill-buffer)
-  
-
-     ;; (defadvice pop-to-buffer (before cancel-other-window first)
-     ;;   (ad-set-arg 1 nil))
-
-     ;; (ad-activate 'pop-to-buffer)
+    (defun gdb-inferior-filter (proc string)
+      ;;(unless (string-equal string "")
+      ;;  (gdb-display-buffer (gdb-get-buffer-create 'gdb-inferior-io)))
+      (with-current-buffer (gdb-get-buffer-create 'gdb-inferior-io)
+        (comint-output-filter proc string)))
 
 
-     (defun gdb-inferior-filter (proc string)
-       ;;(unless (string-equal string "")
-       ;;  (gdb-display-buffer (gdb-get-buffer-create 'gdb-inferior-io)))
-       (with-current-buffer (gdb-get-buffer-create 'gdb-inferior-io)
-         (comint-output-filter proc string)))
-
-
-     (if (not gdb-non-stop-setting)
-         (defun gud-stop-subjob ()
-           (interactive)
-           (with-current-buffer gud-comint-buffer
-             (cond ((string-equal gud-target-name "emacs")
-                    (comint-stop-subjob))
-                   ((eq gud-minor-mode 'jdb)
-                    (gud-call "suspend"))
-                   ;;use-comint;;((eq gud-minor-mode 'gdbmi)
-                   ;;use-comint;; (gud-call (gdb-gud-context-command "-exec-interrupt")))
-                   (t
-                    (comint-interrupt-subjob)))))))
+    (if (not gdb-non-stop-setting)
+        (defun gud-stop-subjob ()
+          (interactive)
+          (with-current-buffer gud-comint-buffer
+            (cond ((string-equal gud-target-name "emacs")
+                   (comint-stop-subjob))
+                  ((eq gud-minor-mode 'jdb)
+                   (gud-call "suspend"))
+                  ;;use-comint;;((eq gud-minor-mode 'gdbmi)
+                  ;;use-comint;; (gud-call (gdb-gud-context-command "-exec-interrupt")))
+                  (t
+                   (comint-interrupt-subjob)))))))
 #+END_SRC
 
 #+RESULTS:
