@@ -401,11 +401,11 @@ Version 2016-06-15"
 #+BEGIN_SRC emacs-lisp
 
   (use-package helm-swoop
-     :demand
+     :ensure t
     :config 
     (define-key helm-swoop-map [f11] 'xah-paste-from-register))
   (use-package helm-ag
-     :demand
+     :ensure t
     :config 
   (define-key helm-ag-map [f11] 'xah-paste-from-register))
   (define-key helm-grep-map [f11] 'xah-paste-from-register)

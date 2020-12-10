@@ -284,114 +284,86 @@
 
 
    #+BEGIN_SRC emacs-lisp
-  ;;deprecated;;(evilnc-default-hotkeys)
+     ;;deprecated;;(evilnc-default-hotkeys)
 
-  ;;deprecated;;(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
-  (evil-set-toggle-key "<pause>")
-  (define-key evil-normal-state-map "u" 'undo-fu-only-undo)
-  (define-key evil-normal-state-map "U" 'undo-fu-only-redo)
-  (define-key evil-normal-state-map [escape] 'keyboard-quit)
-  (define-key evil-visual-state-map [escape] 'keyboard-quit)
-  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-  ;; (define-key minibuffer-local-isearch-map [escape] 'keyboard-quit)
-  ;;(define-key minibuffer-local-isearch-map [?\S- ] 'toggle-korean-input-method)
+     ;;deprecated;;(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
+     (evil-set-toggle-key "<pause>")
 
-
-
-
-  ;;deprecated;;(global-set-key [M-return] 'smex)
-  (define-key evil-normal-state-map (kbd "C-c +") #'evil-numbers/inc-at-pt)
-  (define-key evil-normal-state-map (kbd "C-c -") #'evil-numbers/dec-at-pt)
-  (define-key evil-normal-state-map "zx" 'smex)
+     (general-define-key
+       :keymaps '(evil-normal-state-map evil-visual-state-map)
+      "u" 'undo-fu-only-undo
+      "U" 'undo-fu-only-redo
+      "gl" 'goto-line
+      "g[" 'beginning-of-buffer
+      "g]" 'end-of-buffer      
+      "g{" 'beginning-of-defun
+      "g}" 'end-of-defun      
+      "gg" 'revert-buffer
+      "gR" 'xref-find-references
+      "gr" 'xref-pop-marker-stack
+      "Q" 'call-last-kbd-macro
+      "Q" 'call-last-kbd-macro
+      [escape] 'keyboard-quit)
 
 
-  (define-key evil-normal-state-map "\C-a" 'evil-beginning-of-line)
-  (define-key evil-insert-state-map "\C-a" 'beginning-of-line)
-  (define-key evil-visual-state-map "\C-a" 'evil-beginning-of-line)
+     (general-define-key
+      :keymaps '(evil-normal-state-map evil-visual-state-map evil-insert-state-map)
+
+     "\C-a" 'evil-beginning-of-line
+     "\C-e" 'evil-end-of-line
+     "\C-f" 'evil-forward-char
+     "\C-b" 'evil-backward-char
+     "\C-d" 'evil-delete-char
+     "\C-n" 'evil-next-line
+     "\C-p" 'evil-previous-line
+     ;; "\C-w" 'phi-rectangle-kill-region
+     "\C-w" 'kill-region-dwim
+     "\C-y" 'yank
+     "\C-k" 'kill-line
+     )
+
+     (general-define-key
+      :keymaps '(minibuffer-local-map 
+                 minibuffer-local-ns-map 
+                 minibuffer-local-completion-map 
+                 minibuffer-local-must-match-map 
+                 minibuffer-local-isearch-map)
+      [escape] 'minibuffer-keyboard-quit)
+
+     ;;(define-key minibuffer-local-isearch-map [escape] 'keyboard-quit)
+     ;;(define-key minibuffer-local-isearch-map [?\S- ] 'toggle-korean-input-method)
 
 
-  (define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
-  (define-key evil-insert-state-map "\C-e" 'end-of-line)
-  (define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
-  (define-key evil-normal-state-map "\C-f" 'evil-forward-char)
-  (define-key evil-insert-state-map "\C-f" 'evil-forward-char)
-  (define-key evil-insert-state-map "\C-f" 'evil-forward-char)
-  (define-key evil-normal-state-map "\C-b" 'evil-backward-char)
-  (define-key evil-insert-state-map "\C-b" 'evil-backward-char)
-  (define-key evil-visual-state-map "\C-b" 'evil-backward-char)
-  (define-key evil-normal-state-map "\C-d" 'evil-delete-char)
-  (define-key evil-insert-state-map "\C-d" 'evil-delete-char)
-  (define-key evil-visual-state-map "\C-d" 'evil-delete-char)
-  (define-key evil-normal-state-map "\C-n" 'evil-next-line)
-  (define-key evil-insert-state-map "\C-n" 'evil-next-line)
-  (define-key evil-visual-state-map "\C-n" 'evil-next-line)
-  (define-key evil-normal-state-map "\C-p" 'evil-previous-line)
-  (define-key evil-insert-state-map "\C-p" 'evil-previous-line)
-  (define-key evil-visual-state-map "\C-p" 'evil-previous-line)
-  ;; (define-key evil-normal-state-map "\C-w" 'phi-rectangle-kill-region)
-  ;; (define-key evil-insert-state-map "\C-w" 'phi-rectangle-kill-region)
-  ;; (define-key evil-visual-state-map "\C-w" 'phi-rectangle-kill-region)
-  (define-key evil-normal-state-map "\C-w" 'kill-region-dwim)
-  (define-key evil-insert-state-map "\C-w" 'kill-region-dwim)
-  (define-key evil-visual-state-map "\C-w" 'kill-region-dwim)
-  (define-key evil-normal-state-map "\C-y" 'yank)
-  (define-key evil-insert-state-map "\C-y" 'yank)
-  (define-key evil-visual-state-map "\C-y" 'yank)
-  (define-key evil-normal-state-map "\C-k" 'kill-line)
-  (define-key evil-insert-state-map "\C-k" 'kill-line)
-  (define-key evil-visual-state-map "\C-k" 'kill-line)
-  (define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
-  (define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
 
-  ;;; http://leavinsprogramming.blogspot.kr/2012/05/evil-emacs-mode-for-vivim-users.html
-  (defun evil-undefine ()
-    (interactive)
-    (let (evil-mode-map-alist)
-      (call-interactively (key-binding (this-command-keys)))))
-  (define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
-  (define-key evil-motion-state-map "\C-]" 'find-tag-dwim)
+     ;;; http://leavinsprogramming.blogspot.kr/2012/05/evil-emacs-mode-for-vivim-users.html
+     (defun evil-undefine ()
+       (interactive)
+       (let (evil-mode-map-alist)
+         (call-interactively (key-binding (this-command-keys)))))
+
+     (general-define-key
+      :keymaps '(evil-normal-state-map)
+
+      (kbd "TAB")   #'evil-undefine
+      (kbd "C-c +") #'evil-numbers/inc-at-pt
+      (kbd "C-c -") #'evil-numbers/dec-at-pt
+      "zt" 'vimish-fold-toggle
+      "zF" 'hs-toggle-hiding
+      "zx" 'smex)
+
+     (general-define-key
+      :keymaps '(evil-motion-state-map)
+
+      "\C-]" 'find-tag-dwim
+      [down-mouse-1] 'mouse-drag-region) 
 
 
-  (define-key evil-normal-state-map "gl" 'goto-line)
-  (define-key evil-normal-state-map "g[" 'beginning-of-buffer)
-  (define-key evil-normal-state-map "g]" 'end-of-buffer      )
-  (define-key evil-normal-state-map "g{" 'beginning-of-defun)
-  (define-key evil-normal-state-map "g}" 'end-of-defun      )
-  (define-key evil-normal-state-map "gg" 'revert-buffer)
-  (define-key evil-normal-state-map "gR" 'xref-find-references)
-  (define-key evil-normal-state-map "gr" 'xref-pop-marker-stack)
 
 
-  (define-key evil-visual-state-map "gl" 'goto-line)
-  (define-key evil-visual-state-map "g[" 'beginning-of-buffer)
-  (define-key evil-visual-state-map "g]" 'end-of-buffer      )
-  (define-key evil-visual-state-map "g{" 'beginning-of-defun)
-  (define-key evil-visual-state-map "g}" 'end-of-defun      )
-  (define-key evil-visual-state-map "gg" 'revert-buffer)
-  (define-key evil-visual-state-map "gR" 'xref-find-references)
-  (define-key evil-visual-state-map "gr" 'xref-pop-marker-stack)
 
 
-  (define-key evil-normal-state-map "zf" 'vimish-fold-dwim) 
-  ;; (define-key evil-visual-state-map "zf" 'vimish-fold) 
-  (define-key evil-normal-state-map "zd" 'vimish-fold-delete) 
-  (define-key evil-normal-state-map "zs" 'vimish-fold-next-fold) 
-  (define-key evil-normal-state-map "zw" 'vimish-fold-previous-fold)
-
-  (define-key evil-normal-state-map "zF" 'hs-toggle-hiding)
 
 
-  ;; (define-key evil-motion-state-map "[[" 'backward-sexp)
-  ;; (define-key evil-motion-state-map "]]" 'forward-sexp)
-
-  (define-key evil-normal-state-map (kbd "C-c :" ) 'ac-complete-with-helm)
-  (define-key evil-insert-state-map (kbd "C-c :" ) 'ac-complete-with-helm)
-
-  (define-key evil-motion-state-map [down-mouse-1] 'mouse-drag-region)
 
    #+END_SRC
 
@@ -399,38 +371,25 @@
    #+BEGIN_SRC emacs-lisp
      ;; kp-map 
      ;; (define-key evil-normal-state-map [kp-0]     'helm-smex)
-     (define-key evil-normal-state-map [kp-0]        'copy-region-strip-left)
-     (define-key evil-normal-state-map [kp-1]        'select-window-1)
-     (define-key evil-normal-state-map [kp-2]        'select-window-2)
-     (define-key evil-normal-state-map [kp-3]        'select-window-3)
-     (define-key evil-normal-state-map [kp-4]        'evil-prev-buffer)
-     (define-key evil-normal-state-map [kp-5]        'helm-mini)
-     (define-key evil-normal-state-map [kp-6]        'evil-next-buffer)
-     (define-key evil-normal-state-map [kp-8]        'split-window-below)
-     (define-key evil-normal-state-map [kp-add]      'evil-paste-after)
-     (define-key evil-normal-state-map [kp-enter]    'kmacro-end-and-call-macro)
-     (define-key evil-normal-state-map [kp-decimal]  'winexe)
-     (define-key evil-normal-state-map [kp-subtract] 'recenter-top-bottom)
-     (define-key evil-normal-state-map [kp-7]        'copy-to-register-1)
-     (define-key evil-normal-state-map [kp-9]        'paste-from-register-1)
-     (define-key evil-normal-state-map [kp-divide]   'ibuffer)
 
-     ;; (define-key evil-visual-state-map [kp-0]     'helm-smex)
-     (define-key evil-visual-state-map [kp-0]        'copy-region-strip-left) 
-     (define-key evil-visual-state-map [kp-1]        'select-window-1)
-     (define-key evil-visual-state-map [kp-2]        'select-window-2)
-     (define-key evil-visual-state-map [kp-3]        'select-window-3)
-     (define-key evil-visual-state-map [kp-4]        'evil-prev-buffer)
-     (define-key evil-visual-state-map [kp-5]        'helm-mini)
-     (define-key evil-visual-state-map [kp-6]        'evil-next-buffer)
-     (define-key evil-visual-state-map [kp-add]      'evil-yank)
-     (define-key evil-visual-state-map [kp-enter]    'evil-paste-after)
-     (define-key evil-visual-state-map [kp-decimal]  'winexe)
-     (define-key evil-visual-state-map [kp-8]        'split-window-below)
-     (define-key evil-visual-state-map [kp-subtract] 'recenter-top-bottom)
-     (define-key evil-visual-state-map [kp-7]        'copy-to-register-1)
-     (define-key evil-visual-state-map [kp-9]        'paste-from-register-1)
-     (define-key evil-visual-state-map [kp-divide]   'ibuffer)
+     (general-define-key
+      :keymaps '(evil-normal-state-map evil-visual-state-map )
+      [kp-0]        'copy-region-strip-left
+      [kp-1]        'select-window-1
+      [kp-2]        'select-window-2
+      [kp-3]        'select-window-3
+      [kp-4]        'evil-prev-buffer
+      [kp-5]        'helm-mini
+      [kp-6]        'evil-next-buffer
+      [kp-7]        'copy-to-register-1
+      [kp-8]        'split-window-below
+      [kp-9]        'paste-from-register-1
+      [kp-divide]   'ibuffer
+      [kp-add]      'evil-paste-after
+      [kp-enter]    'kmacro-end-and-call-macro
+      [kp-decimal]  'winexe
+      [kp-subtract] 'recenter-top-bottom)
+
    #+END_SRC
 
    #+RESULTS:
@@ -442,8 +401,10 @@
        :ensure t
        :global-minor-mode global-evil-surround-mode 
        :config
-       (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
-       )
+       (general-define-key
+        :states 'visual
+        :keymaps evil-surround-mode-map
+        "s" 'evil-surround-region))
 
      (leaf evil-embrace
        :ensure t
@@ -506,30 +467,31 @@
        :ensure t
        :config
        ;; bind evil-args text objects
-       (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
-       (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+       (general-define-key
+        :keymaps 'evil-inner-text-objects-map
+        "a" 'evil-inner-arg)
+       (general-define-key
+        :keymaps 'evil-outer-text-objects-map
+        "a" 'evil-outer-arg)
 
        ;; bind evil-forward/backward-args
-       (define-key evil-normal-state-map "L" 'evil-forward-arg)
-       (define-key evil-normal-state-map "H" 'evil-backward-arg)
-       (define-key evil-motion-state-map "L" 'evil-forward-arg)
-       (define-key evil-motion-state-map "H" 'evil-backward-arg)
+       (general-define-key
+        :keymaps '(evil-normal-state-map evil-motion-state-map )
+        "K" 'evil-jump-out-args
+        "L" 'evil-forward-arg
+        "H" 'evil-backward-arg))
 
-       ;; bind evil-jump-out-args
-       (define-key evil-normal-state-map "K" 'evil-jump-out-args)
-
-       (define-key evil-normal-state-map (kbd "<S-return>")
-         (lambda ()
-           (interactive)
-           (call-interactively 'spacemacs/evil-insert-line-below)
-           (evil-next-line)))
-
-       (define-key evil-normal-state-map (kbd "<S-backspace>") 'split-line-indent))
+     (general-define-key
+      :keymaps '(evil-normal-state-map )
+      (kbd "<S-backspace>") 'split-line-indent
+      (kbd "<S-return>") #'(lambda ()
+                             (interactive)
+                             (call-interactively 'spacemacs/evil-insert-line-below)
+                             (evil-next-line)))
 
      (leaf evil-extra-operator
        :ensure t
        :global-minor-mode global-evil-extra-operator-mode )
-
 
      (leaf evil-visualstar
        :ensure t
@@ -541,15 +503,21 @@
 ** mode specific 
 *** ibuffer                                                      :deprecated:
     #+BEGIN_SRC emacs-lisp :tangle no
- ;; https://github.com/emacsmirror/evil/blob/master/evil-integration.el
- ;; Ibuffer
- (define-key ibuffer-mode-map (kbd  "<SPC>") nil)
- (progn
-   (evil-make-overriding-map ibuffer-mode-map 'normal t)
-   (evil-define-key 'normal ibuffer-mode-map
-     "j" 'evil-next-line
-     "k" 'evil-previous-line
-     "RET" 'ibuffer-visit-buffer))
+      ;; https://github.com/emacsmirror/evil/blob/master/evil-integration.el
+      ;; Ibuffer
+
+      (evil-make-overriding-map ibuffer-mode-map 'normal t)
+
+      (general-define-key
+       :keymaps 'ibuffer-mode-map
+       (kbd  "<SPC>") nil)
+
+      (general-define-key
+       :states 'normal
+       :keymaps 'ibuffer-mode-map
+       "j" 'evil-next-line
+       "k" 'evil-previous-line
+       "RET" 'ibuffer-visit-buffer)
     #+END_SRC
 *** w related mode 
 
@@ -640,146 +608,16 @@
     
 *** ada-mode
     #+begin_src emacs-lisp
-      (evil-define-key
-        '(normal insert visual replace operator motion emacs)
-        ada-mode-map
-        (kbd "<f12>" ) 'toggle-parse-wisi)
-
+      (general-define-key
+       :states '(normal insert visual replace operator motion emacs)
+       :keymaps 'ada-mode-map
+       (kbd "<f12>" ) 'toggle-parse-wisi)
     #+end_src
 
     #+RESULTS:
 
 ** sexp
 
-**** paredit
-     #+BEGIN_SRC emacs-lisp :tanble no
-       ;;; https://github.com/laynor/emacs-conf/blob/master/site-lisp/evil-sexp/evil-sexp.el
-
-       (defun beginning-and-end-of-sexp ()
-         (destructuring-bind (b . e)
-             (save-excursion
-               (forward-char)
-               (bounds-of-thing-at-point 'sexp))
-           (cons b e)))
-
-       (evil-define-motion evil-forward-sexp (count)
-         :type inclusive
-         (dotimes (i (or count 1))
-           (let ((lookahead-1 (char-syntax (char-after (point))))
-                 (lookahead-2 (char-syntax (char-after (1+ (point)))))
-                 (new-point (point)))
-             (condition-case nil
-                 (progn (save-excursion
-                          (message "lookahead1 = %S, lookahead-2 = %S"
-                                   (string lookahead-1) (string lookahead-2))
-                          (cond ((or (memq lookahead-2 '(?\ ?>))
-                                     (member lookahead-1 '(?\ ?>)))
-                                 (forward-char)
-                                 (skip-syntax-forward "->")
-                                 (setq new-point (point)))
-                                (t (unless (memq lookahead-1 '(?\" ?\())
-                                     (forward-char))
-                                   (sp-forward-sexp)
-                                   (backward-char)
-                                   (setq new-point (point)))))
-                        (goto-char new-point))
-               (error (error "End of sexp"))))))
-
-       (evil-define-motion evil-backward-sexp (count)
-         :type inclusive
-         (dotimes (i (or count 1))
-           (let ((lookahead (char-syntax (char-after (point))))
-                 (new-point (point)))
-             (condition-case nil
-                 (progn (save-excursion
-                          (when (memq lookahead '(?\) ?\"))
-                            (forward-char))
-                          (sp-backward-sexp)
-                          (setq new-point (point)))
-                        (goto-char new-point))
-               (error (error "Beginning of sexp"))))))
-
-       (evil-define-motion evil-enter-sexp (count)
-         :type inclusive
-         (dotimes (i (or count 1))
-           (let ((lookahead-1 (char-syntax (char-after (point))))
-                 (lookahead-2 (char-syntax (char-after (1+ (point)))))
-                 (lookbehind-1 (char-syntax (char-before (point))))
-                 (lookbehind-2 (char-syntax (char-before (1- (point))))))
-             (cond ((and (= lookahead-1 ?\()
-                         (/= lookbehind-1 ?\\)
-                         (= (char-after (1+ (point))) ?\n))
-                    (forward-char)
-                    (skip-syntax-forward "-"))
-                   ((and (= lookahead-1 ?\()
-                         (/= lookbehind-1 ?\\)
-                         (/= lookahead-2 ?\)))
-                    ;; do not move the cursor if it's on the opening paren of ()
-                    (forward-char)
-                    (skip-syntax-forward "-"))
-                   ((and (= lookahead-1 ?\))
-                         (or (/= lookbehind-1 ?\( )
-                             (= lookbehind-2 ?\\)))
-                    ;; do not move the cursor if it's on the closing paren of ()
-                    (skip-syntax-backward "-")
-                    (backward-char))
-                   (t (error "Already at the deepest level"))))))
-
-
-
-       ;; Does not work correctly when there are spaces after parens
-       ;; does not work correctly when inside a string, check paredit.
-       ;; check when there are spaces before parens
-       ;; When the cursor is on an open paren, go up one level on an open paren
-       (leaf paredit ;  (smartparens)
-         :ensure t
-         :config
-         (evil-define-motion evil-exit-sexp (count)
-           :type inclusive
-           (dotimes (i (or count 1))
-             (let (op-pos cl-pos)
-               (condition-case nil
-                   (progn (save-excursion
-                            (sp-backward-up-sexp)
-                            (setq op-pos (point))
-                            (sp-forward-sexp)
-                            (setq cl-pos (point)))
-                          (let ((lookahead (char-syntax (char-after (point)))))
-                            (case lookahead
-                              (?\( (goto-char op-pos))
-                              (?\) (goto-char cl-pos))
-                              (otherwise (goto-char (if (> (abs (- (point) cl-pos))
-                                                           (abs (- (point) op-pos)))
-                                                        op-pos
-                                                      cl-pos))))))
-                 (error (error "Already at top-level."))))) )
-
-         ;; (provide 'evil-sexp)
-
-
-         (define-key evil-motion-state-map (kbd "H-j") 'evil-enter-sexp)
-         (define-key evil-motion-state-map (kbd "H-k") 'evil-exit-sexp)
-         (define-key evil-motion-state-map (kbd "H-h") 'evil-backward-sexp)
-         (define-key evil-motion-state-map (kbd "H-l") 'evil-forward-sexp)
-         (define-key evil-motion-state-map (kbd "<C-H-up>")     'buf-move-up)
-         (define-key evil-motion-state-map (kbd "<C-H-down>")   'buf-move-down)
-         (define-key evil-motion-state-map (kbd "<C-H-left>")   'buf-move-left)
-         (define-key evil-motion-state-map (kbd "<C-H-right>")  'buf-move-right)
-         (define-key evil-motion-state-map "zl" 'evil-forward-sexp)
-         (define-key evil-motion-state-map "zh" 'evil-backward-sexp)
-         (define-key evil-motion-state-map "zj" 'evil-enter-sexp)
-         (define-key evil-motion-state-map "zk" 'evil-exit-sexp)
-
-         (evil-define-key 'normal paredit-mode-map "\C-k" 'paredit-kill)
-         (evil-define-key 'visual paredit-mode-map "\C-k" 'paredit-kill)
-         (evil-define-key 'insert paredit-mode-map "\C-k" 'paredit-kill)
-         )
-
-
-       ;;; http://blog.binchen.org/?p=782
-       (eval-after-load "evil" '(setq expand-region-contract-fast-key "z"))
-
-     #+END_SRC
 **** evil-cleverparens
      #+BEGIN_SRC emacs-lisp
      (add-hook 'elisp-mode  #'evil-cleverparens-mode)
@@ -860,153 +698,6 @@
 
 **** evil-org 
      deprecated by evil-org
-***** next deprecated 
-    #+BEGIN_SRC emacs-lisp :tangle no
-
-
-            (evil-leader/set-key-for-mode 'org-mode
-              "ha" 'helm-org-agenda-files-headings
-              "hH" 'helm-org-headings
-              "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
-              "hh" 'helm-org-in-buffer-headings
-
-              "u"    'outline-up-heading
-              "q"    'org-todo
-              "<down>"    'outline-next-visible-heading
-              "<up>"    'outline-previous-visible-heading
-              "<right>"    'org-forward-heading-same-level
-              "<left>"    'org-backward-heading-same-level
-
-              "r"         'org-mark-ring-goto
-              "&"         'org-mark-ring-goto
-
-
-              "or" 'org-capture
-              "oa" 'org-agenda
-              "os" 'org-store-link
-              "ol" 'org-insert-alllink
-              "oo" 'org-open-at-point-global
-              "oR" 'org-refile
-              "oc" 'org-cliplink
-              "od" 'org-deadline
-              "oh" 'org-schedule
-              "ot" 'org-set-tags
-              "oT" 'org-time-stamp
-              "ov" 'org-attach-screenshot
-              "ob" 'org-iswitchb
-              "ow" 'org-archive-subtree-default
-              "op" 'org-link-copy-image
-              "of" 'org-link-copy-file
-              "oe" 'org-set-effort
-              "oi" 'org-clock-in
-              "oI" 'org-clock-out
-              "w" 'org-archive-subtree-default
-              )
-
-            (leaf evil-org
-              :ensure t
-              :config
-              (evil-define-key 'normal evil-org-mode
-                "=" 'org-show-current-heading-tidily
-                ;;deprecatedby-evil-org;;"<" 'org-shiftleft
-                ;;deprecatedby-evil-org;;">" 'org-shiftright
-                (kbd "<f2>") 'org-insert-structure-template
-                (kbd "<kp-multiply>") 'org-insert-star
-                (kbd "RET") 'org-open-at-point
-                "za" 'org-cycle
-                "zA" 'org-shifttab
-                "zm" 'hide-body
-                "zr" 'show-all
-                "zo" 'show-subtree
-                "zO" 'show-all
-                "zc" 'hide-subtree
-                "zC" 'hide-all
-                (kbd "<S-next>") 'evil-forward-paragraph
-                (kbd "<S-prev>") 'evil-backward-paragraph
-
-                "gn"    'outline-next-visible-heading
-                "gp"    'outline-previous-visible-heading
-                "gf"    'org-forward-heading-same-level
-                "gb"    'org-backward-heading-same-level
-                "gu"    'outline-up-heading
-                "gt"    'org-goto
-
-                ;;deprecatedby-evil-org;;"gj"    'outline-next-visible-heading
-                ;;deprecatedby-evil-org;;"gk"    'outline-previous-visible-heading
-                ;;deprecatedby-evil-org;;"gl"    'org-forward-heading-same-level
-                ;;deprecatedby-evil-org;;"gh"    'org-backward-heading-same-level
-
-                (kbd "<kp-multiply>") 'org-insert-star
-                (kbd "M-j") 'org-shiftleft
-                (kbd "M-k") 'org-shiftright
-                (kbd "M-H") 'org-metaleft
-                (kbd "M-J") 'org-metadown
-                (kbd "M-K") 'org-metaup
-                (kbd "M-L") 'org-metaright
-                )
-
-              (evil-define-key 'visual evil-org-mode
-                "gn"    'outline-next-visible-heading
-                "gp"    'outline-previous-visible-heading
-                "gf"    'org-forward-heading-same-level
-                "gb"    'org-backward-heading-same-level
-                "gu"    'outline-up-heading
-                "gt"    'org-goto
-                (kbd "<S-next>") 'evil-forward-paragraph
-                (kbd "<S-prev>") 'evil-backward-paragraph
-                ;;deprecatedby-evil-org;;"gj" (if (fboundp 'org-forward-same-level) 'org-forward-same-level 'org-forward-heading-same-level)
-                ;;deprecatedby-evil-org;;"gk" (if (fboundp 'org-backward-same-level) 'org-backward-same-level 'org-backward-heading-same-level)
-                ;;deprecatedby-evil-org;;"gl" 'outline-next-visible-heading
-
-                ;;deprecatedby-evil-org;;"gj"    'outline-next-visible-heading
-                ;;deprecatedby-evil-org;;"gk"    'outline-previous-visible-heading
-                ;;deprecatedby-evil-org;;"gl"    'org-forward-heading-same-level
-                ;;deprecatedby-evil-org;;"gh"    'org-backward-heading-same-level
-
-                )
-
-
-              (evil-define-key 'normal orgstruct-mode
-                (kbd "RET") 'org-open-at-point
-                "za" 'org-cycle
-                "zA" 'org-shifttab
-                "zm" 'hide-body
-                "zr" 'show-all
-                "zo" 'show-subtree
-                "zO" 'show-all
-                "zc" 'hide-subtree
-                "zC" 'hide-all
-                (kbd "M-j") 'org-shiftleft
-                (kbd "M-k") 'org-shiftright
-                (kbd "M-H") 'org-metaleft
-                (kbd "M-J") 'org-metadown
-                (kbd "M-K") 'org-metaup
-                (kbd "M-L") 'org-metaright)
-
-              (evil-define-key 'insert evil-org-mode
-                (kbd "<f2>") 'org-insert-structure-template
-                (kbd "M-j") 'org-shiftleft
-                (kbd "M-k") 'org-shiftright
-                (kbd "M-H") 'org-metaleft
-                (kbd "M-J") 'org-metadown
-                (kbd "M-K") 'org-metaup
-                (kbd "M-L") 'org-metaright
-                (kbd "<M-return>") 'org-meta-return
-                (kbd "<S-next>") 'evil-forward-paragraph
-                (kbd "<S-prev>") 'evil-backward-paragraph)
-
-              (evil-define-key 'insert orgstruct-mode-map
-                (kbd "M-j") 'org-shiftleft
-                (kbd "M-k") 'org-shiftright
-                (kbd "M-H") 'org-metaleft
-                (kbd "M-J") 'org-metadown
-                (kbd "M-K") 'org-metaup
-                (kbd "M-L") 'org-metaright)
-
-              )
-
-
-    #+END_SRC
 ***** use this
 
       #+BEGIN_SRC emacs-lisp
@@ -1014,36 +705,26 @@
         (leaf evil-org
           :ensure t
           :config
-          (evil-define-key '(normal insert visual ) 'evil-org-mode
-            (kbd "<f2>") 'org-insert-structure-template
-            (kbd "<kp-multiply>") 'org-insert-star
-            (kbd "<kp-subtract>") 'wsl-open-org-link))
-
-        (evil-define-key 'normal outline-mode-map
-          "gh"    'outline-up-heading
-          "gn"    'outline-next-heading
-          "gN"    'outline-next-visible-heading
-          "gp"    'outline-previous-heading
-          "gP"    'outline-previous-visible-heading
-          "gl"    'goto-line
-          "gf"    'org-forward-heading-same-level
-          "gb"    'org-backward-heading-same-level
-          "gu"    'outline-up-heading
-          ;;"gt"    'org-goto
-          )
-
-        (evil-define-key 'visual outline-mode-map
-          "gh"    'outline-up-heading
-          "gn"    'outline-next-heading
-          "gN"    'outline-next-visible-heading
-          "gp"    'outline-previous-heading
-          "gP"    'outline-previous-visible-heading
-          "gl"    'goto-line
-          "gf"    'org-forward-heading-same-level
-          "gb"    'org-backward-heading-same-level
-          "gu"    'outline-up-heading
-          ;;"gt"    'org-goto
-          )
+          (general-define-key
+           :definer 'minor-mode
+           :states '(normal insert visual )
+           :keymaps 'evil-org-mode
+           (kbd "<f2>") 'org-insert-structure-template
+           (kbd "<kp-multiply>") 'org-insert-star
+           (kbd "<kp-subtract>") 'wsl-open-org-link)
+          (general-define-key
+           :states '(normal  visual )
+           :keymaps 'outline-mode-map
+           ;;"gt"    'org-goto
+           "gh"    'outline-up-heading
+           "gn"    'outline-next-heading
+           "gN"    'outline-next-visible-heading
+           "gp"    'outline-previous-heading
+           "gP"    'outline-previous-visible-heading
+           "gl"    'goto-line
+           "gf"    'org-forward-heading-same-level
+           "gb"    'org-backward-heading-same-level
+           "gu"    'outline-up-heading))
 
       #+END_SRC
 
@@ -1063,59 +744,7 @@
      - kim
      - dong
      - il
-**** deprecated
-     #+BEGIN_SRC emacs-lisp :tangle no
-       (leaf evil-mu4e
-         :ensure t
-         :config
-         (mapcar 
-          (lambda (x)
-            (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-main-mode-map ,(car x) ,(cadr x ))))
-          '(
-            ("B"               mu4e-headers-search-bookmark-edit)
-            ("s"               mu4e-headers-search)))
-         (mapcar 
-          (lambda (x)
-            (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-view-mode-map ,(car x) ,(cadr x ))))
-          '(
-            ("*"             bmkp-mu4e-view)
-            ("<home>"             open-mu4e-view)   ;open in outlook
-            ("<kp-multiply>" bmkp-mu4e-view)
-            ("@"             copy-mu4e-view)
-            ("B"               mu4e-headers-search-bookmark-edit)
-            (,(kbd "<f12>F")             mu4e-find-file)
-            (,(kbd "<f12>f")             mu4e-field-view)
-            ("o" mu4e-view-open-attachment)
-            ("O" mu4e-view-open-attachment-emacs)
-            ("s"               mu4e-headers-search)
-            ("S" mu4e-view-save-attachment)
-            ("U" mu4e-mark-unmark-all)
-            ("x"             mu4e-mark-execute-all )))
-         (mapcar 
-          (lambda (x)
-            (add-to-list 'evil-mu4e-mode-map-bindings `(normal mu4e-headers-mode-map ,(car x) ,(cadr x ))))
-          '(
-            ("*"             bmkp-mu4e-header)
-            ("<home>"             open-mu4e-view)   ;open in outlook
-            ("<insert>"        mu4e-headers-mark-for-something)   ;open in outlook
-            ("<kp-multiply>" bmkp-mu4e-header)
-            ("@"             copy-mu4e-header)
-            ("B"               mu4e-headers-search-bookmark-edit)
-            (,(kbd "<f12>F")             mu4e-find-file)
-            (,(kbd "<f12>f")             mu4e-field-header)
-            ("s"               mu4e-headers-search)
-            ("i"               mu4e-conversation)
-            ("U" mu4e-mark-unmark-all)
-            ("u" mu4e-headers-mark-for-unmark)
-            ("x"             mu4e-mark-execute-all )))
-         (evil-mu4e-init)
-         (evil-define-key 'normal mu4e-headers-mode-map
-           "?" mu4e-headers-mode-map)
-         (evil-define-key 'normal mu4e-view-mode-map
-            "?" mu4e-view-mode-map))
- 
-       #+END_SRC
- 
+
 *** python
 
      #+BEGIN_SRC emacs-lisp 
@@ -1131,91 +760,21 @@
 
 **** helm-dired-history 
      #+BEGIN_SRC emacs-lisp 
-       (evil-define-key 'normal dired-mode-map ",h" #'helm-dired-history-view)
-       (evil-define-key 'normal dired-mode-map ",2" #'2zip)
-       (evil-define-key 'normal dired-mode-map ",7" #'2-7zip)
+       (general-define-key
+        :states 'normal
+        :keymaps 'dired-mode-map
+       ",h" #'helm-dired-history-view
+       ",2" #'2zip
+       ",7" #'2-7zip)
      #+END_SRC
 
      #+RESULTS:
 
 **** dired mapping  
-***** deprecated 
- #+BEGIN_SRC emacs-lisp :tangle no
-        ;;  (use-package dired
-        ;;    :config
-        ;;;;; Dired
-        ;;    (define-key dired-mode-map (kbd "SPC") nil)
-        ;;    (define-key dired-mode-map (kbd "/") nil)
-        ;;    (define-key dired-mode-map (kbd "n") nil)
-        ;;    (define-key dired-mode-map (kbd "N") nil)
-        ;;    
-        ;;    ;; use the standard Dired bindings as a base
-        ;;    (evil-make-overriding-map dired-mode-map 'normal t)
-        ;;    (evil-add-hjkl-bindings dired-mode-map 'normal
-        ;;      "J" 'dired-goto-file     ; "j"
-        ;;      "K" 'dired-do-kill-lines ; "k"
-        ;;      ;; "r" 'dired-do-redisplay  ; "l"
-        ;;      "r" 'revert-buffer
-        ;;      ;; "g" 'revert-buffer
-        ;;      (kbd  "RET") 'diredp-find-file-reuse-dir-buffer
-        ;;      ";" (lookup-key dired-mode-map ":")) ; ":d", ":v", ":s", ":e"
-        ;;    (evil-define-key 'normal dired-mode-map "R" 'dired-do-rename)
-        ;;    ;;evil-extra-operator;;(evil-define-key 'normal dired-mode-map "gg" 'revert-buffer)
-        ;;    ;;evil-extra-operator;;(evil-declare-key 'normal dired-mode-map "g" 'revert-buffer)
-        ;;    (define-key dired-mode-map ":;" 'dired-sort-menu-toggle-dirs-first))
- #+END_SRC
-
-***** v make visual
-      #+begin_src emacs-lisp
-       (evil-define-key 'normal dired-mode-map "v" #'evil-visual-char)
-      #+end_src
 ***** list files
       #+begin_src emacs-lisp
-        (evil-define-key 'normal dired-mode-map (kbd "<f6>") #'diredp-list-marked)
+        (general-def 'normal dired-mode-map (kbd "<f6>") #'diredp-list-marked)
       #+end_src
-*** key combo
-
-    #+BEGIN_SRC emacs-lisp
-      (leaf key-combo
-        :ensure t
-        :hook
-        (c++-mode-hook .
-                       (lambda ()
-                         (key-combo-mode t)
-                         (key-combo-define evil-insert-state-map (kbd "-")  '("-" "_"))))
-        :config
-        ;;   (global-key-combo-mode t)
-        ;;   (key-combo-define evil-insert-state-map (kbd "=") '(" = " " == " "=" " === "))
-        ;;   (key-combo-define evil-insert-state-map (kbd "+") '(" + " "+" " += " "++"))
-        ;;   (key-combo-define evil-insert-state-map (kbd "-") '("-" " - " " -= " "--"))
-        ;;   (key-combo-define evil-insert-state-map (kbd "*") '(" * " "*" " *= "))
-        ;;   (key-combo-define evil-normal-state-map (kbd "/") 'key-combo-execute-orignal)
-        ;;   (key-combo-define evil-insert-state-map (kbd "/") '("/" " / " " /= " "/* `!!' */" "//"))
-        ;;   (key-combo-define evil-insert-state-map (kbd "%") '("%" " % " " %= "))
-        ;;   (key-combo-define evil-insert-state-map (kbd "!") '("!" " != "))
-        ;;   (key-combo-define evil-insert-state-map (kbd "&") '(" && " "&"))
-        ;;   (key-combo-define evil-insert-state-map (kbd "|") '(" || " "|"))
-        ;;   (key-combo-define evil-insert-state-map (kbd "?") '(" ? " "?"))
-        ;;   (key-combo-define evil-insert-state-map (kbd ",") '(", " "," ",\n"))
-        ;;   (key-combo-define evil-insert-state-map (kbd "{") '("{\n`!!'\n}" "{" "{`!!'}" "{}"))
-        ;;   (key-combo-define evil-insert-state-map (kbd "(") '("(`!!')" "(" "()"))
-        ;;   (key-combo-define evil-insert-state-map (kbd "[") '("[`!!']" "[" "[]"))
-        ;;   (key-combo-define evil-insert-state-map (kbd "<")  '(" < " " <= " " < " " << " "<<" "<`!!'>"))
-        ;;   (key-combo-define evil-insert-state-map (kbd ">")  '(" > " " >= " " > " " >> " ">>"))
-        ;;   (key-combo-define evil-insert-state-map (kbd "\"") '("\"`!!'\""  "\""  "\"\"\"`!!'\"\"\""))
-        ;;   (key-combo-define evil-insert-state-map (kbd ";") '(";\n" ";"))
-        ;;   (add-hook 'web-mode-hook (lambda()
-        ;;     (key-combo-define evil-insert-state-map (kbd "<")  '("<" "<`!!'>"))
-        ;;     (key-combo-define evil-insert-state-map (kbd "/")  '("/" "</`!!'>"))
-        ;;     (key-combo-define evil-insert-state-map (kbd ">")  '(">"))
-        ;;     (key-combo-define evil-insert-state-map (kbd "=")  '("="))
-        ;;     (key-combo-define evil-insert-state-map (kbd "*")  '("*"))
-        ;;     (key-combo-define evil-insert-state-map (kbd "!")  '("!" "<!-- `!!' -->"))
-        ;;   ))
-
-        )
-
-    #+END_SRC
 *** key guide
 
     #+BEGIN_SRC emacs-lisp
@@ -1259,9 +818,9 @@
       ;;   (progn
       ;;     (evil-make-overriding-map magit-mode-map 'emacs)
       ;;     (define-key magit-mode-map "\C-w" 'evil-window-map)
-      ;;     (evil-define-key 'emacs magit-mode-map "j" 'magit-goto-next-section)
-      ;;     (evil-define-key 'emacs magit-mode-map "k" 'magit-goto-previous-section)
-      ;;     (evil-define-key 'emacs magit-mode-map "K" 'magit-discard-item))) 
+      ;;     (general-def 'emacs magit-mode-map "j" 'magit-goto-next-section)
+      ;;     (general-def 'emacs magit-mode-map "k" 'magit-goto-previous-section)
+      ;;     (general-def 'emacs magit-mode-map "K" 'magit-discard-item))) 
 
 
       (leaf git-timemachine
@@ -1279,37 +838,20 @@
 
 *** mathinput
     #+BEGIN_SRC emacs-lisp :tangle on
-      (leaf xah-math-input-mode
+      (leaf xah-math-input
         :ensure t
         :config
-        (evil-declare-key 'normal xah-math-input-keymap [f9] 'xah-math-input-change-to-symbol)
-        (evil-declare-key 'insert xah-math-input-keymap [f9] 'xah-math-input-change-to-symbol)
-        (evil-declare-key 'visual xah-math-input-keymap [f9] 'xah-math-input-change-to-symbol))
-    #+END_SRC
-    
-*** deprecated
-    #+BEGIN_SRC emacs-lisp
-;;deprecated;;(defun gf/narrow-grep-buffer ()
-;;deprecated;;  "Narrow the grep buffer stripping out the really long grep command."
-;;deprecated;;  (interactive)
-;;deprecated;;  (goto-line 5)
-;;deprecated;;  (narrow-to-region (point) (point-max))
-;;deprecated;;  (goto-line 1))
-;;deprecated;;
-;;deprecated;;(define-key evil-normal-state-map (kbd "C-c g")
-;;deprecated;;  (lambda()
-;;deprecated;;    (interactive)
-;;deprecated;;    (call-interactively 'projectile-ack)
-;;deprecated;;    (other-window 1)
-;;deprecated;;    (gf/narrow-grep-buffer)
-;;deprecated;;    ))
-    #+END_SRC
+        (general-define-key
+         :states '(normal insert visual) 
+         :keymaps 'xah-math-input-keymap
+         [f9] 'xah-math-input-change-to-symbol))
 
+    #+END_SRC
 
 *** occur
     
        #+begin_src emacs-lisp :tangle no
-       (evil-define-key 'normal occur-mode-map "y" #'evil-yank)
+       (general-def 'normal occur-mode-map "y" #'evil-yank)
        #+end_src
 
        #+RESULTS:
@@ -1349,24 +891,12 @@
 
 ** evil-innter-text
    #+BEGIN_SRC emacs-lisp
-   (define-key evil-inner-text-objects-map "k" 'evil-textobj-column-word)
-   (define-key evil-inner-text-objects-map "K" 'evil-textobj-column-word)
-   #+END_SRC
-** unimpaired
-   #+BEGIN_SRC emacs-lisp
-   (define-key evil-normal-state-map (kbd "[ B") 'iflipb-previous-buffer)
-   (define-key evil-normal-state-map (kbd "] B") 'iflipb-next-buffer)
-
-
-   (define-key evil-visual-state-map (kbd "[ c") 'copy-heading-striped)
-   (define-key evil-normal-state-map (kbd "[ c") 'copy-kill-ring-top-heading-striped) 
-
+     (general-define-key
+      :keymaps 'evil-inner-text-objects-map
+      "K" 'evil-textobj-column-word
+      "k" 'evil-textobj-column-word)
 
    #+END_SRC
-
-   #+RESULTS:
-   : iflipb-next-buffer
-
 ** jump
    #+begin_src emacs-lisp
      (defun advice/save-imenu-jump (item)

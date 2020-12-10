@@ -127,7 +127,7 @@
     ;; (leaf sml-modeline-mode)
 
     (use-package diminish
-      :demand
+      :ensure t
       :config
       (diminish 'company-mode "Cmp")
       (diminish 'abbrev-mode "Ab")
@@ -203,7 +203,7 @@
     ;;(add-hook 'c++-mode-hook        'pretty-symbols-mode)
 
     (use-package modern-cpp-font-lock
-      :demand
+      :ensure t
       :config
       (modern-c++-font-lock-global-mode t))
   #+END_SRC

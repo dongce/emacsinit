@@ -19,7 +19,7 @@
   ;; git://github.com/capitaomorte/yasnippet.git
 
   (use-package yasnippet
-     :demand
+     :ensure t
     :config 
 
     (add-to-list 'yas-snippet-dirs (concat emacsw32-home "YASnippet"))
@@ -59,7 +59,7 @@
 
    ;; <return> is for windowed Emacs; RET is for terminal Emacs
    (use-package  company
-     :demand
+     :ensure t
      :init
      (remove-from-list 'company-backends 'company-semantic )
      (add-to-list 'company-backends 'company-manually)
@@ -99,7 +99,7 @@
 ** changed
 #+BEGIN_SRC emacs-lisp
   (use-package  company
-    :demand
+    :ensure t
     :init
     (define-key  company-active-map [escape] '(lambda () (interactive) (company-abort) (evil-normal-state)))
     (define-key company-active-map [return]    nil)

@@ -625,7 +625,7 @@ open and unsaved."
 
   (leaf thumbs
     ;;:commands thumbs  ;;"Preview images in a directory." t
-     :demand
+     :ensure t
     :config
     (add-hook 'image-mode-hook 'eimp-mode))
 #+END_SRC
@@ -712,7 +712,7 @@ open and unsaved."
  #+BEGIN_SRC emacs-lisp 
 
    (leaf ivy
-     :demand
+     :ensure t
      :config
      (defun counsel-recentf-directory ()
        "Find a file on `recentf-list'."
@@ -794,7 +794,7 @@ open and unsaved."
 * sorting
   #+BEGIN_SRC emacs-lisp
     (leaf dired-quick-sort
-     :demand
+     :ensure t
       :config
       (dired-quick-sort-setup)) 
   #+END_SRC

@@ -490,13 +490,14 @@
 #+END_SRC
 
 ** package gdb/helm etc
+   
 #+BEGIN_SRC emacs-lisp
 
   (leaf helm-descbinds
     :global-minor-mode helm-descbinds-mode)
 
   (leaf proced
-    :ensure t
+    :require t
     :bind ((:proced-mode-map
             (";" . proced-gdb)))
     :config 

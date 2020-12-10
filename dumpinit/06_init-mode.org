@@ -469,32 +469,33 @@
 
 * tmux
 #+BEGIN_SRC emacs-lisp
-(leaf emamux
-     :demand
-  :config
-  (defun emamux:read-dwim (prompt )
-    (let ((cmd (read-shell-command prompt 
-                                   (if (region-active-p)
-                                       (s-trim (buffer-substring-no-properties (region-beginning) (region-end)))
-                                     (substring-no-properties (car kill-ring))
-                                     ))))
-      (setq emamux:last-command cmd)
-      cmd))
+  (leaf emamux
+    :ensure t
+    :commands emamux:tmux-run-command
+    :config
+    (defun emamux:read-dwim (prompt )
+      (let ((cmd (read-shell-command prompt 
+                                     (if (region-active-p)
+                                         (s-trim (buffer-substring-no-properties (region-beginning) (region-end)))
+                                       (substring-no-properties (car kill-ring))
+                                       ))))
+        (setq emamux:last-command cmd)
+        cmd))
 
-  (defun emamux:send-dwim ()
-    "Send command to target-session of tmux"
-    (interactive)
-    (emamux:check-tmux-running)
-    (condition-case nil
-        (progn
-          (if (or current-prefix-arg (not (emamux:set-parameters-p)))
-              (emamux:set-parameters))
-          (let* ((target (emamux:target-session))
-                 (prompt (format "Command [Send to (%s)]: " target))
-                 (input  (emamux:read-dwim prompt )))
-            (emamux:reset-prompt target)
-            (emamux:send-keys input)))
-      (quit (emamux:unset-parameters)))))
+    (defun emamux:send-dwim ()
+      "Send command to target-session of tmux"
+      (interactive)
+      (emamux:check-tmux-running)
+      (condition-case nil
+          (progn
+            (if (or current-prefix-arg (not (emamux:set-parameters-p)))
+                (emamux:set-parameters))
+            (let* ((target (emamux:target-session))
+                   (prompt (format "Command [Send to (%s)]: " target))
+                   (input  (emamux:read-dwim prompt )))
+              (emamux:reset-prompt target)
+              (emamux:send-keys input)))
+        (quit (emamux:unset-parameters)))))
 
 #+END_SRC
 

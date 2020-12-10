@@ -247,7 +247,7 @@ Test cases
 
 
   (leaf xah-get-thing
-    :demand
+    :ensure t
     :commands xah-get-thing-or-selection)
 
 
@@ -2046,7 +2046,7 @@ This works on the current region."
 ** dpaste
 #+BEGIN_SRC emacs-lisp
   (leaf dpaste_de
-    :demand
+    :ensure t
     :config
     (defun vdpaste (name)
       (interactive "Spaste 이름을 입력해 주세요 :")  ; ask for the name of the macro

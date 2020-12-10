@@ -26,10 +26,7 @@ definitions can also be stored in files and used in batch mode."
 [[http://oremacs.com/2016/08/28/elf-mode/][elf-mode - view the symbol list in a binary · (or emacs]]
 
 #+BEGIN_SRC emacs-lisp
-(use-package elf-mode
-     :demand
- ;; :commands elf-mode
-)
+(leaf elf-mode :require t)
 #+END_SRC
 
 #+RESULTS:

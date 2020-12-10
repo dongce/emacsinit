@@ -116,7 +116,7 @@
   (leaf grep-ed)
   (leaf markerpen)
   (leaf saveplace
-    :demand
+    :ensure t
     :config
     (setq-default save-place t))
 
@@ -134,7 +134,7 @@
 
 
   ;;donotuse;;(leaf time-stamp
-  ;;donotuse;;  :demand
+  ;;donotuse;;  :ensure t
   ;;donotuse;;  :init
   ;;donotuse;;  (setf time-stamp-start "마지막 변경 시각:[  ]+[\"<]+")
   ;;donotuse;;  (setf time-stamp-format "%:y년 %02m월 %02d일 %:a %02H시 %02M분 %02S초")

@@ -15,7 +15,7 @@
      ;;;_ python-mode 
 
      (use-package python
-     :demand
+     :ensure t
        :init
        (setq   
         python-check-command "pyflakes"
@@ -166,7 +166,7 @@
 
      ;;; _OUTLINE 
      (use-package outline-magic
-     :demand
+     :ensure t
        :config
        (w32-unix-eval
         ((define-key outline-minor-mode-map [S-tab] 'outline-cycle))
@@ -358,7 +358,7 @@
 
    #+BEGIN_SRC emacs-lisp :tangle no 
   (use-package elpy
-     :demand
+     :ensure t
     :config
     (elpy-enable)
     (elpy-use-ipython "ipython")

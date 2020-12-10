@@ -34,7 +34,7 @@
    - State "PENDING"    from              [2020-02-27 목 09:37]
  #+begin_src emacs-lisp :tangle no
    (use-package lsp-mode
-     :demand
+     :ensure t
      ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
      :init (setq lsp-keymap-prefix "<f12>")
      :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
