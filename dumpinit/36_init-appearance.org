@@ -16,16 +16,16 @@
 
     ;; three window 
     (defun split-window-4()
-     "Splite window into 4 sub-window"
-     (interactive)
-     (if (= 1 (length (window-list)))
-         (progn (split-window-vertically)
-          (split-window-horizontally)
-          (other-window 2)
-          (split-window-horizontally)
-          )
-       )
-    )
+      "Splite window into 4 sub-window"
+      (interactive)
+      (if (= 1 (length (window-list)))
+          (progn (split-window-vertically)
+                 (split-window-horizontally)
+                 (other-window 2)
+                 (split-window-horizontally)
+                 )
+        )
+      )
 
     (defun change-split-type (split-fn &optional arg)
       "Change 3 window style from horizontal to vertical and vice-versa"
@@ -55,7 +55,7 @@
 
     (defun split-window-3-horizontally (&optional arg)
       "Split window into 3 while largest one is in horizon"
-    ;  (interactive "P")
+                                            ;  (interactive "P")
       (delete-other-windows)
       (split-window-horizontally)
       (if arg (other-window 1))
@@ -63,7 +63,7 @@
 
     (defun split-window-3-vertically (&optional arg)
       "Split window into 3 while largest one is in vertical"
-    ;  (interactive "P")
+                                            ;  (interactive "P")
       (delete-other-windows)
       (split-window-vertically)
       (if arg (other-window 1))
@@ -81,9 +81,13 @@
     ;;option(setq show-paren-style 'parenthesis)
     ;;option(setq show-paren-style 'mixed)
 
-    (require 'frame-cmds)
-    (define-key global-map "\C-xt." 'save-frame-config)
-    (define-key global-map "\C-xt," 'jump-to-frame-config-register)
+    (leaf frame-cmds
+      :require t
+      :config
+      (general-define-key
+       :keymaps 'global-map
+       "\C-xt." 'save-frame-config
+       "\C-xt," 'jump-to-frame-config-register))
 
     ;;(require 'autofit-frame)
 
@@ -126,7 +130,7 @@
     ;; (leaf smart-mode-line)
     ;; (leaf sml-modeline-mode)
 
-    (use-package diminish
+    (leaf diminish
       :ensure t
       :config
       (diminish 'company-mode "Cmp")
@@ -139,73 +143,9 @@
       (diminish 'elisp-mode "el")
       (diminish 'evil-org-mode ))
 
-    ;;deprecated;;(use-package sml-modeline
-    ;;deprecated;;  :config
-    ;;deprecated;;  (sml-modeline-mode))
-
-    ;;conflictwithhelm;;(leaf modeline-posn
-    ;;conflictwithhelm;;  (size-indication-mode t))
-
-    ;;deprecated;;(defun update-diff-colors ()
-    ;;deprecated;;  "update the colors for diff faces"
-    ;;deprecated;;  (set-face-attribute 'diff-added nil
-    ;;deprecated;;                      :foreground "white" :background "blue")
-    ;;deprecated;;  (set-face-attribute 'diff-removed nil
-    ;;deprecated;;                      :foreground "white" :background "red3")
-    ;;deprecated;;  (set-face-attribute 'diff-changed nil
-    ;;deprecated;;                      :foreground "white" :background "purple"))
-    ;;deprecated;;;;(eval-after-load "diff-mode" '(update-diff-colors))
-
-
-
-    ;; https://github.com/Bruce-Connor/smart-mode-line
-
-    ;;deprecated;;(require 'smart-mode-line)
-    ;;deprecated;;(if after-init-time (sml/setup)
-    ;;deprecated;;  (add-hook 'after-init-hook 'sml/setup))
-
-
-    ;;deprecated;;(leaf fringe-current-line
-    ;;deprecated;;  :config
-    ;;deprecated;;  (global-fringe-current-line-mode t))
-
-
-    ;; http://ergoemacs.org/emacs/emacs_pretty_lambda.html
-    (setq prettify-symbols-alist
-          '(
-            ("lambda" . 955) ; λ
-            ("->" . 8594)    ; →
-            ("=>" . 8658)    ; ⇒
-            ("map" . 8614)    ; ↦
-            ))
-
-
-    ;;(defun my-add-pretty-lambda ()
-    ;;  "make some word or string show as pretty Unicode symbols"
-    ;;  (setq prettify-symbols-alist
-    ;;        '(
-    ;;          ("lambda" . 955) ; λ
-    ;;          ("->" . 8594)    ; →
-    ;;          ("=>" . 8658)    ; ⇒
-    ;;          ("map" . 8614)   ; ↦
-    ;;          )))
-    ;;
-    ;;(add-hook 'clojure-mode-hook 'my-add-pretty-lambda)
-    ;;(add-hook 'haskell-mode-hook 'my-add-pretty-lambda)
-    ;;(add-hook 'shen-mode-hook 'my-add-pretty-lambda)
-    ;;(add-hook 'tex-mode-hook 'my-add-pretty-lambda)
-
-
-    (add-hook 'python-mode-hook 'prettify-symbols-mode )
-    (add-hook 'emacs-lisp-mode-hook 'prettify-symbols-mode)
-    (add-hook 'scheme-mode-hook 'prettify-symbols-mode)
-
-    ;;(add-hook 'c++-mode-hook        'pretty-symbols-mode)
-
-    (use-package modern-cpp-font-lock
+    (leaf modern-cpp-font-lock
       :ensure t
-      :config
-      (modern-c++-font-lock-global-mode t))
+      :global-minor-mode modern-c++-font-lock-global-mode )
   #+END_SRC
 
   #+RESULTS:

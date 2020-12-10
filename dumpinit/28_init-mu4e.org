@@ -178,20 +178,6 @@
            (message value)
            ))
 
-       ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "!")             'open-mu4e-header)
-       ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "@")             'copy-mu4e-header)
-       ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "*")             'bmkp-mu4e-header)
-       ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "<kp-multiply>") 'bmkp-mu4e-header)
-       ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "F")             'mu4e-find-file)
-       ;;moveto-init-evil;;(define-key mu4e-headers-mode-map (kbd "f")             'mu4e-field-header)
-       ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "!")             'open-mu4e-view)
-       ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "@")             'copy-mu4e-view)
-       ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "*")             'bmkp-mu4e-view)
-       ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "<kp-multiply>") 'bmkp-mu4e-view)
-       ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "F") 'mu4e-find-file)
-       ;;moveto-init-evil;;(define-key mu4e-view-mode-map (kbd "f") 'mu4e-field-view)
-
-
        ;; (add-hook 
        ;;  'mu4e-view-mode-hook
        ;;  #'htmlr-render)
@@ -672,20 +658,22 @@
 * tag
   :tag 로 검색 가능
   #+BEGIN_SRC emacs-lisp
-    (require 'mu4e-mark)
-    (add-to-list 'mu4e-marks
-                 '(tag
-                   :char       "g"
-                   :prompt     "gtag"
-                   :ask-target (lambda () (completing-read "꼬리표 입력바랍니다 : " '(kdx1p lph2 fl wpl ffxii pkxb HR )))
-                   :action      (lambda (docid msg target)
-                                  (mu4e-action-retag-message msg (concat "+" target)))))
+    (leaf mu4e-mark
+      :require t
+      :config 
+      (add-to-list 'mu4e-marks
+                   '(tag
+                     :char       "g"
+                     :prompt     "gtag"
+                     :ask-target (lambda () (completing-read "꼬리표 입력바랍니다 : " '(kdx1p lph2 fl wpl ffxii pkxb HR )))
+                     :action      (lambda (docid msg target)
+                                    (mu4e-action-retag-message msg (concat "+" target)))))
 
-    (mu4e~headers-defun-mark-for tag)
-    (mu4e~view-defun-mark-for tag)
-    (define-key mu4e-headers-mode-map (kbd "m") 'mu4e-headers-mark-for-tag)
-    (define-key mu4e-view-mode-map (kbd "m") 'mu4e-view-mark-for-tag)
-    ;;(define-key mu4e-headers-mode-map (kbd "A") 'mu4e-headers-mark-for-archive)
+      (mu4e~headers-defun-mark-for tag)
+      (mu4e~view-defun-mark-for tag)
+      ;;(general-define-key :keymaps 'mu4e-headers-mode-map (kbd "A") 'mu4e-headers-mark-for-archive)
+      (general-define-key :keymaps 'mu4e-headers-mode-map (kbd "m") 'mu4e-headers-mark-for-tag)
+      (general-define-key :keymaps 'mu4e-view-mode-map (kbd "m") 'mu4e-view-mark-for-tag))
   #+END_SRC
 * occur-store-link
   #+begin_src emacs-lisp

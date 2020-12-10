@@ -1027,14 +1027,6 @@
             (build-link11 vxworks)
           (build-isdl vxworks))))
 
-
-    ;;(global-set-key (kbd "C-,") 'build-dlp)
-
-
-
-    (define-key global-map [(f4)] 'next-error)
-    (define-key global-map [(shift f4)] 'previous-error)
-
     ;; 특정 변수를 버퍼에게 종속적으로 만드는 함수
     ;;(make-variable-buffer-local 'next-error-function)
 
@@ -1427,23 +1419,7 @@
              (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
              (isearch-forward regexp-p no-recursive-edit)))))
 
-     ;; (leaf company
-     ;;   :config
-     ;;   (add-hook 'after-init-hook (lambda () (global-company-mode '(not gud-mode))))
-     ;;   (delete 'company-semantic company-backends)
-     ;;   (define-key c-mode-map    (kbd "<backtab>"  ) 'company-complete)
-     ;;   (define-key c++-mode-map  (kbd "<backtab>"  ) 'company-complete))
-
-
      (helm-flx-mode +1)
-
-     ;;(leaf smartscan
-     ;;  :ensure
-     ;;  :config
-     ;;  (global-smartscan-mode t)
-     ;;  (unbind-key "M-n" smartscan-map)
-     ;;  (unbind-key "M-p" smartscan-map)
-     ;;  )
 
 
 
@@ -1741,124 +1717,45 @@
      (list (line-beginning-position) (line-beginning-position 2)) ) ) )
    #+END_SRC
 
-** java script indent
-
-   #+BEGIN_SRC emacs-lisp
-;;deprecated;; ;;; javascript indent
-;;deprecated;; (defun my-js2-indent-function ()
-;;deprecated;;   (interactive)
-;;deprecated;;   (save-restriction
-;;deprecated;;     (widen)
-;;deprecated;;     (let* ((inhibit-point-motion-hooks t)
-;;deprecated;;            (parse-status (save-excursion (syntax-ppss (point-at-bol))))
-;;deprecated;;            (offset (- (current-column) (current-indentation)))
-;;deprecated;;            (indentation (js--proper-indentation parse-status))
-;;deprecated;;            node)
-;;deprecated;;
-;;deprecated;;       (save-excursion
-;;deprecated;;
-;;deprecated;;         (back-to-indentation)
-;;deprecated;;         ;; consecutive declarations in a var statement are nice if
-;;deprecated;;         ;; properly aligned, i.c:
-;;deprecated;;         ;;
-;;deprecated;;         ;; var foo = "bar",
-;;deprecated;;         ;;     bar = "foo";
-;;deprecated;;         (setq node (js2-node-at-point))
-;;deprecated;;         (when (and node
-;;deprecated;;                    (= js2-NAME (js2-node-type node))
-;;deprecated;;                    (= js2-VAR (js2-node-type (js2-node-parent node))))
-;;deprecated;;           (setq indentation ( 4 indentation))))
-;;deprecated;;
-;;deprecated;;       (indent-line-to indentation)
-;;deprecated;;       (when (> offset 0) (forward-char offset)))))
-;;deprecated;;
-;;deprecated;; (defun my-indent-sexp ()
-;;deprecated;;   (interactive)
-;;deprecated;;   (save-restriction
-;;deprecated;;     (save-excursion
-;;deprecated;;       (widen)
-;;deprecated;;       (let* ((inhibit-point-motion-hooks t)
-;;deprecated;;              (parse-status (syntax-ppss (point)))
-;;deprecated;;              (beg (nth 1 parse-status))
-;;deprecated;;              (end-marker (make-marker))
-;;deprecated;;              (end (progn (goto-char beg) (forward-list) (point)))
-;;deprecated;;              (ovl (make-overlay beg end)))
-;;deprecated;;         (set-marker end-marker end)
-;;deprecated;;         (overlay-put ovl 'face 'highlight)
-;;deprecated;;         (goto-char beg)
-;;deprecated;;         (while (< (point) (marker-position end-marker))
-;;deprecated;;           ;; don't reindent blank lines so we don't set the "buffer
-;;deprecated;;           ;; modified" property for nothing
-;;deprecated;;           (beginning-of-line)
-;;deprecated;;           (unless (looking-at "\\s-*$")
-;;deprecated;;             (indent-according-to-mode))
-;;deprecated;;           (forward-line))
-;;deprecated;;         (run-with-timer 0.5 nil '(lambda(ovl)
-;;deprecated;;                                    (delete-overlay ovl)) ovl)))))
-;;deprecated;;
-;;deprecated;; (defun my-js2-mode-hook ()
-;;deprecated;;   (require 'js)
-;;deprecated;;   (setq js-indent-level 2
-;;deprecated;;         indent-tabs-mode nil
-;;deprecated;;         c-basic-offset 2)
-;;deprecated;;   (c-toggle-auto-state 0)
-;;deprecated;;   (c-toggle-hungry-state 1)
-;;deprecated;;   (set (make-local-variable 'indent-line-function) 'my-js2-indent-function)
-;;deprecated;;   (define-key js2-mode-map [(meta control |)] 'cperl-lineup)
-;;deprecated;;   (define-key js2-mode-map [(meta control \;)]
-;;deprecated;;     '(lambda()
-;;deprecated;;        (interactive)
-;;deprecated;;        (insert "/* -----[ ")
-;;deprecated;;        (save-excursion
-;;deprecated;;          (insert " ]----- */"))
-;;deprecated;;        ))
-;;deprecated;;   (define-key js2-mode-map [(return)] 'newline-and-indent)
-;;deprecated;;   (define-key js2-mode-map [(backspace)] 'c-electric-backspace)
-;;deprecated;;   (define-key js2-mode-map [(control d)] 'c-electric-delete-forward)
-;;deprecated;;   (define-key js2-mode-map [(control meta q)] 'my-indent-sexp)
-;;deprecated;;   (if (featurep 'js2-highlight-vars)
-;;deprecated;;     (js2-highlight-vars-mode))
-;;deprecated;;   (message "My JS2 hook"))
-;;deprecated;;
-;;deprecated;; (add-hook 'js2-mode-hook 'my-js2-mode-hook)
-   #+END_SRC
-
 ** rectangle
    #+BEGIN_SRC emacs-lisp
-;; 오른쪽에 일괄적으로 주석달 때 사용한다.
-(require 'rect)
-(defun string-right (beg end str)
-  (interactive
-   (progn (barf-if-buffer-read-only)
-	  (list
-	   (region-beginning)
-	   (region-end)
-	   (read-string (format "String insert rectangle (default %s): "
-				(or (car string-rectangle-history) ""))
-			nil 'string-rectangle-history
-			(car string-rectangle-history)))))
-  (save-excursion
-    (save-restriction
-      (if (> end beg)
-          (narrow-to-region
-           (progn (goto-char beg) (point-at-bol))
-           (progn (goto-char end) (point-at-eol)))
-          (narrow-to-region
-           (progn (goto-char end) (point-at-bol))
-           (progn (goto-char beg) (point-at-eol))))
-      (beginning-of-buffer)
-      (end-of-line)
-      (let ((col (current-column)))
-        (while (not (eobp))
-          (end-of-line 2)
-          (if (> (current-column) col) (setf col (current-column))))
-        (beginning-of-buffer)
-        (while (not (eobp))
-          (move-to-column col t)
-          (insert str)
-          (forward-line 1))))))
+     ;; 오른쪽에 일괄적으로 주석달 때 사용한다.
+     (leaf rect
+       :require t
+       (defun string-right (beg end str)
+         (interactive
+          (progn (barf-if-buffer-read-only)
+                 (list
+                  (region-beginning)
+                  (region-end)
+                  (read-string (format "String insert rectangle (default %s): "
+                                       (or (car string-rectangle-history) ""))
+                               nil 'string-rectangle-history
+                               (car string-rectangle-history)))))
+         (save-excursion
+           (save-restriction
+             (if (> end beg)
+                 (narrow-to-region
+                  (progn (goto-char beg) (point-at-bol))
+                  (progn (goto-char end) (point-at-eol)))
+               (narrow-to-region
+                (progn (goto-char end) (point-at-bol))
+                (progn (goto-char beg) (point-at-eol))))
+             (beginning-of-buffer)
+             (end-of-line)
+             (let ((col (current-column)))
+               (while (not (eobp))
+                 (end-of-line 2)
+                 (if (> (current-column) col) (setf col (current-column))))
+               (beginning-of-buffer)
+               (while (not (eobp))
+                 (move-to-column col t)
+                 (insert str)
+                 (forward-line 1))))))
 
-(define-key ctl-x-r-map "h" 'string-right)
+       (general-define-key
+        :keymaps 'ctl-x-r-map
+        "h" 'string-right))
    #+END_SRC
 
 ** align

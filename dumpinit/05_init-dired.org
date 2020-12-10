@@ -197,10 +197,14 @@
   (require 'find-dired )
 
   ;; 프린팅 관련 변수
-  (define-key dired-mode-map "o" 'w32-dired-open-explorer)
-  (define-key dired-mode-map "," 'w32-dired-open-explorer-marked)
-  (define-key dired-mode-map "\\" 'w32-dired-copy-file-name)
-  ;;(define-key dired-mode-map "["  'w32shell-cmd-here)
+  (general-define-key
+   :keymaps 'dired-mode-map
+   ;;"["  'w32shell-cmd-here
+   ;;"\M-;" 'execute-program
+   "o" 'w32-dired-open-explorer
+   "," 'w32-dired-open-explorer-marked
+   "\\" 'w32-dired-copy-file-name)
+
   ;; 윈도우에서 유용하게 사용할 수 있는 방법
   (defun w32open (fname)
     (w32-shell-execute nil  (format "\"%s\"" (win-path-convert-file-name fname)) nil 1))
@@ -568,9 +572,6 @@
     (setq win-context-menu-program (fullpath  "../../wincontextmenu/bin/wincontextmenu.exe"))
     (require 'w32-browser))
 
-  ;; redefine M-!
-  ;;(require 'execute)
-  ;;(define-key dired-mode-map "\M-;" 'execute-program)
 
   (defun assocemacs ( ext) 
     (interactive "M확장자 :")

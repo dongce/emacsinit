@@ -17,100 +17,45 @@
   ;; yas repo http://coderepos.org/share/browser/config/yasnippet
   ;; https://github.com/capitaomorte/yasnippet
   ;; git://github.com/capitaomorte/yasnippet.git
+  ;; http://capitaomorte.github.io/yasnippet/snippet-development.html
+  ;; http://capitaomorte.github.io/yasnippet/snippet-expansion.html
 
-  (use-package yasnippet
-     :ensure t
+  (leaf yasnippet
+    :ensure t
+    :global-minor-mode yas-global-mode
+    :hook (prog-mode-hook . yas-minor-mode) 
     :config 
-
     (add-to-list 'yas-snippet-dirs (concat emacsw32-home "YASnippet"))
-    (define-key yas-minor-mode-map (kbd "M-i") yas-maybe-expand)    
+    (general-define-key
+     :keymaps '(yas-minor-mode-map)
+     (kbd "M-i") yas-maybe-expand)
     (yas-reload-all)
 
-    (yas-global-mode)
-    (add-hook 'prog-mode-hook '(lambda () (yas-minor-mode))) 
-
-    ;; http://capitaomorte.github.io/yasnippet/snippet-development.html
-
-    ;; http://capitaomorte.github.io/yasnippet/snippet-expansion.html
     )
-
 #+END_SRC
 
-* company                                             :deprecated:spacemacs:
+* company                        
 
-** deprecated 
- #+BEGIN_SRC emacs-lisp :tangle no
-
-       ;;; Prevent suggestions from being triggered automatically. In particular,
-       ;;; this makes it so that:
-       ;;; - TAB will always complete the current selection.
-       ;;; - RET will only complete the current selection if the user has explicitly
-       ;;;   interacted with Company.
-       ;;; - SPC will never complete the current selection.
-       ;;;
-       ;;; Based on:
-       ;;; - https://github.com/company-mode/company-mode/issues/530#issuecomment-226566961
-       ;;; - http://emacs.stackexchange.com/a/13290/12534
-       ;;; - http://stackoverflow.com/a/22863701/3538165
-       ;;;
-       ;;; See also:
-       ;;; - http://emacs.stackexchange.com/a/24800/12534
-       ;;; - http://emacs.stackexchange.com/q/27459/12534
-
-   ;; <return> is for windowed Emacs; RET is for terminal Emacs
-   (use-package  company
-     :ensure t
-     :init
-     (remove-from-list 'company-backends 'company-semantic )
-     (add-to-list 'company-backends 'company-manually)
-
-
-     (add-hook 'after-init-hook 'global-company-mode)
-     (define-key c-mode-map  [(backtab)] 'company-complete)
-     (define-key c++-mode-map  [(backtab)] 'company-complete)
-
-
-     (dolist (key '("<return>" "RET"))
-       ;; Here we are using an advanced feature of define-key that lets
-       ;; us pass an "extended menu item" instead of an interactive
-       ;; function. Doing this allows RET to regain its usual
-       ;; functionality when the user has not explicitly interacted with
-       ;; Company.
-       (define-key company-active-map (kbd key)
-         `(menu-item nil company-complete
-                     :filter ,(lambda (cmd)
-                                (when (company-explicit-action-p)
-                                  cmd)))))
-     (define-key company-active-map (kbd "TAB") #'company-complete-selection)
-     (define-key company-active-map (kbd "SPC") nil)
-
-     ;; Company appears to override the above keymap based on company-auto-complete-chars.
-     ;; Turning it off ensures we have full control.
-     (setq company-auto-complete-chars nil)
-     (define-key  company-active-map [escape] '(lambda () (interactive) (company-abort) (evil-normal-state)))
-     (define-key  company-active-map [end] 'company-abort))
-
- #+END_SRC
-
- #+END_SRC
-
- #+RESULTS:
 
 ** changed
 #+BEGIN_SRC emacs-lisp
-  (use-package  company
+  (leaf  company
     :ensure t
-    :init
-    (define-key  company-active-map [escape] '(lambda () (interactive) (company-abort) (evil-normal-state)))
-    (define-key company-active-map [return]    nil)
-    (define-key company-active-map (kbd "RET") nil)
-    (define-key  company-active-map [end] 'company-abort))
+    :config
+    (general-define-key
+     :keymaps  'company-active-map
+     [escape] #'(lambda () (interactive) (company-abort) (evil-normal-state))
+     [return]    nil
+     (kbd "RET") nil
+     [end] 'company-abort))
 
 
-  (use-package  company-manually
-    :init
-    (global-set-key [(f2)] 'company-manually)
-    (global-set-key [(S-f2)] 'company-manually-add-candidate-at-point))
+  (leaf  company-manually
+    :ensure t
+    :config
+    (general-define-key
+     [(f2)] 'company-manually
+     [(S-f2)] 'company-manually-add-candidate-at-point))
 #+END_SRC
 
 #+RESULTS:

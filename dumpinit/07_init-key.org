@@ -36,293 +36,6 @@
 
 #+END_SRC
 
-** dead key                                                     :deprecated:
-#+BEGIN_SRC emacs-lisp :tangle no
-
-   ;; USE MOUSE
-   ;; ;; set the “forward button” (5th button) to close.
-   ;; (cond
-   ;;  ((string-equal system-type "windows-nt") ; Windows
-   ;;   (global-set-key (kbd "<mouse-5>") 'ergoemacs-close-current-buffer)
-   ;;   (global-set-key (kbd "<mouse-4>") 'describe-char)
-   ;;   )
-   ;;  ((string-equal system-type "gnu/linux")
-   ;;   (global-set-key (kbd "<mouse-9>") 'ergoemacs-close-current-buffer)
-   ;;   )
-   ;;  ((string-equal system-type "darwin") ; Mac
-   ;;   (global-set-key (kbd "<mouse-5>") 'ergoemacs-close-current-buffer) ) )
-   ;; 
-   ;; (global-set-key (kbd "<M-wheel-up>") 'ergoemacs-previous-user-buffer)
-   ;; (global-set-key (kbd "<M-wheel-down>") 'ergoemacs-next-user-buffer)
-
-   ;; Local Variables:
-   ;; mode: allout-minor
-   ;; End:
-
-   (global-set-key (kbd "s-h")  'previous-user-buffer)
-   (global-set-key (kbd "s-H")  'next-user-buffer)
-
-   ;;(global-set-key (kbd "C-<")  'previous-user-buffer)
-   ;;(global-set-key (kbd "C->")  'next-user-buffer)
-   (global-set-key (kbd "C-<")  'beginning-of-buffer)
-   (global-set-key (kbd "C->")  'end-of-buffer)
-
-   ;; make cursor movement keys under right hand's home-row.
-   (global-set-key (kbd "H-h") 'backward-char) ; was indent-new-comment-line
-   (global-set-key (kbd "H-l") 'forward-char)  ; was downcase-word
-   (global-set-key (kbd "H-k") 'previous-line) ; was tab-to-tab-stop
-   (global-set-key (kbd "H-j") 'next-line) ; was kill-sentence
-
-   (global-set-key (kbd "H-u") 'universal-argument)
-
-   (define-key universal-argument-map (kbd "H-u") 'universal-argument-more)
-
-   (global-set-key (kbd "M-SPC") 'set-mark-command) ; was just-one-space
-   (global-set-key (kbd "M-a")   'execute-extended-command) ; was backward-sentence
-   (global-set-key (kbd "H-M-k") 'backward-sentence) ; was backward-sentence
-   (global-set-key (kbd "H-M-j") 'forward-sentence) ; was backward-sentence
-
-   (require 'ibuffer)
-   (global-set-key (kbd "H-i") 'ibuffer) 
-   (define-key ibuffer-mode-map (kbd "H-m") 'ibuffer-visit-buffer)
-
-   (global-set-key (kbd "H-SPC") 'set-mark-command) 
-   (global-set-key (kbd "H-w")   'kill-ring-save) 
-   (global-set-key (kbd "H-q")   'yank) 
-   (global-set-key (kbd "H-a")   'move-beginning-of-line) 
-   (global-set-key (kbd "H-v")   'yank) 
-
-
-   (global-set-key (kbd "C-H-h") 'backward-sexp) ; was backward-sentence
-   (global-set-key (kbd "C-H-l") 'forward-sexp) ; was backward-sentence
-   (global-set-key (kbd "C-H-j") 'forward-paragraph) ; was backward-sentence
-   (global-set-key (kbd "C-H-k") 'backward-paragraph) ; was backward-sentence
-
-
-   (global-set-key (kbd "H-1") 'delete-other-windows) ; was backward-sentence
-   (global-set-key (kbd "H-2") 'split-window-below) ; was backward-sentence
-   (global-set-key (kbd "H-3") 'split-window-right) ; was backward-sentence
-
-   (define-key dired-mode-map (kbd "H-m") 'diredp-find-file-reuse-dir-buffer)
-
-   ;;; directory 
-   (define-key minibuffer-local-map (kbd "H-j") 'next-history-element)
-   (define-key minibuffer-local-map (kbd "H-k") 'previous-history-element)
-   (define-key minibuffer-local-map (kbd "H-m") 'exit-minibuffer)
-
-   (define-key dired-mode-map (kbd "H-m") 'diredp-find-file-reuse-dir-buffer)
-
-
-   ;;;
-   ;;;
-   ;;;  ※ 키보드 셋팅 
-   ;;;
-   ;;;
-   (global-set-key (kbd "H-g") 'keyboard-escape-quit)
-   (global-set-key (kbd "H-y") 'yank)
-   (global-set-key (kbd "H-z") 'keyboard-quit)
-   (global-set-key "\C-z" 'set-mark-command)
-   (global-set-key ( kbd "C-H-w") 'kill-ring-save)
-   (global-set-key ( kbd "H-e") 'move-end-of-line)
-   (global-set-key ( kbd "H-x") 'smex)
-   (global-set-key ( kbd "C-H-x") 'smex)
-   (global-set-key ( kbd "H-s") 'save-buffer)
-   (global-set-key ( kbd "H-c") 'kill-ring-save)
-   (global-set-key ( kbd "H-v") 'yank)
-   (global-set-key ( kbd "H-f") 'ibuffer)
-   (global-set-key ( kbd "H-/") 'undo)
-   (global-set-key ( kbd "H-d") 'dired)
-   (global-set-key ( kbd "H-;") 'smex)
-   (global-set-key (kbd "H-n") 'forward-paragraph) 
-   (global-set-key (kbd "H-p") 'backward-paragraph) 
-   (define-key function-key-map (kbd  "H-m") "\C-m")
-
-   (global-set-key [H-up] 'bs-cycle-previous)
-   (global-set-key [H-down]  'bs-cycle-next)
-   (global-set-key [H-right] 'forward-sexp)
-   (global-set-key [H-left]  'backward-sexp)
-   (global-set-key (kbd "<C-tab>") 'set-mark-command)
-   (global-set-key [(mouse-4)] 
-       '(aif (scroll-down 3)))
-   (global-set-key [(mouse-5)] 
-       '(aif (scroll-up 3)))
-   (global-set-key "\M-#" 
-       '( lambda (arg) 
-          (interactive "p" ) 
-          (mark-word arg) 
-          (exchange-point-and-mark)))
-
-
-   (global-set-key [C-M-down] 'set-mark-command)
-
-   (w32-unix-eval
-    ;; 윈도우 시스템의 경우
-    ;; emacs 에서 FIND 가능
-    (
-     (global-set-key "\M-]"  'forward-page )
-     (global-set-key "\M-["  'backward-page )
-
-     )
-    ())
-   (global-set-key [C-M-return] 'goto-line) 
-   (global-set-key [C-return] 'dabbrev-expand )
-   (define-key ctl-x-map "\C-z" 'keyboard-escape-quit)
-   (define-key ctl-x-map [down] 
-     '(lambda() 
-        ( interactive) 
-        ( kill-ring-save 
-          ( point ) 
-          ( cond 
-      ( ( < (point-max ) ( + 1 (point-at-eol ) )  ) (point-at-eol) ) 
-      ( t (+ 1 (point-at-eol )))))))
-   (global-set-key [C-kp-add] '(lambda() ( interactive ) (next-error) (recenter) ))
-   (global-set-key [C-kp-subtract] 'previous-error )
-
-   (global-set-key [C-right] 'forward-sexp )
-   (global-set-key [C-left] 'backward-sexp )
-   (global-set-key [C-kp-divide] 'occur)
-   (global-set-key [C-kp-multiply] 'occur-compile )
-   (global-set-key [C-kp-space] 'compile)
-   (global-set-key [M-kp-space] 'recompile)
-   ;;
-   ;; 미니버퍼에서도 CTRL-z 를 사용할 수 있도록 한다. 
-   ;; simple.el 파일에 있던 내용을 수정하였음. 
-   ;; 모든 map 목록을 아는 방법은 없는가 .
-   (define-key minibuffer-local-map "\C-z" 'minibuffer-keyboard-quit)
-   (define-key minibuffer-local-ns-map "\C-z" 'minibuffer-keyboard-quit)
-   (define-key minibuffer-local-completion-map "\C-z" 'minibuffer-keyboard-quit)
-   (define-key minibuffer-local-must-match-map "\C-z" 'minibuffer-keyboard-quit)
-   (define-key minibuffer-local-isearch-map "\C-z" 'minibuffer-keyboard-quit)
-   (define-key query-replace-map "\C-z" 'quit)
-
-   (defun xah-search-current-word ()
-     "Call `isearch' on current word or text selection.
-   “word” here is A to Z, a to z, and hyphen 「-」 and underline 「_」, independent of syntax table.
-   URL `http://ergoemacs.org/emacs/modernization_isearch.html'
-   Version 2015-04-09"
-     (interactive)
-     (let ( ξp1 ξp2 )
-       (if (use-region-p)
-           (progn
-             (setq ξp1 (region-beginning))
-             (setq ξp2 (region-end)))
-         (save-excursion
-           (skip-chars-backward "-_A-Za-z0-9")
-           (setq ξp1 (point))
-           (right-char)
-           (skip-chars-forward "-_A-Za-z0-9")
-           (setq ξp2 (point))))
-       (setq mark-active nil)
-       (when (< ξp1 (point))
-         (goto-char ξp1))
-       (isearch-mode t)
-       (isearch-yank-string (buffer-substring-no-properties ξp1 ξp2))))
-
-
-   (progn
-     ;; set arrow keys in isearch. left/right is backward/forward, up/down is history. press Return to exit
-     (define-key isearch-mode-map (kbd "<up>") 'isearch-ring-retreat )
-     (define-key isearch-mode-map (kbd "<down>") 'isearch-ring-advance )
-     (define-key isearch-mode-map (kbd "<left>") 'isearch-repeat-backward) ; single key, useful
-     (define-key isearch-mode-map (kbd "<right>") 'isearch-repeat-forward) ; single key, useful
-    )
-
-    (define-key dired-mode-map "e" 'wdired-change-to-wdired-mode) ;; use 'e' to edit filenames
-   ;; UNIX 에서 유용하게 사용할 수 있습니다. 
-   ;;(global-set-key "\C-c\C-m" 'execute-extended-command)
-   ;;(global-set-key "\C-x\C-m" 'execute-extended-command)
-
-   ;;(global-set-key (kbd "C-;") 'execute-extended-command)
-   (global-set-key (kbd "C-;") 'smex)
-   ;;ac-complete (global-set-key (kbd "C-o") 'occur)
-   (global-set-key (kbd "M-s") 'yank)
-   (let ((map minibuffer-local-map))
-     (define-key map "\es"   'yank))
-
-   (let ((map text-mode-map))
-     (define-key map "\es"   'yank)) ;;원래는 center-line
-
-
-   ;; 한글세벌식 단점 극북 
-   ;; http://www.gigamonkeys.com/book/numbers-characters-and-strings.html 참오 
-
-   ;;DEPRECATED;;(defun insert-bar ()
-   ;;DEPRECATED;;  (interactive) (insert "|"))
-   ;;DEPRECATED;;
-   ;;DEPRECATED;;(defun insert-lbrace () (interactive) (insert "{"))
-   ;;DEPRECATED;;(defun insert-rbrace () (interactive) (insert "}"))
-   ;;DEPRECATED;;(global-set-key "\C-\\" 'insert-bar )
-   ;;DEPRECATED;;(global-set-key (kbd "C-{") 'insert-lbrace )
-   ;;DEPRECATED;;(global-set-key (kbd "C-}") 'insert-rbrace )
-
-
-   (global-set-key "\C-c["  (aif (insert-char ?\[ 1 )))
-   (global-set-key "\C-c]"  (aif (insert-char ?\] 1 )))
-   (global-set-key "\C-c{"  (aif (insert-char ?\{ 1 )))
-   (global-set-key "\C-c}"  (aif (insert-char ?\} 1 )))
-   (global-set-key "\C-c("  (aif (insert-char ?\( 1 )))
-   (global-set-key "\C-c)"  (aif (insert-char ?\) 1 )))
-   (global-set-key "\C-c\\" (aif (insert-char ?\| 1 )))
-   (global-set-key "\C-c-"  (aif (insert-char ?\- 1 )))
-
-   (if (not (eq system-uses-terminfo t))
-       (global-set-key "\C-\\"  (aif (insert-char ?\| 1 ))))
-   ;;deprecated-smartparen;;(global-set-key (kbd "C-{")  (aif (insert-char ?\{ 1 )))
-   ;;deprecated-smartparen;;(global-set-key (kbd "C-}")  (aif (insert-char ?\} 1 )))
-   ;;deprecated-smartparen;;(global-set-key (kbd "C-(")  (aif (insert-char ?\( 1 )))
-   ;;deprecated-smartparen;;(global-set-key (kbd "C-)")  (aif (insert-char ?\) 1 )))
-   ;;deprecated-smartparen;;(global-set-key (kbd "C-)")  (aif (insert-char ?\) 1 )))
-   ;;expand-region;;(global-set-key (kbd "C-=")  (aif (insert-char ?\= 1 )))
-   (global-set-key (kbd "C-&")  (aif (insert-char ?\& 1 )))
-   (global-set-key (kbd "C-`")  (aif (insert-char ?\* 1 )))
-   (global-set-key (kbd "C-|")  (aif (insert-char ?\| 1 )))
-
-
-   (global-set-key "\C-ce"      '(aif (delete-region (point) (point-at-eol)) (yank)))
-   (global-set-key "\C-cv"      'yank)
-
-   ;;(defun smarter-move-beginning-of-line (arg)
-   ;;  "Move point back to indentation of beginning of line.
-   ;;
-   ;;Move point to the first non-whitespace character on this line.
-   ;;If point is already there, move to the beginning of the line.
-   ;;Effectively toggle between the first non-whitespace character and
-   ;;the beginning of the line.
-   ;;
-   ;;If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-   ;;point reaches the beginning or end of the buffer, stop there."
-   ;;  (interactive "^p")
-   ;;  (setq arg (or arg 1))
-   ;;
-   ;;  ;; Move lines first
-   ;;  (when (/= arg 1)
-   ;;    (let ((line-move-visual nil))
-   ;;      (forward-line (1- arg))))
-   ;;
-   ;;  (let ((orig-point (point)))
-   ;;    (back-to-indentation)
-   ;;    (when (= orig-point (point))
-   ;;      (move-beginning-of-line 1))))
-   ;;
-   ;;;; remap C-a to `smarter-move-beginning-of-line'
-   ;;;;(global-set-key [remap move-beginning-of-line]
-   ;;;;                'smarter-move-beginning-of-line)
-   ;;
-   ;;(global-set-key (kbd "C-a") 'smarter-move-beginning-of-line)
-   (global-set-key (kbd "H-a") 'back-to-indentation)
-
-   (define-key ctl-x-r-map "p" 'copy-rectangle-to-clipboard )
-
-
-   ;;deprecated;;(leaf zygospore
-   ;;deprecated;;  :config
-   ;;deprecated;;  (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows))
-
-
-
-   #+END_SRC
-
-
 ** mouse scroll
    #+BEGIN_SRC emacs-lisp
    
@@ -433,59 +146,50 @@
 #+BEGIN_SRC emacs-lisp
 
 
-  ;; (global-set-key [f12] 'ibuffer)
-  (global-set-key [S-pause] 'revert-buffer )
-  (global-set-key [C-f12] 'revert-buffer )
-  ;; (global-set-key (kbd "C-z") 'ibuffer)
-  ;deprecated;;(global-set-key ( kbd "H-m") 'smex)
-  ;;(define-key function-key-map (vector ?\H-m) (vector 'return))
-  ;;(global-set-key (kbd "H-m") 'newline) ; was kill-sentence
+  (general-define-key
+   [S-pause] 'revert-buffer
+   [C-f12] 'revert-buffer
 
-  ;;deprecated;;(global-set-key [H-left] 'previous-buffer)
-  ;;deprecated;;(global-set-key [H-right] 'next-buffer)
+   [(f4)] 'next-error
+   [(shift f4)] 'previous-error
+ 
+   [f5] 'repeat
+   [f6] 'ff-find-other-file
+   [f7] 'isearch-forward-regexp
+   [f8] 'isearch-backward-regexp
+   [S-f7] 'isearch-forward
+   [S-f8] 'isearch-backward
 
-  ;; (global-set-key [H-right] 'iflipb-next-buffer)
-  ;; (global-set-key [H-left] 'iflipb-previous-buffer)
-  ;; (require 'cycle-buffer)
-  ;; (global-set-key [H-right] 'cycle-buffer)
-  ;; (global-set-key [H-left]  'cycle-buffer-backward)
-  ;;deprecated;;(require 'swbuff)
-  ;;deprecated;;(global-set-key [H-right] 'swbuff-switch-to-next-buffer)
-  ;;deprecated;;(global-set-key [H-left]  'swbuff-switch-to-previous-buffer)
+   [f10] 'xah-copy-to-register
+   [f11] 'xah-paste-from-register
+   [S-f10] 'xah-append-to-register
+   [S-f11] 'xah-clear-register
+   [f20] 'xah-append-to-register
+   [f21] 'xah-clear-register
+   [f15] 'ivy-resume
+   [S-f5] 'ivy-resume
+   [mouse-8] 'resume
 
+   (kbd "<M-return>") 'imenu
+   "M-o" 'other-window
+   [remap toggle-input-method] #'toggle-korean-input-method
+   )
 
+  (general-define-key
+   :keymap
+   isearch-mode-map
+   [f7] 'isearch-repeat-forward
+   [f8] 'isearch-repeat-backward )
 
-  (global-set-key "\C-cd" 'insert-date )
-  (global-set-key [f6] 'ff-find-other-file )
-  (global-set-key [f7] 'isearch-forward-regexp ) 
-  (global-set-key [f8] 'isearch-backward-regexp )
-  (global-set-key [S-f7] 'isearch-forward )
-  (global-set-key [S-f8] 'isearch-backward ) 
-  (define-key isearch-mode-map [f7] 'isearch-repeat-forward ) 
-  (define-key isearch-mode-map [f8] 'isearch-repeat-backward )
-  (global-set-key [f5] 'repeat )
   ;;VERY LITTILE USED;;(global-set-key [f11] 'cscope-find-global-definition )
-  ;;VERY LITTILE USED;;(global-set-key [f12] 'cscope-pop-mark ) 
-  (global-set-key (kbd "<M-return>") 'imenu )
-
-  (global-set-key [remap toggle-input-method]
-                  #'toggle-korean-input-method)
+  ;;VERY LITTILE USED;;(global-set-key [f12] 'cscope-pop-mark )
 
 
-  (global-set-key [f10] 'xah-copy-to-register)
-  (global-set-key [f11] 'xah-paste-from-register)
-  (global-set-key [S-f10] 'xah-append-to-register)
-  (global-set-key [S-f11] 'xah-clear-register)
-  (global-set-key [f20] 'xah-append-to-register)
-  (global-set-key [f21] 'xah-clear-register)
 
-  (global-set-key [f15] 'ivy-resume)
-  (global-set-key [S-f5] 'ivy-resume)
-  (global-set-key [mouse-8] 'resume)
 
-  (global-unset-key "\M-o" )
-  (global-set-key "\M-o" 'other-window)
-  ;; facemenu-keymap  [[file:35_init-evil.org::*enriched mode][enriched mode]] 
+  ;; (global-unset-key "\M-o" ) 
+  ;; (global-set-key "\M-o" 'other-window)
+  ;; facemenu-keymap  [[file:35_init-evil.org::*enriched mode][enriched mode]]
 
 #+END_SRC
 
@@ -518,16 +222,17 @@
     :config
     (defun gud-key ()
       (interactive)
-      (global-set-key [f5] 'gud-cont)
-      (global-set-key [f15] 'gud-stop-subjob)
-      (global-set-key [f9] 'gud-break)
-      (global-set-key [f19] 'gud-remove)
-      (global-set-key [f10] 'gud-next)
-      (global-set-key [C-f10] 'gud-finish)
-      (global-set-key [f20] 'gud-until)
-      (global-set-key [f11] 'gud-step)
-      (global-set-key [f14] 'gdb-restore-windows)
-      (global-set-key [f12] 'emamux:send-dwim))
+      (general-define-key
+       [f5] 'gud-cont
+       [f15] 'gud-stop-subjob
+       [f9] 'gud-break
+       [f19] 'gud-remove
+       [f10] 'gud-next
+       [C-f10] 'gud-finish
+       [f20] 'gud-until
+       [f11] 'gud-step
+       [f14] 'gdb-restore-windows
+       [f12] 'emamux:send-dwim)) 
 
     (defvar gud-overlay
       (let* ((ov (make-overlay (point-min) (point-min))))
@@ -583,17 +288,20 @@
 
 ** xah isearch
 #+BEGIN_SRC emacs-lisp
-   ;; http://ergoemacs.org/emacs/emacs_isearch_by_arrow_keys.html
-   (progn
-     ;; set arrow keys in isearch. left/right is backward/forward, up/down is history. press Return to exit
-     (define-key isearch-mode-map (kbd "<up>") 'isearch-ring-retreat )
-     (define-key isearch-mode-map (kbd "<down>") 'isearch-ring-advance )
+  ;; http://ergoemacs.org/emacs/emacs_isearch_by_arrow_keys.html
 
-     (define-key isearch-mode-map (kbd "<left>") 'isearch-repeat-backward)
-     (define-key isearch-mode-map (kbd "<right>") 'isearch-repeat-forward)
+  ;; set arrow keys in isearch. left/right is backward/forward, up/down is history. press Return to exit
+  (general-define-key
+   :keymaps 'isearch-mode-map
+   (kbd "<up>") 'isearch-ring-retreat 
+   (kbd "<down>") 'isearch-ring-advance 
+   (kbd "<left>") 'isearch-repeat-backward
+   (kbd "<right>") 'isearch-repeat-forward)
 
-     (define-key minibuffer-local-isearch-map (kbd "<left>") 'isearch-reverse-exit-minibuffer)
-     (define-key minibuffer-local-isearch-map (kbd "<right>") 'isearch-forward-exit-minibuffer))
+  (general-define-key
+   :keymaps 'minibuffer-local-isearch-map
+   (kbd "<left>") 'isearch-reverse-exit-minibuffer
+   (kbd "<right>") 'isearch-forward-exit-minibuffer)
  #+END_SRC
 ** repeat-complex command
 #+BEGIN_SRC emacs-lisp

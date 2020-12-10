@@ -403,7 +403,7 @@
        :config
        (general-define-key
         :states 'visual
-        :keymaps evil-surround-mode-map
+        :keymaps 'evil-surround-mode-map
         "s" 'evil-surround-region))
 
      (leaf evil-embrace
@@ -784,7 +784,7 @@
 
       ;; [[file:t:/gitdir/dot-emacs/etc/hyone-key-combo.el::(defun%20evil-key-combo-define%20(state%20keymap%20key%20commands)][combo for evil]]
 
-      ;; (use-package guide-key
+      ;; (leaf guide-key
       ;;   :config
       ;;   (guide-key-mode)
       ;;   (defun guide-key-hook-function-for-org-mode ()
@@ -806,23 +806,6 @@
 *** magit
     #+BEGIN_SRC emacs-lisp
 
-      ;; (use-package magit
-      ;;   :commands magit-status magit-diff magit-log magit-blame-mode
-      ;;   :init
-      ;;   (evil-leader/set-key
-      ;;     "g t" 'magit-status
-      ;;     "g b" 'magit-blame-mode
-      ;;     "g l" 'magit-log
-      ;;     "g d" 'magit-diff)
-      ;;   :config
-      ;;   (progn
-      ;;     (evil-make-overriding-map magit-mode-map 'emacs)
-      ;;     (define-key magit-mode-map "\C-w" 'evil-window-map)
-      ;;     (general-def 'emacs magit-mode-map "j" 'magit-goto-next-section)
-      ;;     (general-def 'emacs magit-mode-map "k" 'magit-goto-previous-section)
-      ;;     (general-def 'emacs magit-mode-map "K" 'magit-discard-item))) 
-
-
       (leaf git-timemachine
         :ensure t
         ;; force update evil keymaps after git-timemachine-mode loaded
@@ -836,17 +819,6 @@
 
     #+END_SRC
 
-*** mathinput
-    #+BEGIN_SRC emacs-lisp :tangle on
-      (leaf xah-math-input
-        :ensure t
-        :config
-        (general-define-key
-         :states '(normal insert visual) 
-         :keymaps 'xah-math-input-keymap
-         [f9] 'xah-math-input-change-to-symbol))
-
-    #+END_SRC
 
 *** occur
     
@@ -1108,9 +1080,9 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
    #+begin_src emacs-lisp
 
      (leaf evil-collection
-       :ensure t 
+       :ensure t
+       :custom (evil-want-keybinding . nil)
        :config
-
        (evil-collection-init '( diff-mode mu4e))
 
        (let ((bindings `((mu4e-view-mode-map 

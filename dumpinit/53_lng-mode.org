@@ -29,28 +29,10 @@
 : ((http . ob-http) (dot . graphviz-dot) (redis . redis) (php . php) (arduino . arduino) (dot . graphviz-dot) (C . c) (C++ . c++) (asymptote . asy) (bash . sh) (beamer . latex) (calc . fundamental) (cpp . c++) (ditaa . artist) (elisp . emacs-lisp) (ocaml . tuareg) (screen . shell-script) (shell . sh) (sqlite . sql) (dot . graphviz-dot) (translate . text) (ocaml . tuareg) (elisp . emacs-lisp) (ditaa . artist) (asymptote . asy) (sqlite . sql) (calc . fundamental) (C . c) (cpp . c++) (C++ . c++) (screen . shell-script) (shell . sh) (bash . sh) (plantuml . puml))
 
 * lsp
-
-** PENDING custom setting 
-   - State "PENDING"    from              [2020-02-27 목 09:37]
- #+begin_src emacs-lisp :tangle no
-   (use-package lsp-mode
-     :ensure t
-     ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-     :init (setq lsp-keymap-prefix "<f12>")
-     :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-            (python-mode . lsp)
-            ;; if you want which-key integration
-            (lsp-mode . lsp-enable-which-key-integration))
-     :commands lsp)
-
-   (setq read-process-output-max (* 1024 1024))
-
-
- #+end_src
-
- #+RESULTS:
- : 1048576
-
+** process-output
+   #+begin_src emacs-lisp
+     (setq read-process-output-max (* 1024 1024))
+   #+end_src
 ** spacemacs layer
    #+begin_src emacs-lisp
    (defvar c-c++-backend 'lsp-ccls) 
@@ -93,25 +75,27 @@
 * latex
 ** ob-latex-as-png
    #+begin_src emacs-lisp
-       (use-package ob-latex-as-png
-         :config
-         (add-to-list  'ob-latex-as-png-header "\\usepackage{amsmath}"))
+     (leaf ob-latex-as-png
+       :ensure t
+       :config
+       (add-to-list  'ob-latex-as-png-header "\\usepackage{amsmath}"))
    #+end_src
 
    #+RESULTS:
-   : t
+   : ob-latex-as-png
 
    
 ** company-math, cdlatex
 
   #+begin_src emacs-lisp
-    (use-package company-math
+    (leaf company-math
+      :custom (company-math-allow-latex-symbols-in-faces . t )
       :config
-      (setf company-math-allow-latex-symbols-in-faces t )
       (spacemacs|add-company-backends :backends (company-math-symbols-latex company-latex-commands) :modes org-mode)
       )
 
-    (use-package cdlatex
+    (leaf cdlatex
+      :ensure t
       :hook
       ((org-mode . turn-on-org-cdlatex)
        (LaTeX-mode . turn-on-cdlatex)))

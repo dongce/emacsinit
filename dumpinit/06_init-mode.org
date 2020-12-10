@@ -235,109 +235,111 @@
    #+end_src
 * hook
 #+BEGIN_SRC emacs-lisp
-(add-hook  'xah-html-mode-hook (lambda()(rainbow-mode t )))
-;;font-lock-add-keywords 이용;;(defvar hexcolour-keywords
-;;font-lock-add-keywords 이용;;  '(("#[abcdef[:digit:]]\\{6\\}"
-;;font-lock-add-keywords 이용;;     (0 (put-text-property
-;;font-lock-add-keywords 이용;;         (match-beginning 0)
-;;font-lock-add-keywords 이용;;         (match-end 0)
-;;font-lock-add-keywords 이용;;         'face (list :background
-;;font-lock-add-keywords 이용;;                     (match-string-no-properties 0)))))))
-;;font-lock-add-keywords 이용;;(defun hexcolour-add-to-font-lock ()
-;;font-lock-add-keywords 이용;;  (font-lock-add-keywords nil hexcolour-keywords))
-;;font-lock-add-keywords 이용;;
-;;font-lock-add-keywords 이용;;(add-hook 'css-mode-hook 'hexcolour-add-to-font-lock)
-;;font-lock-add-keywords 이용;;(add-hook 'php-mode-hook 'hexcolour-add-to-font-lock)
-;;font-lock-add-keywords 이용;;(add-hook 'html-mode-hook 'hexcolour-add-to-font-lock)
-;;관련 변수;; font-lock-keywords
+  (add-hook  'xah-html-mode-hook (lambda()(rainbow-mode t )))
+  ;;font-lock-add-keywords 이용;;(defvar hexcolour-keywords
+  ;;font-lock-add-keywords 이용;;  '(("#[abcdef[:digit:]]\\{6\\}"
+  ;;font-lock-add-keywords 이용;;     (0 (put-text-property
+  ;;font-lock-add-keywords 이용;;         (match-beginning 0)
+  ;;font-lock-add-keywords 이용;;         (match-end 0)
+  ;;font-lock-add-keywords 이용;;         'face (list :background
+  ;;font-lock-add-keywords 이용;;                     (match-string-no-properties 0)))))))
+  ;;font-lock-add-keywords 이용;;(defun hexcolour-add-to-font-lock ()
+  ;;font-lock-add-keywords 이용;;  (font-lock-add-keywords nil hexcolour-keywords))
+  ;;font-lock-add-keywords 이용;;
+  ;;font-lock-add-keywords 이용;;(add-hook 'css-mode-hook 'hexcolour-add-to-font-lock)
+  ;;font-lock-add-keywords 이용;;(add-hook 'php-mode-hook 'hexcolour-add-to-font-lock)
+  ;;font-lock-add-keywords 이용;;(add-hook 'html-mode-hook 'hexcolour-add-to-font-lock)
+  ;;관련 변수;; font-lock-keywords
 
 
-(add-hook 
- 'makefile-mode-hook 
- (lambda()(setq indent-tabs-mode t )))
+  (add-hook 
+   'makefile-mode-hook 
+   (lambda()(setq indent-tabs-mode t )))
 
-(add-hook 
- 'c-mode-common-hook 
- '(lambda() 
-    ;; define comment style to "//"
-    (setq comment-start "//")
-    (setq comment-end "")))
+  (add-hook 
+   'c-mode-common-hook 
+   '(lambda() 
+      ;; define comment style to "//"
+      (setq comment-start "//")
+      (setq comment-end "")))
 
-(add-hook 
- 'c++-mode-hook 
- '(lambda ()  
-    (auto-fill-mode 0) 
-    (column-number-mode 1) 
-    ;;(if (not (eq nil (string-match "isdl" (buffer-file-name))))
-    ;;    (c-set-style "stroustrup"))
-    ))
-
-
-
-(add-hook 
- 'ibuffer-mode-hook
- (lambda ()
-   (ibuffer-switch-to-saved-filter-groups "default")))
-
-(add-hook 
- 'grep-mode-hook
- (lambda ()
-   (toggle-truncate-lines 1)))
-
-(add-hook 
- 'occur-mode-hook
- (lambda ()
-   (toggle-truncate-lines 1)))
+  (add-hook 
+   'c++-mode-hook 
+   '(lambda ()  
+      (auto-fill-mode 0) 
+      (column-number-mode 1) 
+      ;;(if (not (eq nil (string-match "isdl" (buffer-file-name))))
+      ;;    (c-set-style "stroustrup"))
+      ))
 
 
 
-;; comint echo 를 방지한다. 
-;;guile과충돌;;(when (eq system-type 'windows-nt)
-;;guile과충돌;;  (setq-default comint-process-echoes 'on))
-(add-hook 'shell-mode-hook #'(lambda () (setf comint-process-echoes 'on))) ;; scheme 모드와 충돌 방지 
+  (add-hook 
+   'ibuffer-mode-hook
+   (lambda ()
+     (ibuffer-switch-to-saved-filter-groups "default")))
+
+  (add-hook 
+   'grep-mode-hook
+   (lambda ()
+     (toggle-truncate-lines 1)))
+
+  (add-hook 
+   'occur-mode-hook
+   (lambda ()
+     (toggle-truncate-lines 1)))
+
+
+
+  ;; comint echo 를 방지한다. 
+  ;;guile과충돌;;(when (eq system-type 'windows-nt)
+  ;;guile과충돌;;  (setq-default comint-process-echoes 'on))
+  (add-hook 'shell-mode-hook #'(lambda () (setf comint-process-echoes 'on))) ;; scheme 모드와 충돌 방지 
 
 
 
 
-;;;
-;;;
-;;; ※ 여러 가지 훅 설정
-;;;
-;;;
+  ;;;
+  ;;;
+  ;;; ※ 여러 가지 훅 설정
+  ;;;
+  ;;;
 
-;; 
-;; 2007년 01월 07일 일요일 오후 05시 35분 38초
-;; 파일 경로명에 특정 문자열이 있는 경우 어떤 작업을 할 것인지 설정할 수 있도록 하는 명령이다. 
+  ;; 
+  ;; 2007년 01월 07일 일요일 오후 05시 35분 38초
+  ;; 파일 경로명에 특정 문자열이 있는 경우 어떤 작업을 할 것인지 설정할 수 있도록 하는 명령이다. 
 
-(defvar find-file-path-match-hook
-  '( ("기간별정리" . '(org-mode))
-     ("rej" . '(read-only-mode 1 ))
-     ("site-lisp" . '(read-only-mode 1 ))
-     ("tests" . '(read-only-mode 0 ))
-     ("elpa" . '(read-only-mode 0 ))))
+  (defvar find-file-path-match-hook
+    '( ("기간별정리" . '(org-mode))
+       ("rej" . '(read-only-mode 1 ))
+       ("site-lisp" . '(read-only-mode 1 ))
+       ("tests" . '(read-only-mode 0 ))
+       ("elpa" . '(read-only-mode 0 ))))
 
-(add-hook 
- 'find-file-hook
- (lambda ( )
-   (let ((bn (buffer-file-name)))
-     (mapcar
-      (lambda ( x ) (if (not (eql nil (string-match (car x ) bn )))
-                        (eval (eval (cdr x )))))
-      find-file-path-match-hook ))))
+  (add-hook 
+   'find-file-hook
+   (lambda ( )
+     (let ((bn (buffer-file-name)))
+       (mapcar
+        (lambda ( x ) (if (not (eql nil (string-match (car x ) bn )))
+                      (eval (eval (cdr x )))))
+        find-file-path-match-hook ))))
 
 
 
-;;(global-set-key [f5] 'slime-js-reload)
-(add-hook 
- 'js2-mode-hook
- (lambda ()
-   (slime-js-minor-mode 1)))
+  ;;(global-set-key [f5] 'slime-js-reload)
+  (add-hook 
+   'js2-mode-hook
+   (lambda ()
+     (slime-js-minor-mode 1)))
 
-(add-hook 
- 'css-mode-hook
- (lambda ()
-   (define-key css-mode-map "\M-\C-x" 'slime-js-refresh-css)
-   (define-key css-mode-map "\C-c\C-r" 'slime-js-embed-css)))
+  (add-hook 
+   'css-mode-hook
+   (lambda ()
+     (general-define-key
+      :keymaps 'css-mode-map
+      "\M-\C-x" 'slime-js-refresh-css
+      "\C-c\C-r" 'slime-js-embed-css)))
 
 #+END_SRC
 * yaml , dos

@@ -7,103 +7,7 @@
 
 #+END_SRC
 * python 
-** vanilla python  :deprecated
-   deprecated by spacemacs
-   #+BEGIN_SRC emacs-lisp  :tangle no
 
-
-     ;;;_ python-mode 
-
-     (use-package python
-     :ensure t
-       :init
-       (setq   
-        python-check-command "pyflakes"
-        python-shell-interpreter "/opt/anaconda3/bin/ipython3"
-        python-shell-interpreter-args "-i --simple-prompt --colors=NoColor"
-        python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
-        python-shell-prompt-regexp "In \\[[0-9]+\\]: "))
-
-   #+END_SRC
-
-   #+RESULTS:
-
-** python-mode                                                  :deprecated:
-   #+BEGIN_SRC emacs-lisp :tangle no
-   
-
-   ;; (require 'python-mode)                       ;emacs 이 있는 python.el 의 내용을 pytho-mode 가 대체한다. 
-
-   ;; (defun python-info-current-defun-short (&optional include-type)
-   ;;   "Return name of surrounding function with Python compatible dotty syntax.
-   ;; Optional argument INCLUDE-TYPE indicates to include the type of the defun.
-   ;; This function is compatible to be used as
-   ;; `add-log-current-defun-function' since it returns nil if point is
-   ;; not inside a defun."
-   ;;   (save-restriction
-   ;;     (widen)
-   ;;     (save-excursion
-   ;;       (end-of-line 1)
-   ;;       (let ((names)
-   ;;             (starting-indentation (current-indentation))
-   ;;             (starting-pos (point))
-   ;;             (first-run t)
-   ;;             (last-indent)
-   ;;             (type))
-
-   ;;         (python-nav-beginning-of-defun 1)
-   ;;         (when (save-match-data
-   ;;                 (and
-   ;;                  (or (not last-indent)
-   ;;                      (< (current-indentation) last-indent))
-   ;;                  (or
-   ;;                   (and first-run
-   ;;                        (save-excursion
-   ;;                          ;; If this is the first run, we may add
-   ;;                          ;; the current defun at point.
-   ;;                          (setq first-run nil)
-   ;;                          (goto-char starting-pos)
-   ;;                          (python-nav-beginning-of-statement)
-   ;;                          (beginning-of-line 1)
-   ;;                          (looking-at-p
-   ;;                           python-nav-beginning-of-defun-regexp)))
-   ;;                   (< starting-pos
-   ;;                      (save-excursion
-   ;;                        (let ((min-indent
-   ;;                               (+ (current-indentation)
-   ;;                                  python-indent-offset)))
-   ;;                          (if (< starting-indentation  min-indent)
-   ;;                              ;; If the starting indentation is not
-   ;;                              ;; within the min defun indent make the
-   ;;                              ;; check fail.
-   ;;                              starting-pos
-   ;;                            ;; Else go to the end of defun and add
-   ;;                            ;; up the current indentation to the
-   ;;                            ;; ending position.
-   ;;                            ;; ( py-end-of-defun-function );;python-mode.el;;
-   ;;                            ;; (python-end-of-defun-function) ;;old python.el
-   ;;                            ;; (python-nav-end-of-defun) ;;slow python.el
-   ;;                            (end-of-defun) ;;slow python.el
-   ;;                            (+ (point)
-   ;;                               (if (>= (current-indentation) min-indent)
-   ;;                                   (1+ (current-indentation))
-   ;;                                 0)))))))))
-   ;;           (save-match-data (setq last-indent (current-indentation)))
-   ;;           (if (or (not include-type) type)
-   ;;               (setq names (cons (match-string-no-properties 1) names))
-   ;;             (let ((match (split-string (match-string-no-properties 0))))
-   ;;               (setq type (car match))
-   ;;               (setq names (cons (cadr match) names))))) ;; Stop searching ASAP.)
-   ;;         (and names
-   ;;              (concat (and type (format "%s " type))
-   ;;                     (mapconcat 'identity names ".")))))))
-
-
-   ;;deprecated;;(require 'python-mode)
-   ;;deprecated;;(require 'ipython)
-   ;;deprecated;;(py-set-ipython-completion-command-string "ipython.exe")
-   ;;deprecated;;(set-default 'py-python-command-args  '("-u" "c:/usr/local/python27/Scripts/ipython-script.py"  "--colors=NoColor"))
-   #+END_SRC
 
 ** debug & help
    #+BEGIN_SRC emacs-lisp
@@ -162,15 +66,16 @@
 ** outline
 
    #+BEGIN_SRC emacs-lisp
-     ;;(use-package imenu-tree )
+     ;;(leaf imenu-tree )
 
      ;;; _OUTLINE 
-     (use-package outline-magic
-     :ensure t
+     (leaf outline-magic
+       :ensure t
        :config
-       (w32-unix-eval
-        ((define-key outline-minor-mode-map [S-tab] 'outline-cycle))
-        ((define-key outline-minor-mode-map [(backtab)]'outline-cycle))))
+       (general-define-key
+        :keymaps 'outline-minor-mode-map
+        [S-tab] 'outline-cycle
+        [(backtab)]'outline-cycle))
 
      ;; (leaf outshine
      ;;   :config
@@ -354,60 +259,4 @@
    #+RESULTS:
    : message
 
-** elpy                                                         :deprecated:
 
-   #+BEGIN_SRC emacs-lisp :tangle no 
-  (use-package elpy
-     :ensure t
-    :config
-    (elpy-enable)
-    (elpy-use-ipython "ipython")
-    ;; (setq python-shell-interpreter "python.exe"
-    ;;       python-shell-interpreter-args "-u c:/usr/local/python27/Scripts/ipython-script.py --colors=NoColor")
-    (setq   
-     python-check-command "pyflakes"
-     python-shell-interpreter "ipython.exe"
-     python-shell-interpreter-args "--colors=NoColor"
-     python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
-     python-shell-prompt-regexp "In \\[[0-9]+\\]: "
-     elpy-default-minor-modes '(flycheck-mode yas-minor-mode auto-complete-mode)
-    elpy-rpc-backend "rope"
-    elpy-rpc-python-command "python")
-
-  )
-
-   #+END_SRC
-
-
-** flymake
-   #+BEGIN_SRC emacs-lisp :tangle no
-
-  (defface flymake-message-face
-    '((((class color) (background light)) (:foreground "#b2dfff"))
-      (((class color) (background dark))  (:foreground "#b2dfff")))
-    "Flymake message face")
-
-  (defun python-flymake-show-help ()
-    (when (get-char-property (point) 'flymake-overlay)
-      (let ((help (get-char-property (point) 'help-echo)))
-        (if help
-            (format (concat (propertize "Error: " 'face 'flymake-message-face) "%s") help)))))
-
-
-
-  ;; http://from-the-cloud.com/en/emacs/2013/01/28_emacs-as-a-django-ide-with-python-djangoel.html
-   #+END_SRC
-
-** apparance 
-   #+BEGIN_SRC emacs-lisp
-     (append-to-list 
-      'python-prettify-symbols-alist 
-      '(
-        ;;(" !="   . #Xe10e)
-        ;;(" !=="  . #Xe10f)
-        ;;(" <="   . #Xe141)
-        ;;(" >="   . #Xe145)
-        ;;(" !=="  . #Xe10f)
-        ("map" . 8614)    ; ↦
-        ))
-   #+END_SRC
