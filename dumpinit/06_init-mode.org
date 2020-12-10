@@ -565,6 +565,7 @@
 
 
   (leaf rng-loc
+    :require t
     :config
     (add-to-list 'rng-schema-locating-files (fullpath "../html5-el/schemas.xml")))
 

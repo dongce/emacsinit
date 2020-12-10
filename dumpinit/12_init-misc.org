@@ -1722,6 +1722,7 @@
      ;; 오른쪽에 일괄적으로 주석달 때 사용한다.
      (leaf rect
        :require t
+       :config
        (defun string-right (beg end str)
          (interactive
           (progn (barf-if-buffer-read-only)

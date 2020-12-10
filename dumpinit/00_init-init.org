@@ -75,9 +75,7 @@
 * package function 
 
 #+BEGIN_SRC emacs-lisp
-
-  (leaf 'use-package :require t )
-  ;; (leaf 'req-package :require t )
+ 
   (leaf 'package-helper :require t )
 
   (leaf leaf-keywords
@@ -162,18 +160,18 @@
   ;; http://www.gnu.org/software/libtool/manual/emacs/Variables.html#Variables 메뉴얼참고 
   ;; add-file-local-variable-prop-line' 
 
-  (leaf 'uniquify :require t )
+  (leaf uniquify :require t )
 
 
   ;;DEPRECATED;;(leaf 'bbdb :require t )
   ;;DEPRECATED;;(bbdb-initialize)
 
 
-  (leaf 'wiki-nav :require t )
+  (leaf wiki-nav :require t )
 
 
 
-  (leaf 'transpar :require t )
+  (leaf transpar :require t )
 
 
 
@@ -228,7 +226,7 @@
 ** win → wsl 
 *** wsl-path package 
   #+begin_src emacs-lisp 
-  (leaf 'wsl-path :require t )
+  (leaf wsl-path :require t )
 
   ;;(wsl-path-convert-file-name "/mnt/c/xxx")
   #+end_src
