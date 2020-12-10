@@ -76,7 +76,7 @@
 
 #+BEGIN_SRC emacs-lisp
  
-  (leaf 'package-helper :require t )
+  (leaf package-helper :require t )
 
   (leaf leaf-keywords
     :ensure t

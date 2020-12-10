@@ -76,8 +76,8 @@
 ** ob-latex-as-png
    #+begin_src emacs-lisp
      (leaf ob-latex-as-png
-       :ensure t
-       :config
+       :require t
+       :leaf-defer nil
        (add-to-list  'ob-latex-as-png-header "\\usepackage{amsmath}"))
    #+end_src
 

@@ -1081,7 +1081,7 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
 
      (leaf evil-collection
        :ensure t
-       :custom (evil-want-keybinding . nil)
+       :pre-setq (evil-want-keybinding . nil)
        :config
        (evil-collection-init '( diff-mode mu4e))
 
