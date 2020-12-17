@@ -3149,7 +3149,8 @@ Version 2015-03-03"
                                     (string= btitle (elt x 1))))) (cdr  tagcontents)))
            )
       (kill-new (elt  bookmark 1))
-      (browse-url (elt  bookmark 1))
+      ;;(browse-url (elt  bookmark 1))
+      (powershell (format "start \"%s\"" (elt  bookmark 1)))
       )) 
 
 

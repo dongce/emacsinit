@@ -649,10 +649,6 @@
     (savehist-mode t)
   #+end_src
   
-* dim other window
- #+begin_src emacs-lisp
-   (auto-dim-other-buffers-mode t)
- #+end_src 
 * temp macro
   #+begin_src emacs-lisp
     (defun iffm5logfileline ()
@@ -666,3 +662,13 @@
 
   #+RESULTS:
   : iffm5logfileline
+
+  
+
+* switch to spacemacs
+  #+begin_src emacs-lisp
+    (switch-to-buffer "*spacemacs*")
+  #+end_src
+
+  
+

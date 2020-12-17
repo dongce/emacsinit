@@ -73,7 +73,7 @@
      :global t
      :init-value nil
      :lighter " esdf "
-     :keymap '(([4] . (lambda () (interactive) (esdf-mode 0)))
+     :keymaps '(([4] . (lambda () (interactive) (esdf-mode 0)))
              ("e" . [up]) ("E" . [S-up])
              ("s" . [left]) ("S" . [S-left])
              ("d" . [down]) ("D" . [S-down])
@@ -152,7 +152,7 @@
 
    [(f4)] 'next-error
    [(shift f4)] 'previous-error
- 
+
    [f5] 'repeat
    [f6] 'ff-find-other-file
    [f7] 'isearch-forward-regexp
@@ -176,8 +176,7 @@
    )
 
   (general-define-key
-   :keymap
-   isearch-mode-map
+   :keymaps 'isearch-mode-map
    [f7] 'isearch-repeat-forward
    [f8] 'isearch-repeat-backward )
 

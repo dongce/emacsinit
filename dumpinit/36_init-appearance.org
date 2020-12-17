@@ -3159,3 +3159,79 @@
                #'add-fira-code-symbol-keywords)
    #+END_SRC
   
+
+   
+
+* spacing
+  #+begin_src emacs-lisp :tangle no
+    (defun text-margins ()
+      (setq left-margin-width 16)
+      (setq right-margin-width 16))
+    (add-hook 'markdown-mode-hook 'text-margins)
+
+    (defun prog-margins ()
+      (setq left-margin-width 2)
+      (setq right-margin-width 2))
+    (add-hook 'prog-mode-hook 'prog-margins)
+
+    (defun text-linespacing ()
+      (setq line-spacing 0.5))
+    (add-hook 'markdown-mode-hook 'text-linespacing)
+
+    (defun prog-linespacing ()
+      (setq line-spacing nil))
+    (add-hook 'prog-mode-hook 'prog-linespacing)
+  #+end_src
+
+
+* modline at top
+
+** modline position
+   #+begin_src emacs-lisp
+     (setq-default header-line-format mode-line-format)
+     (setq-default mode-line-format nil)
+   #+end_src
+   
+
+** posframe
+   #+begin_src emacs-lisp
+     (leaf posframe
+       :ensure t
+       :preface
+       (defun my-posframe-arghandler (buffer-or-name arg-name value)
+         (let ((info '(:internal-border-width 1 :internal-border-color "gray80")))
+           (or (plist-get info arg-name) value)))
+       :custom
+       (posframe-arghandler . #'my-posframe-arghandler)
+       )
+
+     (leaf ivy-posframe
+       :ensure t
+       :custom
+       (ivy-posframe-display-functions-alist . '((t . ivy-posframe-display-at-frame-top-center)))
+       :init (ivy-posframe-mode 1))
+
+     (leaf helm-posframe
+       :ensure t
+       :custom
+       (helm-posframe-poshandler .  #'posframe-poshandler-window-top-center)
+       :init ( helm-posframe-enable ))
+   #+end_src
+  
+   
+
+** popwin
+   #+begin_src emacs-lisp
+     (leaf popwin
+       :ensure t
+       :global-minor-mode popwin-mode
+       :config
+       (general-define-key
+        (kbd "C-z") popwin:keymap
+        (kbd "C-z C-z") #'keyboard-quit))
+   #+end_src
+
+   #+RESULTS:
+   : (keymap (49 . popwin:one-window) (21 . popwin:universal-display) (101 . popwin:messages) (6 . popwin:find-file) (102 . popwin:find-file) (48 . popwin:close-popup-window) (115 . popwin:stick-popup-window) (32 . popwin:select-popup-window) (15 . popwin:original-display-last-buffer) (16 . popwin:original-pop-to-last-buffer) (2 . popwin:switch-to-last-buffer) (111 . popwin:display-buffer) (108 . popwin:popup-last-buffer) (98 . popwin:popup-buffer))
+
+  

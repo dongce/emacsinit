@@ -6,10 +6,6 @@
    #+BEGIN_SRC emacs-lisp
 ; -*- coding: utf-8; -*-
    #+END_SRC
-** smerge
-   #+BEGIN_SRC emacs-lisp
-     (require 'smerge-mode)
-   #+END_SRC 
 
 ** excommand
    #+BEGIN_SRC emacs-lisp
@@ -51,7 +47,6 @@
         "obA" 'ivy-pop-view
         "obb" 'ivy-switch-buffer-other-window
         "obB" 'ivy-switch-buffer
-        "bb"  'switch-to-buffer
         "ob[" 'evil-prev-buffer
         "obk" 'kill-this-buffer
         "ob]" 'evil-next-buffer
@@ -245,8 +240,8 @@
          "&"   'org-mark-ring-goto
          "nx"  'zz-narrow-repeat
          "nz"  narrow-map
-         ;; "bb"  'ivy-switch-buffer
-         "bb"  'bufler-switch-buffer
+         "bB"  'ivy-switch-buffer
+         "bb"  'helm-bufler
          "bf"  'bufler-workspace-frame-set
          "si"  'spacemacs/search-project-auto-region-or-symbol
          ;;sdcv dictionary
@@ -291,8 +286,8 @@
 
      (general-define-key
        :keymaps '(evil-normal-state-map evil-visual-state-map)
-      "u" 'undo-fu-only-undo
-      "U" 'undo-fu-only-redo
+     ;; "u" 'undo-fu-only-undo
+     ;; "U" 'undo-fu-only-redo
       "gl" 'goto-line
       "g[" 'beginning-of-buffer
       "g]" 'end-of-buffer      
@@ -491,6 +486,12 @@
 
      (leaf evil-extra-operator
        :ensure t
+       :custom
+        ((evil-extra-operator-eval-modes-alist .
+         '((ruby-mode ruby-send-region)
+           (enh-ruby-mode ruby-send-region)
+           (python-mode python-shell-send-region)))
+        (evil-extra-operator-fold-key . "gz"))
        :global-minor-mode global-evil-extra-operator-mode )
 
      (leaf evil-visualstar
@@ -773,8 +774,11 @@
 **** dired mapping  
 ***** list files
       #+begin_src emacs-lisp
-        (general-def 'normal dired-mode-map (kbd "<f6>") #'diredp-list-marked)
+        (general-define-key :states 'normal :keymaps 'dired-mode-map (kbd "<f6>") #'diredp-list-marked)
       #+end_src
+
+      #+RESULTS:
+
 *** key guide
 
     #+BEGIN_SRC emacs-lisp
@@ -815,7 +819,26 @@
         (evil-make-overriding-map git-timemachine-mode-map 'normal))
 
 
-      (leaf evil-magit :ensure t)
+      (leaf evil-magit
+        :ensure t
+        :config
+
+        (defun git-add-all ()
+          (interactive)
+          (let ((current-prefix-arg '(4)))
+            (magit-stage-modified "t")))
+
+        (defun git-quick-commit ()
+          (interactive)
+          (git-add-all)
+          (magit-commit-create))
+
+        (spacemacs/set-leader-keys
+          "gG"  'git-quick-commit
+          "gg"  'magit-commit-create
+          "ga"  'magit-stage-modified
+          "gp"  'magit-push-current-to-upstream
+        ))
 
     #+END_SRC
 
@@ -855,11 +878,6 @@
 
    #+RESULTS:
 
-** evil start
-
-   #+BEGIN_SRC emacs-lisp
- (evil-mode 1)
-   #+END_SRC
 
 ** evil-innter-text
    #+BEGIN_SRC emacs-lisp
@@ -977,8 +995,6 @@
         picpocket-mode
         vterm-mode
         elfeed-mode
-        bufler-mode
-        bufler-list-mode
         ))
    #+END_SRC
 
@@ -1083,7 +1099,7 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
        :ensure t
        :pre-setq (evil-want-keybinding . nil)
        :config
-       (evil-collection-init '( diff-mode mu4e))
+       (evil-collection-init '( diff-mode dired mu4e))
 
        (let ((bindings `((mu4e-view-mode-map 
                           "*"             bmkp-mu4e-view
@@ -1109,11 +1125,36 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
          (dolist (binding bindings)
            (apply #'evil-collection-define-key 'normal binding))))
 
-
+     (evil-collection-define-key 'normal 'dired-mode-map
+      ;;"["  'w32shell-cmd-here
+      ;;"\M-;" 'execute-program
+      "o" 'w32-dired-open-explorer
+      "," 'w32-dired-open-explorer-marked
+      "\\" 'w32-dired-copy-file-name)
 
    #+end_src
 
    #+RESULTS:
+*** bufler
+    #+begin_src emacs-lisp
+
+      (general-swap-key :keymaps 'bufler-list-mode-map "k" "d" ) 
+      (evil-collection-define-key 'normal 'bufler-list-mode-map
+        "?"   #'hydra:bufler/body
+        "g"   #'bufler
+        "f"   #'bufler-list-group-frame
+        "F"   #'bufler-list-group-make-frame
+        "N"   #'bufler-list-buffer-name-workspace
+        "d"   #'bufler-list-buffer-kill
+        "s"   #'bufler-list-buffer-save
+        (kbd "RET") #'bufler-list-buffer-switch
+        (kbd "SPC") #'bufler-list-buffer-peek)
+
+
+
+
+     #+end_src
+
    
 ** block-nav
    #+begin_src emacs-lisp
@@ -1131,3 +1172,8 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
 
    #+RESULTS:
    
+** evil start
+
+   #+BEGIN_SRC emacs-lisp
+ (evil-mode 1)
+   #+END_SRC

@@ -197,13 +197,6 @@
   (require 'find-dired )
 
   ;; 프린팅 관련 변수
-  (general-define-key
-   :keymaps 'dired-mode-map
-   ;;"["  'w32shell-cmd-here
-   ;;"\M-;" 'execute-program
-   "o" 'w32-dired-open-explorer
-   "," 'w32-dired-open-explorer-marked
-   "\\" 'w32-dired-copy-file-name)
 
   ;; 윈도우에서 유용하게 사용할 수 있는 방법
   (defun w32open (fname)
