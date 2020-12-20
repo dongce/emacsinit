@@ -3216,6 +3216,11 @@
        :custom
        (helm-posframe-poshandler .  #'posframe-poshandler-window-top-center)
        :init ( helm-posframe-enable ))
+
+     (leaf eldoc-posframe
+       :require t
+       :global-minor-mode global-eldoc-posframe-mode
+       )
    #+end_src
   
    
@@ -3226,12 +3231,38 @@
        :ensure t
        :global-minor-mode popwin-mode
        :config
+
+       (general-define-key
+        :keymaps 'popwin:keymap
+
+        "o" #'(lambda () (interactive) (popwin:popup-buffer-tail "*Occur*") (setq popwin:popup-window-stuck-p t))
+        "O" 'popwin:display-buffer
+        "g" #'(lambda () (interactive) (popwin:popup-buffer-tail "*Grep*") (setq popwin:popup-window-stuck-p t)))
+
+
        (general-define-key
         (kbd "C-z") popwin:keymap
-        (kbd "C-z C-z") #'keyboard-quit))
+        (kbd "C-z C-z") #'(lambda () (interactive) (posframe-delete-all) (keyboard-quit))))
    #+end_src
 
    #+RESULTS:
-   : (keymap (49 . popwin:one-window) (21 . popwin:universal-display) (101 . popwin:messages) (6 . popwin:find-file) (102 . popwin:find-file) (48 . popwin:close-popup-window) (115 . popwin:stick-popup-window) (32 . popwin:select-popup-window) (15 . popwin:original-display-last-buffer) (16 . popwin:original-pop-to-last-buffer) (2 . popwin:switch-to-last-buffer) (111 . popwin:display-buffer) (108 . popwin:popup-last-buffer) (98 . popwin:popup-buffer))
+   : popwin
+** whichkey
+   #+begin_src emacs-lisp
+     (leaf which-key-posframe
+       :ensure t
+       :global-minor-mode which-key-posframe-mode)
+   #+end_src
 
+   #+RESULTS:
+   : which-key-posframe
   
+** maple
+   #+begin_src emacs-lisp
+     (leaf maple-minibuffer
+       :require t
+       :global-minor-mode maple-minibuffer-mode)
+   #+end_src
+
+   #+RESULTS:
+   : maple-minibuffer

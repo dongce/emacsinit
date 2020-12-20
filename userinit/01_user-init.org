@@ -648,7 +648,10 @@
     (save-place-mode t)
     (savehist-mode t)
   #+end_src
+
   
+
+
 * temp macro
   #+begin_src emacs-lisp
     (defun iffm5logfileline ()

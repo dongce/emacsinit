@@ -286,8 +286,8 @@
 
      (general-define-key
        :keymaps '(evil-normal-state-map evil-visual-state-map)
-     ;; "u" 'undo-fu-only-undo
-     ;; "U" 'undo-fu-only-redo
+      "u" 'undo-fu-only-undo
+      "U" 'undo-fu-only-redo
       "gl" 'goto-line
       "g[" 'beginning-of-buffer
       "g]" 'end-of-buffer      
