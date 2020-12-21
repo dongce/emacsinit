@@ -603,12 +603,6 @@
   #+RESULTS:
   : t
 
-* helm
-  spacemacs helm layer 에 문제가 있음. helm 모드를 직접 사용함 
-
-  #+BEGIN_SRC emacs-lisp
-  (helm-mode)
-  #+END_SRC
 * beacon
   #+BEGIN_SRC emacs-lisp
   (leaf beacon :ensure t :config (beacon-mode))

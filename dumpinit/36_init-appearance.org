@@ -3220,8 +3220,7 @@
 
      (leaf eldoc-posframe
        :require t
-       :global-minor-mode global-eldoc-posframe-mode
-       )
+       :global-minor-mode global-eldoc-posframe-mode)
    #+end_src
   
    

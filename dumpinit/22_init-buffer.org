@@ -403,7 +403,9 @@
 
   ;;C-c p C-h
 
-  (leaf helm)
+  (leaf helm 
+   :config 
+    (helm-mode -1))
   (leaf helm-config)
   ;;(global-set-key (kbd "C-c h") 'helm-mini)
   ;;(helm-mode 1)

@@ -1164,7 +1164,7 @@
      (interactive)
      (let* ((fs (or (org-agenda-files t)
         (user-error "No agenda files")))
-         (ntag (helm-comp-read "성명을 입력하세요 : " fs)))
+         (ntag (ivy-completing-read "성명을 입력하세요 : " fs)))
          (find-file ntag)
          (if (buffer-base-buffer) (org-pop-to-buffer-same-window (buffer-base-buffer)))))
 
