@@ -510,6 +510,7 @@
        (defun epa-file-decode-and-insert (string file visit beg end replace)
          (insert (epa-file--decode-coding-string string 'cp949))))
 
+    (setf epg-pinentry-mode 'loopback) 
 
    #+END_SRC
 

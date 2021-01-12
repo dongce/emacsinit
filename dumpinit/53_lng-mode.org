@@ -101,3 +101,87 @@
        (LaTeX-mode . turn-on-cdlatex)))
 
   #+end_src
+
+  
+
+** oblivoir
+   #+begin_src emacs-lisp
+     (add-to-list 'org-latex-classes
+                  '("oblivoir" "\\documentclass[11pt]{oblivoir}"
+                    ("\\section{%s}"         . "\\section*{%s}")
+                    ("\\subsection{%s}"      . "\\subsection*{%s}")
+                    ("\\subsubsection{%s}"   . "\\subsubsection*{%s}")
+                    ("\\paragraph{%s}"       . "\\paragraph*{%s}")
+                    ("\\subparagraph{%s}"    . "\\subparagraph*{%s}")
+                    ("\\subsubparagraph{%s}" . "\\subsubparagraph*{%s}")))
+   #+end_src
+
+   #+RESULTS:
+   | oblivoir | \documentclass[11pt]{oblivoir}       | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   | (\subsubparagraph{%s} . \subsubparagraph*{%s}) |
+   | article  | \documentclass[11pt]{article}        | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   | (\subsubparagraph{%s} . \subsubparagraph*{%s}) |
+   | beamer   | \documentclass[presentation]{beamer} | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                      |                                            |                                                |
+   | article  | \documentclass[11pt]{article}        | (\section{%s} . \section*{%s}) | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) | (\paragraph{%s} . \paragraph*{%s})   | (\subparagraph{%s} . \subparagraph*{%s})   |                                                |
+   | report   | \documentclass[11pt]{report}         | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                                |
+   | book     | \documentclass[11pt]{book}           | (\part{%s} . \part*{%s})       | (\chapter{%s} . \chapter*{%s})       | (\section{%s} . \section*{%s})             | (\subsection{%s} . \subsection*{%s}) | (\subsubsection{%s} . \subsubsection*{%s}) |                                                |
+
+** block
+   #+begin_src emacs-lisp
+     (leaf org-special-block-extras
+       :ensure t
+       :hook (org-mode-hook . org-special-block-extras-mode)
+       :config
+       (org-special-block-extras-short-names)
+
+       (defblock split (sep "\\(!\\|←\\)") (lang "dcl" width '(0.7 0.3))
+         "split block for tex"
+         (let ((lines  (-map (lambda (x) (s-split sep x )) (s-lines (s-trim-right raw-contents)))))
+           (pcase backend
+             (`latex
+              (s-join
+               "\n"
+               `(
+                 "\\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,sidebyside,"
+                 ,(apply #'format "                   lefthand width=%.01f\\linewidth, righthand width=%.01f\\linewidth]" width)
+
+                 ,(concat  "\\begin{minted}{" lang "}")
+                 ,@(-map #'car lines)
+                 "\\end{minted}"
+                 ,(concat  "\\begin{minted}{" lang "}")
+                 ,@(-map #'cadr lines)
+                 "\\end{minted}"
+                 "\\end{tcolorbox}"
+                 )))))))
+
+
+   #+end_src
+
+   #+RESULTS:
+   : org-special-block-extras
+
+   
+
+** otherfile
+   #+begin_src emacs-lisp
+     (append-to-list 'cc-other-file-alist '(("\\.org\\'" (".tex" ))
+                                            ("\\.tex\\'" (".org" ))))
+   #+end_src
+
+   #+RESULTS:
+   | \.org\'   | (.tex)                            |
+   | \.cc\'    | (.hh .h)                          |
+   | \.hh\'    | (.cc .C .CC .cxx .cpp .c++)       |
+   | \.c\'     | (.h)                              |
+   | \.m\'     | (.h)                              |
+   | \.h\'     | (.c .cc .C .CC .cxx .cpp .c++ .m) |
+   | \.C\'     | (.H .hh .h)                       |
+   | \.H\'     | (.C .CC)                          |
+   | \.CC\'    | (.HH .H .hh .h)                   |
+   | \.HH\'    | (.CC)                             |
+   | \.c\+\+\' | (.h++ .hh .h)                     |
+   | \.h\+\+\' | (.c++)                            |
+   | \.cpp\'   | (.hpp .hh .h)                     |
+   | \.hpp\'   | (.cpp)                            |
+   | \.cxx\'   | (.hxx .hh .h)                     |
+   | \.hxx\'   | (.cxx)                            |
+   | \.org\'   | (.tex)                            |
+   | \.tex\'   | (.org)                            |

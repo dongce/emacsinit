@@ -759,17 +759,6 @@
 *** dired                 
     
 
-**** helm-dired-history 
-     #+BEGIN_SRC emacs-lisp 
-       (general-define-key
-        :states 'normal
-        :keymaps 'dired-mode-map
-       ",h" #'helm-dired-history-view
-       ",2" #'2zip
-       ",7" #'2-7zip)
-     #+END_SRC
-
-     #+RESULTS:
 
 **** dired mapping  
 ***** list files
@@ -1126,11 +1115,15 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
            (apply #'evil-collection-define-key 'normal binding))))
 
      (evil-collection-define-key 'normal 'dired-mode-map
-      ;;"["  'w32shell-cmd-here
-      ;;"\M-;" 'execute-program
-      "o" 'w32-dired-open-explorer
-      "," 'w32-dired-open-explorer-marked
-      "\\" 'w32-dired-copy-file-name)
+       ;;"["  'w32shell-cmd-here
+       ;;"\M-;" 'execute-program
+       "o" 'w32-dired-open-explorer
+       ;; ",h" #'helm-dired-history-view
+       ",," 'w32-dired-open-explorer-marked
+       ",2" #'2zip
+       ",7" #'2-7zip
+       "S" 'hydra-dired-quick-sort/body
+       "\\" 'w32-dired-copy-file-name)
 
    #+end_src
 

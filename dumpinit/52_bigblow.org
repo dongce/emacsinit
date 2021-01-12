@@ -1480,6 +1480,21 @@
   #+RESULTS:
   : cal-korea-x
 
+
+* org-msg
+  #+begin_src emacs-lisp
+    (leaf org-msg
+      :ensure t
+      :pre-setq 
+      (mail-user-agent . 'mu4e-user-agent)
+      :config
+      (setq org-msg-greeting-fmt "안녕하세요.")
+      )
+  #+end_src
+
+  #+RESULTS:
+  : org-msg
+
 * export
   #+begin_src emacs-lisp
     (defun org-html-export-to-mhtml (async subtree visible body)

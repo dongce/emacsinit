@@ -3197,20 +3197,20 @@
 ** posframe
    #+begin_src emacs-lisp
      (leaf posframe
-       :ensure t
-       :preface
-       (defun my-posframe-arghandler (buffer-or-name arg-name value)
-         (let ((info '(:internal-border-width 1 :internal-border-color "gray80")))
-           (or (plist-get info arg-name) value)))
-       :custom
-       (posframe-arghandler . #'my-posframe-arghandler)
-       )
+      :ensure t
+      :preface
+      (defun my-posframe-arghandler (buffer-or-name arg-name value)
+        (let ((info '(:internal-border-width 1 :internal-border-color "gray80")))
+          (or (plist-get info arg-name) value)))
+      :custom
+      (posframe-arghandler . #'my-posframe-arghandler)
+      )
 
      (leaf ivy-posframe
-       :ensure t
-       :custom
-       (ivy-posframe-display-functions-alist . '((t . ivy-posframe-display-at-frame-top-center)))
-       :init (ivy-posframe-mode 1))
+      :ensure t
+     :custom
+      (ivy-posframe-display-functions-alist . '((t . ivy-posframe-display-at-frame-top-center)))
+      :init (ivy-posframe-mode 1))
 
      (leaf helm-posframe
        :ensure t
@@ -3220,7 +3220,9 @@
 
      (leaf eldoc-posframe
        :require t
-       :global-minor-mode global-eldoc-posframe-mode)
+       :global-minor-mode global-eldoc-posframe-mode
+       :config
+       (setq eldoc-idle-delay 2))
    #+end_src
   
    
@@ -3258,7 +3260,7 @@
    : which-key-posframe
   
 ** maple
-   #+begin_src emacs-lisp
+   #+begin_src emacs-lisp :tangle no
      (leaf maple-minibuffer
        :require t
        :global-minor-mode maple-minibuffer-mode)
