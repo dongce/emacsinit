@@ -3907,3 +3907,16 @@ of FILE in the current directory, suitable for creation"
 
         `(s-format ,fmt 'aget (list ,@agetter))))
   #+end_src
+
+  
+
+* minibuffer
+#+begin_src emacs-lisp
+  (defun repair-minibuffer ()
+    (interactive)
+    (minibuffer-window)
+    (set-window-buffer (minibuffer-window) (get-buffer " *Minibuf-0*")))
+#+end_src
+
+#+RESULTS:
+: repair-minibuffer

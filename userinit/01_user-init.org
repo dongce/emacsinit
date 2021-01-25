@@ -666,7 +666,61 @@
   #+RESULTS:
   : iffm5logfileline
 
+
   
+
+* special block
+  #+begin_src emacs-lisp
+
+        (org-special-block-extras-short-names)
+        (add-hook 'org-mode-hook 'org-special-block-extras-mode) ; Org buffers only
+
+        (defblock split (sep "\\(!\\|←\\)") (lang "dcl" width '(0.7 0.3))
+          "split block for tex"
+          (let ((lines  (-map (lambda (x) (s-split sep x )) (s-lines (s-trim-right raw-contents)))))
+            (pcase backend
+              (`latex
+               (s-join
+                "\n"
+                `(
+                  "\\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,sidebyside,"
+                  ,(apply #'format "                   lefthand width=%.01f\\linewidth, righthand width=%.01f\\linewidth]" width)
+
+                  ,(concat  "\\begin{minted}{" lang "}")
+                  ,@(-map #'car lines)
+                  "\\end{minted}"
+                  ,(concat  "\\begin{minted}{" lang "}")
+                  ,@(-map #'cadr lines)
+                  "\\end{minted}"
+                  "\\end{tcolorbox}"
+                  ))))))
+
+    (cl-loop for colour in org-special-block-extras--colors
+          do (eval (read (format
+                          "(org-special-block-extras-defblock b%s (_ \"\" :face '(:background \"%s\")) nil
+                            \"Show text in %s color.\"
+                         (format (pcase backend
+                         (`latex \"\\\\begingroup\\\\color{%s}%%s\\\\endgroup\\\\,\")
+                         (_  \"<span style=\\\"background-color:%s;\\\">%%s</span>\"))
+                         contents))" colour colour colour colour colour))))
+
+
+(org-special-block-extras-defblock bcolor (color black    :face (lambda (colour)
+           (if (member (intern colour) org-special-block-extras--colors)
+               `(:background ,(format "%s" colour))
+             `(:height 300
+               :underline (:color "red" :style wave)
+               :overline  "red" :strike-through "red")))) nil
+  "Format text according to a given COLOR, which is black by default."
+  (format (pcase backend
+            (`latex "\\begingroup\\color{%s}%s\\endgroup\\,")
+            (`html  "<span style=\"background-color:%s;\">%s</span>"))
+          color contents))
+
+
+  #+end_src
+
+  #+RESULTS:
 
 * switch to spacemacs
   #+begin_src emacs-lisp
