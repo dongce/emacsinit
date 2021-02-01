@@ -3202,6 +3202,7 @@
        (defun my-posframe-arghandler (buffer-or-name arg-name value)
          (let ((info '(:internal-border-width 10
                        ;; :background-color "medium blue"
+                        ;; :background-color "steel blue"
                        :internal-border-color "white")))
            (or (plist-get info arg-name) value)))
        :custom
@@ -3227,6 +3228,9 @@
        (setq eldoc-idle-delay 2)
        (global-eldoc-mode nil)) 
    #+end_src
+
+   #+RESULTS:
+   : eldoc-posframe
   
    
 

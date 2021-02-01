@@ -268,6 +268,13 @@
               'consult-outline)
              (t 'consult-imenu))))
 
+         (defun consult-thing-at-point ()
+           "`consult' with `thing-at-point'."
+           (interactive)
+           (let ((thing (ivy-thing-at-point)))
+             (when (use-region-p)
+               (deactivate-mark))
+             (consult-line (regexp-quote thing))))
          (spacemacs/set-leader-keys
            "u" 'consult-recent-file;;helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
            "U" 'consult-recent-file-other-frame ;;helm-goto-recent-directory ;;counsel-goto-recent-directory 
@@ -278,6 +285,7 @@
            "pi"    'consult-projectile-imenu
            "sj" 'consult-jump-in-buffer
            "ss" 'consult-line
+           "sS" 'consult-thing-at-point
            ))
      #+end_src
 

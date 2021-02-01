@@ -566,22 +566,39 @@
     (message "toggle mode line minor modes")
   #+end_src
 * serverstart
-#+begin_src emacs-lisp
 
-  (defun server-ensure-safe-dir (dir) "NOOP" t)
+  
+** server-use-tcp 
+Its value is t
 
-  ;; does not read the init file.
-  (setf server-socket-dir
-        (and (featurep 'make-network-process '(:family local))
-             (format "/tmp/emacs%d"  (user-uid))))
 
-  (server-start)
-  (require 'edit-server )
-  (edit-server-start)
-#+end_src
+Documentation:
+If non-nil, use TCP sockets instead of local sockets.
 
-#+RESULTS:
-: An edit-server process is already running
+You can customize this variable.
+
+  This variable was introduced, or its default value was changed, in
+  version 22.1 of Emacs.
+
+For more information check the manuals.
+
+  #+begin_src emacs-lisp
+
+    (defun server-ensure-safe-dir (dir) "NOOP" t)
+
+    ;; does not read the init file.
+    ;; (if (not server-use-tcp)
+    ;;     (setf server-socket-dir
+    ;;       (and (featurep 'make-network-process '(:family local))
+    ;;            (format "/tmp/emacs%d"  (user-uid)))))
+
+    (server-start)
+    (require 'edit-server )
+    (edit-server-start)
+  #+end_src
+
+  #+RESULTS:
+  : An edit-server process is already running
 * localvariable
   #+begin_src emacs-lisp
  
