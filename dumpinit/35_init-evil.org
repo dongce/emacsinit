@@ -109,8 +109,6 @@
 
         "S" smerge-basic-map
 
-        "u" 'counsel-recentf;;helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
-        "U" 'counsel-recentf-directory ;;helm-goto-recent-directory ;;counsel-goto-recent-directory ;;;;'string-rectangle ;;'recentf-open-most-recent-file
         ";" 'evilnc-comment-or-uncomment-lines
 
         "oCw" #'wcopy ;;deprecated;;'evilnc-copy-and-comment-lines
@@ -240,8 +238,6 @@
          "&"   'org-mark-ring-goto
          "nx"  'zz-narrow-repeat
          "nz"  narrow-map
-         "bb"  'ivy-switch-buffer
-         "bB"  'helm-bufler
          "bf"  'bufler-workspace-frame-set
          "si"  'spacemacs/search-project-auto-region-or-symbol
          ;;sdcv dictionary
@@ -254,6 +250,39 @@
      #+END_SRC
 
      #+RESULTS:
+
+     
+**** consult
+     #+begin_src emacs-lisp
+
+       (leaf consult
+         :ensure 
+         :config
+         (defun consult-jump-in-buffer ()
+           "Jump in buffer with `counsel-imenu' or `counsel-org-goto' if in org-mode"
+           (interactive)
+           (call-interactively
+            (cond
+             ((or (eq major-mode 'org-mode)
+                  (member 'outline-mode minor-mode-list)) 
+              'consult-outline)
+             (t 'consult-imenu))))
+
+         (spacemacs/set-leader-keys
+           "u" 'consult-recent-file;;helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
+           "U" 'consult-recent-file-other-frame ;;helm-goto-recent-directory ;;counsel-goto-recent-directory 
+           "bb"  'consult-buffer ;;'ivy-switch-buffer
+           "bB"  'consult-buffer-other-frame
+           "fb" 'consult-bookmark
+           "ry"  'consult-yank-pop
+           "pi"    'consult-projectile-imenu
+           "sj" 'consult-jump-in-buffer
+           "ss" 'consult-line
+           ))
+     #+end_src
+
+     #+RESULTS:
+     : consult
 
 **** for major mode
      #+BEGIN_SRC emacs-lisp
@@ -1086,9 +1115,10 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
 
      (leaf evil-collection
        :ensure t
-       :pre-setq (evil-want-keybinding . nil)
+       :custom ((evil-collection-setup-minibuffer . t)
+                (evil-want-keybinding . nil))
        :config
-       (evil-collection-init '( diff-mode outline dired mu4e ivy helm))
+       (evil-collection-init '( minibuffer diff-mode outline dired mu4e ivy helm))
 
        (let ((bindings `((mu4e-view-mode-map 
                           "*"             bmkp-mu4e-view
