@@ -63,7 +63,7 @@
         "obh" 'mark-whole-buffer
         "obr" 'revert-buffer
         "obc" 'xah-close-current-buffer
-        "of"   'helm-resume
+        "of"   'selectrum-repeat
         "iu"   nil
         ;; "<home>" 'ibuffer
         "<home>" 'bufler
@@ -186,19 +186,19 @@
         ;;deprecattion;;"<SPC>" #'smex
 
         "ohz" 'zeal-at-point
-        "ohh"      'helm-mini
-        "oha"      'helm-apropos
-        "ohB"      'helm-buffers-list
-        "ohb"      'helm-descbindings
-        "ohy"      'helm-show-kill-ring
-        "ohx"      'helm-M-x
-        "oho"     'helm-occur
-        "ohs"     'helm-swoop
-        "ohy"     'helm-yas-complete
-        "ohY"     'helm-yas-create-snippet-on-region
-        "ohr" 'helm-all-mark-rings
-        "ohm" 'helm-smex
-        "ohM" 'helm-smex-major-mode-commands
+       ;;changeto-selectrum;;"ohh"      'helm-mini
+       ;;changeto-selectrum;;"oha"      'helm-apropos
+       ;;changeto-selectrum;;"ohB"      'helm-buffers-list
+       ;;changeto-selectrum;;"ohb"      'helm-descbindings
+       ;;changeto-selectrum;;"ohy"      'helm-show-kill-ring
+       ;;changeto-selectrum;;"ohx"      'helm-M-x
+       ;;changeto-selectrum;;"oho"     'helm-occur
+       ;;changeto-selectrum;;"ohs"     'helm-swoop
+       ;;changeto-selectrum;;"ohy"     'helm-yas-complete
+       ;;changeto-selectrum;;"ohY"     'helm-yas-create-snippet-on-region
+       ;;changeto-selectrum;;"ohr" 'helm-all-mark-rings
+       ;;changeto-selectrum;;"ohm" 'helm-smex
+       ;;changeto-selectrum;;"ohM" 'helm-smex-major-mode-commands
         "od"  'counsel-goto-recent-directory
 
         "om" 'switch-window-then-orgmail
@@ -216,7 +216,7 @@
         "ogu" 'gxref-update-db
         "[" 'ivy-push-view 
         "]" 'ivy-pop-view 
-        "ph" 'project-explorer-helm
+        ;;"ph" 'project-explorer-helm
         "pH" 'project-explorer-open
         "px" 'project-explorer-close
 
@@ -411,7 +411,7 @@
       [kp-2]        'select-window-2
       [kp-3]        'select-window-3
       [kp-4]        'evil-prev-buffer
-      [kp-5]        'helm-mini
+      ;;[kp-5]        'helm-mini
       [kp-6]        'evil-next-buffer
       [kp-7]        'copy-to-register-1
       [kp-8]        'split-window-below
@@ -687,10 +687,10 @@
 
 
        (evil-leader/set-key-for-mode 'org-mode
-         "ha" 'helm-org-agenda-files-headings
-         "hH" 'helm-org-headings
+         "ha" counsel-org-agenda-headlines ;'helm-org-agenda-files-headings
+         "hH" 'counsel-outline
          "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
-         "hh" 'helm-org-in-buffer-headings
+         "hh" 'consult-outline
 
          "u"    'outline-up-heading
          "q"    'org-todo
@@ -1126,7 +1126,7 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
        :custom ((evil-collection-setup-minibuffer . t)
                 (evil-want-keybinding . nil))
        :config
-       (evil-collection-init '( minibuffer diff-mode outline dired mu4e ivy helm))
+       (evil-collection-init '( minibuffer diff-mode outline dired mu4e ivy ))
 
        (let ((bindings `((mu4e-view-mode-map 
                           "*"             bmkp-mu4e-view

@@ -394,7 +394,7 @@ Version 2016-06-15"
 : xah-clear-register
 
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 
   (leaf helm-swoop
     :ensure t

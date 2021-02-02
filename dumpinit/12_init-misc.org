@@ -1420,7 +1420,6 @@
              (add-hook 'isearch-mode-hook 'isearch-set-initial-string)
              (isearch-forward regexp-p no-recursive-edit)))))
 
-     (helm-flx-mode +1)
 
 
 

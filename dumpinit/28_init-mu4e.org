@@ -129,58 +129,6 @@
 
 
 
-       (defun mu4e-field-helper (msg fieldlist )
-         "Retrieve FIELD from message plist MSG.
-                       FIELD is one of :from, :to, :cc, :bcc, :subject, :data,
-                       :message-id, :path, :maildir, :priority, :attachments,
-                       :references, :in-reply-to, :body-txt, :body-html
-
-                       Returns `nil' if the field does not exist.
-
-                       A message plist looks something like:
-                       \(:docid 32461
-                        :from ((\"Nikola Tesla\" . \"niko@example.com\"))
-                        :to ((\"Thomas Edison\" . \"tom@example.com\"))
-                        :cc ((\"Rupert The Monkey\" . \"rupert@example.com\"))
-                        :subject \"RE: what about the 50K?\"
-                        :date (20369 17624 0)
-                        :size 4337
-                        :message-id \"6BDC23465F79238C8233AB82D81EE81AF0114E4E74@123213.mail.example.com\"
-                        :path  \"/home/tom/Maildir/INBOX/cur/133443243973_1.10027.atlas:2,S\"
-                        :maildir \"/INBOX\"
-                        :priority normal
-                        :flags (seen)
-                        :attachments
-                            ((:index 2 :name \"photo.jpg\" :mime-type \"image/jpeg\" :size 147331)
-                             (:index 3 :name \"book.pdf\" :mime-type \"application/pdf\" :size 192220))
-                        :references  (\"6BDC23465F79238C8384574032D81EE81AF0114E4E74@123213.mail.example.com\"
-                        \"6BDC23465F79238203498230942D81EE81AF0114E4E74@123213.mail.example.com\")
-                        :in-reply-to \"6BDC23465F79238203498230942D81EE81AF0114E4E74@123213.mail.example.com\"
-                        :body-txt \"Hi Tom, ...\"
-                       \)).
-                       Some notes on the format:
-                       - The address fields are lists of pairs (NAME . EMAIL), where NAME can be nil.
-                       - The date is in format emacs uses in `current-time'
-                       - Attachments are a list of elements with fields :index (the number of
-                         the MIME-part), :name (the file name, if any), :mime-type (the
-                         MIME-type, if any) and :size (the size in bytes, if any).
-                       - Messages in the Headers view come from the database and do not have
-                         :attachments, :body-txt or :body-html fields. Message in the
-                         Message view use the actual message file, and do include these fields."
-         ;; after all this documentation, the spectacular implementation
-
-         (interactive)
-         (let* ((field (ido-completing-read 
-                        "속정을 입력하세요: "
-                        (mapcar (lambda (x) (symbol-name  x)) fieldlist )))
-                (value (format "%s" (mu4e-message-field msg (intern field)))))
-           (kill-append value nil )
-           (message value)
-           ))
-
-       ;; (add-hook 
-       ;;  'mu4e-view-mode-hook
-       ;;  #'htmlr-render)
 
 
        (defun shr-render ()
@@ -228,177 +176,68 @@
 
 
 
-       ;;http://stackoverflow.com/questions/9942675/in-elisp-how-do-i-put-a-function-in-a-variable
-       ;; (fset 'mu4e-view-origin #'mu4e-view)       ;원본버젼 
-       ;;(funcall 'mu4e-view-origin)              호출방법 
-       ;;oldversion;;(defun mu4e-view (msg headersbuf &optional refresh)
-       ;;oldversion;;  "Display the message MSG in a new buffer, and keep in sync with HDRSBUF.
-       ;;oldversion;;'In sync' here means that moving to the next/previous message in
-       ;;oldversion;;the the message view affects HDRSBUF, as does marking etc.
-       ;;oldversion;;
-       ;;oldversion;;REFRESH is for re-showing an already existing message.
-       ;;oldversion;;
-       ;;oldversion;;As a side-effect, a message that is being viewed loses its 'unread'
-       ;;oldversion;;marking if it still had that."
-       ;;oldversion;;  (let* ((embedded ;; is it registered as an embedded msg (ie. message/rfc822
-       ;;oldversion;;          ;; att)?
-       ;;oldversion;;          (when (gethash (mu4e-message-field msg :path)
-       ;;oldversion;;                         mu4e~path-parent-docid-map) t))
-       ;;oldversion;;         (buf
-       ;;oldversion;;          (if embedded
-       ;;oldversion;;              (mu4e~view-embedded-winbuf)
-       ;;oldversion;;            (get-buffer-create mu4e~view-buffer-name))))
-       ;;oldversion;;    (with-current-buffer buf
-       ;;oldversion;;      (let ((inhibit-read-only t))
-       ;;oldversion;;        (setq ;; buffer local
-       ;;oldversion;;         mu4e~view-message msg
-       ;;oldversion;;         mu4e~view-headers-buffer headersbuf)
-       ;;oldversion;;        (erase-buffer)
-       ;;oldversion;;        (insert (mu4e-view-message-text msg))
-       ;;oldversion;;        (switch-to-buffer buf)
-       ;;oldversion;;        (goto-char (point-min))
-       ;;oldversion;;        (mu4e~view-fontify-cited)
-       ;;oldversion;;        (mu4e~view-fontify-footer)
-       ;;oldversion;;        (mu4e~view-make-urls-clickable)
-       ;;oldversion;;        (mu4e~view-show-images-maybe msg)
-       ;;oldversion;;        
-       ;;oldversion;;        (save-excursion          ;;!!!ticket:XXXX 20121130 김동일 | HTML RENDERING
-       ;;oldversion;;          (goto-char (point-min));;!!!ticket:XXXX 20121130 김동일 | HTML RENDERING
-       ;;oldversion;;          (forward-paragraph)    ;;!!!ticket:XXXX 20121130 김동일 | HTML RENDERING
-       ;;oldversion;;          (htmlr-render)
-       ;;oldversion;;          ;; (shr-render)
-       ;;oldversion;;          )        ;;!!!ticket:XXXX 20121130 김동일 | HTML RENDERING
-       ;;oldversion;;
-       ;;oldversion;;        (if embedded
-       ;;oldversion;;            (local-set-key "q" 'kill-buffer-and-window)
-       ;;oldversion;;          (setq mu4e~view-buffer buf))
-       ;;oldversion;;
-       ;;oldversion;;        (unless (or refresh embedded)
-       ;;oldversion;;          ;; no use in trying to set flags again, or when it's an embedded
-       ;;oldversion;;          ;; message
-       ;;oldversion;;          (mu4e~view-mark-as-read-maybe))
-       ;;oldversion;;
-       ;;oldversion;;        (mu4e-view-mode)))))
-       ;;oldversion;;(defun mu4e~view-mark-as-read-maybe () "not implemented mu.  do nothing ")
 
-       ;;TEST;;(setq mu4e-mu-binary "c:/usr/local/mingwdevkit/local/bin/mu.exe")
-       ;;TEST;;(setq mu4e-debug t)
-       ;;TEST;;(mu4e~proc-find
-       ;;TEST;; "from:bluewindie@gmail.com"
-       ;;TEST;; mu4e-headers-show-threads
-       ;;TEST;; mu4e-headers-sortfield
-       ;;TEST;; mu4e-headers-sort-revert
-       ;;TEST;; (unless mu4e-headers-full-search mu4e-search-results-limit))
-       ;;TEST;;
-       ;;TEST;;(setq mu4e~proc-buf "")
-       ;;TEST;;(setq mu4e~proc-buf (string-replace-match "" mu4e~proc-buf "" t t ))
-       ;;TEST;;(setq x (mu4e~proc-eat-sexp-from-buf))
-       ;;TEST;;(mu4e~view-make-urls-clickable)
-       ;;TEST;;
-       ;;TEST;;
-       ;;TEST;;(mu4e~proc-view docid nil nil)
-       ;;TEST;;
-       ;;TEST;;move docid:27047  flags:+S-u-N 
-       ;;TEST;;
-       ;;TEST;;extract action:open docid:26759 index:2
+       (defun mu(from days)
+         (interactive "s발신인: \nP")
+         (setf from
+               (s-trim
+                (if  (s-equals? ""  from)
+                    (symbol-name  (symbol-at-point))
+                  from )))
+         (if (s-equals? from "")
+             (mu4e-headers-search (format  "date:%dd..now" (if  days  (prefix-numeric-value days) 3 )))
+           (mu4e-headers-search (format  "from:%s date:%dd..now" from (if  days  (prefix-numeric-value days) 3 )))))
 
-       ;;  (fset 'mu4e-mark-execute-all-origin #'mu4e-mark-execute-all)       ;원본버젼 
-       ;;
-       ;;  (defun mu4e-mark-execute-all (&optional no-confirmation)
-       ;;    "Execute the actions for all marked messages in this
-       ;;buffer. After the actions have been executed succesfully, the
-       ;;affected messages are *hidden* from the current header list. Since
-       ;;the headers are the result of a search, we cannot be certain that
-       ;;the messages no longer matches the current one - to get that
-       ;;certainty, we need to rerun the search, but we don't want to do
-       ;;that automatically, as it may be too slow and/or break the users
-       ;;flow. Therefore, we hide the message, which in practice seems to
-       ;;work well.
-       ;;
-       ;;If NO-CONFIRMATION is non-nil, don't ask user for confirmation."
-       ;;    (interactive)
-       ;;    (let ((markmap mu4e~mark-map)
-       ;;          (marknum (hash-table-count mu4e~mark-map)))
-       ;;      (if (zerop marknum)
-       ;;          (message "Nothing is marked")
-       ;;        (mu4e-mark-resolve-deferred-marks)
-       ;;        (when (or no-confirmation
-       ;;                  (y-or-n-p
-       ;;                   (format "Are you sure you want to execute %d mark%s?"
-       ;;                           marknum (if (> marknum 1) "s" ""))))
-       ;;
-       ;;          (kill-new "")
-       ;;          (maphash
-       ;;           (lambda (docid val)
-       ;;             (let ((mark (car val)) (target (cdr val)))
-       ;;               ;; note: whenever you do something with the message,
-       ;;               ;; it looses its N (new) flag
-       ;;               (mu4e~headers-goto-docid docid)
-       ;;               (case mark
-       ;;                 (refile  (mu4e~proc-move docid (mu4e~mark-check-target target) "-N"))
-       ;;                 (delete  (mu4e~proc-remove docid))
-       ;;                 (flag    (kill-append 
-       ;;                           (format "(mu4e~proc-view %d nil nil) : %s %s %s \n"
-       ;;                                   docid
-       ;;                                   (format-time-string mu4e-headers-date-format (mu4e~headers-field-for-docid docid :date))
-       ;;                                   (mu4e~headers-field-for-docid docid :from)
-       ;;                                   (mu4e~headers-field-for-docid docid :subject)
-       ;;                                   ) nil));;(mu4e~proc-move docid nil    "+F-u-N"))
-       ;;                 (move    (mu4e~proc-move docid (mu4e~mark-check-target target) "-N"))
-       ;;                 (read    (mu4e~proc-move docid nil    "+S-u-N"))
-       ;;                 (trash   (mu4e~proc-move docid (mu4e~mark-check-target target) "+T-N"))
-       ;;                 (unflag  (mu4e~proc-move docid nil    "-F-N"))
-       ;;                 (unread  (mu4e~proc-move docid nil    "-S+u-N"))
-       ;;                 (otherwise (mu4e-error "Unrecognized mark %S" mark)))))
-       ;;           markmap)
-       ;;          )
-       ;;        (mu4e-mark-unmark-all)
-       ;;        (message nil))))
-       ;;
-       ;;
-       ;;
-       ;;  (fset 'mu4e~proc-start-origin #'mu4e~proc-start)       ;원본버젼 
-       ;;  ;;(funcall 'mu4e-view-origin)              호출방법 
-       ;;
-       ;;  (defun mu4e~proc-start ()
-       ;;    "Start the mu server process."
-       ;;    (unless (file-executable-p mu4e-mu-binary)
-       ;;      (mu4e-error (format "`mu4e-mu-binary' (%S) not found" mu4e-mu-binary)))
-       ;;    (let* ((process-connection-type nil) ;; use a pipe
-       ;;           (args '("server"))
-       ;;           (args (append args (when mu4e-mu-home
-       ;;                                (list (concat "--muhome=" mu4e-mu-home))))))
-       ;;      (setq mu4e~proc-buf "")
-       ;;      (setq mu4e~proc-process (apply 'start-process
-       ;;                                     mu4e~proc-name mu4e~proc-name
-       ;;                                     mu4e-mu-binary args))
-       ;;      ;; register a function for (:info ...) sexps
-       ;;      (unless mu4e~proc-process
-       ;;        (mu4e-error "Failed to start the mu4e backend"))
-       ;;      (set-process-query-on-exit-flag mu4e~proc-process nil)
-       ;;      (set-process-coding-system mu4e~proc-process 'binary 'utf-8)
-       ;;      (set-process-filter mu4e~proc-process 'mu4e~proc-filter)
-       ;;      (set-process-sentinel mu4e~proc-process 'mu4e~proc-sentinel)))
-       ;;
-       ;;
-       ;;
-       ;;  (fset 'mu4e~view-mark-as-read-maybe-origin #'mu4e~view-mark-as-read-maybe)       ;원본버젼 
-       ;;
+       (defun mymail(days)
+         (interactive "p")
+         (let ((days (if  days  (prefix-numeric-value days) 3 )))
+           (message (format "dayns %d" days))
+           (mu4e-headers-search (format  "date:%dd..now" days))))
 
-       ;; (defun mu4e~proc-view (docid-or-msgid &optional images decrypt)
-       ;;   "Get one particular message based on its DOCID-OR-MSGID.
-       ;; Optionally, if IMAGES is non-nil, backend will any images
-       ;; attached to the message, and return them as temp files.
-       ;; The result will be delivered to the function registered as
-       ;; `mu4e-message-func'."
-       ;;   (mu4e~proc-send-command
-       ;;     "view %s extract-images:%s extract-encrypted:%s use-agent:true"
-       ;;     (mu4e--docid-msgid-param docid-or-msgid)
-       ;;     (if images "true" "false")
-       ;;     (if decrypt "true" "false")))
+       (defun fetchmail(days)
+         (interactive "p")
+         (let ((days (if  days  (prefix-numeric-value days) 3 )))
+           (message (format "dayns %d" days))
+           (pyutil-win32event "fetchmail")
+           ;; (run-at-time 5 nil #'mu4e-update-index)
+           (run-at-time 8 nil #'mu4e-headers-search (format  "date:%dd..now" days))))
 
-       )
 
+     (global-set-key [f3] 'mymail)
+     (global-set-key [f13]  '(lambda ()  (interactive) (pop-to-buffer "*mu4e-headers*")))
+     (global-set-key [S-f3]  '(lambda ()  (interactive) (pop-to-buffer "*mu4e-headers*")))
+     (global-set-key [M-f3] 'fetchmail) 
+     (global-set-key [C-f3] 'mu)
+
+     ;;(defun mu()
+     ;;  (interactive)
+     ;;  (async-start-process 
+     ;;  "mu" 
+     ;;  "mpop.exe"
+     ;;  (lambda (p)
+     ;;    (mu4e nil)
+     ;;    (mu4e-update-mail-and-index t))))
+                       ;;; mu db 위치
+                       ;;; %HOME%/.mu
+
+                       ;;; index 순서 
+     ;;mu index -m f:/single-repo
+     ;;mu index -m f:/MYSINGLE
+     ;;mu index -m g:/MYSINGLE
+     ;;mu index -m F:/MYSINGLE201211
+
+     ;;mu index -m g:/MYSINGLE2013
+     ;;mu index -m f:/MYSINGLE20130318
+     ;;mu index -m f:/MYSINGLE20130416
+
+     ;;mu index -m f:/single-repo & mu index -m f:/MYSINGLE & mu index -m g:/MYSINGLE & mu index -m g:/MYSINGLE2013 & mu index -m f:/MYSINGLE20130318 & mu index -m f:/MYSINGLE20130416
+   #+END_SRC
+
+   #+RESULTS:
+   : mu
+
+** helm-mu :deprecated:
+   #+begin_src emacs-lisp :tangle no
 
      (leaf helm-mu
        :ensure t
@@ -435,66 +274,8 @@
          (interactive)
          (mu4e~request-contacts-maybe)
          (helm :sources 'mucontacts-source
-               :buffer "*helm mu contacts*"))
-
-       (defun mu(from days)
-         (interactive "s발신인: \nP")
-         (setf from
-               (s-trim
-                (if  (s-equals? ""  from)
-                    (symbol-name  (symbol-at-point))
-                  from )))
-         (if (s-equals? from "")
-             (mu4e-headers-search (format  "date:%dd..now" (if  days  (prefix-numeric-value days) 3 )))
-           (mu4e-headers-search (format  "from:%s date:%dd..now" from (if  days  (prefix-numeric-value days) 3 )))))
-
-       (defun mymail(days)
-         (interactive "p")
-         (let ((days (if  days  (prefix-numeric-value days) 3 )))
-           (message (format "dayns %d" days))
-           (mu4e-headers-search (format  "date:%dd..now" days))))
-
-       (defun fetchmail(days)
-         (interactive "p")
-         (let ((days (if  days  (prefix-numeric-value days) 3 )))
-           (message (format "dayns %d" days))
-           (pyutil-win32event "fetchmail")
-           ;; (run-at-time 5 nil #'mu4e-update-index)
-           (run-at-time 8 nil #'mu4e-headers-search (format  "date:%dd..now" days)))))
-
-
-     (global-set-key [f3] 'mymail)
-     (global-set-key [f13]  '(lambda ()  (interactive) (pop-to-buffer "*mu4e-headers*")))
-     (global-set-key [S-f3]  '(lambda ()  (interactive) (pop-to-buffer "*mu4e-headers*")))
-     (global-set-key [M-f3] 'fetchmail) 
-     (global-set-key [C-f3] 'mu)
-
-     ;;(defun mu()
-     ;;  (interactive)
-     ;;  (async-start-process 
-     ;;  "mu" 
-     ;;  "mpop.exe"
-     ;;  (lambda (p)
-     ;;    (mu4e nil)
-     ;;    (mu4e-update-mail-and-index t))))
-                       ;;; mu db 위치
-                       ;;; %HOME%/.mu
-
-                       ;;; index 순서 
-     ;;mu index -m f:/single-repo
-     ;;mu index -m f:/MYSINGLE
-     ;;mu index -m g:/MYSINGLE
-     ;;mu index -m F:/MYSINGLE201211
-
-     ;;mu index -m g:/MYSINGLE2013
-     ;;mu index -m f:/MYSINGLE20130318
-     ;;mu index -m f:/MYSINGLE20130416
-
-     ;;mu index -m f:/single-repo & mu index -m f:/MYSINGLE & mu index -m g:/MYSINGLE & mu index -m g:/MYSINGLE2013 & mu index -m f:/MYSINGLE20130318 & mu index -m f:/MYSINGLE20130416
-   #+END_SRC
-
-   #+RESULTS:
-   : mu
+               :buffer "*helm mu contacts*")))
+   #+end_src
 ** 연락처 
    ftp://ftp.gnu.org/old-gnu/Manuals/elisp-manual-20-2.5/html_chapter/elisp_17.html
    참조

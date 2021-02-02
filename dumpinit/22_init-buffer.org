@@ -401,15 +401,6 @@
   ;;
   ;;If you ever forget any of Projectile's keybindings just do a:
 
-  ;;C-c p C-h
-
-  (leaf helm 
-   :config 
-    (helm-mode -1))
-  (leaf helm-config)
-  ;;(global-set-key (kbd "C-c h") 'helm-mini)
-  ;;(helm-mode 1)
-  ;; https://github.com/emacs-helm/helm/wiki
 
 
   (add-hook
@@ -562,12 +553,14 @@
  #+begin_src emacs-lisp
    (leaf selectrum
      :ensure t
+     :bind (((kbd "<f9>") . selectrum-repeat)
+            ((kbd "<S-f9>") . hangul-to-hanja-conversion))
      :config
      (selectrum-mode 1))
 
    (leaf selectrum-persient
      :ensure t
-     :c
+     :config
      (selectrum-prescient-mode))
  #+end_src
 
