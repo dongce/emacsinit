@@ -211,7 +211,7 @@
    : mu
 
 ** helm-mu :deprecated:
-   #+begin_src emacs-lisp :tangle no
+   #+begin_src emacs-lisp 
 
      (leaf helm-mu
        :ensure t
