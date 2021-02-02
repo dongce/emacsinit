@@ -668,10 +668,9 @@
 
        (evil-leader/set-key-for-mode 'org-mode
          "ha" 'counsel-org-agenda-headlines ;'helm-org-agenda-files-headings
-         "hH" 'counsel-outline
+         "hH" 'consult-outline
          "A"  #'(lambda () (interactive) (switch-to-buffer "*Org Agenda*"))
-         "hh" 'consult-outline
-
+         "hh" 'counsel-outline
          "u"    'outline-up-heading
          "q"    'org-todo
          "<down>"    'outline-next-visible-heading
@@ -1101,58 +1100,63 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
 ** mu4e
    #+begin_src emacs-lisp
 
-     (leaf evil-collection
-       :ensure t
-       :custom ((evil-collection-setup-minibuffer . t)
-                (evil-want-keybinding . nil))
-       :config
-       (evil-collection-init '( minibuffer diff-mode outline dired mu4e ivy consult))
 
-       (let ((bindings `((mu4e-view-mode-map 
-                          "*"             bmkp-mu4e-view
-                          ,(kbd "<home>")             open-mu4e-view   ;open in outlook
-                          ,(kbd "<insert>")           mu4e-headers-mark-for-something   ;open in outlook
-                          ,(kbd "<kp-multiply>") bmkp-mu4e-view
-                          "@"             copy-mu4e-view
-                          ,(kbd "<f12>F")             mu4e-find-file
-                          ,(kbd "<f12>f")             mu4e-field-view
-                          "o" mu4e-view-open-attachment
-                          "O" mu4e-view-open-attachment-emacs
-                          "m"  	mu4e-view-mark-for-tag
-                          "#"  	mu4e-mark-resolve-deferred-marks)
-                         (mu4e-headers-mode-map 
-                          ,(kbd "<home>")             open-mu4e-view   ;open in outlook
-                          ,(kbd "<insert>")        mu4e-headers-mark-for-something   ;open in outlook
-                          ,(kbd "<kp-multiply>") bmkp-mu4e-header
-                          "@"             copy-mu4e-header
-                          ,(kbd "<f12>F")             mu4e-find-file
-                          ,(kbd "<f12>f")             mu4e-field-header
-                          "L"  	mu4e-occur-store-link)
-                         (diff-mode-map
-                          ;; motion
-                          ,(kbd "<tab>") outline-cycle
-                          ,(kbd "<backtab>") outline-toggle-children)
-                         (outline-mode-map
-                          ,(kbd "C-k") kill-line
-                          ,(kbd "C-j") outline-forward-same-level))))
-         (dolist (binding bindings)
-           (apply #'evil-collection-define-key 'normal binding))))
+     ;;'(evil-want-keybinding nil)
+     ;;'(evil-want-minibuffer t)
 
-     (evil-collection-define-key 'motion 'diff-mode-map
-       (kbd "<tab>") 'outline-cycle
-       (kbd "<backtab>") 'outline-toggle-children)
+          (leaf evil-collection
+            :ensure t
+            :custom ((evil-collection-setup-minibuffer . t)
+                     (evil-want-minibuffer . t) 
+                     (evil-want-keybinding . nil))
+            :config
+            (evil-collection-init '( minibuffer diff-mode outline dired mu4e ivy consult))
 
-     (evil-collection-define-key 'normal 'dired-mode-map
-       ;;"["  'w32shell-cmd-here
-       ;;"\M-;" 'execute-program
-       "o" 'w32-dired-open-explorer
-       "O" 'w32-dired-open-explorer-tmp
-       ;; ",h" #'helm-dired-history-view
-       ",," 'w32-dired-open-explorer-marked
-       ",2" #'2zip
-       ",7" #'2-7zip
-       "S" 'hydra-dired-quick-sort/body
-       "\\" 'w32-dired-copy-file-name)
+            (let ((bindings `((mu4e-view-mode-map 
+                               "*"             bmkp-mu4e-view
+                               ,(kbd "<home>")             open-mu4e-view   ;open in outlook
+                               ,(kbd "<insert>")           mu4e-headers-mark-for-something   ;open in outlook
+                               ,(kbd "<kp-multiply>") bmkp-mu4e-view
+                               "@"             copy-mu4e-view
+                               ,(kbd "<f12>F")             mu4e-find-file
+                               ,(kbd "<f12>f")             mu4e-field-view
+                               "o" mu4e-view-open-attachment
+                               "O" mu4e-view-open-attachment-emacs
+                               "m"  	mu4e-view-mark-for-tag
+                               "#"  	mu4e-mark-resolve-deferred-marks)
+                              (mu4e-headers-mode-map 
+                               ,(kbd "<home>")             open-mu4e-view   ;open in outlook
+                               ,(kbd "<insert>")        mu4e-headers-mark-for-something   ;open in outlook
+                               ,(kbd "<kp-multiply>") bmkp-mu4e-header
+                               "@"             copy-mu4e-header
+                               ,(kbd "<f12>F")             mu4e-find-file
+                               ,(kbd "<f12>f")             mu4e-field-header
+                               "L"  	mu4e-occur-store-link)
+                              (diff-mode-map
+                               ;; motion
+                               ,(kbd "<tab>") outline-cycle
+                               ,(kbd "<backtab>") outline-toggle-children)
+                              (outline-mode-map
+                               ,(kbd "C-k") kill-line
+                               ,(kbd "C-j") outline-forward-same-level))))
+              (dolist (binding bindings)
+                (apply #'evil-collection-define-key 'normal binding))))
+
+          (evil-collection-define-key 'motion 'diff-mode-map
+            (kbd "<tab>") 'outline-cycle
+            (kbd "<backtab>") 'outline-toggle-children)
+
+          (evil-collection-define-key 'normal 'dired-mode-map
+            ;;"["  'w32shell-cmd-here
+            ;;"\M-;" 'execute-program
+            "o" 'w32-dired-open-explorer
+            "O" 'w32-dired-open-explorer-tmp
+            ;; ",h" #'helm-dired-history-view
+            ",," 'w32-dired-open-explorer-marked
+            ",2" #'2zip
+            ",7" #'2-7zip
+            "S" 'hydra-dired-quick-sort/body
+            "\\" 'w32-dired-copy-file-name)
 
    #+end_src
 
@@ -1198,3 +1202,21 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
    #+BEGIN_SRC emacs-lisp
  (evil-mode 1)
    #+END_SRC
+
+
+   
+
+* override
+  
+** dired
+   #+begin_src emacs-lisp
+     (general-define-key [remap dired] 'counsel-dired)
+   #+end_src
+** ivy
+   #+begin_src emacs-lisp
+
+     (general-define-key
+      :keymaps '(counsel-mode-map)
+      (vector 'remap 'execute-extended-command) 'execute-extended-command)
+
+   #+end_src
