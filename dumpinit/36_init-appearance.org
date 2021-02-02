@@ -3195,7 +3195,7 @@
    
 
 ** posframe
-   #+begin_src emacs-lisp :tangle no
+   #+begin_src emacs-lisp 
      (leaf posframe
        :ensure t
        :preface
@@ -3209,17 +3209,6 @@
        ((posframe-arghandler . #'my-posframe-arghandler)
         (posframe-mouse-banish  . nil)))
 
-     ;; (leaf ivy-posframe
-     ;;  :ensure t
-     ;;  :custom
-     ;;  (ivy-posframe-display-functions-alist . '((t . ivy-posframe-display-at-frame-top-center)))
-     ;;  :init (ivy-posframe-mode 1))
-
-     (leaf helm-posframe
-       :ensure t
-       :custom
-       (helm-posframe-poshandler .  #'posframe-poshandler-window-top-center)
-       :init ( helm-posframe-enable ))
 
      (leaf eldoc-posframe
        :require t
@@ -3231,7 +3220,24 @@
 
    #+RESULTS:
    : eldoc-posframe
-  
+
+   
+
+*** ivy+helm
+    #+begin_src emacs-lisp :tangle no
+
+      (leaf ivy-posframe
+        :ensure t
+        :custom
+        (ivy-posframe-display-functions-alist . '((t . ivy-posframe-display-at-frame-top-center)))
+        :init (ivy-posframe-mode 1))
+
+      (leaf helm-posframe
+        :ensure t
+        :custom
+        (helm-posframe-poshandler .  #'posframe-poshandler-window-top-center)
+        :init ( helm-posframe-enable ))
+    #+end_src
 *** maple
     #+begin_src emacs-lisp  :tangle no
       (leaf maple-minibuffer 
