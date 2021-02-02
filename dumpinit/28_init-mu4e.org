@@ -210,11 +210,11 @@
    #+RESULTS:
    : mu
 
-** helm-mu :deprecated:
+** helm-mu 
    #+begin_src emacs-lisp 
 
      (leaf helm-mu
-       :ensure t
+       :require t
        :config 
        (defvar mucontacts-source
          (helm-build-in-buffer-source "mu를 이용하여 메일주소를 검색합니다."
@@ -250,6 +250,10 @@
          (helm :sources 'mucontacts-source
                :buffer "*helm mu contacts*")))
    #+end_src
+
+   #+RESULTS:
+   : helm-mu
+
 ** 연락처 
    ftp://ftp.gnu.org/old-gnu/Manuals/elisp-manual-20-2.5/html_chapter/elisp_17.html
    참조
