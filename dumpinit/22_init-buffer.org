@@ -556,3 +556,20 @@
    #+RESULTS:
    : t
 
+
+   
+* selectrum
+ #+begin_src emacs-lisp
+   (leaf selectrum
+     :ensure t
+     :config
+     (selectrum-mode 1))
+
+   (leaf selectrum-persient
+     :ensure t
+     :c
+     (selectrum-prescient-mode))
+ #+end_src
+
+ #+RESULTS:
+ : selectrum-persient

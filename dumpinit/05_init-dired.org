@@ -641,7 +641,7 @@ open and unsaved."
        (interactive)
        (let ((home (expand-file-name (getenv "HOME"))))
          (find-file
-          (helm-comp-read 
+          (selectrum-completing-read 
            "파일명을 입력하세요 : "
            (mapcar (lambda (path)
                      (replace-regexp-in-string home "~/" path))
@@ -653,7 +653,7 @@ open and unsaved."
        (interactive)
        (let ((home (expand-file-name (getenv "HOME"))))
          (find-file
-          (helm-comp-read 
+          (selectrum-completing-read 
            "폴더명을 입력하세요 : "
 
            (mapcar (lambda (path)

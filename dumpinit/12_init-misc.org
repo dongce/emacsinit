@@ -726,7 +726,7 @@
 
     (defun singleid()
       (interactive)
-      (let ((ntag (helm-comp-read "성명을 입력하세요 : " (single-name))))
+      (let ((ntag (selectrum-completing-read "성명을 입력하세요 : " (single-name))))
 
         ;; (insert (format "%s" (single-content ntag )))
         (mapcar
@@ -740,7 +740,7 @@
 
     (defun hanwhaid()
       (interactive)
-      (let ((ntag (helm-comp-read "성명을 입력하세요 : " (single-name))))
+      (let ((ntag (selectrum-completing-read "성명을 입력하세요 : " (single-name))))
 
         ;; (insert (format "%s" (single-content ntag )))
         (mapcar
@@ -782,7 +782,7 @@
            (json-read-file (car  json))))))
     (defun swnc()
       (interactive)
-      (let ((ntag (helm-comp-read "성명을 입력하세요 : " (sw-name))))
+      (let ((ntag (selectrum-completing-read "성명을 입력하세요 : " (sw-name))))
         (with-current-buffer (get-buffer-create "*name-card*")
           (outline-mode)
           (goto-char (point-max))

@@ -459,14 +459,6 @@
 
       #+RESULTS:
 
-
-* recentf
-  #+begin_src emacs-lisp
-    (recentf-load-list)
-  #+end_src
-
-  #+RESULTS:
-
 * calendar
   #+begin_src emacs-lisp :tangle no
 (cfw:open-org-calendar)
@@ -591,14 +583,13 @@ For more information check the manuals.
     ;;     (setf server-socket-dir
     ;;       (and (featurep 'make-network-process '(:family local))
     ;;            (format "/tmp/emacs%d"  (user-uid)))))
-
+    (setf server-use-tcp t)
     (server-start)
     (require 'edit-server )
     (edit-server-start)
   #+end_src
 
   #+RESULTS:
-  : An edit-server process is already running
 * localvariable
   #+begin_src emacs-lisp
  
@@ -654,8 +645,11 @@ For more information check the manuals.
 
 * flychecker
   #+begin_src emacs-lisp
-    (remove-from-list 'flycheck-checkers 'python-pycompile )
-    (add-to-list 'flycheck-checkers 'python-pycompile )
+    (leaf flycheck
+      :ensure t
+      :config
+      (remove-from-list 'flycheck-checkers 'python-pycompile )
+      (add-to-list 'flycheck-checkers 'python-pycompile ))
   #+end_src
 
   
@@ -687,7 +681,7 @@ For more information check the manuals.
   
 
 * special block
-  #+begin_src emacs-lisp
+  #+begin_src emacs-lisp :tangle no
 
         (org-special-block-extras-short-names)
         (add-hook 'org-mode-hook 'org-special-block-extras-mode) ; Org buffers only

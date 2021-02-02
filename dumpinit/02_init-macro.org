@@ -3091,12 +3091,12 @@ Version 2015-03-03"
            ;;(booktool (elt children 1))
            (allbookmark (cdr (assoc 'children (elt children 0))))
            ;;(untag (elt children 3))
-           (stag (helm-comp-read ;;ido-completing-read 
+           (stag (selectrum-completing-read ;;ido-completing-read 
                   "TAG 를 입력하세요 : "
                   ;;completing-read;;(mapcar (function (lambda (x) (list (car x) t))) winexe-cmdlist)
                   (sort (delete-dups (remove nil  (mapcar (lambda (x)  (cdr (assoc 'tags x ))) allbookmark ))) #'string<)))
            (tagcontents (remove-if (lambda (x) (not (string= stag (cdr (assoc 'tags x ))))) allbookmark))
-           (btitle (helm-comp-read
+           (btitle (selectrum-completing-read
                     "TITLE 를 입력하세요 : "
                     (mapcar (lambda (x) (cdr (assoc 'title x ))) tagcontents ) ))
            (bookmark (find-if (lambda (x) (string= btitle (cdr (assoc 'title x )))) tagcontents)))
@@ -3109,12 +3109,12 @@ Version 2015-03-03"
     (let* (
            (allbookmark (json-read-file (pyutil-moz-bookmarks (wsl-path-convert-file-name firefox-places))))
            ;;(untag (elt children 3))
-           (stag (helm-comp-read ;;ido-completing-read 
+           (stag (selectrum-completing-read ;;ido-completing-read 
                   "TAG 를 입력하세요 : "
                   ;;completing-read;;(mapcar (function (lambda (x) (list (car x) t))) winexe-cmdlist)
                   (sort (delete-dups (remove nil  (mapcar (lambda (x) (car x ) ) allbookmark ))) #'string<)))
            (tagcontents (find-if (lambda (x) (string= stag (elt  x 0))) allbookmark))
-           (btitle (helm-comp-read
+           (btitle (selectrum-completing-read
                     "TITLE 를 입력하세요 : "
                     (sort (delete-dups
                            (mapcar (lambda (x) (let ((y (elt x 0 ))) (if  y y (elt x 1)))) (cdr   tagcontents) )) #'string<) ))
@@ -3133,12 +3133,12 @@ Version 2015-03-03"
     (let* (
            (allbookmark (json-read-file "/opt/site-lisp/init/bookmarks.json"))
            ;;(untag (elt children 3))
-           (stag (helm-comp-read ;;ido-completing-read 
+           (stag (selectrum-completing-read ;;ido-completing-read 
                   "TAG 를 입력하세요 : "
                   ;;completing-read;;(mapcar (function (lambda (x) (list (car x) t))) winexe-cmdlist)
                   (sort (delete-dups (remove nil  (mapcar (lambda (x) (car x ) ) allbookmark ))) #'string<)))
            (tagcontents (find-if (lambda (x) (string= stag (elt  x 0))) allbookmark))
-           (btitle (helm-comp-read
+           (btitle (selectrum-completing-read
                     "TITLE 를 입력하세요 : "
                     (sort (delete-dups
                            (mapcar (lambda (x) (let ((y (elt x 0 ))) (if  y y (elt x 1)))) (cdr   tagcontents) )) #'string<) ))
@@ -3416,7 +3416,7 @@ of FILE in the current directory, suitable for creation"
     (interactive)
     (let* ((allwindow (json-read-file (pyutil-top-windows )))
            ;;(untag (elt children 3))
-           (stag (helm-comp-read ;;ido-completing-read 
+           (stag (selectrum-completing-read ;;ido-completing-read 
                   "TITLE 를 입력하세요 : "
                   ;;completing-read;;(mapcar (function (lambda (x) (list (car x) t))) winexe-cmdlist)
                   (sort (delete-dups (remove ""  (mapcar (lambda (x) (elt x 1  ) ) allwindow ))) #'string<))))
@@ -3426,7 +3426,7 @@ of FILE in the current directory, suitable for creation"
   (defun kproc ()
     (interactive)
     (let* (
-           (proc (helm-comp-read ;;ido-completing-read 
+           (proc (selectrum-completing-read ;;ido-completing-read 
                   "process 를 입력하세요 : "
                   (sort (delete-dups (pyutil-list-proc)) #'string<))))
       (message proc)

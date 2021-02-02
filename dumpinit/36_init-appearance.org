@@ -3195,13 +3195,13 @@
    
 
 ** posframe
-   #+begin_src emacs-lisp
+   #+begin_src emacs-lisp :tangle no
      (leaf posframe
        :ensure t
        :preface
        (defun my-posframe-arghandler (buffer-or-name arg-name value)
          (let ((info '(:internal-border-width 10
-                       ;; :background-color "medium blue"
+                        ;; :background-color "grey30"
                         ;; :background-color "steel blue"
                        :internal-border-color "white")))
            (or (plist-get info arg-name) value)))
@@ -3209,7 +3209,7 @@
        ((posframe-arghandler . #'my-posframe-arghandler)
         (posframe-mouse-banish  . nil)))
 
-     ;;(leaf ivy-posframe
+     ;; (leaf ivy-posframe
      ;;  :ensure t
      ;;  :custom
      ;;  (ivy-posframe-display-functions-alist . '((t . ivy-posframe-display-at-frame-top-center)))
@@ -3232,7 +3232,52 @@
    #+RESULTS:
    : eldoc-posframe
   
+*** maple
+    #+begin_src emacs-lisp  :tangle no
+      (leaf maple-minibuffer 
+        :require t
+        :global-minor-mode maple-minibuffer-mode
+        :config
+        (setq
+         ;; maple-minibuffer:position-type 'window-bottom-left
+         ;; maple-minibuffer:height nil
+         maple-minibuffer:width 0.8
+         maple-minibuffer:cache t
+         maple-minibuffer:border-color "gray50"
+         ;; maple-minibuffer:action '(read-from-minibuffer read-string)
+         maple-minibuffer:ignore-action '(swiper )
+         maple-minibuffer:action '(selectrum-completing-read))
+
+        (add-to-list 'maple-minibuffer:ignore-action 'org-schedule)
+        (add-to-list 'maple-minibuffer:ignore-regexp "^helm-")
+        (defun maple-minibuffer:parameters ()
+          "Maple minibuffer parameters."
+          `((height . ,(or maple-minibuffer:height 10))
+            (width . ,(or maple-minibuffer:width (window-pixel-width)))
+            (left-fringe . 5)
+            (right-fringe . 5)))
+        )
+      
+
+
+    #+end_src
+
+    #+RESULTS:
+    : maple-minibuffer
    
+** mini-frame
+   #+begin_src emacs-lisp
+     (leaf mini-frame
+       :ensure t
+       :config
+       (mini-frame-mode))
+
+     (defun mini-frame-background (&optional frame) "RoyalBlue4" )
+     (setf mini-frame-background-color-function #'mini-frame-background)
+   #+end_src
+
+   #+RESULTS:
+   : mini-frame-background
 
 ** popwin
    #+begin_src emacs-lisp
@@ -3266,35 +3311,3 @@
    #+RESULTS:
    : which-key-posframe
   
-** maple
-   #+begin_src emacs-lisp  :tangle no
-     (leaf maple-minibuffer 
-       :require t
-       :global-minor-mode maple-minibuffer-mode
-       :config
-       (setq
-        ;; maple-minibuffer:position-type 'window-bottom-left
-        ;; maple-minibuffer:height nil
-        maple-minibuffer:width 0.8
-        maple-minibuffer:cache t
-        maple-minibuffer:border-color "gray50"
-        ;; maple-minibuffer:action '(read-from-minibuffer read-string)
-        maple-minibuffer:ignore-action '(swiper )
-        maple-minibuffer:action '(ivy-read read-from-minibuffer ))
-
-       (add-to-list 'maple-minibuffer:ignore-action 'org-schedule)
-       (add-to-list 'maple-minibuffer:ignore-regexp "^helm-")
-       (defun maple-minibuffer:parameters ()
-         "Maple minibuffer parameters."
-         `((height . ,(or maple-minibuffer:height 10))
-           (width . ,(or maple-minibuffer:width (window-pixel-width)))
-           (left-fringe . 5)
-           (right-fringe . 5)))
-       )
-      
-
-
-   #+end_src
-
-   #+RESULTS:
-   : maple-minibuffer

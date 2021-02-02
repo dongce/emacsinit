@@ -196,8 +196,7 @@
    
 #+BEGIN_SRC emacs-lisp
 
-  (leaf helm-descbinds
-    :global-minor-mode helm-descbinds-mode)
+  (leaf counsel-descbinds :ensure t)
 
   (leaf proced
     :require t
