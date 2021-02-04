@@ -3300,9 +3300,10 @@
         "g" #'(lambda () (interactive) (popwin:popup-buffer-tail "*Grep*") (setq popwin:popup-window-stuck-p t)))
 
 
-       (general-define-key
-        (kbd "C-z") popwin:keymap
-        (kbd "C-z C-z") #'(lambda () (interactive) (posframe-delete-all) (keyboard-quit))))
+       ;;(general-define-key
+       ;; (kbd "C-z") popwin:keymap
+       ;; (kbd "C-z C-z") #'(lambda () (interactive) (posframe-delete-all) (keyboard-quit)))
+       )
    #+end_src
 
    #+RESULTS:
