@@ -219,6 +219,7 @@
         ;;"ph" 'project-explorer-helm
         "pH" 'project-explorer-open
         "px" 'project-explorer-close
+        (kbd "C-g") popwin:keymap
 
         )
     #+END_SRC
@@ -302,7 +303,7 @@
      (evil-set-toggle-key "<pause>")
 
      (general-define-key
-       :keymaps '(evil-normal-state-map evil-visual-state-map)
+      :keymaps '(evil-normal-state-map evil-visual-state-map)
       "u" 'undo-fu-only-undo
       "U" 'undo-fu-only-redo
       "gl" 'goto-line
@@ -321,18 +322,18 @@
      (general-define-key
       :keymaps '(evil-normal-state-map evil-visual-state-map evil-insert-state-map)
 
-     "\C-a" 'evil-beginning-of-line
-     "\C-e" 'evil-end-of-line
-     "\C-f" 'evil-forward-char
-     "\C-b" 'evil-backward-char
-     "\C-d" 'evil-delete-char
-     "\C-n" 'evil-next-line
-     "\C-p" 'evil-previous-line
-     ;; "\C-w" 'phi-rectangle-kill-region
-     "\C-w" 'kill-region-dwim
-     "\C-y" 'yank
-     "\C-k" 'kill-line
-     )
+      "\C-a" 'evil-beginning-of-line
+      "\C-e" 'evil-end-of-line
+      "\C-f" 'evil-forward-char
+      "\C-b" 'evil-backward-char
+      "\C-d" 'evil-delete-char
+      "\C-n" 'evil-next-line
+      "\C-p" 'evil-previous-line
+      ;; "\C-w" 'phi-rectangle-kill-region
+      "\C-w" 'kill-region-dwim
+      "\C-y" 'yank
+      "\C-k" 'kill-line
+      )
 
      (general-define-key
       :keymaps '(minibuffer-local-map 
