@@ -226,7 +226,7 @@
 
     #+RESULTS:
 
-*** expand spacemacs
+*** expand spacemacbus
 **** global
      #+BEGIN_SRC emacs-lisp
 
@@ -256,11 +256,12 @@
 **** consult
      #+begin_src emacs-lisp
 
+
        (spacemacs/set-leader-keys
-         "u" 'counsel-buffer-or-recentf ;;'consult-recent-file;;helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
-         "U" 'consult-recent-file-other-frame ;;helm-goto-recent-directory ;;counsel-goto-recent-directory 
-         "bb" 'consult-buffer-other-frame 
-         "bB" 'consult-buffer ;;'ivy-switch-buffer
+         "u" 'consult-buffer-other-window ;;helm-goto-recent-directory ;;counsel-goto-recent-directory 
+         "U" '(lambda (frame) (interactive "P" ) (if frame (consult-buffer-other-frame) (consult-buffer))) ;;'consult-recent-file;;helm-choose-from-recentf  ;;'string-rectangle ;;'recentf-open-most-recent-file
+         "b[" 'evil-prev-buffer
+         "b]" 'evil-next-buffer
          "fb" 'consult-bookmark
          "ry"  'consult-yank-pop
          "pi"    'consult-projectile-imenu
@@ -271,7 +272,6 @@
      #+end_src
 
      #+RESULTS:
-     : consult-selectrum
 
 **** for major mode
      #+BEGIN_SRC emacs-lisp
