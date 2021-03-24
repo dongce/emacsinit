@@ -574,7 +574,7 @@ You can customize this variable.
 
 For more information check the manuals.
 
-  #+begin_src emacs-lisp
+  #+begin_src emacs-lisp 
 
     (defun server-ensure-safe-dir (dir) "NOOP" t)
 
@@ -587,6 +587,8 @@ For more information check the manuals.
     (server-start)
     (require 'edit-server )
     (edit-server-start)
+
+    (null server-process)
   #+end_src
 
   #+RESULTS:
