@@ -587,7 +587,6 @@ For more information check the manuals.
     (server-start)
     (require 'edit-server )
     (edit-server-start)
-
     (null server-process)
   #+end_src
 
