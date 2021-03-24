@@ -61,8 +61,17 @@ tmux send -t  sage "sage -n  jupyter  --ip '0.0.0.0'  --allow-root" ENTER
 #usewindowterminal#tmux send -t  powershell "c:\\usr\\local\\iputty\\putty.exe -load OPA0 -ssh root@${LOCALIP}  -pw root" ENTER
 #usewindowterminal#sleep 3
 
-JUPYTERLINK=$(jupyter notebook list | grep "http" | awk -e '{print $1}' | sed -e "s/0.0.0.0/${LOCALIP}/")
+while true ; do
+    JUPYTERLINK=$(jupyter notebook list | grep "http" | awk -e '{print $1}' | sed -e "s/0.0.0.0/${LOCALIP}/")
+    if [ -z "$JUPYTERLINK" ]
+    then
+        sleep 5
+    else
+        break
+    fi
 # tmux send -t  powershell "t:\\usr\\local\\firefox\\firefox.exe ${JUPYTERLINK} " ENTER
+done
+
 tmux send -t  powershell "start ${JUPYTERLINK} " ENTER
 
 

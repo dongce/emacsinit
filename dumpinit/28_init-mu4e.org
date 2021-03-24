@@ -465,3 +465,46 @@
 
 #+RESULTS:
 : decode-contacts
+
+* thread-folding
+  #+begin_src emacs-lisp
+    (leaf mu4e-thread-folding
+      :require t
+      :config
+  
+      (add-to-list 'mu4e-header-info-custom
+                   '(:empty . (:name "Empty"
+                                     :shortname ""
+                                     :function (lambda (msg) "  "))))
+      (setq mu4e-headers-fields '((:empty . 2)
+                                  (:human-date . 20)
+                                  (:flags . 6)
+                                  (:subject . 70)
+                                  (:from . 22))))
+  #+end_src
+
+  #+RESULTS:
+  : mu4e-thread-folding
+
+  
+
+* company 참고 
+  #+begin_src emacs-lisp :tangle no
+
+    (defun company-mu4e (command &optional arg &rest ignore)
+      "`company-mode' completion backend for BBDB."
+      (message "mure compose")
+      (cl-case command
+        (prefix (and 
+                 (let ((case-fold-search t))
+                   (looking-back
+                    "^\\([^ :]*-\\)?\\(To\\|B?Cc\\|From\\):.*? *\\([^,;]*\\)"
+                    (line-beginning-position)))
+                 (match-string-no-properties 3)))
+        (candidates (-filter
+                     (lambda (item)
+                       (s-contains-p arg item t) )
+                     (hash-table-keys mu4e~contacts)))
+        (sorted t)
+        (no-cache t)))
+  #+end_src

@@ -1,7 +1,7 @@
 ;; -*-mode: emacs-lisp; coding: utf-8; buffer-read-only: t;-*-
 
 (leaf consult-selectrum
-  :ensure t
+  :require t
   :bind (((kbd "<f9>") . selectrum-repeat)
          ((kbd "<S-f9>") . hangul-to-hanja-conversion))
   :config 

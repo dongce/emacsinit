@@ -240,6 +240,8 @@
          "nx"  'zz-narrow-repeat
          "nz"  narrow-map
          "bf"  'bufler-workspace-frame-set
+         "bl"  'bufler-switch-buffer
+         "bi"  'ibuffer
          "si"  'spacemacs/search-project-auto-region-or-symbol
          ;;sdcv dictionary
          "sV" 'sdcv-search-pointer+
@@ -389,13 +391,13 @@
       :keymaps '(evil-normal-state-map evil-visual-state-map )
       [kp-0]        'copy-region-strip-left
       [kp-1]        'select-window-1
-      [kp-2]        'select-window-2
+      [kp-2]        'bm-next
       [kp-3]        'select-window-3
       [kp-4]        'evil-prev-buffer
-      ;;[kp-5]        'helm-mini
+      [kp-5]        'bm-toggle
       [kp-6]        'evil-next-buffer
       [kp-7]        'copy-to-register-1
-      [kp-8]        'split-window-below
+      [kp-8]        'bm-previous
       [kp-9]        'paste-from-register-1
       [kp-divide]   'ibuffer
       [kp-add]      'evil-paste-after

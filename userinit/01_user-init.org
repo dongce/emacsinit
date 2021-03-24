@@ -645,12 +645,16 @@ For more information check the manuals.
 
 * flychecker
   #+begin_src emacs-lisp
-    (leaf flycheck
-      :ensure t
-      :config
-      (remove-from-list 'flycheck-checkers 'python-pycompile )
-      (add-to-list 'flycheck-checkers 'python-pycompile ))
+        (leaf flycheck
+          :ensure t
+          :config
+          (remove-from-list 'flycheck-checkers 'python-pycompile )
+          ;;(add-to-list 'flycheck-checkers 'python-pycompile )
+          )
   #+end_src
+
+  #+RESULTS:
+  : flycheck
 
   
 

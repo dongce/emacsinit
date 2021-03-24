@@ -1752,12 +1752,14 @@
                (while (not (eobp))
                  (move-to-column col t)
                  (insert str)
-                 (forward-line 1))))))
+                 (forward-line 1)))))))
 
-       (general-define-key
-        :keymaps 'ctl-x-r-map
-        "h" 'string-right))
+     (general-define-key
+      :keymaps 'ctl-x-r-map
+      "h" 'string-right)
    #+END_SRC
+
+   #+RESULTS:
 
 ** align
 

@@ -655,7 +655,7 @@
         (and 
          (member (buffer-local-value 'major-mode buffer) '(dired-mode ))
          (string-prefix-p "/mnt/y/" (buffer-local-value 'default-directory buffer))))
-      (add-to-list 'bufler-filter-fns 'cifs-buffer-p)) 
+      (add-to-list 'bufler-filter-buffer-fns 'cifs-buffer-p)) 
 
     (leaf helm-bufler :require t)
     (defun helm-bufler ()
@@ -664,7 +664,7 @@
   #+end_src
 
   #+RESULTS:
-  : bufler
+  : helm-bufler
   
 * smerge
   #+BEGIN_SRC emacs-lisp

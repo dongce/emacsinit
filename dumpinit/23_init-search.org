@@ -9,7 +9,7 @@
  #+begin_src emacs-lisp
 
    (leaf consult-selectrum
-     :ensure t
+     :require t
      :bind (((kbd "<f9>") . selectrum-repeat)
             ((kbd "<S-f9>") . hangul-to-hanja-conversion))
      :config 

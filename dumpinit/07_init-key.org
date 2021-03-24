@@ -192,11 +192,13 @@
 
 #+END_SRC
 
+#+RESULTS:
+
 ** package gdb/helm etc
    
 #+BEGIN_SRC emacs-lisp
 
-  (leaf counsel-descbinds :ensure t)
+  ;;(leaf counsel-descbinds :ensure t)
 
   (leaf proced
     :require t
