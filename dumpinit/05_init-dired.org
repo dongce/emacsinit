@@ -314,7 +314,7 @@
             (apt ,(fullpath  "../../advpsterm/apt.exe"))
             (picpick ,(fullpath  "../../../../picpick/picpick.exe"))
             (opencapture "d:/usr/local/opencapture/pOpenCapture.exe")
-            (qdir        "t:/usr/local/qdir/Q-Dir.exe")
+            (qdir        "t:/usr/local/qdir/Q-Dir_x64.exe")
             (explorer    "c:/WINDOWS/explorer.exe")
             (ComponentServices     "c:/windows/system32/comexp.msc"                                                          )
             (ComputerManagement    "c:/windows/system32/compmgmt.msc"                "/s"                                    )

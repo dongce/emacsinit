@@ -795,33 +795,6 @@
 
       #+RESULTS:
 
-*** key guide
-
-    #+BEGIN_SRC emacs-lisp
-      ;;; guide-key 
-      ;; @see https://bitbucket.org/lyro/evil/issue/511/let-certain-minor-modes-key-bindings
-
-
-      ;; [[file:t:/gitdir/dot-emacs/etc/hyone-key-combo.el::(defun%20evil-key-combo-define%20(state%20keymap%20key%20commands)][combo for evil]]
-
-      ;; (leaf guide-key
-      ;;   :config
-      ;;   (guide-key-mode)
-      ;;   (defun guide-key-hook-function-for-org-mode ()
-      ;;     (guide-key/add-local-guide-key-sequence "C-c")
-      ;;     (guide-key/add-local-guide-key-sequence "C-c C-x")
-      ;;     (guide-key/add-local-highlight-command-regexp "org-"))
-      ;;   (add-hook 'org-mode-hook 'guide-key-hook-function-for-org-mode))
-
-      (leaf which-key
-        :ensure t
-        :global-minor-mode which-key-mode
-        :custom ((which-key-popup-type . 'side-window)
-                 (which-key-side-window-max-width . 0.5))
-        :config 
-        ( which-key-setup-side-window-right))
-
-    #+END_SRC
 
 *** magit
     #+BEGIN_SRC emacs-lisp
