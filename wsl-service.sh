@@ -50,7 +50,13 @@ tmux send -t  sage "conda activate sage" ENTER
 tmux send -t  sage "sage -n  jupyter  --ip '0.0.0.0'  --allow-root" ENTER
 
 
+mkdir /run/samba
+chmod -R 0755 /run/samba
+systemctl start smb
 
+#compiler#fuse-zip -o ro /mnt/develop/compiler/GNAT.zip /opt/GNAT
+#compiler#fuse-zip -o ro /mnt/develop/compiler/poky-lsb.zip /opt/poky-lsb
+#compiler#fuse-zip -o ro /mnt/develop/compiler/Buildbot.zip /home/Buildbot
 
 ##tmux send -t  powershell "net use * /del"                                                        ENTER
 ##too-slow##tmux send -t  powershell "net use \\\\10.239.23.100\\confidential /USER:di7979.kim 1q2w3e4r%" ENTER
