@@ -916,7 +916,7 @@
 #+RESULTS:
 : t
 * switch-window
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
     (leaf switch-window
       :ensure t
       :custom (( switch-window-shortcut-style . 'qwerty)
