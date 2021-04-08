@@ -60,10 +60,16 @@ keymap for the target's type."
     (if original
         (embark--act #'xah-append-to-register target)
       (user-error "No target found"))))
-    (leaf embark
-      :ensure t
-      :custom ((embark-quit-after-action . nil))
-      :bind (("S-<home>" . embark-act)
-             ("S-<end>" . embark-bindings) 
-             ("<f12>" . embark-append-action) 
-             ))
+(leaf embark
+  :ensure t
+  :custom ((embark-quit-after-action . nil))
+  :bind (("S-<home>" . embark-act)
+         ("S-<end>" . embark-bindings) 
+         ("<f12>" . embark-append-action) 
+         ))
+
+(leaf embark-consult
+  :require t
+  :after (embark consult)
+  :hook
+    (embark-collect-mode . embark-consult-preview-minor-mode))
