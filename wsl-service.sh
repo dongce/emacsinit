@@ -20,7 +20,7 @@ sleep 5
 tmux send -t  powershell "cd /mnt/c/Windows/System32/WindowsPowerShell/v1.0/" ENTER
 sleep 3
 tmux send -t  powershell "./powershell.exe -NoExit -Command  Remove-Module -Name PSReadline" ENTER
-sleep 3
+sleep 5
 
 tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -RemoveHost -hostname fedora33.wsl" ENTER
 tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -AddHost -ip ${LOCALIP} -hostnam fedora33.wsl" ENTER
@@ -87,5 +87,7 @@ while true ; do
 done
 
 tmux send -t  powershell "start ${JUPYTERLINK} " ENTER
-tmux send -t  powershell "start http://fedora33.wsl/language/index.html " ENTER
-
+sleep 3
+tmux send -t  powershell "start http://wolfram.fedora33.wsl/language/index.html " ENTER
+sleep 5
+tmux send -t  powershell "net use x: \\\\fedora33.wsl\\develop"                            ENTER

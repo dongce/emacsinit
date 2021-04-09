@@ -1,6 +1,8 @@
 
 
-* A
+* builtin function list 
+
+** A
 AASTriangle	AnglePath3D	Assumptions
 AbelianGroup	AngleVector	Asymptotic
 Abort	AngularGauge	AsymptoticDSolveValue
@@ -115,7 +117,7 @@ AngerJ	AssociationQ	AxiomaticTheory
 AngleBisector	AssociationThread	Axis
 AngleBracket	AssumeDeterministic	
 AnglePath	Assuming	
-* B
+** B
 BabyMonsterGroupB	BinaryDeserialize	Boole
 Back	BinaryDistance	BooleanConsecutiveFunction
 Background	BinaryFormat	BooleanConvert
@@ -193,7 +195,7 @@ BezierCurve	BondCount	ByteCount
 BezierFunction	BondList	ByteOrdering
 BilateralFilter	BondQ	
 Binarize	Bookmarks	
-* C
+** C
 C	ClippingStyle	ConstantRegionQ
 CachePersistence	ClipPlanes	Constants
 CalendarConvert	ClipPlanesStyle	ConstellationData
@@ -369,7 +371,7 @@ ClebschGordan	ConservativeConvectionPDETerm	Cyclotomic
 ClickPane	Constant	Cylinder
 ClickToCopy	ConstantArray	CylindricalDecomposition
 Clip	ConstantImage	CylindricalDecompositionFunction
-* D
+** D
 D	DeleteFile	DiscreteLimit
 DagumDistribution	DeleteMissing	DiscreteLQEstimatorGains
 DamData	DeleteObject	DiscreteLQRegulatorGains
@@ -486,7 +488,7 @@ DeleteContents	DiscreteConvolve	DynamicModuleValues
 DeleteDirectory	DiscreteDelta	DynamicSetting
 DeleteDuplicates	DiscreteHadamardTransform	DynamicUpdating
 DeleteDuplicatesBy	DiscreteIndicator	DynamicWrapper
-* E
+** E
 E	EncryptFile	Evaluator
 EarthImpactData	End	EvenQ
 EarthquakeData	EndDialogPacket	EventData
@@ -562,7 +564,7 @@ Enclose	EvaluationMonitor	ExtractPacletArchive
 Encode	EvaluationNotebook	ExtremeValueDistribution
 Encrypt	EvaluationObject	
 EncryptedObject	EvaluationPrivileges	
-* F
+** F
 FaceAlign	FindFundamentalCycles	FormLayoutFunction
 FaceForm	FindGeneratingFunction	FormObject
 FaceGrids	FindGeoLocation	FormPage
@@ -669,7 +671,7 @@ FindFaces	FormBox	FunctionSingularities
 FindFile	FormBoxOptions	FunctionSpace
 FindFit	FormControl	FunctionSurjective
 FindFormula	FormFunction	FussellVeselyImportance
-* G
+** G
 GaborFilter	GeoEntities	GrammarRules
 GaborMatrix	GeoGraphics	GrammarToken
 GaborWavelet	GeogravityModelData	Graph
@@ -751,7 +753,7 @@ GeoDisplacement	Gradient	Gudermannian
 GeoDistance	GradientFilter	GuidedFilter
 GeoDistanceList	GradientOrientationFilter	GumbelDistribution
 GeoElevationData	GrammarApply	
-* H
+** H
 HaarWavelet	HeavisidePi	HoeffdingDTest
 HadamardMatrix	HeavisideTheta	Hold
 HalfLine	HeldGroupHe	HoldAll
@@ -798,7 +800,7 @@ HeatTemperatureCondition	HITSCentrality	Hyperplane
 HeatTransferPDEComponent	HjorthDistribution	Hyphenation
 HeatTransferValue	HodgeDual	HypoexponentialDistribution
 HeavisideLambda	HoeffdingD	HypothesisTestData
-* I
+** I
 I	ImageTake	IntegerLength
 IconData	ImageTransformation	IntegerName
 Iconize	ImageTrim	IntegerPart
@@ -897,7 +899,7 @@ ImageSize	InString	ItemSize
 ImageSizeAction	Integer	ItemStyle
 ImageSizeMultipliers	IntegerDigits	ItoProcess
 ImageSubtract	IntegerExponent	
-* J
+** J
 JaccardDissimilarity	JacobiSC	JoinAcross
 JacobiAmplitude	JacobiSD	Joined
 JacobiCD	JacobiSN	JoinedCurve
@@ -911,7 +913,7 @@ JacobiNC	JankoGroupJ4	JuliaSetPlot
 JacobiND	JarqueBeraALMTest	JuliaSetPoints
 JacobiNS	JohnsonDistribution	
 JacobiP	Join	
-* K
+** K
 KagiChart	KernelObject	Khinchin
 KaiserBesselWindow	Kernels	KillProcess
 KaiserWindow	Key	KirchhoffGraph
@@ -933,7 +935,7 @@ KendallTau	KeyTake	Kurtosis
 KendallTauTest	KeyUnion	KuwaharaFilter
 KernelFunction	KeyValueMap	KVertexConnectedComponents
 KernelMixtureDistribution	KeyValuePattern	KVertexConnectedGraphQ
-* L
+** L
 LABColor	LessTilde	ListLogLinearPlot
 Label	LetterCharacter	ListLogLogPlot
 Labeled	LetterCounts	ListLogPlot
@@ -1038,7 +1040,7 @@ solves .
 ... 1 more
 LessSlantEqual	ListLineIntegralConvolutionPlot	LyonsGroupLy
 LessThan	ListLinePlot	
-* M
+** M
 MachineNumberQ	Maximize	MinimalBy
 MachinePrecision	MaxItems	MinimalPolynomial
 Magenta	MaxIterations	MinimalStateSpaceModel
@@ -1135,7 +1137,7 @@ MaxFeatureDisplacement	MinDate	MultivariatePoissonDistribution
 MaxFeatures	MinDetect	MultivariateTDistribution
 MaxFilter	MineralData	
 MaximalBy	MinFilter	
-* N
+** N
 N	NeymanScottPointProcess	NotificationFunction
 NakagamiDistribution	NHoldAll	NotLeftTriangle
 NameQ	NHoldFirst	NotLeftTriangleBar
@@ -1224,7 +1226,7 @@ NExpectation	NotGreaterTilde	NyquistGridLines
 NextCell	Nothing	NyquistPlot
 NextDate	NotHumpDownHump	
 NextPrime	NotHumpEqual	
-* O
+** O
 O	OperatingSystem	OuterPolyhedron
 ObservabilityGramian	OperatorApplied	OutputControllabilityMatrix
 ObservabilityMatrix	OptimumFlowData	OutputControllableModelQ
@@ -1249,7 +1251,7 @@ Opening	OrthogonalMatrixQ	OverwriteTarget
 OpenRead	Out	OwenT
 OpenWrite	Outer	OwnValues
 Operate	OuterPolygon	
-* P
+** P
 PacletDataRebuild	PeriodogramArray	PolyhedronDecomposition
 PacletDirectoryLoad	Permanent	PolyhedronGenus
 PacletDirectoryUnload	Permissions	PolyLog
@@ -1374,7 +1376,7 @@ PerformanceGoal	Polyhedron	Put
 Perimeter	PolyhedronAngle	PutAppend
 PeriodicBoundaryCondition	PolyhedronCoordinates	Pyramid
 Periodogram	PolyhedronData	
-* Q
+** Q
 QBinomial	QuantityArray	Quartiles
 QFactorial	QuantityDistribution	QuartileSkewness
 QGamma	QuantityForm	Query
@@ -1388,7 +1390,7 @@ QuadraticOptimization	QuantityVariableIdentifier	Quotient
 Quantile	QuantityVariablePhysicalQuantity	QuotientRemainder
 QuantilePlot	Quartics	
 Quantity	QuartileDeviation	
-* R
+** R
 RadialAxisPlot	RegionEqual	ResourceVersion
 RadialGradientFilling	RegionFillingStyle	ResponseForm
 RadialGradientImage	RegionFunction	Rest
@@ -1491,7 +1493,7 @@ RegionDisjoint	ResourceSubmit	RuntimeAttributes
 RegionDistance	ResourceSystemBase	RuntimeOptions
 RegionDistanceFunction	ResourceSystemPath	RussellRaoDissimilarity
 RegionEmbeddingDimension	ResourceUpdate	
-* S
+** S
 SameQ	Sinh	StraussHardcorePointProcess
 SameTest	SinhIntegral	StraussPointProcess
 SameTestProperties	SinIntegral	StreamColorFunction
@@ -1686,7 +1688,7 @@ SingleLetterItalics	StirlingS2	SystemsModelParallelConnect
 SingularValueDecomposition	StoppingPowerData	SystemsModelSeriesConnect
 SingularValueList	StrataVariables	SystemsModelStateFeedbackConnect
 SingularValuePlot	StratonovichProcess	SystemsModelVectorRelativeOrders
-* T
+** T
 Table	Thickness	TraceBackward
 TableAlignments	Thin	TraceDepth
 TableDepth	Thinning	TraceDialog
@@ -1781,7 +1783,7 @@ Therefore	ToUpperCase	TuttePolynomial
 ThermodynamicData	Tr	TwoWayRule
 ThermometerGauge	Trace	Typed
 Thick	TraceAbove	TypeSpecifier
-* U
+** U
 UnateQ	UnitaryMatrixQ	UpperCaseQ
 Uncompress	UnitBox	UpperLeftArrow
 UnconstrainedParameters	UnitConvert	UpperRightArrow
@@ -1813,7 +1815,7 @@ Union	UpdatePacletSites	URLSubmit
 UnionedEntityClass	UpdateSearchIndex	UsingFrontEnd
 UnionPlus	UpDownArrow	UtilityFunction
 Unique	UpEquilibrium	
-* V
+** V
 ValenceErrorHandling	VerifyInterpretation	VerticalSeparator
 ValenceFilling	VerifySecurityCertificates	VerticalSlider
 ValidationLength	VerifySolutions	VerticalTilde
@@ -1856,7 +1858,7 @@ VerifyConvergence	VertexWeight	Volume
 VerifyDerivedKey	VertexWeightedGraphQ	VonMisesDistribution
 VerifyDigitalSignature	VerticalBar	VoronoiMesh
 VerifyFileSignature	VerticalGauge	
-* W
+** W
 WaitAll	WeierstrassEta1	WindowClickSelect
 WaitNext	WeierstrassEta2	WindowElements
 WakebyDistribution	WeierstrassEta3	WindowFloating
@@ -1901,12 +1903,12 @@ WeibullDistribution	WilksWTest	Write
 WeierstrassE1	WindDirectionData	WriteLine
 WeierstrassE2	WindingCount	WriteString
 WeierstrassE3	WindingPolygon	Wronskian
-* X
+** X
 XMLElement	XMLTemplate	Xor
 XMLObject	Xnor	XYZColor
-* Y
+** Y
 Yellow	Yesterday	YuleDissimilarity
-* Z
+** Z
 ZernikeR	ZetaZero	ZoomFactor
 ZeroSymmetric	ZIPCodeData	ZTest
 ZeroTest	ZipfDistribution	ZTransform
@@ -1996,3 +1998,16 @@ Top
  
 Translate this page
 Legal & Privacy PolicySite MapWolframAlpha.comWolframCloud.com
+
+
+* wolframdoc
+  #+begin_src emacs-lisp
+    (defun wolframdoc ()
+      (interactive)
+      (powershell 
+       (concat
+        "start http://wolfram.fedora33.wsl/language/ref/"
+        (consult--read (-map #'file-name-sans-extension
+                             (directory-files "/mnt/develop/web-doc/reference.wolfram.com/language/ref" nil ".html")))
+        ".html")))
+  #+end_src
