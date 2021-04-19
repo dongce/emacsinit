@@ -144,7 +144,7 @@
 
         "G" 'keyboard-quit
         "ee" 'eval-last-sexp
-        "E"  mu4e-main-mode-map
+        "E"  spacemacs-mu4e-main-mode-map
         "Eu" 'mu4e-update-mail-and-index
 
 
@@ -1088,61 +1088,67 @@ In the second case (entire buffer), is the regex fast, or it gets slow with larg
      ;;'(evil-want-keybinding nil)
      ;;'(evil-want-minibuffer t)
 
-          (leaf evil-collection
-            :ensure t
-            :custom ((evil-collection-setup-minibuffer . t)
-                     (evil-want-minibuffer . t) 
-                     (evil-want-keybinding . nil))
-            :config
-            (evil-collection-init '( minibuffer diff-mode outline dired mu4e ivy consult))
+     (leaf evil-collection
+       :ensure t
+       :custom ((evil-collection-setup-minibuffer . t)
+                (evil-want-minibuffer . t) 
+                (evil-want-keybinding . nil))
+       :config
+       (evil-collection-init '( minibuffer diff-mode outline dired mu4e ivy consult))
 
-            (let ((bindings `((mu4e-view-mode-map 
-                               "*"             bmkp-mu4e-view
-                               ,(kbd "<home>")             open-mu4e-view   ;open in outlook
-                               ,(kbd "<insert>")           mu4e-headers-mark-for-something   ;open in outlook
-                               ,(kbd "<kp-multiply>") bmkp-mu4e-view
-                               "@"             copy-mu4e-view
-                               ,(kbd "<f12>F")             mu4e-find-file
-                               ,(kbd "<f12>f")             mu4e-field-view
-                               "o" mu4e-view-open-attachment
-                               "O" mu4e-view-open-attachment-emacs
-                               "m"  	mu4e-view-mark-for-tag
-                               "#"  	mu4e-mark-resolve-deferred-marks)
-                              (mu4e-headers-mode-map 
-                               ,(kbd "<home>")             open-mu4e-view   ;open in outlook
-                               ,(kbd "<insert>")        mu4e-headers-mark-for-something   ;open in outlook
-                               ,(kbd "<kp-multiply>") bmkp-mu4e-header
-                               "@"             copy-mu4e-header
-                               ,(kbd "<f12>F")             mu4e-find-file
-                               ,(kbd "<f12>f")             mu4e-field-header
-                               "L"  	mu4e-occur-store-link)
-                              (diff-mode-map
-                               ;; motion
-                               ,(kbd "<tab>") outline-cycle
-                               ,(kbd "C-<tab>") outline-show-all
-                               ,(kbd "<backtab>") outline-hide-other)
-                              (outline-mode-map
-                               ,(kbd "C-k") kill-line
-                               ,(kbd "C-j") outline-forward-same-level))))
-              (dolist (binding bindings)
-                (apply #'evil-collection-define-key 'normal binding))))
+       (let ((bindings `((mu4e-view-mode-map 
+                          "*"             bmkp-mu4e-view
+                          ,(kbd "<home>")             open-mu4e-view   ;open in outlook
+                          ,(kbd "<insert>")           mu4e-headers-mark-for-something   ;open in outlook
+                          ,(kbd "<kp-multiply>") bmkp-mu4e-view
+                          "@"             copy-mu4e-view
+                          ,(kbd "<f12>F")             mu4e-find-file
+                          ,(kbd "<f12>f")             mu4e-field-view
+                          "o" mu4e-view-open-attachment
+                          "O" mu4e-view-open-attachment-emacs
+                          "m"  	mu4e-view-mark-for-tag
+                          "#"  	mu4e-mark-resolve-deferred-marks)
+                         (mu4e-headers-mode-map 
+                          ,(kbd "<home>")             open-mu4e-view   ;open in outlook
+                          ,(kbd "<insert>")        mu4e-headers-mark-for-something   ;open in outlook
+                          ,(kbd "<kp-multiply>") bmkp-mu4e-header
+                          "@"             copy-mu4e-header
+                          ,(kbd "<f12>F")             mu4e-find-file
+                          ,(kbd "<f12>f")             mu4e-field-header
+                          "L"  	mu4e-occur-store-link)
+                         (diff-mode-map
+                          ;; motion
+                          ,(kbd "<tab>") outline-cycle
+                          ,(kbd "C-<tab>") outline-show-all
+                          ,(kbd "<backtab>") outline-hide-other)
+                         (outline-mode-map
+                          ,(kbd "C-k") kill-line
+                          ,(kbd "C-j") outline-forward-same-level))))
+         (dolist (binding bindings)
+           (apply #'evil-collection-define-key 'normal binding))))
 
-          (evil-collection-define-key 'motion 'diff-mode-map
-            (kbd "<tab>") 'outline-cycle
-            (kbd "C-<tab>") 'outline-show-all
-            (kbd "<backtab>") 'outline-hide-other)
+     (evil-collection-define-key 'motion 'diff-mode-map
+       (kbd "<tab>") 'outline-cycle
+       (kbd "C-<tab>") 'outline-show-all
+       (kbd "<backtab>") 'outline-hide-other)
 
-          (evil-collection-define-key 'normal 'dired-mode-map
-            ;;"["  'w32shell-cmd-here
-            ;;"\M-;" 'execute-program
-            "o" 'w32-dired-open-explorer
-            "O" 'w32-dired-open-explorer-tmp
-            ;; ",h" #'helm-dired-history-view
-            ",," 'w32-dired-open-explorer-marked
-            ",2" #'2zip
-            ",7" #'2-7zip
-            "S" 'hydra-dired-quick-sort/body
-            "\\" 'w32-dired-copy-file-name)
+     (evil-collection-define-key 'normal 'dired-mode-map
+       ;;"["  'w32shell-cmd-here
+       ;;"\M-;" 'execute-program
+       "o" 'w32-dired-open-explorer
+       "O" 'w32-dired-open-explorer-tmp
+       ;; ",h" #'helm-dired-history-view
+       ",," 'w32-dired-open-explorer-marked
+       ",2" #'2zip
+       ",7" #'2-7zip
+       "S" 'hydra-dired-quick-sort/body
+       "\\" 'w32-dired-copy-file-name
+
+       ";c"  #'clip-file
+       ";p"  #'clip-paste
+       ";;"  #'revert-buffer
+       ";o"  #'dired-omit-mode
+       ";i"  #'clip-image)
 
    #+end_src
 

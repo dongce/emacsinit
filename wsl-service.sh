@@ -6,12 +6,12 @@
 LOCALIP=$(ifconfig eth0 | grep "netmask" | awk '{print $2}')
 
 systemctl start sshd
-systemctl start httpd
 
 mount /dev/sdc /mnt/personal
 mount /dev/sdd /mnt/develop
 mount -t cifs //10.239.23.100/confidential /mnt/y/ -ousername=di7979.kim,pass=1q2w3e4r%,iocharset=utf8
 
+systemctl start httpd
 
 cat /etc/resolv.conf | grep "nameserver" | awk '{print $2"\t"$1}' >> /etc/hosts
 
@@ -20,15 +20,13 @@ sleep 5
 tmux send -t  powershell "cd /mnt/c/Windows/System32/WindowsPowerShell/v1.0/" ENTER
 sleep 3
 tmux send -t  powershell "./powershell.exe -NoExit -Command  Remove-Module -Name PSReadline" ENTER
-sleep 5
+sleep  10
 
 tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -RemoveHost -hostname fedora33.wsl" ENTER
-tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -AddHost -ip ${LOCALIP} -hostnam fedora33.wsl" ENTER
-
 tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -RemoveHost -hostname wolfram.fedora33.wsl" ENTER
-tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -AddHost -ip ${LOCALIP} -hostnam wolfram.fedora33.wsl" ENTER
-
 tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -RemoveHost -hostname python.fedora33.wsl" ENTER
+tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -AddHost -ip ${LOCALIP} -hostnam fedora33.wsl" ENTER
+tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -AddHost -ip ${LOCALIP} -hostnam wolfram.fedora33.wsl" ENTER
 tmux send -t  powershell "t:/usr/local/powershell/Edit-hostsfile.ps1 -AddHost -ip ${LOCALIP} -hostnam python.fedora33.wsl" ENTER
 
 
@@ -38,7 +36,12 @@ sleep 3
 tmux send -t  powershell  "start-process -filepath \"t:/usr/local/ahk/AutoHotkeyU64.exe\"" ENTER
 sleep 3
 tmux send -t  powershell  "start-process -filepath \"t:/usr/local/wtms/WTMS_Client_v0.3.exe\" -WorkingDirectory \"t:/usr/local/wtms/\" " ENTER
+sleep 3
 
+tmux send -t  powershell  "start-process -filepath \"t:/usr/local/qdir/Q-Dir_x64.exe\" " ENTER
+sleep 3
+
+tmux send -t  powershell  "start-process -filepath \"d:/usr/local/xmanager/Xmanager.exe\" " ENTER
 sleep 3
 
 tmux send -t  powershell "echo DONE" ENTER
@@ -91,3 +94,6 @@ sleep 3
 tmux send -t  powershell "start http://wolfram.fedora33.wsl/language/index.html " ENTER
 sleep 5
 tmux send -t  powershell "net use x: \\\\fedora33.wsl\\develop"                            ENTER
+sleep 5
+tmux send -t  powershell "net use p: \\\\fedora33.wsl\\personal"                            ENTER
+sleep 5

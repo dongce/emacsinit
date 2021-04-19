@@ -47,14 +47,7 @@
                                            ; return statement
        (if found dirname nil)))
 
-   (leaf dired
-     :require t
-     :bind ((:dired-mode-map
-             ( ":c" . clip-file)
-             ( ":p" . clip-paste)
-             ( ":;" . revert-buffer)
-             ( ":o" . dired-omit-mode)
-             ( ":i" . clip-image))))
+   (leaf dired :require t)
 
 
    (defun 2-zip ()
