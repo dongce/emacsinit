@@ -318,16 +318,19 @@
 
 ** send advice
    #+begin_src emacs-lisp
-     (defun mu4e-message-send-and-exit ()
-       (interactive)
-       (goto-char 0 )
-       (mu4e-compose-mode)
-       (add-hook 'message-send-hook 'org~mu4e-mime-convert-to-html-maybe nil t)
-       (message-send-and-exit))
+     (leaf org-mu4e
+       :require t
+       :config 
+       (defun mu4e-message-send-and-exit ()
+         (interactive)
+         (goto-char 0 )
+         (mu4e-compose-mode)
+         (add-hook 'message-send-hook 'org~mu4e-mime-convert-to-html-maybe nil t)
+         (message-send-and-exit))) 
    #+end_src
 
    #+RESULTS:
-   : mu4e-message-send-and-exit
+   : org-mu4e
 
 * keybinding
 
@@ -355,12 +358,9 @@
 
 * filter 
   #+BEGIN_SRC emacs-lisp
-    (leaf mu4e-query-fragments
-      :ensure t
-      :custom  
-      ((mu4e-query-fragments-list .
-                                  '(("%pkx" . "subject:*PKX* or *PKG")
-                                    ("%ffx" . "subject:*ffx*")))))
+    (setf mu4e-query-fragments-list 
+                               '(("%pkx" . "subject:*PKX* or *PKG")
+                                 ("%ffx" . "subject:*ffx*")))
 
 
   #+END_SRC
@@ -418,8 +418,7 @@
   :tag 로 검색 가능
   #+BEGIN_SRC emacs-lisp
     (leaf mu4e-mark
-      :require t
-      :config 
+      :config
       (add-to-list 'mu4e-marks
                    '(tag
                      :char       "g"
@@ -432,7 +431,8 @@
       (mu4e~view-defun-mark-for tag)
       ;;(general-define-key :keymaps 'mu4e-headers-mode-map (kbd "A") 'mu4e-headers-mark-for-archive)
       (general-define-key :keymaps 'mu4e-headers-mode-map (kbd "m") 'mu4e-headers-mark-for-tag)
-      (general-define-key :keymaps 'mu4e-view-mode-map (kbd "m") 'mu4e-view-mark-for-tag))
+      (general-define-key :keymaps 'mu4e-view-mode-map (kbd "m") 'mu4e-view-mark-for-tag)
+    )
   #+END_SRC
 * occur-store-link
   #+begin_src emacs-lisp
@@ -470,8 +470,7 @@
   #+begin_src emacs-lisp
     (leaf mu4e-thread-folding
       :require t
-      :config
-  
+      :config 
       (add-to-list 'mu4e-header-info-custom
                    '(:empty . (:name "Empty"
                                      :shortname ""

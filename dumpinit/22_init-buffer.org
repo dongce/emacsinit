@@ -87,7 +87,7 @@
    ;; (global-set-key [(control ?\')]     'recentf-open-most-recent-file)
    ;; (global-set-key [(control ?\")]     'recentf-open-files)
 
-   (leaf recentf-ext :ensure t)
+   (leaf recentf-ext :require t)
 
    (leaf open-junk-file :ensure t)
 

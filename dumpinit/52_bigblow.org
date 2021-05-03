@@ -1461,7 +1461,7 @@
  #+end_src
 
  #+RESULTS:
- : t
+ : org-attach-screenshot
 
 * ob-http
   #+begin_src emacs-lisp
@@ -1502,7 +1502,7 @@
   : org-msg
 
 * export
-  #+begin_src emacs-lisp
+  #+begin_src emacs-lisp 
     (defun org-html-export-to-mhtml (async subtree visible body)
       (cl-letf (((symbol-function 'org-html--format-image) 'format-image-inline))
         (org-html-export-to-html nil subtree visible body)))
@@ -1515,7 +1515,7 @@
              (attributes (org-combine-plists `(:src ,data-url) attributes)))
         (org-html-close-tag "img" (org-html--make-attribute-string attributes) info)))
 
-    (leaf
+    (leaf ox
       :require t
       :config 
       (org-export-define-derived-backend
@@ -1525,4 +1525,4 @@
 
 
   #+RESULTS:
-  : :require
+  : ox

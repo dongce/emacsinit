@@ -173,13 +173,6 @@
 
   (leaf transpar :require t )
 
-
-
-  ;; Local Variables:
-  ;; eval: (orgstruct-mode t)
-  ;; eval: (setq orgstruct-heading-prefix-regexp ";;;;")
-  ;; End:
-
 #+END_SRC
 
 * backward compatibility

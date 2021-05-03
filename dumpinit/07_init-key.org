@@ -5,7 +5,7 @@
 
 
 ** window key          
- #+BEGIN_SRC emacs-lisp 
+ #+BEGIN_SRC emacs-lisp :tangle no
 
    ;;;_ hyper key 
    ;; hyper super key define
@@ -199,7 +199,6 @@
 #+BEGIN_SRC emacs-lisp
 
   ;;(leaf counsel-descbinds :ensure t)
-
   (leaf proced
     :require t
     :bind ((:proced-mode-map
@@ -284,7 +283,7 @@
 #+END_SRC
 
 #+RESULTS:
-: t
+: gdb-mi
 
 ** xah isearch
 #+BEGIN_SRC emacs-lisp

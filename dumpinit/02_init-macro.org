@@ -2044,9 +2044,9 @@ This works on the current region."
  : prelude-copy-file-name-to-clipboard
 
 ** dpaste
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (leaf dpaste_de
-    :ensure t
+    :require t
     :config
     (defun vdpaste (name)
       (interactive "Spaste 이름을 입력해 주세요 :")  ; ask for the name of the macro
@@ -2055,7 +2055,7 @@ This works on the current region."
 #+END_SRC
 
 #+RESULTS:
-: t
+: dpaste_de
 
 ** modern paste
 #+BEGIN_SRC emacs-lisp
