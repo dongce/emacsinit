@@ -830,7 +830,7 @@
         "pre.src-sql:before   { content: 'SQL'; }"
         "pre.src-cpp:before   { content: 'C/C++'; }"
         "pre.src-ada:before   { content: 'ADA'; }"
-        "pre.src-python:before   { content: 'Python; }"
+        "pre.src-python:before   { content: 'Python'; }"
 
         ;; pygmentize -S default -f html
         ;; ".hll { background-color: #ffffcc }"
