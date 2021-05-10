@@ -154,88 +154,92 @@
 * font
 ** cycle font 
    #+BEGIN_SRC emacs-lisp
-     (require 'font-utils)
+         (require 'font-utils)
 
-     (defun* cycle-font (num &optional (hangul nil))
-       "Change font in current frame.
-     Each time this is called, font cycles thru a predefined set of fonts.
-     If NUM is 1, cycle forward.
-     If NUM is -1, cycle backward.
-     Warning: tested on Windows Vista only."
-       (interactive "p")
-       ;; this function sets a property “state”. It is a integer. Possible values are any index to the fontList.
-       (let (fontList hanFontList fontToUse currentState nextState )
-         (setq fontList (list
-                         "Courier New-10" 
-                         "DejaVu Sans Mono-9" 
-                         "Lucida Console-10"
-                         "DejaVu Sans-10" 
-                         "Lucida Sans Unicode-10" 
-                         "Arial Unicode MS-10" 
-                         "Consolas-10"
-                         "Inconsolata-10"
-                         "Monaco-9"
-                         ))
-         (setq hanFontList (list
-                            '("돋움체" . "unicode-bmp")
-                            '("새굴림" . "unicode-bmp")
-                            '("나눔고딕_코딩" . "unicode-bmp")
-                            '("맑은 고딕" . "unicode-bmp")
-                            '("나눔고딕코딩" . "unicode-bmp")
-                         ))
-         ;; fixed-width "Courier New" "Unifont"  "FixedsysTTF" "Miriam Fixed" "Lucida Console" "Lucida Sans Typewriter"
-         ;; variable-width "Code2000"
+         (defun* cycle-font (num &optional (hangul nil))
+           "Change font in current frame.
+         Each time this is called, font cycles thru a predefined set of fonts.
+         If NUM is 1, cycle forward.
+         If NUM is -1, cycle backward.
+         Warning: tested on Windows Vista only."
+           (interactive "p")
+           ;; this function sets a property “state”. It is a integer. Possible values are any index to the fontList.
+           (let (fontList hanFontList fontToUse currentState nextState )
+             (setq fontList (list
+                             "Courier New-10" 
+                             "DejaVu Sans Mono-9" 
+                             "Lucida Console-10"
+                             "DejaVu Sans-10" 
+                             "Lucida Sans Unicode-10" 
+                             "Arial Unicode MS-10" 
+                             "Consolas-10"
+                             "Inconsolata-10"
+                             "Monaco-9"
+                             ))
+             (setq hanFontList (list
+                                '( "Noto Sans Mono CJK KR"  . "unicode-bmp")
+                                '("돋움체" . "unicode-bmp")
+                                '("새굴림" . "unicode-bmp")
+                                '("나눔고딕_코딩" . "unicode-bmp")
+                                '("맑은 고딕" . "unicode-bmp")
+                                '("나눔고딕코딩" . "unicode-bmp")
+                             ))
+             ;; fixed-width "Courier New" "Unifont"  "FixedsysTTF" "Miriam Fixed" "Lucida Console" "Lucida Sans Typewriter"
+             ;; variable-width "Code2000"
 
-         (if hangul
-             (progn
-               (setq currentState (if (get 'cycle-font 'hanstate) (get 'cycle-font 'hanstate) 0))
-               (setq nextState (% (+ currentState (length hanFontList) num) (length hanFontList)))
-               (setq fontToUse (nth nextState hanFontList))
-               (set-fontset-font "fontset-default" 'hangul fontToUse)
-               (redraw-frame (selected-frame))
-               (message "Current font is: %s" (car fontToUse ))
-               (put 'cycle-font 'hanstate nextState)
-               )
-           (progn
-             (setq currentState (if (get 'cycle-font 'state) (get 'cycle-font 'state) 0))
-             (setq nextState (% (+ currentState (length fontList) num) (length fontList)))
-             (setq fontToUse (nth nextState fontList))
-             ;;(set-frame-parameter nil 'font fontToUse)
-             (set-face-font 'default fontToUse)
-             (redraw-frame (selected-frame))
-             (message "Current font is: %s" fontToUse )
-             (put 'cycle-font 'state nextState)
-             )
-           )))
+             (if hangul
+                 (progn
+                   (setq currentState (if (get 'cycle-font 'hanstate) (get 'cycle-font 'hanstate) 0))
+                   (setq nextState (% (+ currentState (length hanFontList) num) (length hanFontList)))
+                   (setq fontToUse (nth nextState hanFontList))
+                   (set-fontset-font "fontset-default" 'hangul fontToUse)
+                   (redraw-frame (selected-frame))
+                   (message "Current font is: %s" (car fontToUse ))
+                   (put 'cycle-font 'hanstate nextState)
+                   )
+               (progn
+                 (setq currentState (if (get 'cycle-font 'state) (get 'cycle-font 'state) 0))
+                 (setq nextState (% (+ currentState (length fontList) num) (length fontList)))
+                 (setq fontToUse (nth nextState fontList))
+                 ;;(set-frame-parameter nil 'font fontToUse)
+                 (set-face-font 'default fontToUse)
+                 (redraw-frame (selected-frame))
+                 (message "Current font is: %s" fontToUse )
+                 (put 'cycle-font 'state nextState)
+                 )
+               )))
 
-     (defun cycle-font-forward (&optional hangul)
-       "Switch to the next font, in the current frame.
-     See `cycle-font'."
-       (interactive "P")
-       (if hangul
-           (cycle-font 1 t)
-         (cycle-font 1 nil)
-       ))
+         (defun cycle-font-forward (&optional hangul)
+           "Switch to the next font, in the current frame.
+         See `cycle-font'."
+           (interactive "P")
+           (if hangul
+               (cycle-font 1 t)
+             (cycle-font 1 nil)
+           ))
 
-     (defun cycle-font-backward(&optional hangul)
-       "Switch to the previous font, in the current frame.
-     See `cycle-font'."
-       (interactive "P")
-       (if hangul
-           (cycle-font -1 t)
-         (cycle-font -1 nil)
-       ))
+         (defun cycle-font-backward(&optional hangul)
+           "Switch to the previous font, in the current frame.
+         See `cycle-font'."
+           (interactive "P")
+           (if hangul
+               (cycle-font -1 t)
+             (cycle-font -1 nil)
+           ))
 
-     ;; https://github.com/rolandwalker/unicode-fonts
-     ;; (leaf unicode-fonts
-     ;;   :config
-     ;;   (unicode-fonts-setup))
+         ;; https://github.com/rolandwalker/unicode-fonts
+         ;; (leaf unicode-fonts
+         ;;   :config
+         ;;   (unicode-fonts-setup))
 
-     ;; (leaf dynamic-fonts
-     ;;   :config
-     ;;   (dynamic-fonts-setup))
+         ;; (leaf dynamic-fonts
+         ;;   :config
+         ;;   (dynamic-fonts-setup))
 
    #+END_SRC
+
+   #+RESULTS:
+   : cycle-font-backward
 
 * font help
 
@@ -249,87 +253,251 @@
 
  #+RESULTS:
  | IBM Plex Sans Thai Looped    |
- | IBM Plex Serif               |
- | Latin Modern Math            |
- | Latin Modern Mono            |
- | Latin Modern Mono Caps       |
- | Latin Modern Mono Light      |
- | Latin Modern Mono Light Cond |
- | Latin Modern Mono Prop       |
- | Latin Modern Mono Prop Light |
+ | Fira Sans                    |
+ | wasy10                       |
  | Latin Modern Mono Slanted    |
- | Latin Modern Roman           |
- | Latin Modern Roman Caps      |
- | Latin Modern Roman Demi      |
- | Latin Modern Roman Dunhill   |
- | Latin Modern Roman Slanted   |
- | Latin Modern Roman Unslanted |
- | Latin Modern Sans            |
- | Latin Modern Sans Demi Cond  |
- | Latin Modern Sans Quotation  |
- | Nimbus Mono PS               |
- | Nimbus Roman                 |
- | Nimbus Sans                  |
- | Nimbus Sans Narrow           |
- | Noto Color Emoji             |
- | Noto Emoji                   |
- | Noto Sans CJK KR             |
- | Noto Sans Mono CJK KR        |
- | Noto Serif CJK KR            |
- | P052                         |
- | STIX Two Math                |
- | STIX Two Text                |
- | STIXGeneral                  |
- | Source Code Pro              |
+ | TeX Gyre Pagella             |
+ | IBM Plex Sans Devanagari     |
  | Standard Symbols PS          |
- | Symbola                      |
- | URW Bookman                  |
+ | Noto Sans CJK TC             |
+ | Minion Pro                   |
+ | Noto Serif CJK KR            |
+ | IBM Plex Sans Condensed      |
+ | 맑은 고딕                    |
+ | Latin Modern Mono            |
+ | Noto Serif CJK TC            |
+ | Noto Sans Mono               |
+ | IBM Plex Sans Thai           |
  | URW Gothic                   |
+ | Roboto Condensed             |
+ | Source Serif 4 Subhead       |
+ | Noto Serif                   |
+ | 나눔손글씨 붓                |
+ | Source Serif 4 Display       |
+ | msam10                       |
+ | 궁서                         |
+ | IBM Plex Sans Hebrew         |
+ | 휴먼가는샘체                 |
+ | Latin Modern Sans Demi Cond  |
+ | Noto Sans                    |
+ | Droid Sans                   |
+ | IBM Plex Serif               |
+ | Noto Sans CJK KR             |
+ | Noto Serif CJK JP            |
+ | Symbola                      |
+ | Nimbus Roman                 |
+ | Noto Sans CJK SC             |
+ | Cascadia Code                |
+ | Source Serif 4 Caption       |
+ | Fira Code                    |
+ | Latin Modern Mono Prop       |
+ | Latin Modern Math            |
+ | Source Code Pro              |
+ | Roboto Mono                  |
+ | Noto Serif CJK SC            |
+ | STIX Two Math                |
+ | Noto Sans CJK HK             |
+ | Fira Sans Condensed          |
+ | esint10                      |
+ | Source Serif 4               |
+ | TeX Gyre Heros Cn            |
+ | Source Sans 3                |
+ | msbm10                       |
+ | Montserrat                   |
+ | cmr10                        |
+ | TeX Gyre Pagella Math        |
+ | IBM Plex Mono                |
+ | Cantarell                    |
+ | Roboto                       |
+ | D2Coding                     |
+ | Noto Sans CJK JP             |
+ | 바탕체                       |
+ | Latin Modern Roman           |
+ | Source Serif 4 SmText        |
+ | STIX Two Text                |
+ | IBM Plex Sans Arabic         |
+ | Cascadia Mono                |
+ | Latin Modern Roman Unslanted |
+ | Nimbus Sans                  |
+ | Noto Sans Mono CJK SC        |
+ | Noto Sans Mono CJK TC        |
+ | 굴림체                       |
+ | Noto Sans Mono CJK JP        |
+ | Noto Sans Mono CJK HK        |
+ | Noto Sans Mono CJK KR        |
+ | STIXGeneral                  |
+ | TeX Gyre Cursor              |
+ | D2Coding ligature            |
+ | TeX Gyre Schola              |
+ | TeX Gyre Termes Math         |
+ | Nimbus Mono PS               |
+ | TeX Gyre Schola Math         |
+ | 바탕                         |
+ | Fira Code Symbol             |
+ | 나눔바른고딕                 |
+ | DejaVu Sans                  |
+ | stmary10                     |
+ | Nimbus Sans Narrow           |
+ | Roboto Slab                  |
+ | Fira Mono                    |
+ | URW Bookman                  |
+ | Latin Modern Roman Caps      |
+ | IBM Plex Sans                |
+ | Latin Modern Roman Dunhill   |
+ | dsrom10                      |
+ | Latin Modern Roman Slanted   |
+ | 나눔명조                     |
+ | rsfs10                       |
+ | Latin Modern Sans            |
+ | Latin Modern Sans Quotation  |
+ | 나눔고딕코딩                 |
+ | TeX Gyre Adventor            |
+ | 나눔고딕                     |
+ | 나눔바른펜                   |
+ | 돋움                         |
+ | cmmi10                       |
+ | TeX Gyre Termes              |
+ | C059                         |
+ | 나눔손글씨 펜                |
+ | TeX Gyre Chorus              |
  | Z003                         |
- | application                  |
- | charter                      |
- | clean                        |
- | courier                      |
- | cursor                       |
+ | TeX Gyre Bonum Math          |
+ | Latin Modern Mono Caps       |
+ | D050000L                     |
+ | 돋움체                       |
+ | TeX Gyre DejaVu Math         |
+ | TeX Gyre Bonum               |
+ | Latin Modern Mono Prop Light |
+ | eufm10                       |
+ | 굴림                         |
+ | Cascadia Code PL             |
+ | cmex10                       |
+ | Latin Modern Mono Light      |
+ | Noto Color Emoji             |
+ | 궁서체                       |
+ | Cascadia Mono PL             |
+ | P052                         |
+ | Noto Emoji                   |
+ | TeX Gyre Heros               |
+ | Latin Modern Mono Light Cond |
+ | Latin Modern Roman Demi      |
+ | cmsy10                       |
+ | MnSymbol                     |
  | fangsong ti                  |
  | fixed                        |
+ | clean                        |
  | gothic                       |
- | helvetica                    |
- | interface system             |
- | interface user               |
- | lucida                       |
- | lucidabright                 |
- | lucidatypewriter             |
- | lucidux mono                 |
- | lucidux sans                 |
- | lucidux serif                |
- | mincho                       |
- | myeongjo                     |
- | new century schoolbook       |
  | open look cursor             |
  | open look glyph              |
  | supplement                   |
+ | courier                      |
+ | helvetica                    |
+ | new century schoolbook       |
  | symbol                       |
- | terminal                     |
  | times                        |
  | utopia                       |
- | 굴림                         |
- | 굴림체                       |
- | 궁서                         |
- | 궁서체                       |
- | 나눔고딕                     |
- | 나눔고딕코딩                 |
- | 나눔명조                     |
- | 나눔바른고딕                 |
- | 나눔바른펜                   |
- | 나눔손글씨 붓                |
- | 나눔손글씨 펜                |
- | 돋움                         |
- | 돋움체                       |
- | 맑은 고딕                    |
- | 바탕                         |
- | 바탕체                       |
- | 휴먼가는샘체                 |
+ | lucida                       |
+ | lucidabright                 |
+ | lucidatypewriter             |
+ | charter                      |
+ | terminal                     |
+ | application                  |
+ | interface system             |
+ | interface user               |
+ | lucidux mono                 |
+ | lucidux sans                 |
+ | lucidux serif                |
+ | cursor                       |
+ | mincho                       |
+ | myeongjo                     |
+
+
+ 
+
+*** old font 
+  #+RESULTS:
+  | IBM Plex Sans Thai Looped    |
+  | IBM Plex Serif               |
+  | Latin Modern Math            |
+  | Latin Modern Mono            |
+  | Latin Modern Mono Caps       |
+  | Latin Modern Mono Light      |
+  | Latin Modern Mono Light Cond |
+  | Latin Modern Mono Prop       |
+  | Latin Modern Mono Prop Light |
+  | Latin Modern Mono Slanted    |
+  | Latin Modern Roman           |
+  | Latin Modern Roman Caps      |
+  | Latin Modern Roman Demi      |
+  | Latin Modern Roman Dunhill   |
+  | Latin Modern Roman Slanted   |
+  | Latin Modern Roman Unslanted |
+  | Latin Modern Sans            |
+  | Latin Modern Sans Demi Cond  |
+  | Latin Modern Sans Quotation  |
+  | Nimbus Mono PS               |
+  | Nimbus Roman                 |
+  | Nimbus Sans                  |
+  | Nimbus Sans Narrow           |
+  | Noto Color Emoji             |
+  | Noto Emoji                   |
+  | Noto Sans CJK KR             |
+  | Noto Sans Mono CJK KR        |
+  | Noto Serif CJK KR            |
+  | P052                         |
+  | STIX Two Math                |
+  | STIX Two Text                |
+  | STIXGeneral                  |
+  | Source Code Pro              |
+  | Standard Symbols PS          |
+  | Symbola                      |
+  | URW Bookman                  |
+  | URW Gothic                   |
+  | Z003                         |
+  | application                  |
+  | charter                      |
+  | clean                        |
+  | courier                      |
+  | cursor                       |
+  | fangsong ti                  |
+  | fixed                        |
+  | gothic                       |
+  | helvetica                    |
+  | interface system             |
+  | interface user               |
+  | lucida                       |
+  | lucidabright                 |
+  | lucidatypewriter             |
+  | lucidux mono                 |
+  | lucidux sans                 |
+  | lucidux serif                |
+  | mincho                       |
+  | myeongjo                     |
+  | new century schoolbook       |
+  | open look cursor             |
+  | open look glyph              |
+  | supplement                   |
+  | symbol                       |
+  | terminal                     |
+  | times                        |
+  | utopia                       |
+  | 굴림                         |
+  | 굴림체                       |
+  | 궁서                         |
+  | 궁서체                       |
+  | 나눔고딕                     |
+  | 나눔고딕코딩                 |
+  | 나눔명조                     |
+  | 나눔바른고딕                 |
+  | 나눔바른펜                   |
+  | 나눔손글씨 붓                |
+  | 나눔손글씨 펜                |
+  | 돋움                         |
+  | 돋움체                       |
+  | 맑은 고딕                    |
+  | 바탕                         |
+  | 바탕체                       |
+  | 휴먼가는샘체                 |
 
 
 ** unicode characters                                              :document:

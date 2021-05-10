@@ -7,10 +7,12 @@ LOCALIP=$(ifconfig eth0 | grep "netmask" | awk '{print $2}')
 
 systemctl start sshd
 
-mount /dev/sdc /mnt/personal
-mount /dev/sdd /mnt/develop
+mount /dev/sdd /mnt/personal
+mount /dev/sde /mnt/develop
 mount -t cifs //10.239.23.100/confidential /mnt/y/ -ousername=di7979.kim,pass=1q2w3e4r%,iocharset=utf8
 
+mkdir -p /run/httpd
+chmod -R 777 /run
 systemctl start httpd
 
 cat /etc/resolv.conf | grep "nameserver" | awk '{print $2"\t"$1}' >> /etc/hosts
