@@ -2011,3 +2011,23 @@ Legal & Privacy PolicySite MapWolframAlpha.comWolframCloud.com
                              (directory-files "/mnt/develop/web-doc/reference.wolfram.com/language/ref" nil ".html")))
         ".html")))
   #+end_src
+
+
+  
+
+** macro
+   #+begin_src emacs-lisp
+
+     (dolist (it (-map #'file-name-nondirectory (f-directories "/mnt/develop/web-doc/reference.wolfram.com/language/")))
+      (eval `(defun ,(intern (format "wolf-%s" it)) ()
+         (interactive)
+         (powershell 
+          (concat
+           ,(format  "start http://wolfram.fedora33.wsl/language/%s/" it)
+           (consult--read (-map #'file-name-sans-extension
+                                (directory-files
+                                 ,(format "/mnt/develop/web-doc/reference.wolfram.com/language/%s" it) nil ".html"))) ".html")))))
+
+   #+end_src
+
+   #+RESULTS:

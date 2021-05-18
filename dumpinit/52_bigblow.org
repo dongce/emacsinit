@@ -280,6 +280,10 @@
         (interactive)
         (copy-image-file (org-element-property :path (org-element-context) )))
 
+      (defun  org-w32open ()
+        (interactive)
+        (w32open (org-element-property :path (org-element-context) )))
+
       (defun  org-link-copy-file ()
         (interactive)
         (copy-files (org-element-property :path (org-element-context) )))
