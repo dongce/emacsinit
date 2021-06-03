@@ -761,7 +761,7 @@ open and unsaved."
    C:\Users\dongil\AppData\Local\Microsoft\Windows\Temporary Internet Files\Content.Outlook
 * dired+
   
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (leaf dired+ :require t)
 #+end_src
 

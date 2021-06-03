@@ -3442,6 +3442,7 @@
        (mini-frame-mode))
 
      (defun mini-frame-background (&optional frame) "RoyalBlue4" )
+     ;; (defun mini-frame-background (&optional frame) "royal blue" )
      (setf mini-frame-background-color-function #'mini-frame-background)
    #+end_src
 

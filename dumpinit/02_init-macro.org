@@ -3085,7 +3085,7 @@ Version 2015-03-03"
                    (directory-files-and-attributes "C:/Users/User/AppData/Roaming/Mozilla/Firefox/Profiles/iyq62fu7.default/bookmarkbackups" t ".json")
                    (lambda (x y) (> (float-time (nth 6 x)) (float-time (nth 6 y))))
                    )))
-
+  
            (children (cdr (assoc 'children (json-read-file (pyutil-mozlz4-decompress fb)) )))
            ;;(bookmenu (elt children 0))
            ;;(booktool (elt children 1))
@@ -3103,7 +3103,7 @@ Version 2015-03-03"
       (browse-url (cdr (assoc 'uri bookmark )))
       (copy-file fb firefox-bookmark-backup-folder  t t   )
       )) 
-
+  
   (defun fbmk2 ()
     (interactive)
     (let* (
@@ -3126,8 +3126,8 @@ Version 2015-03-03"
            )
       (browse-url (elt  bookmark 1))
       )) 
-
-
+  
+  
   (defun fbmk3 ()
     (interactive)
     (let* (
@@ -3152,10 +3152,44 @@ Version 2015-03-03"
       ;;(browse-url (elt  bookmark 1))
       (powershell (format "start \"%s\"" (elt  bookmark 1)))
       )) 
-
-
-
-
+  
+  
+ 
+(defun bmk4 ()
+  (interactive)
+  (let*
+      ((group
+        (selectrum-completing-read
+         "그룹을 선택하세요 "
+         (-map (lambda (x) (cdr  (assoc 'GroupName x )))
+               (with-temp-buffer
+                 (url-insert-file-contents "http://10.239.23.107:8880/Navigation?Command=list_group" )
+                 (json-parse-buffer :object-type 'alist))
+               )))
+       (urls
+        (append
+         (with-temp-buffer
+           (url-insert-file-contents
+            (format  "http://10.239.23.107:8880/Navigation?Command=list_url&GroupName=%s" (symbol-name 'BUILDCENTER)) )
+           (json-parse-buffer :object-type 'alist)) nil)
+        )
+       (urlname
+        (selectrum-completing-read
+         " 주소를 선택하세요 "
+         (-map (lambda (x) (cdr  (assoc 'UrlName x ))) urls))
+        )
+       (url
+        (cdr
+         (assoc 'Url
+                (-find (lambda (x)
+                         (string-equal
+                          urlname
+                          (cdr  (assoc 'UrlName x))))
+                       urls )))))
+    (kill-new url)
+    (powershell (format "start \"%s\"" url)))) 
+  
+  
 #+END_SRC
 
 #+RESULTS:
@@ -3920,3 +3954,17 @@ of FILE in the current directory, suitable for creation"
 
 #+RESULTS:
 : repair-minibuffer
+
+* monitor change
+  #+begin_src emacs-lisp
+    
+    (defun mymonitor-helper (mon )
+      (powershell
+       (concat
+        "t:/usr/local/controlmymonitor/ControlMyMonitor.exe /setvalue \\\\.\\DISPLAY2\\Monitor0 60 "
+        (format "%d" mon))))
+    
+    (defun* mymonitor (&optional (mon 1))
+      (interactive "p")
+      (mymonitor-helper mon))
+  #+end_src

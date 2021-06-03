@@ -325,7 +325,7 @@
       :keymaps '(evil-normal-state-map evil-visual-state-map evil-insert-state-map)
 
       "\C-a" 'evil-beginning-of-line
-      "\C-e" 'evil-end-of-line
+      "\C-e" 'mwim-end-of-code-or-line ;;evil-end-of-line
       "\C-f" 'evil-forward-char
       "\C-b" 'evil-backward-char
       "\C-d" 'evil-delete-char
@@ -390,9 +390,9 @@
      (general-define-key
       :keymaps '(evil-normal-state-map evil-visual-state-map )
       [kp-0]        'copy-region-strip-left
-      [kp-1]        'select-window-1
+      [kp-1]        'mymonitor
       [kp-2]        'bm-next
-      [kp-3]        'select-window-3
+      [kp-3]        #'(lambda () (interactive) (mymonitor 3))
       [kp-4]        'evil-prev-buffer
       [kp-5]        'bm-toggle
       [kp-6]        'evil-next-buffer
@@ -408,7 +408,6 @@
    #+END_SRC
 
    #+RESULTS:
-   : ibuffer
 
 ** evil surround
    #+BEGIN_SRC emacs-lisp

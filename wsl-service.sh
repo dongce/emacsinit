@@ -9,6 +9,7 @@ systemctl start sshd
 
 mount /dev/sdd /mnt/personal
 mount /dev/sde /mnt/develop
+mount --bind /mnt/c/Users/di7979.kim/Downloads /root/Downloads
 mount -t cifs //10.239.23.100/confidential /mnt/y/ -ousername=di7979.kim,pass=1q2w3e4r%,iocharset=utf8
 
 mkdir -p /run/httpd
