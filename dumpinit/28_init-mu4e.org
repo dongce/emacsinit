@@ -325,10 +325,13 @@
          (interactive)
          (goto-char 0 )
          (mu4e-compose-mode)
-         (add-hook 'message-send-hook '(lambda () (replace-string "hanwhasystems.com" "hanwha-rd.com")) nil t)
-         (add-hook 'message-send-hook 'org~mu4e-mime-convert-to-html-maybe nil t)
+         (add-hook 'message-send-hook
+          '(lambda () (replace-string "hanwhasystems.com" "hanwha-rd.com" nil (point-min) (point-max)))
+          nil t)
+         (add-hook 'message-send-hook
+                   'org~mu4e-mime-convert-to-html-maybe nil t)
          (message-send-and-exit))) 
-
+     
    #+end_src
 
    #+RESULTS:
